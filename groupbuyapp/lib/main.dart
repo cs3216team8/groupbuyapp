@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
-import 'package:groupbuyapp/root.dart';
+import 'package:groupbuyapp/piggybuy_root.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

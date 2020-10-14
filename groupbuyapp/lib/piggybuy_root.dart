@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages/home_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -22,15 +23,12 @@ class PiggyBuy extends StatefulWidget {
 class _PiggyBuyState extends State<PiggyBuy> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize:  30, fontWeight: FontWeight.bold);
-  static const List<Widget> _navWidgetOptions = <Widget>[
+  static final List<Widget> _navWidgetOptions = <Widget>[
     Text(
       'Placeholder widget 1',
       style: optionStyle,
     ),
-    Text(
-      'Placeholder widget 2',
-      style: optionStyle,
-    ),
+    Home(),
     Text(
       'Placeholder widget 3',
       style: optionStyle,
@@ -63,7 +61,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
             label: 'Find lobang'),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            label: 'My profile'
+            label: 'My groupbuys'
           ),
         ],
         currentIndex: _selectedIndex,
