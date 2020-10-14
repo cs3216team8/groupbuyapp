@@ -7,6 +7,8 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  static const TextStyle optionStyle = TextStyle(fontSize:  30, fontWeight: FontWeight.bold);
+
   void _makeGroupbuyRequest() {
     print("request button pressed");
   }
@@ -16,28 +18,17 @@ class _HomeState extends State<Home> {
     return Stack(
       children: <Widget>[
         Column( // for no entries, if have entry, make invisible
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Your neighbours have yet to request!'),
+            Text('Your neighbours have yet to request!', style: optionStyle, textAlign: TextAlign.center,),
             RaisedButton(
               onPressed: _makeGroupbuyRequest,
               textColor: Colors.white,
-              child: Container(
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      Color(0xFF0D47A1),
-                      Color(0xFF1976D2),
-                      Color(0xFF42A5F5)
-                    ]
-                  )
-                ),
-                padding: const EdgeInsets.all(10.0),
-                child: const Text(
-                    'Be the first to request!',
+              child: Text(
+                    'Be the first',
                     style: TextStyle(fontSize: 20)
                 )
               ),
-            )
           ],
 
         )
