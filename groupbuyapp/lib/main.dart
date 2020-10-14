@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:groupbuyapp/root.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           print("firebase connected");
-          return TmpFix();
+          return PiggyBuyApp();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class TmpFix extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -59,13 +61,13 @@ class TmpFix extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: TmpPage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class TmpPage extends StatefulWidget {
+  TmpPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -79,10 +81,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _TmpPageState createState() => _TmpPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _TmpPageState extends State<TmpPage> {
   int _counter = 0;
 
   void _incrementCounter() {
