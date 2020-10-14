@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages/chat_widget.dart';
 import 'package:groupbuyapp/pages/home_widget.dart';
+import 'package:groupbuyapp/pages/user_groupbuys_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -24,15 +26,9 @@ class _PiggyBuyState extends State<PiggyBuy> {
   int _selectedIndex = 0;
   static const TextStyle optionStyle = TextStyle(fontSize:  30, fontWeight: FontWeight.bold);
   static final List<Widget> _navWidgetOptions = <Widget>[
-    Text(
-      'Placeholder widget 1',
-      style: optionStyle,
-    ),
+    Chat(),
     Home(),
-    Text(
-      'Placeholder widget 3',
-      style: optionStyle,
-    )
+    Groupbuys(),
   ];
 
   void _onItemTapped(int index) {
