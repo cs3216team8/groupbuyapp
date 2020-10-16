@@ -44,13 +44,3 @@ class Groupbuy {
     this._currentAmount -= amt;
   }
 }
-
-class CompleteGroupbuy extends Groupbuy {
-  String _deposit;
-  String _description;
-
-  CompleteGroupbuy(this._deposit, this._description) : super.withNonZeroCurrentAmount(
-      super.groupbuyId, super.buyerId, super.address,
-      super.storeName, super.website, super.logo,
-      super._timeEnd, super._targetAmount, super._currentAmount);
-}
