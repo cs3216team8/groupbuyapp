@@ -20,26 +20,27 @@ class GroupbuyCard extends StatelessWidget {
       elevation: 10,
       shadowColor: Colors.black12,
       child: InkWell(
-        splashColor: Theme.of(context).accentColor.withAlpha(30),
+        splashColor: Theme.of(context).primaryColor.withAlpha(30),
         onTap: _openDetailedGroupbuy,
         child: Column(
           children: [
-            Image.asset('assets/Amazon-logo.png'),
+            Image.asset('assets/Amazon-logo.png', height: 100.0,),
             LinearPercentIndicator(
               lineHeight: 8.0,
               backgroundColor: Colors.black12,
               progressColor: Theme.of(context).buttonColor,
+              percent: 0.7,
             ),
-            ListTile(
-              leading: Row(
-                children: <Widget>[
-                  Icon(Icons.access_time),
-                  Text("{details.getTimeEnd().difference(DateTime.now()).inDays)} days"),
-                ],
-              ),
-              trailing: Text("{details.getCurrentAmount()}/placeholder\$100"),
-              // 7 days, $70/$100
-            )
+            // ListTile(
+            //   leading: Row(
+            //     children: <Widget>[
+            //       Icon(Icons.access_time),
+            //       //Text("${details.getTimeEnd().difference(DateTime.now()).inDays} days"),
+            //     ],
+            //   ),
+            //   trailing: Text("${details.getCurrentAmount()}/placeholder\$100"),
+            //   // 7 days, $70/$100
+            // )
           ],
         ),
       ),

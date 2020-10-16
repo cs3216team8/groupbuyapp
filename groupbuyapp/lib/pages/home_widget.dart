@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -15,24 +16,44 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Column( // for no entries, if have entry, make invisible
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Your neighbours have yet to request!', style: optionStyle, textAlign: TextAlign.center,),
-            RaisedButton(
-              onPressed: _makeGroupbuyRequest,
-              textColor: Colors.white,
-              child: Text(
-                    'Be the first',
-                    style: TextStyle(fontSize: 20)
-                )
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            child: Text('banner here'), //TODO: placeholder for banner
+            color: Colors.amberAccent, //TODO: testing idk what this
+            padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 155.0),
+            margin: EdgeInsets.all(10.0),
+          ),
+          Stack(
+            children: <Widget>[
+              Column( // for no entries, if have entry, make invisible
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Your neighbours have yet to request!', style: optionStyle, textAlign: TextAlign.center,),
+                  RaisedButton(
+                    onPressed: _makeGroupbuyRequest,
+                    textColor: Colors.white,
+                    child: Text(
+                          'Be the first',
+                          style: TextStyle(fontSize: 20)
+                      )
+                    ),
+                ],
               ),
-          ],
-
-        )
-      ],
+              GridView.count(
+                crossAxisCount: 2,
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                childAspectRatio: 6.0/7.0,
+                children: List.generate(5, (index) { // placeholder for GridCards[]
+                    return GroupbuyCard(placeholder);
+                  }),
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 }
