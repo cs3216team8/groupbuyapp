@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import 'time_display_widget.dart';
+import 'components/time_display_widget.dart';
 
 class GroupBuyInfo extends StatelessWidget {
   @override
@@ -37,8 +37,11 @@ class GroupBuyInfo extends StatelessWidget {
                         lineHeight: 20,
                         percent: 0.7,
                         center: new Text("70%",
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        progressColor: Colors.orangeAccent,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)
+                        ),
+                        progressColor: Theme.of(context).buttonColor,
                       ),
                       flex: 65),
                   Expanded(
@@ -51,7 +54,7 @@ class GroupBuyInfo extends StatelessWidget {
               ),
             ),
             ListTile(
-              // Organiser information
+                // Organiser information
                 leading: Icon(
                   Icons.account_circle,
                   color: Colors.grey,
@@ -60,7 +63,7 @@ class GroupBuyInfo extends StatelessWidget {
                 ),
                 title: Text('by dawo')),
             ListTile(
-              // Location
+                // Location
                 leading: Icon(
                   Icons.location_on,
                   color: Colors.grey,
@@ -74,14 +77,10 @@ class GroupBuyInfo extends StatelessWidget {
               alignment: Alignment.topLeft,
               child: Column(
                 children: <Widget>[
-                  Text(
-                      'Description:',
+                  Text('Description:',
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   Text(
                     'Lorem ipsum sit dolor amet',
                     textAlign: TextAlign.left,
@@ -89,7 +88,6 @@ class GroupBuyInfo extends StatelessWidget {
                 ],
               ),
             ),
-
 
             ListTile(
               // Deposit
