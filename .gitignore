@@ -22,3 +22,7 @@ doc/api/
 
 # Manually added
 google-services.json
+GoogleService-Info.plist
+
+Podfile.lock
+
