@@ -39,7 +39,7 @@ class PiggyBuy extends StatefulWidget {
 class _PiggyBuyState extends State<PiggyBuy> {
   int _selectedIndex = 1;
   static List<Widget> _navWidgetOptions = <Widget>[
-    Chat(),
+    ChatScreen("dummy"),
     Home(),
     GroupBuyInfo(),
   ];
