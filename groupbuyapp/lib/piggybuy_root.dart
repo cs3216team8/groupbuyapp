@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/chat_widget.dart';
 import 'package:groupbuyapp/pages/home_widget.dart';
-import 'package:groupbuyapp/pages/user_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages/groupbuy/info_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -41,7 +41,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
   static List<Widget> _navWidgetOptions = <Widget>[
     Chat(),
     Home(),
-    Groupbuys(),
+    GroupBuyInfo(),
   ];
 
   void _onItemTapped(int index) {
