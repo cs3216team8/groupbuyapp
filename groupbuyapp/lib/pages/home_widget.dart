@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
           Container(
             height: 120,
             alignment: Alignment.center,
-            child: Text('banner here'), //TODO: placeholder for banner
+            child: Text('banner hereii'), //TODO: placeholder for banner
             color: Colors.amberAccent, //TODO: testing idk what this
             //padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 155.0),
             margin: EdgeInsets.all(10.0),
