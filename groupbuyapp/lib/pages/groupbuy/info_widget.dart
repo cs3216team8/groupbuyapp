@@ -71,20 +71,24 @@ class GroupBuyInfo extends StatelessWidget {
             // Description
             Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              alignment: Alignment.topLeft,
+              alignment: Alignment.center,
               child: Column(
                 children: <Widget>[
-                  Text(
-                      'Description:',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      )
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                        'Description:',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
                   ),
-                  Text(
-                    'Lorem ipsum sit dolor amet',
-                    textAlign: TextAlign.left,
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Lorem ipsum sit dolor amet',
+                    ),
                   ),
                 ],
               ),
