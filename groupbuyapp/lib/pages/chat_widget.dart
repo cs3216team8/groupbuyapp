@@ -2,40 +2,59 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/chat_message.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String current_user; // placeholder
+  final String currentUser; // placeholder
 
-  ChatScreen(this.current_user);
+  ChatScreen(this.currentUser);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   String currentUser = 'dummy'; //TODO
   List<Message> messages = [
-    Message('msg1', DateTime.now(), 'dummy'),
+    Message(
+        'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV KSDNZX1',
+        DateTime.now(),
+        'dummy'),
+    Message('text', DateTime.now(), '2'),
+    Message('text', DateTime.now(), '2'),
+    Message('text', DateTime.now(), '2'),
+    Message('text', DateTime.now(), '2'),
+    Message('text', DateTime.now(), '2'),
     Message('text', DateTime.now(), '2')
   ];
 
   Widget _buildMessage(Message message, bool isMe) {
     return Container(
       margin: isMe
-          ? EdgeInsets.only(top: 8.0, bottom: 8.0, left: 80.0,)
+          ? EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 80.0,
+            )
           : EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0),
-      color: isMe
-          ? Colors.black26
-          : Colors.black38,
       child: Column(
+        crossAxisAlignment:
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            decoration: isMe 
-            ? BoxDecoration(
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15.0), topLeft: Radius.circular(15.0))
-            ) 
-            : BoxDecoration(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(30.0), topRight: Radius.circular(30.0))
-            ),
+            decoration: isMe
+                ? BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(15.0),
+                        topLeft: Radius.circular(15.0)),
+                    color: Colors.tealAccent, // TODO: replace colours
+                  )
+                : BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0)),
+                    color: Colors.amberAccent,
+                  ),
+            padding: isMe
+                ? EdgeInsets.only(left: 10, top: 5, bottom: 5)
+                : EdgeInsets.only(right: 10, top: 5, bottom: 5),
             child: Text(message.text),
           ),
           Text(message.time.toString())
@@ -50,6 +69,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onViewBuyer() {
     print("make view buyer pressed");
+  }
+
+  void _onInputAttach() {
+    print("attach img/file? button pressed");
   }
 
   Widget topIntroWidget() {
@@ -93,7 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               onPressed: _onMakeOffer,
-              child: Text("Make offer"),
+              child: Text("Join the buy"),
             ),
             RaisedButton(
               color: Theme.of(context).accentColor,
@@ -108,24 +131,41 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget chatSection() {
     return Container(
-      color: Colors.white,
-      child: ClipRRect(
+        color: Colors.white,
         child: ListView.builder(
-          reverse: true,
+          reverse: true, // TODO: note order of messages fetched
           padding: EdgeInsets.only(top: 15.0),
           itemCount: messages.length,
           itemBuilder: (BuildContext context, int index) {
             final Message message = messages[index];
-            final bool isMe = message.sender_uid == currentUser;
+            final bool isMe = message.senderUid == currentUser;
             return _buildMessage(message, isMe);
           },
-        )
-      ),
-    ); //idk
+        ),
+    );
   }
 
   Widget typeSection() {
-    return Row();
+    return Container(
+      padding: EdgeInsets.only(left: 15.0, right: 5.0),
+      child: Row(
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Send a message...",
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.photo),
+              iconSize: 25.0,
+              color: Theme.of(context).primaryColor,
+              onPressed: _onInputAttach,
+            )
+          ],
+      )
+    );
   }
 
   @override
@@ -137,8 +177,8 @@ class _ChatScreenState extends State<ChatScreen> {
       // ),
       body: Column(
         children: <Widget>[
-          Expanded(
-            flex: 30,
+          Container(
+            height: 165,
             child: topIntroWidget(),
           ),
           Expanded(
