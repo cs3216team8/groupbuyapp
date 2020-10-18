@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-import 'package:groupbuyapp/models/dummy_groupbuy.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 
-Groupbuy placeholder = Groupbuy("grpbuyid", "buyerId", "address", "storeName",
-    "website", "logo", DateTime.now().add(Duration(days: 7)), 50);
-
-class GroupbuyCard extends StatelessWidget {
+class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
       TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
 
-  final Groupbuy details;
+  final GroupBuy details;
 
-  GroupbuyCard(this.details);
+  GroupBuyCard(this.details);
 
   void _openDetailedGroupbuy() {
     print("grid card pressed");
