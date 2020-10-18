@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
@@ -22,35 +24,26 @@ Future<void> addGroupBuy(GroupBuy groupBuy) {
     'address': groupBuy.address
   })
     .then((value) => print("Group buy Added"))
-    .catchError((error) => print("Failed to add user: $error"));
+    .catchError((error) => print("Failed to add group buy: $error"));
 }
 
-Future<List<GroupBuy>> getAllGroupBuys(BuildContext context) {
+FutureOr<List<GroupBuy>> getAllGroupBuys() {
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
       'groupBuys');
-  FutureBuilder<QuerySnapshot>(
-    future: groupBuys.get(),
-    builder:
-        (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      if (snapshot.hasError) {
-        return Text("Something went wrong");
-      }
-
-      if (snapshot.connectionState == ConnectionState.done) {
-        snapshot.data.documents.map((DocumentSnapshot document) {
-          return new GroupBuyCard(
-              GroupBuy(
-                  document.data()['storeName'],
-                  document.data()['storeWebsite'],
-                  document.data()['storeLogo'],
-                  document.data()['currentAmount'],
-                  document.data()['targetAmount'],
-                  document.data()['endTimestamp'],
-                  document.data()['username'],
-                  document.data()['deposit'],
-                  document.data()['description'],
-                  document.data()['address']
-              )
+    new FutureOr<List<GroupBuy>>(
+      groupBuys.get().then((QuerySnapshot snapshot) {
+        return snapshot.docs.map((DocumentSnapshot document) {
+          return new GroupBuy(
+              document.data()['storeName'],
+              document.data()['storeWebsite'],
+              document.data()['storeLogo'],
+              document.data()['currentAmount'],
+              document.data()['targetAmount'],
+              document.data()['endTimestamp'],
+              document.data()['username'],
+              document.data()['deposit'],
+              document.data()['description'],
+              document.data()['address']
           );
         }).toList();
       }
