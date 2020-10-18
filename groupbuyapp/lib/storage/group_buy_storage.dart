@@ -1,11 +1,31 @@
 import 'package:flutter/material.dart';
 
-import 'package:groupbuyapp/models/GroupBuy.dart';
-import 'package:groupbuyapp/pages/component/grid_card_widget.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 
-List<Widget> getAllGroupBuys(BuildContext context) {
+Future<void> addGroupBuy(GroupBuy groupBuy) {
+  CollectionReference groupBuys = FirebaseFirestore.instance.collection(
+      'groupBuys');
+  String groupBuyId = groupBuys.doc().id;
+  return groupBuys.doc(groupBuyId).set({
+    'storeName': groupBuy.storeName,
+    'storeWebsite': groupBuy.storeWebsite,
+    'storeLogo': groupBuy.storeLogo,
+    'currentAmount': groupBuy.currentAmount,
+    'targetAmount': groupBuy.targetAmount,
+    'endTimestamp': groupBuy.endTimestamp,
+    'username': groupBuy.username,
+    'deposit': groupBuy.deposit,
+    'description': groupBuy.description,
+    'address': groupBuy.address
+  })
+    .then((value) => print("Group buy Added"))
+    .catchError((error) => print("Failed to add user: $error"));
+}
+
+Future<List<GroupBuy>> getAllGroupBuys(BuildContext context) {
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
       'groupBuys');
   FutureBuilder<QuerySnapshot>(

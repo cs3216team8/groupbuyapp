@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:groupbuyapp/models/UserProfile.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages/component/grid_card_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
