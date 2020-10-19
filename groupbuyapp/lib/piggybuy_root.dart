@@ -41,7 +41,7 @@ class PiggyBuy extends StatefulWidget {
 }
 
 class _PiggyBuyState extends State<PiggyBuy> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   static List<Widget> _navWidgetOptions = <Widget>[
     Home(),
     MyGroupBuys(),

@@ -47,20 +47,20 @@ class _HomeState extends State<Home> {
           ),
           Stack(
             children: <Widget>[
-              Column( // for no entries, if have entry, make invisible
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('Your neighbours have yet to request!', style: optionStyle, textAlign: TextAlign.center,),
-                  RaisedButton(
-                    onPressed: _makeGroupbuyRequest,
-                    textColor: Colors.white,
-                    child: Text(
-                          'Be the first',
-                          style: TextStyle(fontSize: 20)
-                      )
-                    ),
-                ],
-              ),
+              // Column( // for no entries, if have entry, make invisible
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     Text('Your neighbours have yet to request!', style: optionStyle, textAlign: TextAlign.center,),
+              //     RaisedButton(
+              //       onPressed: _makeGroupbuyRequest,
+              //       textColor: Colors.white,
+              //       child: Text(
+              //             'Be the first',
+              //             style: TextStyle(fontSize: 20)
+              //         )
+              //       ),
+              //   ],
+              // ),
               GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,

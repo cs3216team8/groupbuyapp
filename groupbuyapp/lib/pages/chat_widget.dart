@@ -32,8 +32,9 @@ class _ChatScreenState extends State<ChatScreen> {
               top: 8.0,
               bottom: 8.0,
               left: 80.0,
+              right: 12.0
             )
-          : EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0),
+          : EdgeInsets.only(top: 8.0, bottom: 8.0, left: 12.0, right: 80.0),
       child: Column(
         crossAxisAlignment:
             isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -41,20 +42,16 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             decoration: isMe
                 ? BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(15.0),
-                        topLeft: Radius.circular(15.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.tealAccent, // TODO: replace colours
                   )
                 : BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(30.0),
-                        topRight: Radius.circular(30.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Colors.amberAccent,
                   ),
             padding: isMe
-                ? EdgeInsets.only(left: 10, top: 5, bottom: 5)
-                : EdgeInsets.only(right: 10, top: 5, bottom: 5),
+                ? EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5)
+                : EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             child: Text(message.text),
           ),
           Text(message.time.toString())
@@ -171,10 +168,16 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("sometitle"),
-      //   backgroundColor: Theme.of(context).backgroundColor,
-      // ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed:() {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text("Chat with dummy"),
+        backgroundColor: Colors.pink // to be changed to something less static
+      ),
       body: Column(
         children: <Widget>[
           Container(
@@ -182,8 +185,8 @@ class _ChatScreenState extends State<ChatScreen> {
             child: topIntroWidget(),
           ),
           Expanded(
-            flex: 60,
             child: chatSection(),
+            flex: 60,
           ),
           Expanded(
             flex: 10,
