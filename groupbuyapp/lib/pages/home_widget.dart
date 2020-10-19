@@ -12,6 +12,7 @@ class _HomeState extends State<Home> {
 
   static const TextStyle optionStyle = TextStyle(fontSize:  30, fontWeight: FontWeight.bold);
 
+  GroupBuyStorage groupBuyStorage = GroupBuyStorage();
   void _makeGroupbuyRequest() {
     print("request button pressed");
   }
@@ -47,7 +48,7 @@ class _HomeState extends State<Home> {
               ),
               Container(
                 child: StreamBuilder<List<GroupBuy>>(
-                  stream: getAllGroupBuys(),
+                  stream: groupBuyStorage.getAllGroupBuys(),
                   builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasError) {
