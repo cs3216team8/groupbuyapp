@@ -7,6 +7,6 @@ class RequestCard extends StatelessWidget {
       child: Text(
         'Test'
       )
-    )
+    );
   }
 }

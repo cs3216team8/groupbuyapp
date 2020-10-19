@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/chat_widget.dart';
 import 'package:groupbuyapp/pages/home_widget.dart';
 import 'package:groupbuyapp/pages/groupbuy/info_widget.dart';
+import 'package:groupbuyapp/pages/profile_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -42,6 +43,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
     ChatScreen("dummy"),
     Home(),
     GroupBuyInfo(),
+    Profile(userProfile: 'dummyid', isMe: true,),
   ];
 
   void _onItemTapped(int index) {
@@ -67,11 +69,15 @@ class _PiggyBuyState extends State<PiggyBuy> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.wifi_tethering),
-            label: 'Find lobang'),
+            label: 'Find piggybuys'),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            label: 'My groupbuys'
+            label: 'My piggybuys'
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_sharp),
+            label: 'My profile'
+          )
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
