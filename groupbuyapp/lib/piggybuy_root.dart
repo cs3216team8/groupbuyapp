@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages/activities_widget.dart';
 import 'package:groupbuyapp/pages/chat_widget.dart';
+import 'package:groupbuyapp/pages/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages/home_widget.dart';
 import 'package:groupbuyapp/pages/groupbuy/info_widget.dart';
+import 'package:groupbuyapp/pages/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages/profile_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -40,10 +43,11 @@ class PiggyBuy extends StatefulWidget {
 class _PiggyBuyState extends State<PiggyBuy> {
   int _selectedIndex = 1;
   static List<Widget> _navWidgetOptions = <Widget>[
-    ChatScreen("dummy"),
     Home(),
-    GroupBuyInfo(),
-    Profile(userProfile: 'dummyid', isMe: true,),
+    MyGroupBuys(),
+    CreateGroupBuy(),
+    ActivityScreen(),
+    ProfileScreen(userProfile: 'dummyid', isMe: true,),
   ];
 
   void _onItemTapped(int index) {
@@ -56,27 +60,36 @@ class _PiggyBuyState extends State<PiggyBuy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PiggyBuy Placeholder appbar'),
+        title: const Text('PiggyBuy'),
+        actions: [
+          IconButton(icon: Icon(Icons.chat_bubble_outline_rounded), onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen("dummy")));
+          })
+        ],
       ),
       body: Center(
         child: _navWidgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type:  BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat_bubble),
-            label: 'Chat history',
+            icon: Icon(Icons.search),
+            label: 'Explore',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.wifi_tethering),
-            label: 'Find piggybuys'),
+            icon: Icon(Icons.credit_card),
+            label: 'PiggyBuys'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'My piggybuys'
+            icon: Icon(Icons.add),
+            label: 'Create'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_border),
+            label: 'Activity'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle_sharp),
-            label: 'My profile'
+            label: 'Profile'
           )
         ],
         currentIndex: _selectedIndex,

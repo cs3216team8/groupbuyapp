@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
-class Profile extends StatefulWidget {
+class ProfileScreen extends StatefulWidget {
   // final UserProfile userProfile;
   final String userProfile; // TODO; dummy - profile's id
   final bool isMe; // true if clicked from my profile
 
-  Profile({Key key, @required this.userProfile, this.isMe}) : super(key: key);
+  ProfileScreen({Key key, @required this.userProfile, this.isMe}) : super(key: key);
 
   @override
-  _ProfileState createState() => _ProfileState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileScreenState extends State<ProfileScreen> {
   static final double topHeightFraction = 0.3;
 
   int _selectedIndex = 0;
