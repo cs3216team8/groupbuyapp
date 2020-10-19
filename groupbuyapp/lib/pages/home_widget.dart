@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -27,12 +28,22 @@ class _HomeState extends State<Home> {
       child: Column(
         children: <Widget>[
           Container(
-            height: 120,
             alignment: Alignment.center,
-            child: Text('banner here'), //TODO: placeholder for banner
-            color: Colors.amberAccent, //TODO: testing idk what this
-            //padding: EdgeInsets.symmetric(vertical: 70.0, horizontal: 155.0),
-            margin: EdgeInsets.all(10.0),
+            margin: EdgeInsets.all(10),
+            child: CarouselSlider(
+                items: [
+                  Image.network("https://pbs.twimg.com/media/D-jnKUPU4AE3hVR?format=jpg&name=large"),
+                  Image.network("https://pbs.twimg.com/media/D-jnNTvUEAAGLvE?format=jpg&name=large"),
+                  Image.network("https://pbs.twimg.com/media/D-jnUF5UIAEA6Cl?format=jpg&name=large"),
+                  Image.network("https://pbs.twimg.com/media/D-jnXCiU0AASd7-?format=jpg&name=large"),
+                ],
+                options: CarouselOptions(
+                  height: 120,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 5),
+                  enlargeCenterPage: false,
+                )
+            ),
           ),
           Stack(
             children: <Widget>[
