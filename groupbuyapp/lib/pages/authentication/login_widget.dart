@@ -1,9 +1,11 @@
  import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages/authentication/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages/components/input_widgets.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
             leading: IconButton(
@@ -25,6 +27,7 @@ class LoginScreen extends StatelessWidget {
                   "LOGIN",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: size.height * 0.03,),
                 RoundedButton(
                   text: "Login with Google",
                   onPress: () {
@@ -57,7 +60,13 @@ class LoginScreen extends StatelessWidget {
                     print("login button pressed");
                   },
                   color: Theme.of(context).primaryColor,
-                )
+                ),
+                LoginOrSignupOption(
+                  isLogin: true,
+                  onPress: () {
+                    print("should seg to signup now");
+                  },
+                ),
               ],
             ),
           )
