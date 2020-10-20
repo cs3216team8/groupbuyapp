@@ -65,7 +65,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
           ),
           suffixIcon: IconButton(
             icon: Icon(
-              Icons.visibility,
+              _showPassword ? Icons.visibility : Icons.visibility_off,
               color: Theme.of(context).primaryColor,
             ),
             onPressed: () {
