@@ -11,18 +11,18 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  String currentUser = 'dummy'; //TODO
+  String currentUser = 'dummy'; //TODO: substitute with actual user after auth is implemented
   List<Message> messages = [
     Message(
         'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV KSDNZX1',
         DateTime.now(),
         'dummy'),
-    Message('text', DateTime.now(), '2'),
-    Message('text', DateTime.now(), '2'),
-    Message('text', DateTime.now(), '2'),
-    Message('text', DateTime.now(), '2'),
-    Message('text', DateTime.now(), '2'),
-    Message('text', DateTime.now(), '2')
+    Message('text', DateTime.now(), 'other'),
+    Message('text', DateTime.now(), 'other'),
+    Message('text', DateTime.now(), 'other'),
+    Message('text', DateTime.now(), 'other'),
+    Message('text', DateTime.now(), 'other'),
+    Message('text', DateTime.now(), 'other')
   ];
 
   Widget _buildMessage(Message message, bool isMe) {
@@ -43,11 +43,11 @@ class _ChatScreenState extends State<ChatScreen> {
             decoration: isMe
                 ? BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Colors.tealAccent, // TODO: replace colours
+                    color: Color(0xFFFDF8E7),
                   )
                 : BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Colors.amberAccent,
+                    color: Color(0xFFFEECE9),
                   ),
             padding: isMe
                 ? EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5)
@@ -70,6 +70,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onInputAttach() {
     print("attach img/file? button pressed");
+  }
+
+  void _onSend() {
+    print("send");
   }
 
   Widget topIntroWidget() {
@@ -113,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
             RaisedButton(
               color: Theme.of(context).accentColor,
               onPressed: _onMakeOffer,
-              child: Text("Join the buy"),
+              child: Text("Join GroupBuy"),
             ),
             RaisedButton(
               color: Theme.of(context).accentColor,
@@ -147,18 +151,24 @@ class _ChatScreenState extends State<ChatScreen> {
       padding: EdgeInsets.only(left: 15.0, right: 5.0),
       child: Row(
           children: <Widget>[
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Send a message...",
-                ),
-              ),
-            ),
             IconButton(
               icon: Icon(Icons.photo),
               iconSize: 25.0,
               color: Theme.of(context).primaryColor,
               onPressed: _onInputAttach,
+            ),
+            Expanded(
+              child: TextField(
+                onChanged: (value) { print(value); },
+                decoration: InputDecoration.collapsed(
+                  hintText: "Send a message...",
+                ),
+              ),
+            ),
+            IconButton(
+              icon: Icon(Icons.send),
+              color: Theme.of(context).primaryColor,
+              onPressed: _onSend,
             )
           ],
       )
