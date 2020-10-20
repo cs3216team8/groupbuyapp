@@ -4,12 +4,12 @@ import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-class Home extends StatefulWidget {
+class HomeScreen extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle = TextStyle(fontSize:  30, fontWeight: FontWeight.bold);
 
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
