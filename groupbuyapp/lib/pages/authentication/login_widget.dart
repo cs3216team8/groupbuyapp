@@ -1,21 +1,20 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/authentication/login_signup_option_widget.dart';
+import 'package:groupbuyapp/pages/authentication/signup_widget.dart';
+import 'package:groupbuyapp/pages/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages/components/input_widgets.dart';
+
+import 'background.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed:() {
-                Navigator.pop(context);
-              },
-            ),
-            title: Text("Login now!"),
-            backgroundColor: Colors.pink // to be changed to something less static
+        appBar: BackAppBar(
+          context: context,
+          title: "Login now!",
+          color: Theme.of(context).primaryColor,
         ),
         body: Background(
           child: SingleChildScrollView(
@@ -65,6 +64,12 @@ class LoginScreen extends StatelessWidget {
                   isLogin: true,
                   onPress: () {
                     print("should seg to signup now");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupScreen()
+                      )
+                    );
                   },
                 ),
               ],
@@ -74,27 +79,3 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
-
-class Background extends StatelessWidget {
-  final Widget child;
-  const Background({
-    Key key,
-    @required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: double.infinity,
-      height: size.height,
-      child: Stack(
-        alignment: Alignment.center,
-        children: <Widget>[
-          child,
-        ],
-      ),
-    );
-  }
-}
-
