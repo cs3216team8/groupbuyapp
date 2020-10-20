@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         //Check for errors
         if (snapshot.hasError) {
-          print("firebase failed");
+          print("firebase failed"); // TODO: pop up error about connection
           return TmpFix(); // SomethingWentWrong();
         }
 
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        print("firebase loading");
+        print("firebase loading"); // TODO: goto splash screen
         return TmpFix(); // Loading();
       },
     );
