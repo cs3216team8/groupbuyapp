@@ -9,9 +9,13 @@ import 'background.dart';
 import 'login_signup_option_widget.dart';
 
 
-class SignupScreen extends StatelessWidget {
+class SignupForm extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignupForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -20,13 +24,30 @@ class SignupScreen extends StatelessWidget {
   final TextEditingController _phoneNumberController = TextEditingController();
 
   void _register() async {
-    final User user = (await
-    _auth.createUserWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    )
-    ).user;
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+
   }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    //super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +116,9 @@ class SignupScreen extends StatelessWidget {
                 validator: (String value) {
                   if (value.isEmpty) {
                     return('Please enter your email');
+                  }
+                  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                    return 'Please enter a valid email address';
                   }
                   return null;
                 },
