@@ -101,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               child: Image.asset(
                 'assets/Amazon-logo.png',
-                height: 80, //scale: 8,
+                height: 60, //scale: 6,
               ),
             ),
             Column(
@@ -160,7 +160,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget typeSection() {
     return Container(
-      padding: EdgeInsets.only(left: 15.0, right: 5.0),
+      padding: EdgeInsets.only(left: 15.0, right: 5.0, top: 5.0, bottom: 5.0),
       child: Row(
           children: <Widget>[
             IconButton(
@@ -203,17 +203,14 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: <Widget>[
           Container(
-            height: 165,
+            height: 145,
             child: topIntroWidget(),
           ),
           Expanded(
             child: chatSection(),
-            flex: 60,
+            flex: 50,
           ),
-          Expanded(
-            flex: 10,
-            child: typeSection(),
-          ),
+          typeSection(),
         ],
       ),
     );
