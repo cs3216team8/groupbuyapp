@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages/activities_widget.dart';
+import 'package:groupbuyapp/pages/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages/chat_widget.dart';
 import 'package:groupbuyapp/pages/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages/home_widget.dart';
@@ -92,7 +93,9 @@ class _PiggyBuyState extends State<PiggyBuy> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ChatScreen("dummy")));
+                        builder: (context) => ChatScreen("dummy")
+                    )
+                );
               })
         ],
       ),
