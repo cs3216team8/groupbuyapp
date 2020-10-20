@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/chat_message.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ChatScreen extends StatefulWidget {
   final String currentUser; // placeholder
@@ -16,16 +17,25 @@ class _ChatScreenState extends State<ChatScreen> {
 
   List<Message> messages = [
     Message(
-        'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV admasdasd',
+        'lorem ipsum is simply dummy text of the printing and typesetting industry. lorem ipsum is simply dummy text of the printing and typesetting industry.',
         DateTime.now(),
         'dummy'),
-    Message('text', DateTime.now(), 'other'),
-    Message('text', DateTime.now(), 'other'),
-    Message('text', DateTime.now(), 'other'),
-    Message('text', DateTime.now(), 'other'),
-    Message('text', DateTime.now(), 'other'),
-    Message('text', DateTime.now(), 'other')
+    Message('fifth message', DateTime.now(), 'other'),
+    Message('fourth message', DateTime.now(), 'other'),
+    Message('third message', DateTime.now(), 'other'),
+    Message('second message', DateTime.now(), 'other'),
+    Message('first message', DateTime.now(), 'other')
   ];
+
+  void sendMessage() {
+    if (currentUserText == "") {
+      return;
+    }
+    print("send" + currentUserText);
+    setState(() { messages.insert(0, Message(currentUserText, DateTime.now(), currentUser));
+    messages = messages;} );
+    print(messages);
+  }
 
   Widget _buildMessage(Message message, bool isMe) {
     String hour = message.time.hour > 12
@@ -48,16 +58,16 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             decoration: isMe
                 ? BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Color(0xFFFDF8E7),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Color(0xFFFEECE9),
                   )
                 : BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Color(0xFFFEECE9),
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Color(0xFFFDF8E7),
                   ),
             padding: isMe
-                ? EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5)
-                : EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                ? EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10)
+                : EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
             child: Text(message.text),
           ),
           Text(hour + ":" + message.time.minute.toString() + " " + meridian)
@@ -78,10 +88,11 @@ class _ChatScreenState extends State<ChatScreen> {
     print("attach img/file? button pressed");
   }
 
-  void _onSend() {
-    print("send" + currentUserText);
-    messages.add(Message(currentUserText, DateTime.now(), currentUser));
-  }
+  // void _onSend() {
+  //   print("send" + currentUserText);
+  //   messages.add(Message(currentUserText, DateTime.now(), currentUser));
+  //   print(messages);
+  // }
 
   void _setText(value) {
     print(value);
@@ -101,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               child: Image.asset(
                 'assets/Amazon-logo.png',
-                height: 60, //scale: 6,
+                height: 50, //scale: 5,
               ),
             ),
             Column(
@@ -180,7 +191,7 @@ class _ChatScreenState extends State<ChatScreen> {
             IconButton(
               icon: Icon(Icons.send),
               color: Theme.of(context).primaryColor,
-              onPressed: _onSend,
+              onPressed: sendMessage,
             )
           ],
       )
@@ -203,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         children: <Widget>[
           Container(
-            height: 145,
+            height: 135,
             child: topIntroWidget(),
           ),
           Expanded(
