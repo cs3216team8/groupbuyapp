@@ -16,7 +16,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   List<Message> messages = [
     Message(
-        'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV KSDNZX1',
+        'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV admasdasd',
         DateTime.now(),
         'dummy'),
     Message('text', DateTime.now(), 'other'),
@@ -28,6 +28,10 @@ class _ChatScreenState extends State<ChatScreen> {
   ];
 
   Widget _buildMessage(Message message, bool isMe) {
+    String hour = message.time.hour > 12
+        ? (message.time.hour - 12).toString()
+        : message.time.hour.toString();
+    String meridian = message.time.hour > 12 ? "PM" : "AM";
     return Container(
       margin: isMe
           ? EdgeInsets.only(
@@ -56,7 +60,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 : EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
             child: Text(message.text),
           ),
-          Text(message.time.toString())
+          Text(hour + ":" + message.time.minute.toString() + " " + meridian)
         ],
       ),
     );
