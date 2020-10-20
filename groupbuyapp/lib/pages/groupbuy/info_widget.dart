@@ -74,7 +74,6 @@ class GroupBuyInfo extends StatelessWidget {
             // Description
             Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              alignment: Alignment.center,
               child: Column(
                 children: <Widget>[
                   Container(
