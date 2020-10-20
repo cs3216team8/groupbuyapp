@@ -12,6 +12,21 @@ import 'login_signup_option_widget.dart';
 class SignupScreen extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  void _register() async {
+    final User user = (await
+    _auth.createUserWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    )
+    ).user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,22 +71,37 @@ class SignupScreen extends StatelessWidget {
               OrDivider(),
               SizedBox(height: 10,),
               RoundedInputField(
-                hintText: "Your Username or Email",
+                controller: _fullNameController,
                 validator: (String value) {
-                  print(value);
                   if (value.isEmpty) {
-                    return('Please enter your username or email');
+                    return('Please enter your full name');
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  print("username input changed: ${value}");
+                hintText: "Full Name",
+              ),
+              RoundedInputField(
+                controller: _usernameController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return('Please enter your username');
+                  }
+                  return null;
                 },
+                hintText: "Username",
+              ),
+              RoundedInputField(
+                controller: _emailController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return('Please enter your email');
+                  }
+                  return null;
+                },
+                  hintText: "Email"
               ),
               RoundedPasswordField(
-                onChanged: (value) {
-                  print("pw input changed: ${value}");
-                },
+                controller: _passwordController,
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Please enter password';
@@ -80,28 +110,27 @@ class SignupScreen extends StatelessWidget {
                 },
               ),
               RoundedPasswordField(
-                onChanged: (value) {
-                  print("pw2 input changed: ${value}");
-                },
+                controller: _passwordConfirmController,
                 validator: (String value) {
                   if (value.isEmpty) {
                     return 'Please enter password confirmation';
+                  }
+                  if(value != _passwordController.text) {
+                    return 'Not Match';
                   }
                   return null;
                 },
                 hintText: "Confirm password",
               ),
               RoundedInputField(
-                hintText: "HP number rmb to add send otp button",
-                onChanged: (value) {
-                  print("hp input changed: ${value}");
-                },
+                controller: _phoneNumberController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return 'Please enter phone number or email address';
+                    return 'Please enter phone number';
                   }
                   return null;
                 },
+                hintText: "Phone Number",
               ),
               RoundedButton(
                 text: "SIGN UP",
