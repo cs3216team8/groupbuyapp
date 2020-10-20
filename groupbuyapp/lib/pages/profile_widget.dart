@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -186,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               physics: const ClampingScrollPhysics(),
               childAspectRatio: 6.0/7.0,
               children: List.generate(5, (index) {
-                return GroupbuyCard(placeholder);
+                return GroupBuyCard(GroupBuy.getDummyData());
               }),
             ),
           ],
