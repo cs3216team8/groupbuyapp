@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:groupbuyapp/piggybuy_root.dart';
+import 'package:groupbuyapp/splashscreen_widget.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
 
         // Otherwise, show something whilst waiting for initialization to complete
         print("firebase loading"); // TODO: goto splash screen
-        return TmpFix(); // Loading();
+        return SplashScreen(); // Loading();
       },
     );
   }
