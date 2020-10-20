@@ -32,13 +32,13 @@ class SignupScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SocialIcon(
-                    iconSrc: "assets/icons/facebook.svg",
+                    iconSrc: "assets/facebook.svg",
                     onPress: () {
                       print("clicked facebook");
                     },
                   ),
                   SocialIcon(
-                    iconSrc: "assets/icons/google-plus.svg",
+                    iconSrc: "assets/google-plus.svg",
                     onPress: () {
                       print("clicked google");
                     },

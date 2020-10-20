@@ -96,6 +96,16 @@ class _PiggyBuyState extends State<PiggyBuy> {
                         builder: (context) => ChatScreen("dummy")
                     )
                 );
+              }),
+          IconButton(
+              icon: Icon(Icons.circle),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => LoginScreen()
+                    )
+                );
               })
         ],
       ),
