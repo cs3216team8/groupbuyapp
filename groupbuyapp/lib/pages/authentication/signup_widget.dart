@@ -65,6 +65,12 @@ class SignupScreen extends StatelessWidget {
                 },
                 hintText: "Confirm password",
               ),
+              RoundedInputField(
+                hintText: "HP number rmb to add send otp button",
+                onChanged: (value) {
+                  print("hp input changed: ${value}");
+                },
+              ),
               RoundedButton(
                 text: "SIGN UP",
                 onPress: () {
