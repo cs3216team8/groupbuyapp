@@ -3,11 +3,16 @@ import 'package:groupbuyapp/pages/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages/authentication/social_icon_widget.dart';
 import 'package:groupbuyapp/pages/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages/components/input_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'background.dart';
 import 'login_signup_option_widget.dart';
 
+
 class SignupScreen extends StatelessWidget {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,7 +24,9 @@ class SignupScreen extends StatelessWidget {
       ),
       body: Background(
         child: SingleChildScrollView(
-          child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -50,6 +57,13 @@ class SignupScreen extends StatelessWidget {
               SizedBox(height: 10,),
               RoundedInputField(
                 hintText: "Your Username or Email",
+                validator: (String value) {
+                  print(value);
+                  if (value.isEmpty) {
+                    return('Please enter your username or email');
+                  }
+                  return null;
+                },
                 onChanged: (value) {
                   print("username input changed: ${value}");
                 },
@@ -58,10 +72,22 @@ class SignupScreen extends StatelessWidget {
                 onChanged: (value) {
                   print("pw input changed: ${value}");
                 },
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
+                },
               ),
               RoundedPasswordField(
                 onChanged: (value) {
                   print("pw2 input changed: ${value}");
+                },
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password confirmation';
+                  }
+                  return null;
                 },
                 hintText: "Confirm password",
               ),
@@ -70,11 +96,20 @@ class SignupScreen extends StatelessWidget {
                 onChanged: (value) {
                   print("hp input changed: ${value}");
                 },
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter phone number or email address';
+                  }
+                  return null;
+                },
               ),
               RoundedButton(
                 text: "SIGN UP",
-                onPress: () {
-                  print("signup button pressed");
+
+                onPress: () async {
+                  if (_formKey.currentState.validate()) {
+                    _register();
+                  }
                 },
                 color: Theme.of(context).primaryColor,
               ),
@@ -94,6 +129,7 @@ class SignupScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
