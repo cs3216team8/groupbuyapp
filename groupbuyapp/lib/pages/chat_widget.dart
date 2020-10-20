@@ -12,6 +12,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   String currentUser = 'dummy'; //TODO: substitute with actual user after auth is implemented
+  String currentUserText = '';
+
   List<Message> messages = [
     Message(
         'msgsdjhhdauofvsaofjsdapsiiafifsasc  as douASBD OQUee SILHAVF  SDASVJOwuRV KSDNZX1',
@@ -73,7 +75,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void _onSend() {
-    print("send");
+    print("send" + currentUserText);
+    messages.add(Message(currentUserText, DateTime.now(), currentUser));
+  }
+
+  void _setText(value) {
+    print(value);
+    currentUserText = value;
   }
 
   Widget topIntroWidget() {
@@ -159,7 +167,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             Expanded(
               child: TextField(
-                onChanged: (value) { print(value); },
+                onChanged: _setText,
                 decoration: InputDecoration.collapsed(
                   hintText: "Send a message...",
                 ),
