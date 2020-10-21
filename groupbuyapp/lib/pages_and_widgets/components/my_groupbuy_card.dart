@@ -8,42 +8,30 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Duration timeDiff = activity.time.difference(DateTime.now());
-    String time;
-    if (timeDiff.inDays == 0) {
-      time = timeDiff.inHours.toString() + "h";
-    } else {
-      time = timeDiff.inDays.toString() + "d";
-    }
-
     return Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          border: Border.all()
-        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Expanded(flex: 80, child: Text(activity.website + " Group Buy")),
+                Expanded(flex: 80, child: Text('Amazon.com Group Buy')),
                 Expanded(
                   flex: 20,
-                  child: Text(time),
+                  child: Text('9h'),
                 )
               ],
             ),
-            Text(activity.isOrganiser ? "as organiser" : "as buyer"),
+            Text('as organiser'),
             Row(
               children: [
                 Expanded(
                     flex: 70,
                     child: Row(children: [
                       Icon(Icons.account_circle),
-                      Text(activity.originator)
+                      Text('From Agnes')
                     ])),
-                Expanded(flex: 30, child: Text(activity.status))
+                Expanded(flex: 30, child: Text('Pending'))
               ],
             )
           ],
