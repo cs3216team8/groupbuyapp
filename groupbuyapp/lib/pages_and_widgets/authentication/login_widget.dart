@@ -3,12 +3,36 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'background.dart';
 
-class LoginScreen extends StatelessWidget {
-  final TextEditingController _usernameOrEmailController = TextEditingController();
+class LoginScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  void _signInWithEmailAndPassword() async {
+    try {
+      final FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    )).user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +45,8 @@ class LoginScreen extends StatelessWidget {
         ),
         body: Background(
           child: SingleChildScrollView(
+            child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,15 +73,32 @@ class LoginScreen extends StatelessWidget {
                 ),
                 RoundedInputField(
                   hintText: "Your Username or Email",
-                  controller: _usernameOrEmailController,
+                  controller: _emailController,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return('Please enter your email');
+                    }
+                    if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                      return 'Please enter a valid email address';
+                    }
+                    return null;
+                  },
                 ),
                 RoundedPasswordField(
                   controller: _passwordController,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return('Please enter your password');
+                    }
+                    return null;
+                  },
                 ),
                 RoundedButton(
                   text: "LOGIN",
-                  onPress: () {
-                    print("login button pressed");
+                  onPress: () async {
+                    if (_formKey.currentState.validate()) {
+                      _signInWithEmailAndPassword();
+                    }
                   },
                   color: Theme.of(context).primaryColor,
                 ),
@@ -75,6 +118,7 @@ class LoginScreen extends StatelessWidget {
             ),
           )
         )
+    )
     );
   }
 }
