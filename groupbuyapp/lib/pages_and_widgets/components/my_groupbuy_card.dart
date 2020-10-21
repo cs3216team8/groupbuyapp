@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/activity.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 
-class ActivityCard extends StatelessWidget {
-  final Activity activity;
+class MyGroupBuyCard extends StatelessWidget {
+  final GroupBuy groupBuy;
 
-  ActivityCard(this.activity);
+  MyGroupBuyCard(this.groupBuy);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          border: Border.all()
+        ),
         child: Column(
           children: [
             Row(
