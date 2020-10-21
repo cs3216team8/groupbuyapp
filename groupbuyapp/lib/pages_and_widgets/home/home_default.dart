@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class HomeDefaultScreen extends StatelessWidget {
-
-  void _makeGroupbuyRequest() {
-    print("request button pressed");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class HomeDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: _makeGroupbuyRequest,
+            onPressed: () => segueToPage(context, CreateGroupBuy()),
             textColor: Colors.white,
             child: Text(
                 'Be the first',

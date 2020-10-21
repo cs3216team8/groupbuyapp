@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/pages_and_widgets//components/grid_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//home/home_banner.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
@@ -13,17 +13,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
-  bool _shouldShowDefaultScreen = true;
-
-  void _showOrHideDefault(bool shouldShow) {
-    setState(() {
-      _shouldShowDefaultScreen = shouldShow;
-    });
-  }
-
-  void _makeGroupbuyRequest() {
-    print("request button pressed");
-  }
 
   @override
   Widget build(BuildContext context) {

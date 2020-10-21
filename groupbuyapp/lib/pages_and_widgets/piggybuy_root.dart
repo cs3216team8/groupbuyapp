@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages_and_widgets//activities_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//authentication/login_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//chat_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//create_groupbuy_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//home/home_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//my_groupbuys_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets//profile/profile_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -88,24 +89,12 @@ class _PiggyBuyState extends State<PiggyBuy> {
         actions: [
           IconButton(
               icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChatScreen("dummy")
-                    )
-                );
-              }),
+              onPressed: () => segueToPage(context, ChatScreen("dummy"))
+          ),
           IconButton(
               icon: Icon(Icons.circle),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen()
-                    )
-                );
-              })
+              onPressed: () => segueToPage(context, LoginScreen())
+          )
         ],
       ),
       body: Center(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages/authentication/social_icon_widget.dart';
-import 'package:groupbuyapp/pages/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages/components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'background.dart';

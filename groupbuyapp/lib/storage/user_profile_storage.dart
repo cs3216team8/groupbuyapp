@@ -32,8 +32,8 @@ Widget getUserProfile(BuildContext context, String userId) {
               )
           );
         }
+        return Text("loading");
       }
 
-      return Text("loading");
 );
 }
