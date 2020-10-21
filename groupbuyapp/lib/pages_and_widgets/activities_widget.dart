@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/activity.dart';
 
+import 'components/activity_card_widget.dart';
+
 class ActivityScreen extends StatelessWidget {
   // @override
   // Widget _buildActivity(activity) {
@@ -9,12 +11,17 @@ class ActivityScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-        child: ListView.builder(
-            itemBuilder: (BuildContext context, int index) {
-              return Text('hello');
-            }
+      padding: EdgeInsets.all(20),
+        child:
+        Column(
+            children: [
+              ActivityCard(Activity("Amazon.com",
+                  true,
+                  DateTime.now().add(Duration(hours: 9)),
+                  "dawo",
+                  "Pending")),
+            ]
         )
     );
   }
-
 }
