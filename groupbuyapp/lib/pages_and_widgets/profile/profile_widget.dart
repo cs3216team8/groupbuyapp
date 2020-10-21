@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_listing_reviews.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_reviews_only.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 
@@ -77,7 +79,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(right: 10.0),
-                      child: ownProfileSettings(),),
+                      child: isMe() ? ownProfileSettings() : Container(),
+                    ),
                   ],
                 ),
               ),
@@ -197,36 +200,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget listViewOptionHeader(BuildContext context) {
-    return Container(
-      alignment: Alignment.topLeft,
-      height: 50.0,
-      color: Theme.of(context).accentColor, //TODO prob cream or sth
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: tabs.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0  ),
-              child: Text(
-                tabs[index],
-                style: TextStyle(
-                  color: index == _selectedIndex ? Colors.black : Colors.black38,
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,7 +207,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: <Widget>[
             profileDetailsSection(context),
-            listings(context),
+            //listings(),
+            Container(
+              alignment: Alignment.topLeft,
+              child: isMe()
+                  ? ProfileReviewsOnly()
+                  : ProfileListingReviews(),
+            ),
           ],
         ),
       ),

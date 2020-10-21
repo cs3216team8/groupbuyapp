@@ -40,7 +40,7 @@ class PiggyBuy extends StatefulWidget {
     ActivityScreen(),
     ProfileScreen(
       userProfile: 'dummyid',
-      isMe: true,
+      isMe: false,
     ),
   ];
 
