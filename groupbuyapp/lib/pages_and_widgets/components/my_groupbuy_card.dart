@@ -19,23 +19,22 @@ class MyGroupBuyCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(flex: 80, child: Text('Amazon.com Group Buy')),
+                Icon(Icons.account_circle),
+                Expanded(flex: 80, child: Text('dawo')),
                 Expanded(
                   flex: 20,
-                  child: Text('9h'),
+                  child: Text('Pending'),
                 )
               ],
             ),
-            Text('as organiser'),
             Row(
               children: [
                 Expanded(
                     flex: 70,
                     child: Row(children: [
-                      Icon(Icons.account_circle),
-                      Text('From Agnes')
+                      Text('10 Items')
                     ])),
-                Expanded(flex: 30, child: Text('Pending'))
+                Expanded(flex: 30, child: Text('\$70.00'))
               ],
             )
           ],

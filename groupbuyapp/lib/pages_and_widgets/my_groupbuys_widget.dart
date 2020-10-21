@@ -55,6 +55,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
             onValueChanged: _onItemTapped,
             groupValue: _selectedIndex,
           ),
+          SizedBox(height: 20),
           IndexedStack(
             index: _selectedIndex,
             children: widget.screens,
