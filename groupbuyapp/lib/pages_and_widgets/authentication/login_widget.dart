@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import 'background.dart';
 
@@ -34,6 +37,38 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+
+  Future<UserCredential> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+    // Create a new credential
+    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    print("A");
+    final LoginResult result = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final FacebookAuthCredential facebookAuthCredential =
+    FacebookAuthProvider.credential(result.accessToken.token);
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -52,25 +87,38 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "LOGIN",
+                  "LOGIN WITH",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 SizedBox(height: size.height * 0.03,),
-                RoundedButton(
-                  text: "Login with Google",
-                  onPress: () {
-                    print("clicked gglogin; consider putting logos to left side");
-                  },
-                  color: Colors.black12,
-                  textColor: Colors.black,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SocialIcon(
+                      iconSrc: "assets/facebook.svg",
+                      onPress: () async {
+                        try {
+                          UserCredential userCredential = await signInWithFacebook();
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                    SocialIcon(
+                      iconSrc: "assets/google-plus.svg",
+                      onPress: () async {
+                        try {
+                          UserCredential userCredential = await signInWithGoogle();
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    )
+                  ],
                 ),
-                RoundedButton(
-                  text: "Login with Facebook",
-                  onPress: () {
-                    print("clicked fblogin");
-                  },
-                  color: Colors.lightBlue,
-                ),
+                SizedBox(height: 6,),
+                OrDivider(),
+                SizedBox(height: 10,),
                 RoundedInputField(
                   hintText: "Your Username or Email",
                   controller: _emailController,
