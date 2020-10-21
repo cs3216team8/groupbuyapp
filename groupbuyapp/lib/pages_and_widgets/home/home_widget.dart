@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages/components/grid_card_widget.dart';
+import 'package:groupbuyapp/pages/home/home_banner.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -30,24 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.all(10),
-            child: CarouselSlider(
-                items: [
-                  Image.network("https://pbs.twimg.com/media/D-jnKUPU4AE3hVR?format=jpg&name=large"),
-                  Image.network("https://pbs.twimg.com/media/D-jnNTvUEAAGLvE?format=jpg&name=large"),
-                  Image.network("https://pbs.twimg.com/media/D-jnUF5UIAEA6Cl?format=jpg&name=large"),
-                  Image.network("https://pbs.twimg.com/media/D-jnXCiU0AASd7-?format=jpg&name=large"),
-                ],
-                options: CarouselOptions(
-                  height: 120,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 5),
-                  enlargeCenterPage: false,
-                )
-            ),
-          ),
+          HomeCarouselBanner(),
           Stack(
             children: <Widget>[
               Column( // for no entries, if have entry, make invisible
