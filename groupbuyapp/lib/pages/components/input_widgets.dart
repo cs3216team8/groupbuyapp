@@ -1,22 +1,25 @@
 import "package:flutter/material.dart";
 
 class RoundedInputField extends StatelessWidget {
-  final String hintText;
+  final FormFieldValidator<String> validator;
   final IconData icon;
-  final ValueChanged<String> onChanged;
+  final TextEditingController controller;
+  final String hintText;
 
   const RoundedInputField({
     Key key,
+    this.controller,
+    this.validator,
     this.hintText,
     this.icon = Icons.person,
-    this.onChanged,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      child: TextField(
-        onChanged: onChanged,
+      child: TextFormField(
+        validator: validator,
+        controller: controller,
         decoration: InputDecoration(
             icon: Icon(
               icon,
@@ -31,11 +34,13 @@ class RoundedInputField extends StatelessWidget {
 }
 
 class RoundedPasswordField extends StatefulWidget {
-  final ValueChanged<String> onChanged;
+  final TextEditingController controller;
+  final FormFieldValidator<String> validator;
   final String hintText;
   const RoundedPasswordField({
     Key key,
-    this.onChanged,
+    this.controller,
+    this.validator,
     this.hintText = "Password"
   }) : super(key: key);
 
@@ -51,7 +56,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
     return TextFieldContainer(
       child: TextField(
         obscureText: !_showPassword,
-        onChanged: widget.onChanged,
+        controller: widget.controller,
         decoration: InputDecoration(
           hintText: widget.hintText,
           icon: Icon(
@@ -60,7 +65,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
           ),
           suffixIcon: IconButton(
             icon: Icon(
-              Icons.visibility,
+              _showPassword ? Icons.visibility : Icons.visibility_off,
               color: Theme.of(context).primaryColor,
             ),
             onPressed: () {

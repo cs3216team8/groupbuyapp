@@ -7,6 +7,9 @@ import 'package:groupbuyapp/pages/components/input_widgets.dart';
 import 'background.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController _usernameOrEmailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,14 +47,10 @@ class LoginScreen extends StatelessWidget {
                 ),
                 RoundedInputField(
                   hintText: "Your Username or Email",
-                  onChanged: (value) {
-                    print("username input changed: ${value}");
-                  },
+                  controller: _usernameOrEmailController,
                 ),
                 RoundedPasswordField(
-                  onChanged: (value) {
-                    print("pw input changed: ${value}");
-                  },
+                  controller: _passwordController,
                 ),
                 RoundedButton(
                   text: "LOGIN",
@@ -67,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignupScreen()
+                        builder: (context) => SignupForm()
                       )
                     );
                   },

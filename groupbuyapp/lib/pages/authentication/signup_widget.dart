@@ -3,11 +3,52 @@ import 'package:groupbuyapp/pages/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages/authentication/social_icon_widget.dart';
 import 'package:groupbuyapp/pages/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages/components/input_widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'background.dart';
 import 'login_signup_option_widget.dart';
 
-class SignupScreen extends StatelessWidget {
+
+class SignupForm extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignupForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+
+  void _register() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordController.text
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    //super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -19,7 +60,9 @@ class SignupScreen extends StatelessWidget {
       ),
       body: Background(
         child: SingleChildScrollView(
-          child: Column(
+          child: Form(
+            key: _formKey,
+            child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -49,32 +92,77 @@ class SignupScreen extends StatelessWidget {
               OrDivider(),
               SizedBox(height: 10,),
               RoundedInputField(
-                hintText: "Your Username or Email",
-                onChanged: (value) {
-                  print("username input changed: ${value}");
+                controller: _fullNameController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return('Please enter your full name');
+                  }
+                  return null;
+                },
+                hintText: "Full Name",
+              ),
+              RoundedInputField(
+                controller: _usernameController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return('Please enter your username');
+                  }
+                  return null;
+                },
+                hintText: "Username",
+              ),
+              RoundedInputField(
+                controller: _emailController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return('Please enter your email');
+                  }
+                  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                    return 'Please enter a valid email address';
+                  }
+                  return null;
+                },
+                  hintText: "Email"
+              ),
+              RoundedPasswordField(
+                controller: _passwordController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password';
+                  }
+                  return null;
                 },
               ),
               RoundedPasswordField(
-                onChanged: (value) {
-                  print("pw input changed: ${value}");
-                },
-              ),
-              RoundedPasswordField(
-                onChanged: (value) {
-                  print("pw2 input changed: ${value}");
+                controller: _passwordConfirmController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password confirmation';
+                  }
+                  if(value != _passwordController.text) {
+                    return 'Not Match';
+                  }
+                  return null;
                 },
                 hintText: "Confirm password",
               ),
               RoundedInputField(
-                hintText: "HP number rmb to add send otp button",
-                onChanged: (value) {
-                  print("hp input changed: ${value}");
+                controller: _phoneNumberController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter phone number';
+                  }
+                  return null;
                 },
+                hintText: "Phone Number",
               ),
               RoundedButton(
                 text: "SIGN UP",
-                onPress: () {
-                  print("signup button pressed");
+
+                onPress: () async {
+                  if (_formKey.currentState.validate()) {
+                    _register();
+                  }
                 },
                 color: Theme.of(context).primaryColor,
               ),
@@ -94,6 +182,7 @@ class SignupScreen extends StatelessWidget {
           ),
         ),
       ),
+    ),
     );
   }
 }
