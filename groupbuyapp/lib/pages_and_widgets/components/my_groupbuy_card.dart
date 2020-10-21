@@ -7,37 +7,50 @@ class MyGroupBuyCard extends StatelessWidget {
 
   MyGroupBuyCard(this.groupBuy);
 
+  void _openDetailedGroupBuy() {
+    print("record pressed");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          border: Border.all()
-        ),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Icon(Icons.account_circle),
-                Expanded(flex: 80, child: Text('dawo')),
-                Expanded(
-                  flex: 20,
-                  child: Text('Pending'),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                    flex: 70,
-                    child: Row(children: [
-                      Text('10 Items')
-                    ])),
-                Expanded(flex: 30, child: Text('\$70.00'))
-              ],
+    return Card(
+        color: Colors.white,
+        elevation: 10,
+        shadowColor: Colors.black12,
+        child: InkWell(
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          onTap: _openDetailedGroupBuy,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.account_circle),
+                      SizedBox(width: 10),
+                      Expanded(flex: 80, child: Text('dawo')),
+                      Expanded(
+                        flex: 20,
+                        child: Text('Pending'),
+                      )
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                          flex: 80,
+                          child: Row(children: [
+                            Text('10 Items')
+                          ])),
+                      Expanded(flex: 20, child: Text('\$70.00'))
+                    ],
+                  )
+                ],
+              )
             )
-          ],
-        ));
+        )
+    );
+
   }
 }
