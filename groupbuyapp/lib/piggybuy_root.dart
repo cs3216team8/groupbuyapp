@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages/activities_widget.dart';
-import 'package:groupbuyapp/pages/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages/chat_widget.dart';
-import 'package:groupbuyapp/pages/create_groupbuy_widget.dart';
-import 'package:groupbuyapp/pages/home_widget.dart';
-import 'package:groupbuyapp/pages/groupbuy/info_widget.dart';
-import 'package:groupbuyapp/pages/my_groupbuys_widget.dart';
-import 'package:groupbuyapp/pages/profile_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//activities_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//authentication/login_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//chat_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//create_groupbuy_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//home/home_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//my_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets//profile/profile_widget.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
