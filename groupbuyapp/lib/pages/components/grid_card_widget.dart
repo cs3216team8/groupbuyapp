@@ -100,9 +100,12 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.all(6),
                           child: Icon(Icons.location_on_outlined),
                         ),
-                        Text(
-                          "${details.address}",
-                          style: textStyle,
+                        Expanded(
+                          child: Text(
+                            "${details.address}",
+                            style: textStyle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     )
