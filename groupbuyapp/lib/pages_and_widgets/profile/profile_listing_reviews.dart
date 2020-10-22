@@ -55,8 +55,8 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
             Expanded(
               child: TabBarView(
                 children: [
-                  Listings(),
-                  Reviews(),
+                  ListingsSection(),
+                  ReviewsSection(),
                 ],
               ),
             )
@@ -67,20 +67,61 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
   }
 }
 
-class Listings extends StatelessWidget {
+class ListingsSection extends StatefulWidget {
+  @override
+  _ListingsSectionState createState() => _ListingsSectionState();
+}
+
+class _ListingsSectionState extends State<ListingsSection>
+    with AutomaticKeepAliveClientMixin<ListingsSection> {
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('bla'),
+      child: GridView.count(
+        padding: EdgeInsets.zero,
+        crossAxisCount: 3,
+        children: Colors.primaries.map((color) {
+          return Container(color: color, height: 150.0,);
+        }).toList(),
+      ),
     );
   }
 }
 
-class Reviews extends StatelessWidget {
+class ReviewsSection extends StatefulWidget {
+  @override
+  _ReviewsSectionState createState() => _ReviewsSectionState();
+}
+
+class _ReviewsSectionState extends State<ReviewsSection>
+    with AutomaticKeepAliveClientMixin<ReviewsSection> {
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text('bla2'),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: Colors.primaries.map((color) {
+          return Container(color: color, height: 150.0,);
+        }).toList(),
+      ),
     );
   }
 }
