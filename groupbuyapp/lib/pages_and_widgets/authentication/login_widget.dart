@@ -6,7 +6,7 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 import 'background.dart';
 
@@ -40,7 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount googleUser = await GoogleSignIn(
+        scopes: [
+          'email',
+        ])
+            .signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -56,18 +60,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<UserCredential> signInWithFacebook() async {
-    // Trigger the sign-in flow
-    print("A");
-    final LoginResult result = await FacebookAuth.instance.login();
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn(['email']);
 
-    // Create a credential from the access token
-    final FacebookAuthCredential facebookAuthCredential =
-    FacebookAuthProvider.credential(result.accessToken.token);
-
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        print('logged in');
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print('cancel');
+        break;
+      case FacebookLoginStatus.error:
+        print('error');
+        break;
+    }
   }
-
 
   @override
   Widget build(BuildContext context) {
