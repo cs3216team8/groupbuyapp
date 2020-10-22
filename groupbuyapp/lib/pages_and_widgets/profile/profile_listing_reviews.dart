@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/reviews_section.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/listings_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
   final String userId;
