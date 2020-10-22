@@ -92,7 +92,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
               onPressed: () => segueToPage(context, ChatScreen("dummy"))
           ),
           IconButton(
-              icon: Icon(Icons.circle),
+              icon: Icon(Icons.login),
               onPressed: () => segueToPage(context, LoginScreen())
           )
         ],
