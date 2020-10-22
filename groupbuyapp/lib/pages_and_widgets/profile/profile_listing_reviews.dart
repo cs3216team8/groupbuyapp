@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:sticky_headers/sticky_headers.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 
 class ProfileListingReviews extends StatefulWidget {
+  final String userId;
   final Color headerBackgroundColour, textColour;
   final double letterSpacing;
 
+  final double topHeightFraction;
+
   ProfileListingReviews({
     Key key,
+    this.userId,
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
+    this.topHeightFraction = 0.3,
   }) : super(key: key);
 
   @override
@@ -22,52 +27,60 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
-      child: Column(
-        children: [
-          Container(
-            constraints: BoxConstraints.expand(height: 50),
-            child: TabBar(
+      child: NestedScrollView(
+        // allows you to build a list of elements that would be scrolled away till the body reached the top
+        headerSliverBuilder: (context, _) {
+          return [
+            SliverList(
+              delegate: SliverChildListDelegate(
+                <Widget>[
+                  Container(
+                    height: MediaQuery.of(context).size.height * widget.topHeightFraction,
+                    child: ProfilePart(isMe: false),
+                  ),
+                ]
+              ),
+            )
+          ];
+        },
+        body: Column(
+          children: <Widget>[
+            TabBar(
+              labelColor: Colors.black,
               tabs: [
-                Tab(text: "homem",),
-                Tab(text: "faosj",),
+                Tab(text: "Listings",),
+                Tab(text: "Reviews",),
               ],
             ),
-          ),
-          Expanded(
-            child: Container(
+            Expanded(
               child: TabBarView(
                 children: [
-                  Container(
-                    child: Text("noa"),
-                  ),
-                  Container(
-                    child: Text("naou"),
-                  )
+                  Listings(),
+                  Reviews(),
                 ],
               ),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
 
-// StickyHeader(
-// header: TabBar(
-// tabs: <Widget>[
-// Tab(text: "Listings",),
-// Tab(text: "Reviews",),
-// ],
-// ),
-// content: TabBarView(
-// children: <Widget>[
-// Container(
-// child: Text('i am a listings page'),
-// ),
-// Container(
-// child: Text('i am a reviews page'),
-// ),
-// ],
-// ),
-// ),
+class Listings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('bla'),
+    );
+  }
+}
+
+class Reviews extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('bla2'),
+    );
+  }
+}

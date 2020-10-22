@@ -5,11 +5,14 @@ class ProfileReviewsOnly extends StatelessWidget {
   final Color headerBackgroundColor, textColour;
   final double letterSpacing;
 
+  final double topHeightFraction;
+
   ProfileReviewsOnly({
     Key key,
     this.headerBackgroundColor = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
+    this.topHeightFraction = 0.3,
   }) : super(key: key);
 
   @override
