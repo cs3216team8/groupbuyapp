@@ -35,64 +35,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget profileDetailsSection(BuildContext context) {
-    final double componentHeight =
-        MediaQuery.of(context).size.height * topHeightFraction;
-
-    return Container(
-      height: componentHeight,
-      child: Stack(
-        children: <Widget>[
-          // stylistic background
-          Column(
-            children: <Widget>[
-              Expanded(
-                flex: 5,
-                child: Container(
-                    color: Theme.of(context).primaryColor,
-                ),
+    return Stack(
+      children: <Widget>[
+        // stylistic background
+        Column(
+          children: <Widget>[
+            Expanded(
+              flex: 5,
+              child: Container(
+                  color: Theme.of(context).primaryColor,
               ),
-              Expanded(
-                flex: 7,
-                child: Container(
-                  color: Theme.of(context).backgroundColor,
-                ),
+            ),
+            Expanded(
+              flex: 7,
+              child: Container(
+                color: Theme.of(context).backgroundColor,
               ),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 30.0),
-                padding: EdgeInsets.symmetric(vertical: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+            ),
+          ],
+        ),
+        Column(
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 30.0),
+              padding: EdgeInsets.symmetric(vertical: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Theme.of(context).accentColor,
                       child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Theme.of(context).accentColor,
-                        child: CircleAvatar(
-                          radius: 47,
-                          backgroundImage: AssetImage('assets/profpicplaceholder.jpg'),
-                        ),
+                        radius: 47,
+                        backgroundImage: AssetImage('assets/profpicplaceholder.jpg'),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10.0),
-                      child: isMe() ? ownProfileSettings() : Container(),
-                    ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 10.0),
+                    child: isMe() ? ownProfileSettings() : Container(),
+                  ),
+                ],
               ),
-              // TODO layout details properly
-              Text("Username", style: TextStyle(fontWeight: FontWeight.bold),),
-              Text("ratings"),
-              Text("Verified, very active"),
-            ],
-          ),
-        ],
-      ),
+            ),
+            // TODO layout details properly
+            Text("Username", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text("ratings"),
+            Text("Verified, very active"),
+          ],
+        ),
+      ],
     );
   }
 
@@ -203,14 +197,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size =
+        MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            profileDetailsSection(context),
+            Container(
+              height: size.height * topHeightFraction,
+              child: profileDetailsSection(context),
+            ),
             //listings(),
             Container(
-              alignment: Alignment.topLeft,
+              height: size.height * (1 - topHeightFraction),
               child: isMe()
                   ? ProfileReviewsOnly()
                   : ProfileListingReviews(),
