@@ -7,7 +7,10 @@ import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 class MyGroupBuys extends StatefulWidget {
 
   final Map<int, Widget> segments = <int, Widget>{
-    0: Text("As Piggybuyer"),
+    0: Container(
+      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        child: Text("As Piggybuyer")
+    ),
     1: Text("As Organiser")
   };
 
@@ -21,7 +24,7 @@ class MyGroupBuys extends StatefulWidget {
     Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('hi')
+          MyGroupBuyCard(GroupBuy.getDummyData())
         ]
     ),
   ];
@@ -47,10 +50,12 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
       padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          CupertinoSegmentedControl(
-              children: widget.segments,
-              onValueChanged: _onItemTapped
+          CupertinoSlidingSegmentedControl(
+            children: widget.segments,
+            onValueChanged: _onItemTapped,
+            groupValue: _selectedIndex,
           ),
+          SizedBox(height: 20),
           IndexedStack(
             index: _selectedIndex,
             children: widget.screens,
