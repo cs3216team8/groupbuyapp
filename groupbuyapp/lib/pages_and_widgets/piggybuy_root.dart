@@ -39,8 +39,8 @@ class PiggyBuy extends StatefulWidget {
     CreateGroupBuy(),
     ActivityScreen(),
     ProfileScreen(
-      userProfile: 'dummyid',
-      isMe: false,
+      userId: 'dummyid',
+      isMe: false,//true,
     ),
   ];
 

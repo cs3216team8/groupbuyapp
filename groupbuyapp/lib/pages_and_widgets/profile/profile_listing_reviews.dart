@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/reviews_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
   final String userId;
@@ -10,7 +12,7 @@ class ProfileListingReviews extends StatefulWidget {
 
   ProfileListingReviews({
     Key key,
-    this.userId,
+    this.userId, //TODO add required when ready
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -62,65 +64,6 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ListingsSection extends StatefulWidget {
-  @override
-  _ListingsSectionState createState() => _ListingsSectionState();
-}
-
-class _ListingsSectionState extends State<ListingsSection>
-    with AutomaticKeepAliveClientMixin<ListingsSection> {
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: GridView.count(
-        padding: EdgeInsets.zero,
-        crossAxisCount: 3,
-        children: Colors.primaries.map((color) {
-          return Container(color: color, height: 150.0,);
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class ReviewsSection extends StatefulWidget {
-  @override
-  _ReviewsSectionState createState() => _ReviewsSectionState();
-}
-
-class _ReviewsSectionState extends State<ReviewsSection>
-    with AutomaticKeepAliveClientMixin<ReviewsSection> {
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: Colors.primaries.map((color) {
-          return Container(color: color, height: 150.0,);
-        }).toList(),
       ),
     );
   }
