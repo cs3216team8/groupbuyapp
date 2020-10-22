@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 
 import 'background.dart';
 
@@ -128,6 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPress: () async {
                         try {
                           UserCredential userCredential = await signInWithFacebook();
+                          segueToPage(context, PiggyBuyApp());
                         } catch (e) {
                           print(e);
                         }
@@ -138,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPress: () async {
                         try {
                           UserCredential userCredential = await signInWithGoogle();
+                          segueToPage(context, PiggyBuyApp());
                         } catch (e) {
                           print(e);
                         }
