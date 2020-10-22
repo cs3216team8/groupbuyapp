@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat_widget.dart';
@@ -44,8 +45,8 @@ class PiggyBuy extends StatefulWidget {
       ActivityScreen(),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,
-        userId: 'dummyid',
-        isMe: false, //true,
+        userProfile: UserProfile.getDummyData(),
+        isMe: true, //true,
       ),
     ];
   }

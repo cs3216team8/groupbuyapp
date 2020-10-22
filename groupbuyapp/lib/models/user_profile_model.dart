@@ -1,4 +1,3 @@
-
 class UserProfile {
   final String name;
   final String username;
@@ -8,6 +7,8 @@ class UserProfile {
   final List<String> addresses;
   final List<String> groupBuyIds;
 
+  final double rating; //TODO @agnes
+
   UserProfile (
       this.name,
       this.username,
@@ -16,8 +17,13 @@ class UserProfile {
       this.email,
       this.addresses,
       this.groupBuyIds,
+      this.rating,
       );
 
+  String getActiveStatus() {
+    // TODO?
+    return "Verified, very active";
+  }
 
   static UserProfile getDummyData() {
     return new UserProfile (
@@ -27,7 +33,8 @@ class UserProfile {
         "+65 1234 5678",
         "me@dawo.me",
         ["17 Dover Cres 130017", "18 Dover Cres 130017"],
-        ["asdfasdfasdfaf", "asdfasdfasdfaf"]
+        ["asdfasdfasdfaf", "asdfasdfasdfaf"],
+      4.9,
     );
   }
 }

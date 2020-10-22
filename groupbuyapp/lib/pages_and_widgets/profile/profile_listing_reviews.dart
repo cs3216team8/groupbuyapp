@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
+  final UserProfile userProfile;
   final Stream<List<GroupBuy>> Function() createGroupBuyStream;
   final String userId;
   final Color headerBackgroundColour, textColour;
@@ -14,6 +16,7 @@ class ProfileListingReviews extends StatefulWidget {
 
   ProfileListingReviews({
     Key key,
+    @required this.userProfile,
     @required this.createGroupBuyStream,
     this.userId, //TODO add required when ready
     this.headerBackgroundColour = Colors.white,
@@ -41,7 +44,7 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
                 <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                    child: ProfilePart(isMe: false),
+                    child: ProfilePart(isMe: false, userProfile: widget.userProfile,),
                   ),
                 ]
               ),
