@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/settings_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class ProfileScreen extends StatefulWidget {
   // final UserProfile userProfile;
@@ -27,8 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget ownProfileSettings() {
-    return Container(
-      child: Icon(Icons.settings), //TODO: make clickable
+    return IconButton(
+      icon: Icon(Icons.settings), onPressed: () => segueToPage(context, SettingsPage())
     );
   }
 
