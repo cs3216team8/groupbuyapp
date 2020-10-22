@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
+  final Stream<List<GroupBuy>> Function() createGroupBuyStream;
   final String userId;
   final Color headerBackgroundColour, textColour;
   final double letterSpacing;
@@ -12,6 +14,7 @@ class ProfileListingReviews extends StatefulWidget {
 
   ProfileListingReviews({
     Key key,
+    @required this.createGroupBuyStream,
     this.userId, //TODO add required when ready
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
@@ -57,7 +60,9 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
             Expanded(
               child: TabBarView(
                 children: [
-                  ListingsSection(),
+                  ListingsSection(
+                    createGroupBuyStream: widget.createGroupBuyStream,
+                  ),
                   ReviewsSection(),
                 ],
               ),

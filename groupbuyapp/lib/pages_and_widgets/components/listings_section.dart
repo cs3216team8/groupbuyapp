@@ -3,12 +3,12 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 
 class ListingsSection extends StatefulWidget {
-  Stream<List<GroupBuy>> groupBuyStream;
+  Stream<List<GroupBuy>> Function() createGroupBuyStream;
   Widget Function() createDefaultScreen;
 
   ListingsSection({
     Key key,
-    @required this.groupBuyStream,
+    @required this.createGroupBuyStream,
     @required this.createDefaultScreen,
   }) : super(key: key);
 
@@ -31,7 +31,7 @@ class _ListingsSectionState extends State<ListingsSection>
   Widget build(BuildContext context) {
     return Container(
         child: StreamBuilder<List<GroupBuy>>(
-          stream: widget.groupBuyStream,
+          stream: widget.createGroupBuyStream(),
           builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
             List<Widget> children;
             if (snapshot.hasError) {
@@ -60,7 +60,6 @@ class _ListingsSectionState extends State<ListingsSection>
                 physics: const ClampingScrollPhysics(),
                 childAspectRatio: 6.0/7.0,
                 children: children
-
             );
           },
         )

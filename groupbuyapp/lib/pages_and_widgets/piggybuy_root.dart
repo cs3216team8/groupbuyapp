@@ -6,6 +6,7 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -33,16 +34,21 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
-  final List<Widget> mainScreens = <Widget>[
-    HomeScreen(),
-    MyGroupBuys(), //TODO: need to factor in if not logged in page
-    CreateGroupBuy(),
-    ActivityScreen(),
-    ProfileScreen(
-      userId: 'dummyid',
-      isMe: false,//true,
-    ),
-  ];
+  GroupBuyStorage groupBuyStorage = GroupBuyStorage();
+
+  List<Widget> getMainScreens() {
+    return <Widget>[
+      HomeScreen(groupBuyStorage: groupBuyStorage,),
+      MyGroupBuys(), //TODO: need to factor in if not logged in page
+      CreateGroupBuy(),
+      ActivityScreen(),
+      ProfileScreen(
+        groupBuyStorage: groupBuyStorage,
+        userId: 'dummyid',
+        isMe: false, //true,
+      ),
+    ];
+  }
 
   final List<BottomNavigationBarItem> navItems = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -100,7 +106,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
       body: Center(
         child: IndexedStack(
           index: _selectedIndex,
-          children: widget.mainScreens,
+          children: widget.getMainScreens(),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
