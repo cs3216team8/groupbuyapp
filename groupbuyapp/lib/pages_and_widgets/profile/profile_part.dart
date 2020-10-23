@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
@@ -11,9 +13,14 @@ class ProfilePart extends StatelessWidget {
     @required this.userProfile,
   }) : super(key: key);
 
-  Widget ownProfileSettings() {
+  Widget ownProfileSettings(BuildContext context) {
     return Container(
-      child: Icon(Icons.settings), //TODO: make clickable
+      child: IconButton(
+        icon: Icon(Icons.settings),
+        onPressed: () {
+          segueToPage(context, ProfileSettingsScreen());
+        },
+      ), //TODO: make clickable
     );
   }
 
@@ -81,7 +88,7 @@ class ProfilePart extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(right: 31.0, top: 18.0),
-                        child: isMe ? ownProfileSettings() : Container(),
+                        child: isMe ? ownProfileSettings(context) : Container(),
                       ),
                     ],
                   )
