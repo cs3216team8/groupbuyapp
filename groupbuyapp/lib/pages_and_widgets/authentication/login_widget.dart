@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'background.dart';
 
@@ -64,6 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   Future<UserCredential> signInWithGoogle() async {
+    print(FirebaseAuth.instance.currentUser);
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn(
         scopes: [
