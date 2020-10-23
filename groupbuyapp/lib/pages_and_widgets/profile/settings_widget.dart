@@ -45,6 +45,7 @@ class SettingsScreen extends StatelessWidget {
       new FlatButton(
         onPressed: () async {
           await FirebaseAuth.instance.signOut();
+          print(FirebaseAuth.instance.currentUser);
           segueToPage(context, LoginScreen());
         },
         textColor: Theme.of(context).primaryColor,
