@@ -18,7 +18,7 @@ class ProfilePart extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.settings),
         onPressed: () {
-          segueToPage(context, ProfileSettingsScreen());
+          segueToPage(context, ProfileSettingsScreen(profilePic: userProfile.profilePicture,));
         },
       ), //TODO: make clickable
     );
