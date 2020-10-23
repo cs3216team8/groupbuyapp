@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/activity_model.dart';
 
@@ -17,7 +18,7 @@ class ActivityScreen extends StatelessWidget {
             children: [
               ActivityCard(Activity("Amazon.com",
                   true,
-                  DateTime.now().add(Duration(hours: 9)),
+                  Timestamp.fromDate(DateTime.now().add(Duration(hours: 9))),
                   "dawo",
                   "Pending")),
             ]

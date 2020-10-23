@@ -8,7 +8,7 @@ class ActivityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Duration timeDiff = activity.time.difference(DateTime.now());
+    final Duration timeDiff = activity.getTime().difference(DateTime.now());
     String time;
     if (timeDiff.inDays == 0) {
       time = timeDiff.inHours.toString() + "h";
@@ -35,21 +35,21 @@ class ActivityCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Expanded(flex: 80, child: Text(activity.website + " Group Buy")),
+                    Expanded(flex: 80, child: Text(activity.storeName + " Group Buy")),
                     Expanded(
                       flex: 20,
                       child: Text(time),
                     )
                   ],
                 ),
-                Text(activity.isOrganiser ? "as organiser" : "as buyer"),
+                Text(activity.organiserId ? "as organiser" : "as buyer"),
                 Row(
                   children: [
                     Expanded(
                         flex: 70,
                         child: Row(children: [
                           Icon(Icons.account_circle),
-                          Text(activity.originator)
+                          Text(activity.originUid)
                         ])),
                     Expanded(flex: 30, child: Text(activity.status))
                   ],
