@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/activity.dart';
+import 'package:groupbuyapp/models/activity_model.dart';
 
 import 'components/activity_card_widget.dart';
 
