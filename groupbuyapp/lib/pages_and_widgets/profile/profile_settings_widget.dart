@@ -136,7 +136,6 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await FirebaseAuth.instance.signOut();
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
-            print(FirebaseAuth.instance.currentUser);
             Navigator.pop(context);
             segueWithoutBack(context, LoginScreen());
           },
