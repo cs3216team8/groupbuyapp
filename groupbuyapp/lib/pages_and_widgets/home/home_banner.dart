@@ -6,7 +6,7 @@ class HomeCarouselBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 5),
       child: CarouselSlider(
           items: [
             Image.network("https://pbs.twimg.com/media/D-jnKUPU4AE3hVR?format=jpg&name=large"),
@@ -15,7 +15,7 @@ class HomeCarouselBanner extends StatelessWidget {
             Image.network("https://pbs.twimg.com/media/D-jnXCiU0AASd7-?format=jpg&name=large"),
           ],
           options: CarouselOptions(
-            height: 120,
+            height: 150,
             autoPlay: true,
             autoPlayInterval: Duration(seconds: 5),
             enlargeCenterPage: false,

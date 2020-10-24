@@ -16,37 +16,48 @@ class ActivityCard extends StatelessWidget {
       time = timeDiff.inDays.toString() + "d";
     }
 
-    return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          border: Border.all()
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+    void _openActivityDetail() {
+      print("activity card pressed");
+    }
+
+    return Card(
+      color: Colors.white,
+      elevation: 10,
+      shadowColor: Colors.black12,
+      child: InkWell(
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          onTap: _openActivityDetail,
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(flex: 80, child: Text(activity.website + " Group Buy")),
-                Expanded(
-                  flex: 20,
-                  child: Text(time),
+                Row(
+                  children: [
+                    Expanded(flex: 80, child: Text(activity.website + " Group Buy")),
+                    Expanded(
+                      flex: 20,
+                      child: Text(time),
+                    )
+                  ],
+                ),
+                Text(activity.isOrganiser ? "as organiser" : "as buyer"),
+                Row(
+                  children: [
+                    Expanded(
+                        flex: 70,
+                        child: Row(children: [
+                          Icon(Icons.account_circle),
+                          Text(activity.originator)
+                        ])),
+                    Expanded(flex: 30, child: Text(activity.status))
+                  ],
                 )
               ],
-            ),
-            Text(activity.isOrganiser ? "as organiser" : "as buyer"),
-            Row(
-              children: [
-                Expanded(
-                    flex: 70,
-                    child: Row(children: [
-                      Icon(Icons.account_circle),
-                      Text(activity.originator)
-                    ])),
-                Expanded(flex: 30, child: Text(activity.status))
-              ],
             )
-          ],
-        ));
+          )
+      )
+    );
   }
 }

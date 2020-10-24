@@ -24,7 +24,7 @@ class MyGroupBuys extends StatefulWidget {
     Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('hi')
+          MyGroupBuyCard(GroupBuy.getDummyData())
         ]
     ),
   ];
