@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
-  String profilePic;
+  UserProfile profile;
 
   ProfileSettingsScreen({
     Key key,
-    this.profilePic="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSNBKe7gN6eknU2jJnH34eLwWg5YjTbp3gWcQ&usqp=CAU" // TODO: placeholder profpic
+    @required this.profile,
   }) : super(key: key);
 
   @override
@@ -20,10 +21,15 @@ class ProfileSettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ProfilePicChanger(pic: profilePic),
+            ProfilePicChanger(pic: profile.profilePicture),
             InputHorizontal(itemText: "Username",),
             InputHorizontal(itemText: "Email",),
-            AddressListModifier(),
+            SizedBox(height: 20,),
+            Expanded(
+              child: AddressListModifier(
+                addresses: profile.addresses,
+              ),
+            )
           ],
         ),
       ),
@@ -70,10 +76,78 @@ class ProfilePicChanger extends StatelessWidget {
   }
 }
 
-class AddressListModifier extends StatelessWidget {
+class AddressListModifier extends StatefulWidget {
+  List<String> addresses;
+
+  AddressListModifier({
+    Key key,
+    this.addresses,
+  }) : super(key: key);
+
+  @override
+  _AddressListModifierState createState() => _AddressListModifierState();
+}
+
+class _AddressListModifierState extends State<AddressListModifier> {
+  List<String> deleted = []; // TODO: undoable history
+
+  void _deleteAddress(int index) {
+    setState(() {
+      String addr = widget.addresses.removeAt(index);
+      deleted.add(addr);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: <Widget>[
+        Container(
+          child: Text(
+              "List of addresses",
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            height: 70,
+            alignment: Alignment(0, 0),
+            color: Colors.orange,
+            child: Text(
+              "To remove an item, swipe the tile to the right or tap the trash icon.",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        // TODO: @kx add undo delete option here
+        // TODO: make address editable
+        // TODO: fab: allow adding of addresses -- add to top so dunnid scroll
+        Expanded(
+          child: ListView.builder(
+            itemCount: widget.addresses.length,
+            itemBuilder: (context, index) {
+              final address = widget.addresses[index];
+              return Dismissible(
+                key: Key(address),
+                direction: DismissDirection.startToEnd,
+                child: ListTile(
+                  title: Text(address),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete_rounded),
+                    onPressed: () => _deleteAddress(index),
+                  ),
+                ),
+                onDismissed: (direction) {
+                  _deleteAddress(index);
+                },
+              );
+            },
+          ), //TODO @kx,
+        )
+      ],
+    );
   }
 }
 
