@@ -258,7 +258,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
               builder: (BuildContext context) => _logoutConfirmation(context),
             );
             },
-          child: new Text("my Title"),
+          child: new Text("Logout", textAlign: TextAlign.left),
         )
       ],
     );
