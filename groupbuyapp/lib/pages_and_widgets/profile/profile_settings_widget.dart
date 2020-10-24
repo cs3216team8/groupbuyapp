@@ -120,7 +120,8 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
             print(FirebaseAuth.instance.currentUser);
-            segueToPage(context, LoginScreen());
+            Navigator.pop(context);
+            segueWithoutBack(context, LoginScreen());
           },
           textColor: Theme.of(context).primaryColor,
           child: const Text('Yes'),
