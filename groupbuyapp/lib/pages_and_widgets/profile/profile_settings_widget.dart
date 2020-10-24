@@ -89,6 +89,7 @@ class AddressListModifier extends StatefulWidget {
 }
 
 class _AddressListModifierState extends State<AddressListModifier> {
+  final _formKey = GlobalKey<FormState>();
   List<String> deleted = []; // TODO: undoable history
 
   void _deleteAddress(int index) {
@@ -98,28 +99,100 @@ class _AddressListModifierState extends State<AddressListModifier> {
     });
   }
 
+  void _addAddress(String addr) {
+    setState(() {
+      widget.addresses.add(addr);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          child: Text(
-              "List of addresses",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            height: 70,
-            alignment: Alignment(0, 0),
-            color: Colors.orange,
-            child: Text(
-              "To remove an item, swipe the tile to the right or tap the trash icon.",
-              style: TextStyle(color: Colors.white),
+        Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                SizedBox(height: 10,),
+                Text(
+                  "List of addresses",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    height: 70,
+                    alignment: Alignment(0, 0),
+                    color: Colors.orange,
+                    child: Text(
+                      "To remove an item, swipe the tile to the right or tap the trash icon.",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
+            Positioned(
+              right: 20.0,
+              child: FloatingActionButton(
+                child: new Icon(Icons.add),
+                onPressed: () {
+                  setState(() {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Stack(
+                            overflow: Overflow.visible,
+                            children: <Widget>[
+                              Positioned(
+                                right: -40.0,
+                                top: -40.0,
+                                child: InkResponse(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: CircleAvatar(
+                                    child: Icon(Icons.close),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                ),
+                              ),
+                              Form(
+                                key: _formKey,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: TextFormField(),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: RaisedButton(
+                                        child: Text("Add"),
+                                        onPressed: () {
+                                          if (_formKey.currentState.validate()) {
+                                            _formKey.currentState.save();
+                                          }
+                                        },
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                    );
+                  });
+                },
+                backgroundColor: Colors.amber,
+              ),
+            ),
+          ],
         ),
         // TODO: @kx add undo delete option here
         // TODO: make address editable
