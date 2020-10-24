@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class GroupBuyStorage {
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
@@ -154,8 +154,49 @@ class GroupBuyStorage {
     }
   }
 
-  // Stream<List<GroupBuy>> getGroupBuysOf(String uid) {
-  //   //TODO: @agnes
-  //   return Stream();
-  // }
+  Stream<List<GroupBuy>> getGroupBuysOrganisedBy(String userId) {
+    return groupBuys.where('organiserId', isEqualTo: userId).snapshots().map((snapshot) {
+      return snapshot.docs.map((document) {
+        return GroupBuy(
+            document.id,
+            document.data()['storeName'],
+            document.data()['storeWebsite'],
+            document.data()['storeLogo'],
+            document.data()['currentAmount'].toDouble(),
+            document.data()['targetAmount'].toDouble(),
+            document.data()['endTimestamp'],
+            document.data()['organiserId'],
+            document.data()['deposit'],
+            document.data()['description'],
+            document.data()['address']
+        );
+      }).toList();
+    });
+  }
+
+  // TODO??????
+  Future<Stream<List<GroupBuy>>> getGroupBuysPiggyBackedOnBy(String userId) async {
+    DocumentSnapshot currentUser = await FirebaseFirestore.instance.collection(
+        'users')
+        .doc(userId)
+        .get();
+    List<String> groupBuyIdsPiggyBackedOn = currentUser.data()['groupBuyIds'];
+    return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn).snapshots().map((snapshot) {
+      return snapshot.docs.map((document) {
+        return GroupBuy(
+            document.id,
+            document.data()['storeName'],
+            document.data()['storeWebsite'],
+            document.data()['storeLogo'],
+            document.data()['currentAmount'].toDouble(),
+            document.data()['targetAmount'].toDouble(),
+            document.data()['endTimestamp'],
+            document.data()['organiserId'],
+            document.data()['deposit'],
+            document.data()['description'],
+            document.data()['address']
+        );
+      }).toList();
+    });
+  }
 }

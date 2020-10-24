@@ -26,4 +26,8 @@ class Review {
         DateTime.now(),
     );
   }
+
+  double getRating() {
+    return this.rating;
+  }
 }

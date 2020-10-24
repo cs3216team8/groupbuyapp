@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
     Key key,
     @required this.groupBuyStorage,
     @required this.userProfile,
-    this.isMe = true,
+    this.isMe = false,
   }) : super(key: key);
 
   @override
