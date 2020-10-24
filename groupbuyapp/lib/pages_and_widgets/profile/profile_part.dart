@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
+  final UserProfile userProfile;
 
   ProfilePart({
     Key key,
-    @required this.isMe
+    @required this.isMe,
+    @required this.userProfile,
   }) : super(key: key);
 
-  Widget ownProfileSettings() {
+  Widget ownProfileSettings(BuildContext context) {
     return Container(
-      child: Icon(Icons.settings), //TODO: make clickable
+      child: IconButton(
+        icon: Icon(Icons.settings),
+        onPressed: () {
+          segueToPage(context, ProfileSettingsScreen(profile: userProfile));
+        },
+      ), //TODO: make clickable
     );
   }
 
@@ -40,31 +50,77 @@ class ProfilePart extends StatelessWidget {
             Container(
               margin: EdgeInsets.only(top: 30.0),
               padding: EdgeInsets.symmetric(vertical: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Stack(
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Theme.of(context).accentColor,
-                      child: CircleAvatar(
-                        radius: 47,
-                        backgroundImage: AssetImage('assets/profpicplaceholder.jpg'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: Theme.of(context).accentColor,
+                          child: CircleAvatar(
+                            radius: 47,
+                            backgroundImage: Image.network(userProfile.profilePicture).image,
+                          ),
+                        ),
                       ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 140, top: 50, bottom: 10),
+                      child: Text(
+                        "${userProfile.username}",
+                        style: TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(right: 31.0, top: 18.0),
+                        child: isMe ? ownProfileSettings(context) : Container(),
+                      ),
+                    ],
+                  )
+                ],)
+            ),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Text(
+                    "Rating: ${userProfile.rating} stars",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 10.0),
-                    child: isMe ? ownProfileSettings() : Container(),
-                  ),
-                ],
-              ),
+                )
+              ],
             ),
-            // TODO layout details properly
-            Text("Username", style: TextStyle(fontWeight: FontWeight.bold),),
-            Text("ratings"),
-            Text("Verified, very active"),
+            SizedBox(height: 5,),
+            Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                  child: Text(
+                    "${userProfile.getActiveStatus()}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w500
+                    ),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ],

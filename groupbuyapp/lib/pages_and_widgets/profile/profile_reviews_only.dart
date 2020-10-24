@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 
 class ProfileReviewsOnly extends StatefulWidget {
+  final UserProfile userProfile;
   final Color headerBackgroundColour, textColour;
   final double letterSpacing;
 
@@ -10,6 +12,7 @@ class ProfileReviewsOnly extends StatefulWidget {
 
   ProfileReviewsOnly({
     Key key,
+    @required this.userProfile,
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -36,7 +39,7 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
                   <Widget>[
                     Container(
                       height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                      child: ProfilePart(isMe: true),
+                      child: ProfilePart(isMe: true, userProfile: widget.userProfile,),
                     ),
                   ]
               ),
