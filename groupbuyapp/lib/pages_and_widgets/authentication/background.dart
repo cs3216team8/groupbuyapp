@@ -16,6 +16,17 @@ class Background extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: <Widget>[
+          //     Container(
+          //       child: Image.asset("assets/piggy2d.png", scale: 1,),
+          //     ),
+          //   ],
+          // ),
+          Container(
+            color: Colors.white.withOpacity(0.6),
+          ),
           child,
         ],
       ),
