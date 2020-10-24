@@ -32,7 +32,6 @@ dependencies:
   flutter_facebook_login: "^3.0.0"
 
   percent_indicator: "^2.1.7+2"
-  sticky_headers: "^0.1.8"
 
   carousel_slider: ^2.3.1
 

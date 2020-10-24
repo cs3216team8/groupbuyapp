@@ -10,7 +10,7 @@ class GroupBuyCard extends StatelessWidget {
 
   GroupBuyCard(this.details);
 
-  void _openDetailedGroupbuy() {
+  void _openDetailedGroupBuy() {
     print("grid card pressed");
   }
 
@@ -22,7 +22,7 @@ class GroupBuyCard extends StatelessWidget {
       shadowColor: Colors.black12,
       child: InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: _openDetailedGroupbuy,
+        onTap: _openDetailedGroupBuy,
         child: Column(
           children: <Widget>[
             Expanded(
