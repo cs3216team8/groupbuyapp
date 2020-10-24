@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
@@ -100,7 +101,10 @@ class _PiggyBuyState extends State<PiggyBuy> {
           ),
           IconButton(
               icon: Icon(Icons.login),
-              onPressed: () => segueToPage(context, LoginScreen())
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+                segueWithoutBack(context, LoginScreen());
+              }
           )
         ],
       ),

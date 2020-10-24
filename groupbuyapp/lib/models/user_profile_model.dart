@@ -1,4 +1,5 @@
 class UserProfile {
+  final String id;
   final String name;
   final String username;
   final String profilePicture;
@@ -7,9 +8,11 @@ class UserProfile {
   final List<String> addresses;
   final List<String> groupBuyIds;
 
-  final double rating; //TODO @agnes
+  double rating; //TODO @agnes
+  int reviewCount;
 
   UserProfile (
+      this.id,
       this.name,
       this.username,
       this.profilePicture,
@@ -18,6 +21,7 @@ class UserProfile {
       this.addresses,
       this.groupBuyIds,
       this.rating,
+      this.reviewCount
       );
 
   String getActiveStatus() {
@@ -27,6 +31,7 @@ class UserProfile {
 
   static UserProfile getDummyData() {
     return new UserProfile (
+        "3434sgdfga",
         "Daniel Wong",
         "dawo",
         'https://d1cbe14be5894c8dcc3d-8a742a0d46bf003746b2a98abb2fa3cf.ssl.cf2.rackcdn.com/wp-content/uploads/2018/01/personal-questions-to-ask-a-guy-2.jpg',
@@ -35,6 +40,7 @@ class UserProfile {
         ["17 Dover Cres 130017", "18 Dover Cres 130017", "115 Dover Cres 130017", "19 Dover Cres 130017", "20 Dover Cres 130017", "21 Dover Cres 130017"],
         ["asdfasdfasdfaf", "asdfasdfasdfaf"],
       4.9,
+      500
     );
   }
 }

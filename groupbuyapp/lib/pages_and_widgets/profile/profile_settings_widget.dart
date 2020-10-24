@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   UserProfile profile;
@@ -104,6 +109,50 @@ class _AddressListModifierState extends State<AddressListModifier> {
       widget.addresses.add(addr);
     });
   }
+
+  Widget _logoutConfirmation(BuildContext context) {
+    return new AlertDialog(
+      content: Text(
+        'Are you sure you want to logout?',
+        style: TextStyle(
+          fontSize: 18
+        ),
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text(
+            'No',
+            style: TextStyle(
+            fontSize: 16
+            ),
+          ),
+        ),
+        new FlatButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            await GoogleSignIn().signOut();
+            await FacebookLogin().logOut();
+            print(FirebaseAuth.instance.currentUser);
+            Navigator.pop(context);
+            segueWithoutBack(context, LoginScreen());
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: Text(
+            'Yes',
+            style: TextStyle(
+                fontSize: 16
+            ),
+          )
+        ),
+
+      ],
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +267,28 @@ class _AddressListModifierState extends State<AddressListModifier> {
               );
             },
           ), //TODO @kx,
+        ),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => _logoutConfirmation(context),
+            );
+            },
+          child: InkWell(
+            splashColor: Theme.of(context).primaryColor.withAlpha(30),
+            child: Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 16
+                    )
+                )
+            ),
+          ),
         )
       ],
     );

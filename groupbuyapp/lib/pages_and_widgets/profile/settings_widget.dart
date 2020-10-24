@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:groupbuyapp/models/activity_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 
 class SettingsPage extends StatelessWidget {
@@ -36,8 +38,6 @@ class SettingsScreen extends StatelessWidget {
   // }
 
 
-
-
   Widget _buildAboutDialog(BuildContext context) {
     return new AlertDialog(
         title: const Text('Are you sure you want to logout?'),
@@ -45,8 +45,10 @@ class SettingsScreen extends StatelessWidget {
       new FlatButton(
         onPressed: () async {
           await FirebaseAuth.instance.signOut();
+          await GoogleSignIn().signOut();
+          await FacebookLogin().logOut();
 
-          segueToPage(context, LoginScreen());
+          segueWithoutBack(context, LoginScreen());
         },
         textColor: Theme.of(context).primaryColor,
         child: const Text('Yes'),
