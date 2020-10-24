@@ -124,7 +124,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
             segueWithoutBack(context, LoginScreen());
           },
           textColor: Theme.of(context).primaryColor,
-          child: const Text('Yes'),
+          child: Text('Logout')
         ),
         new FlatButton(
           onPressed: () async {
@@ -259,7 +259,17 @@ class _AddressListModifierState extends State<AddressListModifier> {
               builder: (BuildContext context) => _logoutConfirmation(context),
             );
             },
-          child: new Text("Logout", textAlign: TextAlign.left),
+          child: Container(
+              padding: EdgeInsets.all(20),
+              child: Text(
+                  'Logout',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 16
+                  )
+              )
+          ),
         )
       ],
     );
