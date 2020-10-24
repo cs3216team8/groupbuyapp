@@ -8,14 +8,93 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/chat_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages/chat_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/.firebaserc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/deleteFromFirestorePath.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/firebase.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/functions/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/functions/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/functions/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/functions/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/functions/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/android/settings_aar.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/assets/facebook.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/assets/google-plus.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/assets/tmp_pig.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/PredefinedStores.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/Store.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/activity_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/buy_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/group_buy_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/review_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/models/user_profile_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/activities_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/background.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/login_signup_option_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/login_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/signup_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/social_icon_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/activity_card_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/custom_appbars.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/input_widgets.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/listings_section.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/my_groupbuy_card.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/review_card_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/reviews_section.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/create_groupbuy_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/home/home_banner.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/home/home_default.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/home/home_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/my_groupbuys_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/piggybuy_root.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_listing_reviews.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_part.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_reviews_only.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_settings_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/settings_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/splashscreen_widget.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/storage/activities_storage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/storage/group_buy_storage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/storage/user_profile_storage.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/utils/loginCheck.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/groupbuyapp/lib/utils/navigators.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Podfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Runner/AppDelegate.swift" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Runner/Base.lproj/Main.storyboard" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Runner/Base.lproj/Main.storyboard" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/ios/Runner/Info.plist" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/models/activity.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/models/dummy_groupbuy.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/activities_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/chat_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/components/activity_card_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/components/grid_card_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/grid_card_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/create_groupbuy_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/add_item_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/add_item_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/components/item_display_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/components/item_display_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/components/request_card_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/components/request_card_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/components/time_display_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/components/time_display_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/info_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/info_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/groupbuy/join_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/join_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/home_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/login_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/my_groupbuys_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages/profile_widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/piggybuy_root.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/storage/storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/functions/deleteCollectionsOrDocuments.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -59,6 +138,9 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="323" y="0" key="#General" timestamp="1603183216454">

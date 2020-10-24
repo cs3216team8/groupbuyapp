@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
-import 'package:groupbuyapp/piggybuy_root.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
+import 'package:groupbuyapp/pages_and_widgets/splashscreen_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,12 +32,17 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           print("firebase connected");
+          if (FirebaseAuth.instance.currentUser == null) {
+            return LoginPage();
+          }
+          print(FirebaseAuth.instance.currentUser);
           return PiggyBuyApp();
+
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
         print("firebase loading"); // TODO: goto splash screen
-        return TmpFix(); // Loading();
+        return SplashScreen(); // Loading();
       },
     );
   }
