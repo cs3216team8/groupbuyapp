@@ -112,8 +112,25 @@ class _AddressListModifierState extends State<AddressListModifier> {
 
   Widget _logoutConfirmation(BuildContext context) {
     return new AlertDialog(
-      title: const Text('Are you sure you want to logout?'),
+      content: Text(
+        'Are you sure you want to logout?',
+        style: TextStyle(
+          fontSize: 18
+        ),
+      ),
       actions: <Widget>[
+        new FlatButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text(
+            'No',
+            style: TextStyle(
+            fontSize: 16
+            ),
+          ),
+        ),
         new FlatButton(
           onPressed: () async {
             await FirebaseAuth.instance.signOut();
@@ -124,15 +141,14 @@ class _AddressListModifierState extends State<AddressListModifier> {
             segueWithoutBack(context, LoginScreen());
           },
           textColor: Theme.of(context).primaryColor,
-          child: Text('Logout')
+          child: Text(
+            'Yes',
+            style: TextStyle(
+                fontSize: 16
+            ),
+          )
         ),
-        new FlatButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).primaryColor,
-          child: const Text('No'),
-        ),
+
       ],
     );
   }
@@ -259,16 +275,19 @@ class _AddressListModifierState extends State<AddressListModifier> {
               builder: (BuildContext context) => _logoutConfirmation(context),
             );
             },
-          child: Container(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                      fontSize: 16
-                  )
-              )
+          child: InkWell(
+            splashColor: Theme.of(context).primaryColor.withAlpha(30),
+            child: Container(
+                padding: EdgeInsets.all(20),
+                child: Text(
+                    'Logout',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                        fontSize: 16
+                    )
+                )
+            ),
           ),
         )
       ],
