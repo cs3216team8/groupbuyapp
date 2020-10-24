@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages/activities_widget.dart';
-import 'package:groupbuyapp/pages/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages/chat_widget.dart';
-import 'package:groupbuyapp/pages/create_groupbuy_widget.dart';
-import 'package:groupbuyapp/pages/home_widget.dart';
-import 'package:groupbuyapp/pages/groupbuy/info_widget.dart';
-import 'package:groupbuyapp/pages/my_groupbuys_widget.dart';
-import 'package:groupbuyapp/pages/profile_widget.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -33,16 +35,21 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
-  final List<Widget> mainScreens = <Widget>[
-    HomeScreen(),
-    MyGroupBuys(), //TODO: need to factor in if not logged in page
-    CreateGroupBuy(),
-    ActivityScreen(),
-    ProfileScreen(
-      userProfile: 'dummyid',
-      isMe: true,
-    ),
-  ];
+  GroupBuyStorage groupBuyStorage = GroupBuyStorage();
+
+  List<Widget> getMainScreens() {
+    return <Widget>[
+      HomeScreen(groupBuyStorage: groupBuyStorage,),
+      MyGroupBuys(), //TODO: need to factor in if not logged in page
+      CreateGroupBuy(),
+      ActivityScreen(),
+      ProfileScreen(
+        groupBuyStorage: groupBuyStorage,
+        userProfile: UserProfile.getDummyData(),
+        isMe: true, //true,
+      ),
+    ];
+  }
 
   final List<BottomNavigationBarItem> navItems = <BottomNavigationBarItem>[
     BottomNavigationBarItem(
@@ -89,30 +96,18 @@ class _PiggyBuyState extends State<PiggyBuy> {
         actions: [
           IconButton(
               icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChatScreen("dummy")
-                    )
-                );
-              }),
+              onPressed: () => segueToPage(context, ChatScreen("dummy"))
+          ),
           IconButton(
               icon: Icon(Icons.circle),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => LoginScreen()
-                    )
-                );
-              })
+              onPressed: () => segueToPage(context, LoginScreen())
+          )
         ],
       ),
       body: Center(
         child: IndexedStack(
           index: _selectedIndex,
-          children: widget.mainScreens,
+          children: widget.getMainScreens(),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

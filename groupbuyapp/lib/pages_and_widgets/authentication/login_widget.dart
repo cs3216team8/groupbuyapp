@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages/authentication/login_signup_option_widget.dart';
-import 'package:groupbuyapp/pages/authentication/signup_widget.dart';
-import 'package:groupbuyapp/pages/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages/components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 
 import 'background.dart';
 
 class LoginScreen extends StatelessWidget {
+  final TextEditingController _usernameOrEmailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -44,14 +47,10 @@ class LoginScreen extends StatelessWidget {
                 ),
                 RoundedInputField(
                   hintText: "Your Username or Email",
-                  onChanged: (value) {
-                    print("username input changed: ${value}");
-                  },
+                  controller: _usernameOrEmailController,
                 ),
                 RoundedPasswordField(
-                  onChanged: (value) {
-                    print("pw input changed: ${value}");
-                  },
+                  controller: _passwordController,
                 ),
                 RoundedButton(
                   text: "LOGIN",
@@ -67,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SignupScreen()
+                        builder: (context) => SignupForm()
                       )
                     );
                   },

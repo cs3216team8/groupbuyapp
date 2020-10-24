@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 class GroupBuyStorage {
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
       'groupBuys');
-  String userId = FirebaseAuth.instance.currentUser.uid;
+  String userId = "";
+  // String userId = FirebaseAuth.instance.currentUser.uid;
 
   Future<void> addGroupBuy(GroupBuy groupBuy) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -154,4 +154,9 @@ class GroupBuyStorage {
       print("Failed to retrieve group buy detail: $error");
     }
   }
+
+  // Stream<List<GroupBuy>> getGroupBuysOf(String uid) {
+  //   //TODO: @agnes
+  //   return Stream();
+  // }
 }
