@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flushbar/flushbar.dart';
 
 import 'background.dart';
 
@@ -45,33 +45,43 @@ class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String emailErrorMessage = '';
+  String passwordErrorMessage = '';
 
-  void _signInWithEmailAndPassword() async {
+  Future<User> _signInWithEmailAndPassword() async {
     try {
-      final FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+      return (await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _emailController.text,
       password: _passwordController.text,
     )).user;
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+      if (e.code == 'user-not-found') {
+        showErrorFlushbar("User not found");
       }
-    } catch (e) {
-      print(e);
     }
+  }
+
+  void showErrorFlushbar(String message) {
+    Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.FLOATING,
+        margin: EdgeInsets.only(top: 60, left: 8, right: 8),
+        duration: Duration(seconds: 3),
+        animationDuration: Duration(seconds: 1),
+        borderRadius: 8,
+        backgroundColor: Color(0xFFF2B1AB),
+        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+        title: "Login failed",
+        message: message).show(context);
   }
 
 
   Future<UserCredential> signInWithGoogle() async {
-    print(FirebaseAuth.instance.currentUser);
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn(
         scopes: [
           'email',
-        ])
-            .signIn();
+        ]).signIn();
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -103,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -131,9 +142,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPress: () async {
                         try {
                           UserCredential userCredential = await signInWithFacebook();
-                          segueToPage(context, PiggyBuyApp());
+                          if (userCredential != null) {
+                            segueToPage(context, PiggyBuyApp());
+                          }
                         } catch (e) {
-                          print(e);
+                          showErrorFlushbar(e.toString());
                         }
                       },
                     ),
@@ -142,9 +155,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPress: () async {
                         try {
                           UserCredential userCredential = await signInWithGoogle();
-                          segueToPage(context, PiggyBuyApp());
+                          if (userCredential != null) {
+                            segueToPage(context, PiggyBuyApp());
+                          }
                         } catch (e) {
-                          print(e);
+                          showErrorFlushbar(e.toString());
                         }
                       },
                     )
@@ -158,19 +173,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      return('Please enter your email');
+                      setState(() {
+                        emailErrorMessage = 'Please enter your email';
+                      });
+                      return 'Please enter your email';
                     }
                     if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                      setState(() {
+                        emailErrorMessage = 'Please enter a valid email address';
+                      });
                       return 'Please enter a valid email address';
                     }
+                    setState(() {
+                      emailErrorMessage = '';
+                    });
                     return null;
                   },
                 ),
                 RoundedPasswordField(
                   controller: _passwordController,
                   validator: (String value) {
-                    if (value.isEmpty) {
-                      return('Please enter your password');
+                    if (value == "") {
+                      setState(() {
+                        passwordErrorMessage = 'Please enter your password';
+                      });
+                      return "Please enter your password";
                     }
                     return null;
                   },
@@ -179,7 +206,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   text: "LOGIN",
                   onPress: () async {
                     if (_formKey.currentState.validate()) {
-                      _signInWithEmailAndPassword();
+                      User user = await _signInWithEmailAndPassword();
+                      if (user != null) {
+                        segueToPage(context, PiggyBuyApp());
+                      }
+                    } else {
+                      print(passwordErrorMessage);
+                      showErrorFlushbar(emailErrorMessage + '\n' + passwordErrorMessage);
                     }
                   },
                   color: Theme.of(context).primaryColor,
