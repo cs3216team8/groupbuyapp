@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   UserProfile profile;
@@ -104,6 +109,33 @@ class _AddressListModifierState extends State<AddressListModifier> {
       widget.addresses.add(addr);
     });
   }
+
+  Widget _logoutConfirmation(BuildContext context) {
+    return new AlertDialog(
+      title: const Text('Are you sure you want to logout?'),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+            await GoogleSignIn().signOut();
+            await FacebookLogin().logOut();
+            print(FirebaseAuth.instance.currentUser);
+            segueToPage(context, LoginScreen());
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('Yes'),
+        ),
+        new FlatButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text('No'),
+        ),
+      ],
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -218,6 +250,15 @@ class _AddressListModifierState extends State<AddressListModifier> {
               );
             },
           ), //TODO @kx,
+        ),
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) => _logoutConfirmation(context),
+            );
+            },
+          child: new Text("my Title"),
         )
       ],
     );

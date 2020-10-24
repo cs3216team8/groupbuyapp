@@ -43,7 +43,7 @@ class _SignUpFormState extends State<SignupForm> {
         showErrorFlushbar('The account already exists for that email.');
       }
     } catch (e) {
-      showErrorFlushbar(e.toString());
+      showErrorFlushbar(e.message);
     }
 
   }
