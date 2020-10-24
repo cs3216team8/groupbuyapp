@@ -5,7 +5,7 @@ import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
-
+import 'package:flushbar/flushbar.dart';
 import 'background.dart';
 import 'login_signup_option_widget.dart';
 
@@ -23,30 +23,50 @@ class _SignUpFormState extends State<SignupForm> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordConfirmController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  String fullNameErrorMessage = '';
+  String usernameErrorMessage = '';
+  String emailErrorMessage = '';
+  String passwordErrorMessage = '';
+  String passwordConfirmationErrorMessage = '';
+  String phoneNumberErrorMessage = '';
 
-  void _register() async {
+  Future<User> _register() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      return (await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text
-      );
+      )).user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        showErrorFlushbar('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        showErrorFlushbar('The account already exists for that email.');
       }
     } catch (e) {
-      print(e);
+      showErrorFlushbar(e.toString());
     }
 
+  }
+
+  void showErrorFlushbar(String message) {
+    Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.FLOATING,
+        margin: EdgeInsets.only(top: 60, left: 8, right: 8),
+        duration: Duration(seconds: 3),
+        animationDuration: Duration(seconds: 1),
+        borderRadius: 8,
+        backgroundColor: Color(0xFFF2B1AB),
+        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+        title: "Sign Up failed",
+        message: message).show(context);
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    //super.dispose();
+    super.dispose();
   }
 
 
@@ -76,7 +96,7 @@ class _SignUpFormState extends State<SignupForm> {
                 controller: _fullNameController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return('Please enter your full name');
+                    return 'Please enter your full name';
                   }
                   return null;
                 },
@@ -86,7 +106,7 @@ class _SignUpFormState extends State<SignupForm> {
                 controller: _usernameController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return('Please enter your username');
+                    return 'Please enter your username';
                   }
                   return null;
                 },
@@ -96,7 +116,7 @@ class _SignUpFormState extends State<SignupForm> {
                 controller: _emailController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return('Please enter your email');
+                    return 'Please enter your email';
                   }
                   if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
                     return 'Please enter a valid email address';
@@ -109,7 +129,7 @@ class _SignUpFormState extends State<SignupForm> {
                 controller: _passwordController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return 'Please enter password';
+                    return '\n\nPlease enter password';
                   }
                   return null;
                 },
@@ -118,10 +138,10 @@ class _SignUpFormState extends State<SignupForm> {
                 controller: _passwordConfirmController,
                 validator: (String value) {
                   if (value.isEmpty) {
-                    return 'Please enter password confirmation';
+                    return '\n\nPlease enter password confirmation';
                   }
                   if(value != _passwordController.text) {
-                    return 'Not Match';
+                    return 'Password do not match';
                   }
                   return null;
                 },
@@ -142,8 +162,10 @@ class _SignUpFormState extends State<SignupForm> {
 
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
-                    await _register();
-                    segueToPage(context, PiggyBuyApp());
+                    User user = await _register();
+                    if (user != null) {
+                      segueToPage(context, PiggyBuyApp());
+                    }
                   }
                 },
                 color: Theme.of(context).primaryColor,
