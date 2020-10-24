@@ -48,6 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
   String emailErrorMessage = '';
   String passwordErrorMessage = '';
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   Future<User> _signInWithEmailAndPassword() async {
     try {
       return (await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -173,20 +180,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _emailController,
                   validator: (String value) {
                     if (value.isEmpty) {
-                      setState(() {
-                        emailErrorMessage = 'Please enter your email';
-                      });
                       return 'Please enter your email';
                     }
                     if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
-                      setState(() {
-                        emailErrorMessage = 'Please enter a valid email address';
-                      });
                       return 'Please enter a valid email address';
                     }
-                    setState(() {
-                      emailErrorMessage = '';
-                    });
                     return null;
                   },
                 ),
@@ -194,9 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   validator: (String value) {
                     if (value == "") {
-                      setState(() {
-                        passwordErrorMessage = 'Please enter your password';
-                      });
+
                       return "Please enter your password";
                     }
                     return null;
@@ -210,9 +206,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (user != null) {
                         segueToPage(context, PiggyBuyApp());
                       }
-                    } else {
-                      print(passwordErrorMessage);
-                      showErrorFlushbar(emailErrorMessage + '\n' + passwordErrorMessage);
                     }
                   },
                   color: Theme.of(context).primaryColor,
