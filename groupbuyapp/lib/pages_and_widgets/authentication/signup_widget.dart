@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 
 import 'background.dart';
 import 'login_signup_option_widget.dart';
@@ -67,29 +68,9 @@ class _SignUpFormState extends State<SignupForm> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                "SIGN UP WITH",
+                "SIGN UP",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: size.height * 0.03,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SocialIcon(
-                    iconSrc: "assets/facebook.svg",
-                    onPress: () {
-                      print("clicked facebook");
-                    },
-                  ),
-                  SocialIcon(
-                    iconSrc: "assets/google-plus.svg",
-                    onPress: () {
-                      print("clicked google");
-                    },
-                  )
-                ],
-              ),
-              SizedBox(height: 6,),
-              OrDivider(),
               SizedBox(height: 10,),
               RoundedInputField(
                 controller: _fullNameController,
@@ -161,7 +142,8 @@ class _SignUpFormState extends State<SignupForm> {
 
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
-                    _register();
+                    await _register();
+                    segueToPage(context, PiggyBuyApp());
                   }
                 },
                 color: Theme.of(context).primaryColor,

@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
     Key key,
     @required this.groupBuyStorage,
     @required this.userProfile,
-    this.isMe = false,
+    this.isMe = true,
   }) : super(key: key);
 
   @override
@@ -23,14 +23,14 @@ class ProfileScreen extends StatelessWidget {
         MediaQuery.of(context).size;
 
     return Scaffold(
-      body: isMe
-          ? ProfileReviewsOnly(
-        userProfile: userProfile,
-      )
-          : ProfileListingReviews(
+        body: isMe
+            ? ProfileReviewsOnly(
+          userProfile: userProfile,
+        )
+            : ProfileListingReviews(
           createGroupBuyStream: groupBuyStorage.getAllGroupBuys, // TODO: wrong function; () => groupBuyStorage.getGroupBuysOf(userId: userId)
           userProfile: userProfile,
-      )
+        )
     );
   }
 }
