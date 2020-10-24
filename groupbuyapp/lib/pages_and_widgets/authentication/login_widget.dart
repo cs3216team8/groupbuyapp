@@ -47,10 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _signInWithEmailAndPassword() async {
     try {
-      final FirebaseUser user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final User user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _emailController.text,
       password: _passwordController.text,
-    )).user;
+      )).user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
