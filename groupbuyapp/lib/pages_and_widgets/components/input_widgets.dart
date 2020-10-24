@@ -21,7 +21,7 @@ class RoundedInputField extends StatelessWidget {
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
-            errorStyle: TextStyle(height: 0, color: Colors.black.withOpacity(0)),
+            errorStyle: TextStyle(height: 0),
             icon: Icon(
               icon,
               color: Theme.of(context).primaryColor,
@@ -60,7 +60,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
         validator: widget.validator,
         controller: widget.controller,
         decoration: InputDecoration(
-          errorStyle: TextStyle(height: 0, color: Colors.black.withOpacity(0)),
+          errorStyle: TextStyle(height: 0),
           hintText: widget.hintText,
           icon: Icon(
             Icons.lock,
