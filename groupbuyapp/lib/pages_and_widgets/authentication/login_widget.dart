@@ -63,6 +63,11 @@ class _LoginScreenState extends State<LoginScreen> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showErrorFlushbar("User not found");
+      } else if (e.code == 'wrong-password') {
+        showErrorFlushbar("Wrong password");
+      }
+      else {
+        showErrorFlushbar(e.toString());
       }
     }
   }
