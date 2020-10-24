@@ -57,9 +57,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<User> _signInWithEmailAndPassword() async {
     try {
       return (await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text,
-      password: _passwordController.text,
-    )).user;
+        email: _emailController.text,
+        password: _passwordController.text,
+      )).user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showErrorFlushbar("User not found");

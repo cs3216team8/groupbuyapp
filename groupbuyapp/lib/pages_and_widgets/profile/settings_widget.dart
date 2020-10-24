@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
           await FacebookLogin().logOut();
           print(FirebaseAuth.instance.currentUser);
 
-          segueToPage(context, LoginScreen());
+          segueWithoutBack(context, LoginScreen());
         },
         textColor: Theme.of(context).primaryColor,
         child: const Text('Yes'),
