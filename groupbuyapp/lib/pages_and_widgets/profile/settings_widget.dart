@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:groupbuyapp/models/activity_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
@@ -47,6 +48,7 @@ class SettingsScreen extends StatelessWidget {
           await GoogleSignIn().signOut();
           await FacebookLogin().logOut();
           print(FirebaseAuth.instance.currentUser);
+
           segueToPage(context, LoginScreen());
         },
         textColor: Theme.of(context).primaryColor,

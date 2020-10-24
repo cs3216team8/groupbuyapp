@@ -8,8 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class GroupBuyStorage {
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
       'groupBuys');
-  String userId = "";
-  // String userId = FirebaseAuth.instance.currentUser.uid;
+  String userId = FirebaseAuth.instance.currentUser.uid;
 
   Future<void> addGroupBuy(GroupBuy groupBuy) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
