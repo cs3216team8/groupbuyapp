@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'components/category_selector.dart';
 import 'components/recent_chats.dart';
-
 
 class ChatList extends StatefulWidget {
   @override
@@ -16,10 +13,12 @@ class _ChatListState extends State<ChatList> {
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: Icon(Icons.arrow_back),
           iconSize: 30.0,
           color: Colors.white,
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           'Chats',
@@ -28,25 +27,16 @@ class _ChatListState extends State<ChatList> {
           ),
         ),
         elevation: 0.0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            iconSize: 30.0,
-            color: Colors.white,
-            onPressed: () {},
-          ),
-        ],
       ),
       body: Column(
         children: <Widget>[
-          CategorySelector(),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
+                  topLeft: Radius.circular(0.0),
+                  topRight: Radius.circular(0.0),
                 ),
               ),
               child: Column(

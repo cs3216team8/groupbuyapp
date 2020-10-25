@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';

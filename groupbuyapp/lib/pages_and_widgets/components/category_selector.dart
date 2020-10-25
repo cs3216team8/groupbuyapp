@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// this component is unused for now
+
 class CategorySelector extends StatefulWidget {
   @override
   _CategorySelectorState createState() => _CategorySelectorState();
