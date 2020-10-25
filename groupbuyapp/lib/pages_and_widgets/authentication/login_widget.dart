@@ -9,7 +9,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:http/http.dart' as http;
 import 'background.dart';
+import 'dart:convert' show jsonDecode;
 
 class LoginPage extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -94,20 +96,20 @@ class _LoginScreenState extends State<LoginScreen> {
           'email',
         ]).signIn();
 
-    User user = await FirebaseAuth.instance.currentUser;
-    print(user);
-    // Obtain the auth details from the request
-    /*final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    if (googleUser !=  null) {
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication googleAuth = await googleUser
+          .authentication;
 
-    // Create a new credential
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
+      // Create a new credential
+      final GoogleAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
 
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-     */
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    }
   }
 
   Future<UserCredential> signInWithFacebook() async {
@@ -117,8 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         print('logged in');
-        User user = await FirebaseAuth.instance.currentUser;
-        print(user);
+        final token = result.accessToken.token;
+        final graphResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        final UserCredential profile = jsonDecode(graphResponse.body);
+        return profile;
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('cancel');
