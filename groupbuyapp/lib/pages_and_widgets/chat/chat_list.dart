@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components/recent_chats.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/recent_chats.dart';
 
 class ChatList extends StatefulWidget {
   @override

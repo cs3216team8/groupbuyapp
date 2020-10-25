@@ -6,10 +6,31 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/recent_chats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/recent_chats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/recent_chats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/recent_chats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/piggybuy_root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/piggybuy_root.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +54,12 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../src/flutter/bin/cache/dart-sdk" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\tjun\windev\groupbuyapp\groupbuyapp\lib\pages_and_widgets\chat" />
+      <recent name="C:\Users\tjun\windev\groupbuyapp\groupbuyapp\lib\pages_and_widgets\components" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="FlutterRunConfigurationType" factoryName="Flutter">

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/message_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat_screen.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 
 class RecentChats extends StatelessWidget {
   @override

@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
@@ -11,6 +10,8 @@ import 'package:groupbuyapp/storage/activities_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+
+import 'chat/chat_list.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
