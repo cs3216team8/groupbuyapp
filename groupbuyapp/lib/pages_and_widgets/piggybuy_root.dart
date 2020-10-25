@@ -11,7 +11,7 @@ import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
-import 'chat/chat_list.dart';
+import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';

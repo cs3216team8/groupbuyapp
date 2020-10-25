@@ -60,9 +60,6 @@ final User steven = User(
   imageUrl: '../../assets/temp_chat_assets/steven.jpg',
 );
 
-// FAVORITE CONTACTS
-List<User> favorites = [sam, steven, olivia, john, greg];
-
 // EXAMPLE CHATS ON HOME SCREEN
 List<Message> chats = [
   Message(
