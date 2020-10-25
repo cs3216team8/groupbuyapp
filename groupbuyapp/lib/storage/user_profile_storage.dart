@@ -20,10 +20,10 @@ class ProfileStorage {
         document.data()['profilePicture'],
         document.data()['phoneNumber'],
         document.data()['email'],
-        document.data()['addresses'],
-        document.data()['groupBuyIds'],
-        document.data()['rating'],
-        document.data()['reviewCount']
+        List.from(document.data()['addresses']),
+        List.from(document.data()['groupBuyIds']),
+        double.parse(document.data()['rating']),
+        int.parse(document.data()['reviewCount'])
     );
     return userProfile;
   }
