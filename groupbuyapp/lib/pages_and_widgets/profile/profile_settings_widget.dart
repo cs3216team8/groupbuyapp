@@ -20,16 +20,16 @@ class ProfileSettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: BackAppBar(
         context: context,
-        title: "My Profile",
+        title: "My Profile"s
       ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pic: profile.profilePicture),
-            InputHorizontal(itemText: "Username",),
-            InputHorizontal(itemText: "Email",),
-            SizedBox(height: 20,),
+            InputHorizontal(itemText: "Username", defaultContent: profile.username),
+            InputHorizontal(itemText: "Email", defaultContent: profile.email),
+            SizedBox(height: 20),
             Expanded(
               child: AddressListModifier(
                 addresses: profile.addresses,
@@ -295,13 +295,29 @@ class _AddressListModifierState extends State<AddressListModifier> {
   }
 }
 
-class InputHorizontal extends StatelessWidget {
+class InputHorizontal extends StatefulWidget {
   final String itemText;
+  final String defaultContent;
 
   InputHorizontal({
     Key key,
     this.itemText,
+    this.defaultContent,
   }) : super(key: key);
+
+  @override
+  _InputHorizontalState createState () => _InputHorizontalState();
+
+}
+
+class _InputHorizontalState extends State<InputHorizontal> {
+  TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new TextEditingController(text: widget.defaultContent);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +331,7 @@ class InputHorizontal extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                itemText,
+                widget.itemText,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
               ),
             ),
@@ -324,6 +340,7 @@ class InputHorizontal extends StatelessWidget {
             flex: 7,
             child: TextField(
               decoration: InputDecoration(),
+              controller: _controller,
             ),
           )
         ],
