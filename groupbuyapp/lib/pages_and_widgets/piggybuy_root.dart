@@ -8,9 +8,7 @@ import 'package:groupbuyapp/utils/navigators.dart';
 // Authentication
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
-// Chat
-import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
-
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
@@ -29,14 +27,22 @@ import 'package:groupbuyapp/storage/activities_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
+import 'chat/chat_list_screen.dart';
+
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
+  final UserCredential userCredential;
+
+  PiggyBuyApp({
+    Key key,
+    @required this.userCredential,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: PiggyBuy(),
+      home: PiggyBuy(userCredential: this.userCredential),
       theme: ThemeData(
         primaryColor: Colors.pink,
         accentColor: Color(0xFFF2B1AB),
@@ -54,6 +60,13 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
+  final UserCredential userCredential;
+
+  PiggyBuy({
+    Key key,
+    @required this.userCredential,
+  }) : super(key: key);
+
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
   ActivitiesStorage activitiesStorage = ActivitiesStorage();
   ProfileStorage profileStorage = ProfileStorage();
@@ -100,8 +113,6 @@ class PiggyBuy extends StatefulWidget {
     )
   ];
 
-  PiggyBuy({Key key}) : super(key: key);
-
   @override
   _PiggyBuyState createState() => _PiggyBuyState();
 }
@@ -124,7 +135,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
         actions: [
           IconButton(
               icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () => segueToPage(context, ChatList())
+              onPressed: () => segueToPage(context, ChatList(userCredential: widget.userCredential))
           ),
           IconButton(
               icon: Icon(Icons.login, color: Colors.black,),

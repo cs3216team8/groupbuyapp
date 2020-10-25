@@ -47,7 +47,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.rating,
                   profile.reviewCount
               );
-              profileStorage.editUserProfile(newProfile);
+              profileStorage.createOrUpdateUserProfile(newProfile);
               Navigator.pop(context);
             },
           )
@@ -167,7 +167,6 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await FirebaseAuth.instance.signOut();
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
-            print(FirebaseAuth.instance.currentUser);
             Navigator.pop(context);
             segueWithoutBack(context, LoginScreen());
           },

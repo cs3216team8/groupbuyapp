@@ -76,7 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _onMakeOffer() {
+  void _onJoinGroupBuy() {
     print("make offer button pressed");
   }
 
@@ -139,7 +139,7 @@ class _ChatScreenState extends State<ChatScreen> {
           children: <Widget>[
             RaisedButton(
               color: Theme.of(context).accentColor,
-              onPressed: _onMakeOffer,
+              onPressed: _onJoinGroupBuy,
               child: Text("Join GroupBuy"),
             ),
             RaisedButton(
