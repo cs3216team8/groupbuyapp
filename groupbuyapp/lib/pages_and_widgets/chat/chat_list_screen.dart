@@ -34,10 +34,6 @@ class _ChatListState extends State<ChatList> {
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0.0),
-                  topRight: Radius.circular(0.0),
-                ),
               ),
               child: Column(
                 children: <Widget>[
