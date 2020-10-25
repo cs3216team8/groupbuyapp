@@ -73,7 +73,6 @@ class PiggyBuy extends StatefulWidget {
   String userId = FirebaseAuth.instance.currentUser.uid;
 
   List<Widget> getMainScreens() {
-    print(userCredential);
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage),
       MyGroupBuys(groupBuyStorage: groupBuyStorage, userCredential: userCredential),
