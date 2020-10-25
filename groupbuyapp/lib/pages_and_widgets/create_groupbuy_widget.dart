@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class CreateGroupBuy extends StatelessWidget {
   final GroupBuyStorage groupBuyStorage;
+  final ProfileStorage profileStorage;
 
   CreateGroupBuy({
     Key key,
     @required this.groupBuyStorage,
+    @required this.profileStorage,
   }) : super(key: key);
 
 

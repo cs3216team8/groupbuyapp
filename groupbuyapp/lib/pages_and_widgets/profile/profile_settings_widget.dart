@@ -18,9 +18,14 @@ class ProfileSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(
-        context: context,
-        title: "My Profile"s
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: Text("My Profile"),
+        actions: [
+
+        ]
       ),
       body: Container(
         child: Column(
