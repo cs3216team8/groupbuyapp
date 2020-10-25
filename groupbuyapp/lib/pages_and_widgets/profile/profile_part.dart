@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/styling_resources.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
@@ -15,12 +16,16 @@ class ProfilePart extends StatelessWidget {
 
   Widget ownProfileSettings(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 1, color: Theme.of(context).dividerColor)
+      ),
       child: IconButton(
         icon: Icon(Icons.settings),
         onPressed: () {
           segueToPage(context, ProfileSettingsScreen(profile: userProfile));
         },
-      ), //TODO: make clickable
+      ),
     );
   }
 
@@ -29,26 +34,22 @@ class ProfilePart extends StatelessWidget {
     return Stack(
       children: <Widget>[
         // stylistic background
-        Column(
-          children: <Widget>[
-            Expanded(
-              flex: 5,
-              child: Container(
-                color: Theme.of(context).primaryColor,
-              ),
+        TopDownLinearGradient(
+          colors: [Theme.of(context).accentColor, Colors.white, Colors.white, Colors.white,],
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage("assets/profilebkgrd.jpg"),
             ),
-            Expanded(
-              flex: 7,
-              child: Container(
-                color: Theme.of(context).backgroundColor,
-              ),
-            ),
-          ],
+          ),
         ),
         Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 30.0),
+              margin: EdgeInsets.only(top: 10.0),
               padding: EdgeInsets.symmetric(vertical: 10.0),
               child: Stack(
                 children: <Widget>[
@@ -59,7 +60,7 @@ class ProfilePart extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 20.0),
                         child: CircleAvatar(
                           radius: 50,
-                          backgroundColor: Theme.of(context).accentColor,
+                          backgroundColor: Theme.of(context).primaryColor,
                           child: CircleAvatar(
                             radius: 47,
                             backgroundImage: Image.network(userProfile.profilePicture).image,
@@ -71,16 +72,38 @@ class ProfilePart extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 140, top: 50, bottom: 10),
-                      child: Text(
-                        "${userProfile.username}",
-                        style: TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      SizedBox(width: 140,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 20,),
+                          Container(
+                            child: Text(
+                              "${userProfile.username}",
+                              style: TextStyle(
+                                fontSize: 25.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "Rating: ${userProfile.rating} stars",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              "${userProfile.getActiveStatus()}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    )
                     ],
                   ),
                   Row(
@@ -93,33 +116,6 @@ class ProfilePart extends StatelessWidget {
                     ],
                   )
                 ],)
-            ),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Text(
-                    "Rating: ${userProfile.rating} stars",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: 5,),
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Text(
-                    "${userProfile.getActiveStatus()}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500
-                    ),
-                  ),
-                )
-              ],
             ),
           ],
         ),

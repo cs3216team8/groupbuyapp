@@ -29,7 +29,7 @@ class _ReviewsSectionState extends State<ReviewsSection>
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
-        itemCount: 16,
+        itemCount: 5,
         itemBuilder: (context, index) {
           return ReviewCard(Review.getDummyData());
         }

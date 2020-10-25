@@ -4,10 +4,16 @@ import 'package:flutter_svg/flutter_svg.dart';
 class SocialIcon extends StatelessWidget {
   final String iconSrc;
   final Function onPress;
+
+  final Color backgroundColor;
+  final double backgroundOpacity;
+
   const SocialIcon({
     Key key,
     this.iconSrc,
     this.onPress,
+    this.backgroundColor = Colors.white,
+    this.backgroundOpacity = 0.9,
   }) : super(key: key);
 
   @override
@@ -23,6 +29,7 @@ class SocialIcon extends StatelessWidget {
             color: Theme.of(context).accentColor,
           ),
           shape: BoxShape.circle,
+          color: backgroundColor.withOpacity(backgroundOpacity),
         ),
         child: SvgPicture.asset(
           iconSrc,

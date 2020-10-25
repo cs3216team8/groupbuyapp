@@ -1,14 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/activity_model.dart';
+import 'package:groupbuyapp/storage/activities_storage.dart';
 
 import 'components/activity_card_widget.dart';
 
 class ActivityScreen extends StatelessWidget {
-  // @override
-  // Widget _buildActivity(activity) {
-  //   return new ActivityCard();
-  // }
+  final ActivitiesStorage activitiesStorage;
+
+  ActivityScreen({
+    Key key,
+    @required this.activitiesStorage,
+  }) : super(key: key);
 
   Widget build(BuildContext context) {
     return Container(

@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
-  final UserProfile userProfile;
   final Stream<List<GroupBuy>> Function() createGroupBuyStream;
+  final Future<UserProfile> Function(String) userProfileStream;
+  final bool isMe;
   final String userId;
-  final Color headerBackgroundColour, textColour;
-  final double letterSpacing;
 
-  final double topHeightFraction;
+  final Color headerBackgroundColour, textColour;
+  final double letterSpacing, topHeightFraction;
 
   ProfileListingReviews({
     Key key,
-    @required this.userProfile,
     @required this.createGroupBuyStream,
-    this.userId, //TODO add required when ready
+    @required this.userProfileStream,
+    @required this.isMe,
+    @required this.userId,
+
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -44,7 +47,27 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
                 <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                    child: ProfilePart(isMe: false, userProfile: widget.userProfile,),
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(width: 10.0, color: Theme.of(context).dividerColor))
+                    ),
+                    child: FutureBuilder<UserProfile>(
+                      future: widget.userProfileStream(widget.userId),
+                      builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                        if (snapshot.hasError) {
+                          return FailedToLoadProfile();
+                        }
+
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return ProfileNotLoaded();
+                          case ConnectionState.waiting:
+                            return ProfileLoading();
+                          default:
+                            UserProfile userProfile = snapshot.data;
+                            return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
+                        }
+                      }
+                    )
                   ),
                 ]
               ),

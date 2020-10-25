@@ -6,17 +6,22 @@ class RoundedInputField extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
 
+  final Color iconColor, color;
+
   const RoundedInputField({
     Key key,
     this.controller,
     this.validator,
     this.hintText,
     this.icon = Icons.person,
+    this.iconColor = Colors.white,
+    this.color = Colors.white,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
+      color: color,
       child: TextFormField(
         validator: validator,
         controller: controller,
@@ -49,11 +54,17 @@ class RoundedPasswordField extends StatefulWidget {
   final TextEditingController controller;
   final FormFieldValidator<String> validator;
   final String hintText;
+
+  final Color formFieldColor, color, iconColor;
+
   const RoundedPasswordField({
     Key key,
     this.controller,
     this.validator,
-    this.hintText = "Password"
+    this.hintText = "Password",
+    this.formFieldColor,
+    this.color,
+    this.iconColor,
   }) : super(key: key);
 
   @override
@@ -66,6 +77,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
+      color: widget.color,
       child: TextFormField(
         obscureText: !_showPassword,
         validator: widget.validator,
@@ -78,7 +90,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
           suffixIcon: IconButton(
             icon: Icon(
               _showPassword ? Icons.visibility : Icons.visibility_off,
-              color: Theme.of(context).primaryColor,
+              color: widget.iconColor,
             ),
             onPressed: () {
               setState(() {
@@ -102,9 +114,11 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
 
 class TextFieldContainer extends StatelessWidget {
   final Widget child;
+  final Color color;
   const TextFieldContainer({
     Key key,
-    this.child
+    this.child,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -114,10 +128,6 @@ class TextFieldContainer extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 6),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
       width: size.width * 0.8,
-      // decoration: BoxDecoration(
-      //   color: Theme.of(context).accentColor.withAlpha(60),
-      //   borderRadius: BorderRadius.circular(29),
-      // ),
       child: child,
     );
   }
