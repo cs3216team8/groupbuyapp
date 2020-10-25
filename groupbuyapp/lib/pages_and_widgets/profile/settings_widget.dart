@@ -47,7 +47,6 @@ class SettingsScreen extends StatelessWidget {
           await FirebaseAuth.instance.signOut();
           await GoogleSignIn().signOut();
           await FacebookLogin().logOut();
-          print(FirebaseAuth.instance.currentUser);
 
           segueWithoutBack(context, LoginScreen());
         },

@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           UserCredential userCredential = await signInWithFacebook();
                           if (userCredential != null) {
-                            segueToPage(context, PiggyBuyApp());
+                            segueWithoutBack(context, PiggyBuyApp());
                           }
                         } catch (e) {
                           showErrorFlushbar(e.toString());
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         try {
                           UserCredential userCredential = await signInWithGoogle();
                           if (userCredential != null) {
-                            segueToPage(context, PiggyBuyApp());
+                            segueWithoutBack(context, PiggyBuyApp());
                           }
                         } catch (e) {
                           showErrorFlushbar(e.toString());
@@ -213,7 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_formKey.currentState.validate()) {
                       User user = await _signInWithEmailAndPassword();
                       if (user != null) {
-                        segueToPage(context, PiggyBuyApp());
+                        segueWithoutBack(context, PiggyBuyApp());
                       }
                     }
                   },
