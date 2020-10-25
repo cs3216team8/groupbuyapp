@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/listings_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class HomeScreen extends StatefulWidget {
