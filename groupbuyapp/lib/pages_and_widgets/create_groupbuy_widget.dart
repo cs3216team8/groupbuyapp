@@ -22,6 +22,20 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _productWebsiteController = TextEditingController();
 
+  final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
+  String chosenSite = 'amazon.sg';
+  
+  String getLogoAssetName(String site) {
+    switch (site) {
+      case 'amazon.sg':
+        return 'Amazon-logo.png';
+      case 'ezbuy.sg':
+        return 'ezbuy-logo.jpg';
+      default:
+        return '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,41 +50,41 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  Image.asset(
-                    'assets/Amazon-logo.png',
-                    height: 100.0,
+                  DropdownButton<String>(
+                    value: chosenSite,
+                    items: supportedSites.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String value) {
+                      setState(() {
+                        chosenSite = value;
+                      });
+                    },
                   ),
+                  chosenSite == 'Others'
+                      ? RoundedInputField(
+                        color: Color(0xFFFBE3E1),
+                        iconColor: Theme.of(context).primaryColor,
+                        hintText: "Product Website",
+                        controller: _productWebsiteController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter product website';
+                          }
+                          if (Uri.parse(value).isAbsolute) {
+                            return 'Please enter a valid product website';
+                          }
+                          return null;
+                        },
+                      )
+                      : Image.asset(
+                        'assets/${getLogoAssetName(chosenSite)}',
+                        height: 100.0,
+                      ),
 
-                  RoundedInputField(
-                    color: Color(0xFFFBE3E1),
-                    iconColor: Theme.of(context).primaryColor,
-                    hintText: "Product Website",
-                    controller: _productWebsiteController,
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Please enter product website';
-                      }
-                      if (Uri.parse(value).isAbsolute) {
-                        return 'Please enter a valid product website';
-                      }
-                      return null;
-                    },
-                  ),
-                  RoundedInputField(
-                    color: Color(0xFFFBE3E1),
-                    iconColor: Theme.of(context).primaryColor,
-                    hintText: "Website",
-                    controller: _productWebsiteController,
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Please enter website';
-                      }
-                      if (Uri.parse(value).isAbsolute) {
-                        return 'Please enter a valid website';
-                      }
-                      return null;
-                    },
-                  ),
                   Card(
                       color: Colors.white,
                       elevation: 10,
