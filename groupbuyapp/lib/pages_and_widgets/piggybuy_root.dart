@@ -8,9 +8,7 @@ import 'package:groupbuyapp/utils/navigators.dart';
 // Authentication
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
-// Chat
-import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
-
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
@@ -28,6 +26,8 @@ import 'package:groupbuyapp/storage/activities_storage.dart';
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
+
+import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
