@@ -1,61 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'components/custom_appbars.dart';
 
-class CreateGroupBuy extends StatelessWidget {
+class CreateGroupBuyScreen extends StatefulWidget {
   final GroupBuyStorage groupBuyStorage;
   final ProfileStorage profileStorage;
 
-  CreateGroupBuy({
+  CreateGroupBuyScreen({
     Key key,
     @required this.groupBuyStorage,
     @required this.profileStorage,
   }) : super(key: key);
 
   @override
+  State<StatefulWidget> createState() => _CreateGroupBuyState();
+}
+
+class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _productWebsiteController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: RegularAppBar(
-          context: context,
-          titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
-      ),
-      body: SingleChildScrollView(
+        appBar: RegularAppBar(
+            context: context,
+            titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
+        ),
+        body: SingleChildScrollView(
           child: Container(
-              padding: EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
+            child: Form(
+              key: _formKey,
               child: Column(
-                  children: [
-                    Image.asset(
-                      'assets/Amazon-logo.png',
-                      height: 100.0,
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Website'
-                              ),
-                              TextField(
+                children: [
+                  Image.asset(
+                    'assets/Amazon-logo.png',
+                    height: 100.0,
+                  ),
 
-                              ),
-                            ]
-                        )
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Target Amount'
-                              ),
-                              TextField(
-
-                              ),
+                  RoundedInputField(
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Product Website",
+                    controller: _productWebsiteController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter product website';
+                      }
+                      if (Uri.parse(value).isAbsolute) {
+                        return 'Please enter a valid product website';
+                      }
+                      return null;
+                    },
+                  ),
+                  RoundedInputField(
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Website",
+                    controller: _productWebsiteController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter website';
+                      }
+                      if (Uri.parse(value).isAbsolute) {
+                        return 'Please enter a valid website';
+                      }
+                      return null;
+                    },
+                  ),
+                  Card(
+                      color: Colors.white,
+                      elevation: 10,
+                      shadowColor: Colors.black12,
+                      child: Column(
+                          children: [
+                            Text(
+                                'Target Amount'
+                            ),
+                            TextField(),
                             ]
                         )
                     ),
@@ -68,9 +93,7 @@ class CreateGroupBuy extends StatelessWidget {
                               Text(
                                   'Current Amount'
                               ),
-                              TextField(
-
-                              ),
+                              TextField(),
                             ]
                         )
                     ),
@@ -83,9 +106,7 @@ class CreateGroupBuy extends StatelessWidget {
                               Text(
                                   'Date end'
                               ),
-                              TextField(
-
-                              ),
+                              TextField(),
                             ]
                         )
                     ),
@@ -98,9 +119,7 @@ class CreateGroupBuy extends StatelessWidget {
                               Text(
                                   'Address'
                               ),
-                              TextField(
-
-                              ),
+                              TextField(),
                             ]
                         )
                     ),
@@ -110,8 +129,9 @@ class CreateGroupBuy extends StatelessWidget {
                     )
                   ]
               )
-          )
-      ),
+            )
+        )
+      )
     );
   }
 }
