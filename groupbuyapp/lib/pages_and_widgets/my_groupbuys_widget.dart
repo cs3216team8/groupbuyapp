@@ -51,6 +51,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
       child: Column(
         children: [
           CupertinoSlidingSegmentedControl(
+            thumbColor: Theme.of(context).accentColor,
             children: widget.segments,
             onValueChanged: _onItemTapped,
             groupValue: _selectedIndex,
