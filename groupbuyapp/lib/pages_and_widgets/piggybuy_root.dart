@@ -134,16 +134,9 @@ class _PiggyBuyState extends State<PiggyBuy> {
         backgroundColor: Colors.white,
         actions: [
           IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded),
+              icon: Icon(Icons.chat_bubble_outline_rounded, color: Colors.black),
               onPressed: () => segueToPage(context, ChatList(userCredential: widget.userCredential))
           ),
-          IconButton(
-              icon: Icon(Icons.login, color: Colors.black,),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                segueWithoutBack(context, LoginScreen());
-              }
-          )
         ],
       ),
       body: Center(
