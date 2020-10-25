@@ -128,16 +128,6 @@ class _PiggyBuyState extends State<PiggyBuy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () => segueToPage(context, ChatList(userCredential: widget.userCredential))
-          ),
-        ],
-      ),
       body: Center(
         child: IndexedStack(
           index: _selectedIndex,
