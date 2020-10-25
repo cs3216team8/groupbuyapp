@@ -241,3 +241,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+
+class PiggyBuyWelcome extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Image.asset("assets/piggybuylogo.png", scale: 3,),
+          ),
+        ],
+      ),
+    );
+  }
+}

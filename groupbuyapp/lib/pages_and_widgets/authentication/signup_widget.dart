@@ -77,7 +77,7 @@ class _SignUpFormState extends State<SignupForm> {
       appBar: BackAppBar(
         context: context,
         title: "Sign up now!",
-        color: Theme.of(context).primaryColor,
+        color: Colors.white,
       ),
       body: Background(
         child: SingleChildScrollView(
