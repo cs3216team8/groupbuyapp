@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 
 class ProfileReviewsOnly extends StatefulWidget {
-  final UserProfile userProfile;
-  final Color headerBackgroundColour, textColour;
-  final double letterSpacing;
+  final Future<UserProfile> Function(String) userProfileStream;
+  final bool isMe;
+  final String userId;
 
-  final double topHeightFraction;
+  final Color headerBackgroundColour, textColour;
+  final double letterSpacing, topHeightFraction;
 
   ProfileReviewsOnly({
     Key key,
-    @required this.userProfile,
+    @required this.userProfileStream,
+    @required this.isMe,
+    @required this.userId,
+
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -42,7 +47,25 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
                           border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
                       ),
                       height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                      child: ProfilePart(isMe: true, userProfile: widget.userProfile,),
+                      child: FutureBuilder<UserProfile>(
+                          future: widget.userProfileStream(widget.userId),
+                          builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return FailedToLoadProfile();
+                            }
+
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return ProfileNotLoaded();
+                              case ConnectionState.waiting:
+                                return ProfileLoading();
+                              default:
+                                UserProfile userProfile = snapshot.data;
+                                return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
+                            }
+                          }
+                      )
                     ),
                   ]
               ),
