@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 
 // Widgets
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_listing_reviews.dart';
@@ -29,6 +30,10 @@ class ProfileScreen extends StatelessWidget {
         MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: RegularAppBar(
+        context: context,
+        titleElement: Text("View Profile", style: TextStyle(color: Colors.black),)
+      ),
         body: isMe
             ? ProfileReviewsOnly(
             userProfileStream: profileStorage.getUserProfile,
