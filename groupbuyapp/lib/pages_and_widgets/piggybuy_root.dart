@@ -26,6 +26,7 @@ import 'package:groupbuyapp/storage/activities_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
+//Chat
 import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {

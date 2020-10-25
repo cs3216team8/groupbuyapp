@@ -18,7 +18,9 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController(text: profile.name);
     TextEditingController usernameController = TextEditingController(text: profile.username);
+    TextEditingController phoneNumberController = TextEditingController(text: profile.phoneNumber);
     TextEditingController emailController = TextEditingController(text: profile.email);
 
     return Scaffold(
@@ -37,10 +39,10 @@ class ProfileSettingsScreen extends StatelessWidget {
             onPressed: () {
               UserProfile newProfile = UserProfile(
                   profile.id,
-                  profile.name,
+                  nameController.text,
                   usernameController.text,
                   profile.profilePicture,
-                  profile.phoneNumber,
+                  phoneNumberController.text,
                   profile.email,
                   profile.addresses,
                   profile.groupBuyIds,
@@ -59,7 +61,9 @@ class ProfileSettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pic: profile.profilePicture),
+            InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
             InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+            InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
             InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
             SizedBox(height: 20),
             Expanded(

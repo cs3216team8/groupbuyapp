@@ -68,9 +68,18 @@ class ProfilePart extends StatelessWidget {
                           SizedBox(height: 20,),
                           Container(
                             child: Text(
+                              "${userProfile.name}",
+                              style: TextStyle(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
                               "${userProfile.username}",
                               style: TextStyle(
-                                fontSize: 25.0,
+                                fontSize: 14.0,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -86,12 +95,6 @@ class ProfilePart extends StatelessWidget {
                               itemSize: 30.0,
                               direction: Axis.horizontal,
                             )
-                            // Text(
-                            //   "Rating: ${userProfile.rating} stars",
-                            //   style: TextStyle(
-                            //       fontWeight: FontWeight.w500
-                            //   ),
-                            // ),
                           ),
                         ],
                       ),
