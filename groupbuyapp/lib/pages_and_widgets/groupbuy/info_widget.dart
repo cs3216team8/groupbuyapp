@@ -15,102 +15,116 @@ class GroupBuyInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.all(20),
-        alignment: Alignment.center,
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.center,
-              height: 80,
-              child: Row(
-                // Amazon Logo + Time widget 65/35
-                children: <Widget>[
-                  Expanded(
-                      child: Image(
-                        image: NetworkImage(
-                            this.groupBuy.storeLogo),
-                      ),
-                      flex: 65),
-                  Expanded(child: TimeDisplay(), flex: 35)
-                ],
-              ),
-            ),
-            Container(
-              height: 40,
-              child: Row(
-                // Progress Bar + Completion 65/35
-                children: <Widget>[
-                  Expanded(
-                      child: LinearPercentIndicator(
-                        lineHeight: 20,
-                        percent: this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100,
-                        center: new Text("${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}%",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white)
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black,
+            onPressed: () {
+              Navigator.pop(context);
+      },
+        ),
+        title: const Text('Group Buy Details', style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+      ),
+      body: Container(
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Column(
+            children: <Widget>[
+              Container(
+                alignment: Alignment.center,
+                height: 80,
+                child: Row(
+                  // Amazon Logo + Time widget 65/35
+                  children: <Widget>[
+                    Expanded(
+                        child: Image(
+                          image: NetworkImage(
+                              this.groupBuy.storeLogo),
                         ),
-                        progressColor: Theme.of(context).buttonColor,
-                      ),
-                      flex: 65),
-                  Expanded(
-                      child: Text('${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}/100',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                      flex: 35),
-                ],
+                        flex: 65),
+                    Expanded(child: TimeDisplay(), flex: 35)
+                  ],
+                ),
               ),
-            ),
-            ListTile(
+              Container(
+                height: 40,
+                child: Row(
+                  // Progress Bar + Completion 65/35
+                  children: <Widget>[
+                    Expanded(
+                        child: LinearPercentIndicator(
+                          lineHeight: 20,
+                          percent: this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100,
+                          center: new Text("${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}%",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)
+                          ),
+                          progressColor: Theme.of(context).buttonColor,
+                        ),
+                        flex: 65),
+                    Expanded(
+                        child: Text('${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}/100',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        flex: 35),
+                  ],
+                ),
+              ),
+              ListTile(
                 // Organiser information
-                leading: Icon(
-                  Icons.account_circle,
-                  color: Colors.grey,
-                  size: 24.0,
-                  semanticLabel: 'User profile photo',
-                ),
-                title: Text('by ${this.groupBuy.organiserId}')),
-            ListTile(
+                  leading: Icon(
+                    Icons.account_circle,
+                    color: Colors.grey,
+                    size: 24.0,
+                    semanticLabel: 'User profile photo',
+                  ),
+                  title: Text('by ${this.groupBuy.organiserId}')),
+              ListTile(
                 // Location
-                leading: Icon(
-                  Icons.location_on,
-                  color: Colors.grey,
-                  size: 24.0,
-                  semanticLabel: 'Location',
+                  leading: Icon(
+                    Icons.location_on,
+                    color: Colors.grey,
+                    size: 24.0,
+                    semanticLabel: 'Location',
+                  ),
+                  title: Text('${this.groupBuy.address}')),
+              // Description
+              Container(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                          'Description:',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold
+                          )
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                          '${this.groupBuy.address}'
+                      ),
+                    ),
+                  ],
                 ),
-                title: Text('${this.groupBuy.address}')),
-            // Description
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                        'Description:',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold
-                        )
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                        '${this.groupBuy.address}'
-                    ),
-                  ),
-                ],
               ),
-            ),
 
-            ListTile(
-              // Deposit
-              leading: Text('Deposit:'),
-              title: Text('${this.groupBuy.deposit}'),
-            )
-          ],
-        ));
+              ListTile(
+                // Deposit
+                leading: Text('Deposit:'),
+                title: Text('${this.groupBuy.deposit * 100} %'),
+              )
+            ],
+          )
+      )
+    );
   }
 }

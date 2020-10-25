@@ -8,7 +8,6 @@ import 'package:groupbuyapp/utils/navigators.dart';
 // Authentication
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
-import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
@@ -27,6 +26,7 @@ import 'package:groupbuyapp/storage/activities_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
+//Chat
 import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -128,23 +128,6 @@ class _PiggyBuyState extends State<PiggyBuy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () => segueToPage(context, ChatList(userCredential: widget.userCredential))
-          ),
-          IconButton(
-              icon: Icon(Icons.login, color: Colors.black,),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                segueWithoutBack(context, LoginScreen());
-              }
-          )
-        ],
-      ),
       body: Center(
         child: IndexedStack(
           index: _selectedIndex,
