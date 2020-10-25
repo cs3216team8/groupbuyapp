@@ -47,7 +47,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.rating,
                   profile.reviewCount
               );
-              profileStorage.editUserProfile(newProfile);
+              profileStorage.createOrUpdateUserProfile(newProfile);
               Navigator.pop(context);
             },
           )

@@ -7,7 +7,6 @@ import 'package:groupbuyapp/models/user_profile_model.dart';
 class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
-  String userId = "";
 
   Future<UserProfile> getUserProfile(String userId) async {
     DocumentSnapshot document = await usersRef
@@ -28,7 +27,7 @@ class ProfileStorage {
     return userProfile;
   }
 
-  Future<void> editUserProfile(UserProfile userProfile) async {
+  Future<void> createOrUpdateUserProfile(UserProfile userProfile) async {
     String userId = userProfile.id;
     return usersRef.doc(userId).set({
       'name': userProfile.name,
