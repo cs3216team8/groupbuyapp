@@ -94,7 +94,7 @@ class RecentChats extends StatelessWidget {
                           SizedBox(height: 5.0),
                           chat.unread
                               ? Container(
-                            width: 40.0,
+                            width: 20.0,
                             height: 20.0,
                             decoration: BoxDecoration(
                               color: Theme.of(context).primaryColor,
@@ -102,7 +102,7 @@ class RecentChats extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             child: Text(
-                              'NEW',
+                              '1',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12.0,
