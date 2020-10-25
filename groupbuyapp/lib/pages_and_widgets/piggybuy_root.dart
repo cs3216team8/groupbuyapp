@@ -1,16 +1,33 @@
+// Essentials
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
+
+// Utilities
 import 'package:groupbuyapp/utils/navigators.dart';
+
+// Authentication
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+
+// Chat
+import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
+
+// Home
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+
+// My Piggybuys
+import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
+
+// Create
+import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+
+// Activities
+import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
+import 'package:groupbuyapp/storage/activities_storage.dart';
+
+// Profile
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -38,16 +55,24 @@ class PiggyBuyApp extends StatelessWidget {
 
 class PiggyBuy extends StatefulWidget {
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
+  ActivitiesStorage activitiesStorage = ActivitiesStorage();
+  ProfileStorage profileStorage = ProfileStorage();
+
+  String userId = FirebaseAuth.instance.currentUser.uid;
 
   List<Widget> getMainScreens() {
     return <Widget>[
-      HomeScreen(groupBuyStorage: groupBuyStorage,),
-      MyGroupBuys(), //TODO: need to factor in if not logged in page
-      CreateGroupBuyScreen(),
-      ActivityScreen(),
+      HomeScreen(groupBuyStorage: groupBuyStorage),
+      MyGroupBuys(groupBuyStorage: groupBuyStorage),
+      CreateGroupBuyScreen(
+        groupBuyStorage: groupBuyStorage,
+        profileStorage: profileStorage,
+      ),
+      ActivityScreen(activitiesStorage: activitiesStorage),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,
-        userProfile: UserProfile.getDummyData(),
+        profileStorage: profileStorage,
+        userId: userId,
         isMe: true, //true,
       ),
     ];
