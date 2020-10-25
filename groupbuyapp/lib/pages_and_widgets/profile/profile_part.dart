@@ -37,6 +37,15 @@ class ProfilePart extends StatelessWidget {
         TopDownLinearGradient(
           colors: [Theme.of(context).accentColor, Colors.white, Colors.white, Colors.white,],
         ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage("assets/profilebkgrd.jpg"),
+            ),
+          ),
+        ),
         Column(
           children: <Widget>[
             Container(
