@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget {
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
           print("firebase connected");
-          if (FirebaseAuth.instance.currentUser == null) {
-            return LoginPage();
-          }
-          print(FirebaseAuth.instance.currentUser);
+          // if (FirebaseAuth.instance.currentUser == null) {
+          //   return LoginPage();
+          // }
+          // print(FirebaseAuth.instance.currentUser);
           return PiggyBuyApp();
 
         }
