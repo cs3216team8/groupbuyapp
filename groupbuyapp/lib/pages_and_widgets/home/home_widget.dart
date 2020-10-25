@@ -27,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // SEARCH FUNCTIONALITY
   TextEditingController _searchQueryController = TextEditingController();
-  bool _isSearching = false;
   String searchQuery = "Search query";
 
   Widget _buildSearchField() {
@@ -45,14 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _buildActions() {
-    if (_isSearching) {
       return <Widget>[
         IconButton(
           icon: Icon(Icons.clear, color: appbarElementColor,),
           onPressed: () {
             if (_searchQueryController == null ||
                 _searchQueryController.text.isEmpty) {
-              Navigator.pop(context);
+              // Navigator.pop(context);
               return;
             }
             _clearSearchQuery();
@@ -63,40 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () => segueToPage(context, ChatList())
         ),
       ];
-    }
-
-    return <Widget>[
-      IconButton(
-        icon: Icon(Icons.search, color: appbarElementColor,),
-        onPressed: _startSearch,
-      ),
-      IconButton(
-          icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-          onPressed: () => segueToPage(context, ChatList())
-      ),
-    ];
-  }
-
-  void _startSearch() {
-    ModalRoute.of(context)
-        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
-
-    setState(() {
-      _isSearching = true;
-    });
   }
 
   void updateSearchQuery(String newQuery) {
     setState(() {
       searchQuery = newQuery;
-    });
-  }
-
-  void _stopSearching() {
-    _clearSearchQuery();
-
-    setState(() {
-      _isSearching = false;
     });
   }
 
@@ -114,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
         preferredSize: Size.fromHeight(50.0), // here the desired height
         child: AppBar(
           backgroundColor: appbarColor,
-          leading: _isSearching ? const BackButton() : Container(),
-          title: _isSearching ? _buildSearchField() : Text("testing"),//_buildTitle(context),
+          leading: Container(),
+          title: _buildSearchField(),
           actions: _buildActions(),
           // actions: [
           //   IconButton(
