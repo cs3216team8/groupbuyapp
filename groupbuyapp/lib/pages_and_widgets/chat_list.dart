@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import 'components/category_selector.dart';
 import 'components/recent_chats.dart';
 
 
@@ -39,14 +37,13 @@ class _ChatListState extends State<ChatList> {
       ),
       body: Column(
         children: <Widget>[
-          CategorySelector(),
           Expanded(
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
+                  topLeft: Radius.circular(0.0),
+                  topRight: Radius.circular(0.0),
                 ),
               ),
               child: Column(

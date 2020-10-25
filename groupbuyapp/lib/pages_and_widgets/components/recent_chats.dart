@@ -10,14 +10,14 @@ class RecentChats extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
+            topLeft: Radius.circular(0.0),
+            topRight: Radius.circular(0.0),
           ),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.0),
-            topRight: Radius.circular(30.0),
+            topLeft: Radius.circular(0.0),
+            topRight: Radius.circular(0.0),
           ),
           child: ListView.builder(
             itemCount: chats.length,
@@ -31,14 +31,16 @@ class RecentChats extends StatelessWidget {
                   ),
                 ),
                 child: Container(
-                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0, right: 20.0),
+                  margin: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 7.0, right: 7.0),
                   padding:
-                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
                   decoration: BoxDecoration(
                     color: chat.unread ? Color(0xFFFFEFEE) : Colors.white,
                     borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20.0),
-                      bottomRight: Radius.circular(20.0),
+                      topRight: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0),
+                      topLeft: Radius.circular(10.0),
                     ),
                   ),
                   child: Row(
