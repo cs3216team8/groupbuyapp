@@ -77,7 +77,7 @@ class _SignUpFormState extends State<SignupForm> {
       appBar: BackAppBar(
         context: context,
         title: "Sign up now!",
-        color: Theme.of(context).primaryColor,
+        color: Colors.white,
       ),
       body: Background(
         child: SingleChildScrollView(
@@ -93,6 +93,8 @@ class _SignUpFormState extends State<SignupForm> {
               ),
               SizedBox(height: 10,),
               RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _fullNameController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -103,6 +105,8 @@ class _SignUpFormState extends State<SignupForm> {
                 hintText: "Full Name",
               ),
               RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _usernameController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -113,6 +117,8 @@ class _SignUpFormState extends State<SignupForm> {
                 hintText: "Username",
               ),
               RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _emailController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -126,6 +132,8 @@ class _SignUpFormState extends State<SignupForm> {
                   hintText: "Email"
               ),
               RoundedPasswordField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _passwordController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -135,6 +143,8 @@ class _SignUpFormState extends State<SignupForm> {
                 },
               ),
               RoundedPasswordField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _passwordConfirmController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -148,6 +158,8 @@ class _SignUpFormState extends State<SignupForm> {
                 hintText: "Confirm password",
               ),
               RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
                 controller: _phoneNumberController,
                 validator: (String value) {
                   if (value.isEmpty) {
@@ -158,8 +170,8 @@ class _SignUpFormState extends State<SignupForm> {
                 hintText: "Phone Number",
               ),
               RoundedButton(
+                color: Theme.of(context).primaryColor,
                 text: "SIGN UP",
-
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
                     User user = await _register();
@@ -168,9 +180,9 @@ class _SignUpFormState extends State<SignupForm> {
                     }
                   }
                 },
-                color: Theme.of(context).primaryColor,
               ),
               LoginOrSignupOption(
+                textColor: Theme.of(context).primaryColor,
                 isLogin: false,
                 onPress: () {
                   print("should seg to login now");
@@ -192,6 +204,14 @@ class _SignUpFormState extends State<SignupForm> {
 }
 
 class OrDivider extends StatelessWidget {
+  static final Color dividerColor = Color(0xFFD9D9D9);
+  final Color textColor;
+
+  OrDivider({
+    Key key,
+    this.textColor,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -205,7 +225,7 @@ class OrDivider extends StatelessWidget {
             child: Text(
               "OR",
               style: TextStyle(
-                color: Theme.of(context).primaryColor,
+                color: textColor,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -219,7 +239,7 @@ class OrDivider extends StatelessWidget {
   Expanded buildDivider() {
     return Expanded(
       child: Divider(
-        color: Color(0xFFD9D9D9),
+        color: dividerColor,
         height: 1.5,
       ),
     );

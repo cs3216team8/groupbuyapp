@@ -16,7 +16,7 @@ class ProfileReviewsOnly extends StatefulWidget {
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
-    this.topHeightFraction = 0.3,
+    this.topHeightFraction = 0.2,
   }) : super(key: key);
 
   @override
@@ -38,6 +38,9 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
               delegate: SliverChildListDelegate(
                   <Widget>[
                     Container(
+                      decoration: BoxDecoration(
+                          border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
+                      ),
                       height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                       child: ProfilePart(isMe: true, userProfile: widget.userProfile,),
                     ),

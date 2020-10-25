@@ -44,6 +44,9 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
                 <Widget>[
                   Container(
                     height: MediaQuery.of(context).size.height * widget.topHeightFraction,
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(width: 10.0, color: Theme.of(context).dividerColor))
+                    ),
                     child: ProfilePart(isMe: false, userProfile: widget.userProfile,),
                   ),
                 ]

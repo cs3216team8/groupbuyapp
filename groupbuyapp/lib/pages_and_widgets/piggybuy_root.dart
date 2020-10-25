@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
@@ -9,7 +8,9 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/storage/activities_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -38,16 +39,18 @@ class PiggyBuyApp extends StatelessWidget {
 
 class PiggyBuy extends StatefulWidget {
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
+  ActivitiesStorage activitiesStorage = ActivitiesStorage();
+  ProfileStorage profileStorage = ProfileStorage();
 
   List<Widget> getMainScreens() {
     return <Widget>[
-      HomeScreen(groupBuyStorage: groupBuyStorage,),
-      MyGroupBuys(), //TODO: need to factor in if not logged in page
-      CreateGroupBuy(),
-      ActivityScreen(),
+      HomeScreen(groupBuyStorage: groupBuyStorage),
+      MyGroupBuys(groupBuyStorage: groupBuyStorage), //TODO: need to factor in if not logged in page
+      CreateGroupBuy(groupBuyStorage: groupBuyStorage),
+      ActivityScreen(activitiesStorage: activitiesStorage),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,
-        userProfile: UserProfile.getDummyData(),
+        profileStorage: profileStorage,
         isMe: true, //true,
       ),
     ];
@@ -94,14 +97,15 @@ class _PiggyBuyState extends State<PiggyBuy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PiggyBuy'),
+        title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
               icon: Icon(Icons.chat_bubble_outline_rounded),
               onPressed: () => segueToPage(context, ChatList())
           ),
           IconButton(
-              icon: Icon(Icons.login),
+              icon: Icon(Icons.login, color: Colors.black,),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
                 segueWithoutBack(context, LoginScreen());

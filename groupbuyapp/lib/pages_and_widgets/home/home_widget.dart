@@ -24,6 +24,10 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: <Widget>[
           HomeCarouselBanner(),
+          Container(
+            child:
+            Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+          ),
           ListingsSection(
             createGroupBuyStream: widget.groupBuyStorage.getAllGroupBuys,
             createDefaultScreen: () => HomeDefaultScreen(),

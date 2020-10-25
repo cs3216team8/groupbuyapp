@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 class LoginOrSignupOption extends StatelessWidget {
   final bool isLogin;
   final Function onPress;
+  final Color textColor;
+
   const LoginOrSignupOption({
     Key key,
     this.isLogin = true,
     this.onPress,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -23,7 +26,7 @@ class LoginOrSignupOption extends StatelessWidget {
           child: Text(
             isLogin ? "Sign up" : "Sign in",
             style: TextStyle(
-              color: Theme.of(context).primaryColor,
+              color: textColor,
               fontWeight: FontWeight.bold,
             ),
           ),

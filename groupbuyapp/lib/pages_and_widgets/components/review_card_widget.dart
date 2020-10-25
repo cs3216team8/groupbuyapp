@@ -25,57 +25,69 @@ class ReviewCard extends StatelessWidget {
       color: cardColor,
       elevation: elevation,
       shadowColor: shadowColor,
+      margin: EdgeInsets.all(0.5),
       child: InkWell(
         //TODO think if want splash or not aka want to appear tappable or not
         //onTap: _openDetailedReview,
         child: Container(
-          padding: EdgeInsets.all(5),
-          child: Column(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(width: 10,),
-                        CircleAvatar(
-                          radius: 15,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: CircleAvatar(
-                            radius: 13,
-                            backgroundImage: Image.network(review.profilePicture).image,
-                          ),
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundImage: Image.network(review.profilePicture).image,
                         ),
-                        SizedBox(width: 10,),
-                        Text(review.username),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(review.dateTime.toString()),
+                  SizedBox(width: 20,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.only(right: 10),
+                            child: Text(
+                              review.username,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                          Container(
+                            child: Text(
+                              review.title,
+                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 5,),
+                      Container(
+                        child: Text(
+                          review.description,
+                        ),
+                      ),
+                      SizedBox(height: 5,),
+                      Container(
+                        child: Text(
+                          "${review.dateTime.difference(DateTime.now()).inDays} days ago",
+                          style: TextStyle(color: Colors.black45,),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(review.title, style: TextStyle(fontWeight: FontWeight.bold),),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('${review.rating} stars'),
-                  ),
-                ],
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: Text(review.description),
-              ),
+              Text('${review.rating}', style: TextStyle(color: Colors.black45, fontSize: 18),),
             ],
           ),
         ),
