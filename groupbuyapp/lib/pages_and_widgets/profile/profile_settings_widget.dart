@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
-  UserProfile profile;
+  final UserProfile profile;
+  final ProfileStorage profileStorage = ProfileStorage();
 
   ProfileSettingsScreen({
     Key key,
@@ -17,14 +18,39 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController(text: profile.username);
+    TextEditingController emailController = TextEditingController(text: profile.email);
+
     return Scaffold(
       appBar: AppBar(
+        title: const Text('My Profile', style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.black,),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        title: Text("My Profile"),
         actions: [
-
+          IconButton(
+          icon: Icon(Icons.save_outlined, color: Colors.black,),
+            onPressed: () {
+              UserProfile newProfile = UserProfile(
+                  profile.id,
+                  profile.name,
+                  usernameController.text,
+                  profile.profilePicture,
+                  profile.phoneNumber,
+                  profile.email,
+                  profile.addresses,
+                  profile.groupBuyIds,
+                  profile.rating,
+                  profile.reviewCount
+              );
+              profileStorage.createOrUpdateUserProfile(newProfile);
+              Navigator.pop(context);
+            },
+          )
         ]
       ),
       resizeToAvoidBottomInset: false,
@@ -33,8 +59,8 @@ class ProfileSettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pic: profile.profilePicture),
-            InputHorizontal(itemText: "Username", defaultContent: profile.username),
-            InputHorizontal(itemText: "Email", defaultContent: profile.email),
+            InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+            InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
             SizedBox(height: 20),
             Expanded(
               child: AddressListModifier(
@@ -142,7 +168,6 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await FirebaseAuth.instance.signOut();
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
-            print(FirebaseAuth.instance.currentUser);
             Navigator.pop(context);
             segueWithoutBack(context, LoginScreen());
           },
@@ -309,12 +334,14 @@ class _AddressListModifierState extends State<AddressListModifier> {
 
 class InputHorizontal extends StatefulWidget {
   final String itemText;
-  final String defaultContent;
+  final TextEditingController controller;
+  final bool enabled;
 
   InputHorizontal({
     Key key,
     this.itemText,
-    this.defaultContent,
+    this.controller,
+    this.enabled,
   }) : super(key: key);
 
   @override
@@ -323,13 +350,6 @@ class InputHorizontal extends StatefulWidget {
 }
 
 class _InputHorizontalState extends State<InputHorizontal> {
-  TextEditingController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = new TextEditingController(text: widget.defaultContent);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +372,8 @@ class _InputHorizontalState extends State<InputHorizontal> {
             flex: 7,
             child: TextField(
               decoration: InputDecoration(),
-              controller: _controller,
+              controller: widget.controller,
+              enabled: widget.enabled,
             ),
           )
         ],

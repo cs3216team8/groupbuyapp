@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
@@ -16,6 +18,7 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignupForm> {
+  ProfileStorage profileStorage = new ProfileStorage();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -30,12 +33,32 @@ class _SignUpFormState extends State<SignupForm> {
   String passwordConfirmationErrorMessage = '';
   String phoneNumberErrorMessage = '';
 
-  Future<User> _register() async {
+  Future<UserCredential> _register() async {
     try {
-      return (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text
-      )).user;
+      ));
+      String userId = userCredential.user.uid;
+      UserProfile userProfile = new UserProfile(
+          userId,
+          _fullNameController.text,
+          _usernameController.text,
+          "",
+          _phoneNumberController.text,
+          _emailController.text,
+          [],
+          [],
+          null,
+          0
+      );
+      try {
+        await profileStorage.createOrUpdateUserProfile(userProfile);
+        return userCredential;
+      } catch (e) {
+        print(e);
+      }
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showErrorFlushbar('The password provided is too weak.');
@@ -174,8 +197,8 @@ class _SignUpFormState extends State<SignupForm> {
                 text: "SIGN UP",
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
-                    User user = await _register();
-                    if (user != null) {
+                    UserCredential userCredential = await _register();
+                    if (userCredential != null) {
                       segueToPage(context, PiggyBuyApp());
                     }
                   }

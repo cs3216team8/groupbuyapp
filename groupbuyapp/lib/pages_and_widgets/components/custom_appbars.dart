@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
-import '../chat_list.dart';
 
 PreferredSize BackAppBar({
   @required BuildContext context,
