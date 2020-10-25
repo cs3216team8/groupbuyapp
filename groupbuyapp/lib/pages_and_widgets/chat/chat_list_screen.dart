@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'components/recent_chats.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/recent_chats_widget.dart';
 
 class ChatList extends StatefulWidget {
   @override
@@ -34,10 +34,6 @@ class _ChatListState extends State<ChatList> {
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).accentColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(0.0),
-                  topRight: Radius.circular(0.0),
-                ),
               ),
               child: Column(
                 children: <Widget>[
