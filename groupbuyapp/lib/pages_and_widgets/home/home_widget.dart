@@ -82,6 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(50.0), // here the desired height
         child: AppBar(
+          elevation: 0,
           backgroundColor: appbarColor,
           leading: Container(),
           title: _buildSearchField(),

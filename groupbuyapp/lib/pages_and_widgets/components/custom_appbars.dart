@@ -6,6 +6,7 @@ import '../chat_list.dart';
 PreferredSize BackAppBar({
   @required BuildContext context,
   @required String title,
+  double elevation = 0,
   Color color=Colors.white,
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
@@ -13,6 +14,7 @@ PreferredSize BackAppBar({
   return PreferredSize(
     preferredSize: Size.fromHeight(50.0),
     child: AppBar(
+      elevation: elevation,
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: iconColor,),
         onPressed:() {
@@ -30,12 +32,14 @@ PreferredSize BackAppBar({
 PreferredSize RegularAppBar({
   @required BuildContext context,
   @required Widget titleElement,
+  double elevation = 0,
   Color color = Colors.white,
   Color iconColor = Colors.black,
 }) {
   return PreferredSize(
     preferredSize: Size.fromHeight(50.0), // here the desired height
     child: AppBar(
+      elevation: elevation,
       title: titleElement,
       backgroundColor: color,
       actions: [
