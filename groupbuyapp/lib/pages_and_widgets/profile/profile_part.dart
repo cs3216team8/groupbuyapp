@@ -68,7 +68,7 @@ class ProfilePart extends StatelessWidget {
                           SizedBox(height: 20,),
                           Container(
                             child: Text(
-                              "${userProfile.username}",
+                              "${userProfile.name}",
                               style: TextStyle(
                                 fontSize: 25.0,
                                 fontWeight: FontWeight.bold,
