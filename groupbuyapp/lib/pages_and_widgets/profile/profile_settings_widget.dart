@@ -18,7 +18,9 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController nameController = TextEditingController(text: profile.name);
     TextEditingController usernameController = TextEditingController(text: profile.username);
+    TextEditingController phoneNumberController = TextEditingController(text: profile.phoneNumber);
     TextEditingController emailController = TextEditingController(text: profile.email);
 
     return Scaffold(
@@ -37,10 +39,10 @@ class ProfileSettingsScreen extends StatelessWidget {
             onPressed: () {
               UserProfile newProfile = UserProfile(
                   profile.id,
-                  profile.name,
+                  nameController.text,
                   usernameController.text,
                   profile.profilePicture,
-                  profile.phoneNumber,
+                  phoneNumberController.text,
                   profile.email,
                   profile.addresses,
                   profile.groupBuyIds,
@@ -53,12 +55,15 @@ class ProfileSettingsScreen extends StatelessWidget {
           )
         ]
       ),
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pic: profile.profilePicture),
+            InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
             InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+            InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
             InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
             SizedBox(height: 20),
             Expanded(
@@ -86,14 +91,14 @@ class ProfilePicChanger extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        SizedBox(width: 50,),
+        SizedBox(width: 60,),
         Padding(
-          padding: EdgeInsets.only(top: 30.0, bottom: 10.0),
+          padding: EdgeInsets.only(top: 20.0),
           child: CircleAvatar(
-            radius: 70,
+            radius: 60,
             backgroundColor: Theme.of(context).accentColor,
             child: CircleAvatar(
-              radius: 65,
+              radius: 55,
               backgroundImage: Image.network(pic).image,
             ),
           ),
@@ -183,7 +188,6 @@ class _AddressListModifierState extends State<AddressListModifier> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -193,22 +197,29 @@ class _AddressListModifierState extends State<AddressListModifier> {
             Column(
               children: <Widget>[
                 SizedBox(height: 10,),
-                Text(
-                  "List of addresses",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(width: 1, color: Colors.black26))
+                  ),
+                  child: Text(
+                    "List of addresses",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 70,
-                    alignment: Alignment(0, 0),
-                    color: Colors.orange,
-                    child: Text(
-                      "To remove an item, swipe the tile to the right or tap the trash icon.",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                  child:
+                    Container(height: 8,),
+                  // Container(
+                  //   padding: const EdgeInsets.all(10),
+                  //   height: 70,
+                  //   alignment: Alignment(0, 0),
+                  //   color: Colors.orange,
+                  //   child: Text(
+                  //     "To remove an item, swipe the tile to the right or tap the trash icon.",
+                  //     style: TextStyle(color: Colors.white),
+                  //   ),
+                  // ),
                 ),
               ],
             ),
@@ -347,7 +358,7 @@ class _InputHorizontalState extends State<InputHorizontal> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5 ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

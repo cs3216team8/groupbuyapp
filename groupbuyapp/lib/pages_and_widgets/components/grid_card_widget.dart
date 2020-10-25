@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/info_widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
@@ -10,8 +12,8 @@ class GroupBuyCard extends StatelessWidget {
 
   GroupBuyCard(this.details);
 
-  void _openDetailedGroupBuy() {
-    print("grid card pressed");
+  void _openDetailedGroupBuy(BuildContext context) {
+    segueToPage(context, GroupBuyInfo(groupBuy: this.details));
   }
 
   @override
@@ -22,7 +24,7 @@ class GroupBuyCard extends StatelessWidget {
       shadowColor: Colors.black12,
       child: InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: _openDetailedGroupBuy,
+        onTap: () {_openDetailedGroupBuy(context);},
         child: Column(
           children: <Widget>[
             Expanded(
