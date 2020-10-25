@@ -177,8 +177,8 @@ class _SignUpFormState extends State<SignupForm> {
                 text: "SIGN UP",
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
-                    User user = await _register();
-                    if (user != null) {
+                    UserCredential userCredential = await _register();
+                    if (userCredential != null) {
                       segueToPage(context, PiggyBuyApp());
                     }
                   }
