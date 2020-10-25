@@ -63,8 +63,8 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       ));
-      print(user);
-      print(FirebaseAuth.instance.currentUser.uid);
+      // print(user);
+      // print(FirebaseAuth.instance.currentUser.uid);
       return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
@@ -30,12 +31,14 @@ class _SignUpFormState extends State<SignupForm> {
   String passwordConfirmationErrorMessage = '';
   String phoneNumberErrorMessage = '';
 
-  Future<User> _register() async {
+  Future<UserCredential> _register() async {
     try {
-      return (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text
-      )).user;
+      ));
+      String userId = userCredential.user.uid;
+      return userCredential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showErrorFlushbar('The password provided is too weak.');
