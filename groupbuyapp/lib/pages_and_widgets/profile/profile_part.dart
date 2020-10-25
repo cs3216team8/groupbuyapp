@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/styling_resources.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
@@ -33,19 +34,7 @@ class ProfilePart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        // stylistic background
-        TopDownLinearGradient(
-          colors: [Theme.of(context).accentColor, Colors.white, Colors.white, Colors.white,],
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage("assets/profilebkgrd.jpg"),
-            ),
-          ),
-        ),
+        // TODO: stylistic background
         Column(
           children: <Widget>[
             Container(
@@ -87,21 +76,23 @@ class ProfilePart extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            child: Text(
-                              "Rating: ${userProfile.rating} stars",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500
+                            child: RatingBarIndicator(
+                              rating: userProfile.rating,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
                               ),
-                            ),
+                              itemCount: 5,
+                              itemSize: 30.0,
+                              direction: Axis.horizontal,
+                            )
+                            // Text(
+                            //   "Rating: ${userProfile.rating} stars",
+                            //   style: TextStyle(
+                            //       fontWeight: FontWeight.w500
+                            //   ),
+                            // ),
                           ),
-                          Container(
-                            child: Text(
-                              "${userProfile.getActiveStatus()}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ],
