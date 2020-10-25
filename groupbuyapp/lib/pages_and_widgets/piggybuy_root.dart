@@ -135,7 +135,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
         actions: [
           IconButton(
               icon: Icon(Icons.chat_bubble_outline_rounded),
-              onPressed: () => segueToPage(context, ChatList())
+              onPressed: () => segueToPage(context, ChatList(userCredential: widget.userCredential))
           ),
           IconButton(
               icon: Icon(Icons.login, color: Colors.black,),

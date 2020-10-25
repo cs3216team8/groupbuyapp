@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
@@ -17,6 +18,7 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignupForm> {
+  ProfileStorage profileStorage = new ProfileStorage();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -38,7 +40,25 @@ class _SignUpFormState extends State<SignupForm> {
           password: _passwordController.text
       ));
       String userId = userCredential.user.uid;
-      return userCredential;
+      UserProfile userProfile = new UserProfile(
+          userId,
+          _fullNameController.text,
+          _usernameController.text,
+          "",
+          _phoneNumberController.text,
+          _emailController.text,
+          [],
+          [],
+          null,
+          0
+      );
+      try {
+        await profileStorage.createOrUpdateUserProfile(userProfile);
+        return userCredential;
+      } catch (e) {
+        print(e);
+      }
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showErrorFlushbar('The password provided is too weak.');
