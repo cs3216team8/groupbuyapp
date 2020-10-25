@@ -5,6 +5,7 @@ import 'package:groupbuyapp/pages_and_widgets/activities_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat_list.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat_screen.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
@@ -93,19 +94,6 @@ class _PiggyBuyState extends State<PiggyBuy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(50.0), // here the desired height
-        child: AppBar(
-          title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
-          backgroundColor: Colors.white,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded, color: Colors.black),
-              onPressed: () => segueToPage(context, ChatList())
-            ),
-          ],
-        ),
-      ),
       body: Center(
         child: IndexedStack(
           index: _selectedIndex,
