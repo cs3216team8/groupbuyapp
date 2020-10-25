@@ -93,22 +93,18 @@ class _PiggyBuyState extends State<PiggyBuy> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        actions: [
-          IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50.0), // here the desired height
+        child: AppBar(
+          title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
+          backgroundColor: Colors.white,
+          actions: [
+            IconButton(
+              icon: Icon(Icons.chat_bubble_outline_rounded, color: Colors.black),
               onPressed: () => segueToPage(context, ChatList())
-          ),
-          IconButton(
-              icon: Icon(Icons.login, color: Colors.black,),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                segueWithoutBack(context, LoginScreen());
-              }
-          )
-        ],
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: IndexedStack(
