@@ -103,45 +103,58 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
               FutureBuilder<Stream<List<GroupBuy>>>(
                 future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(widget.userCredential.user.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
-                  return StreamBuilder<List<GroupBuy>>(
-                    stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(widget.userCredential.user.uid),
-                    builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-                      List<Widget> children;
-                      if (snapshot.hasError) {
-                        return FailedToLoadMyGroupBuys();
-                      }
+                    if (snapshot.hasError){
+                      return FailedToLoadMyGroupBuys();
+                    }
 
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          return GroupBuysNotLoaded();
-                        case ConnectionState.waiting:
-                          return GroupbuysLoading();
-                        default:
-                          children = snapshot.data.map((GroupBuy groupBuy) {
-                            return new MyGroupBuyCard(groupBuy);
-                          }).toList();
-                          break;
-                      }
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return GroupBuysNotLoaded();
+                      case ConnectionState.waiting:
+                        return GroupbuysLoading();
+                      default:
+                        return StreamBuilder<List<GroupBuy>>(
+                          stream: snapshot.data,
+                          builder: (BuildContext context, AsyncSnapshot<List<
+                              GroupBuy>> snapshot) {
+                            List<Widget> children;
+                            if (snapshot.hasError) {
+                              return FailedToLoadMyGroupBuys();
+                            }
 
-                      if (children.isEmpty) {
-                        return MyGroupBuyDefaultScreen();
-                      }
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return GroupBuysNotLoaded();
+                              case ConnectionState.waiting:
+                                return GroupbuysLoading();
+                              default:
+                                children = snapshot.data.map((
+                                    GroupBuy groupBuy) {
+                                  return new MyGroupBuyCard(groupBuy);
+                                }).toList();
+                                break;
+                            }
 
-                      return GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          childAspectRatio: 6.0/7.0,
-                          children: children
-                      );
-                    },
-                  );
-                }
-              )
-            ]
-          )
-        ]
-      )
+                            if (children.isEmpty) {
+                              return MyGroupBuyDefaultScreen();
+                            }
+
+                            return GridView.count(
+                                crossAxisCount: 2,
+                                shrinkWrap: true,
+                                physics: const ClampingScrollPhysics(),
+                                childAspectRatio: 6.0 / 7.0,
+                                children: children
+                            );
+                          },
+                        );
+                        }
+                    }
+                  )
+              ]
+            )
+          ]
+      );
     );
   }
 }
