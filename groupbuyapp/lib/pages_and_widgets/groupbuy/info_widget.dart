@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 
 import 'components/time_display_widget.dart';
 
 class GroupBuyInfo extends StatelessWidget {
+  final GroupBuy groupBuy;
+
+  GroupBuyInfo({
+    Key key,
+    @required this.groupBuy,
+  }) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +29,7 @@ class GroupBuyInfo extends StatelessWidget {
                   Expanded(
                       child: Image(
                         image: NetworkImage(
-                            'http://media.corporate-ir.net/media_files/IROL/17/176060/Oct18/Amazon%20logo.PNG'),
+                            this.groupBuy.storeLogo),
                       ),
                       flex: 65),
                   Expanded(child: TimeDisplay(), flex: 35)
@@ -35,8 +44,8 @@ class GroupBuyInfo extends StatelessWidget {
                   Expanded(
                       child: LinearPercentIndicator(
                         lineHeight: 20,
-                        percent: 0.7,
-                        center: new Text("70%",
+                        percent: this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100,
+                        center: new Text("${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}%",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white)
@@ -45,7 +54,7 @@ class GroupBuyInfo extends StatelessWidget {
                       ),
                       flex: 65),
                   Expanded(
-                      child: Text('\$70/100',
+                      child: Text('${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}/100',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
@@ -61,7 +70,7 @@ class GroupBuyInfo extends StatelessWidget {
                   size: 24.0,
                   semanticLabel: 'User profile photo',
                 ),
-                title: Text('by dawo')),
+                title: Text('by ${this.groupBuy.organiserId}')),
             ListTile(
                 // Location
                 leading: Icon(
@@ -70,7 +79,7 @@ class GroupBuyInfo extends StatelessWidget {
                   size: 24.0,
                   semanticLabel: 'Location',
                 ),
-                title: Text('Dover Crescent')),
+                title: Text('${this.groupBuy.address}')),
             // Description
             Container(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -89,7 +98,7 @@ class GroupBuyInfo extends StatelessWidget {
                   Container(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      'Lorem ipsum sit dolor amet',
+                        '${this.groupBuy.address}'
                     ),
                   ),
                 ],
@@ -99,7 +108,7 @@ class GroupBuyInfo extends StatelessWidget {
             ListTile(
               // Deposit
               leading: Text('Deposit:'),
-              title: Text('50%'),
+              title: Text('${this.groupBuy.deposit}'),
             )
           ],
         ));
