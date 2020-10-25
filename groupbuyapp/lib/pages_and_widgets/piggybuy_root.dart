@@ -43,7 +43,7 @@ class PiggyBuy extends StatefulWidget {
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage,),
       MyGroupBuys(), //TODO: need to factor in if not logged in page
-      CreateGroupBuy(),
+      CreateGroupBuyScreen(),
       ActivityScreen(),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,
