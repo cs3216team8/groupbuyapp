@@ -23,8 +23,18 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _productWebsiteController = TextEditingController();
 
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
-  String chosenSite = 'amazon.sg';
-  
+  String chosenSite;
+
+  // TODO: @agnes or @dawo where to get the address from profilestorage :o
+  List<String> userAddresses = ['blash', 'bifbodauhaasfouabf wetawetw dfsge rywadfsy t qwr jg'];
+  String chosenAddress;
+
+  @override
+  void initState() {
+    chosenSite = supportedSites[0];
+    chosenAddress = userAddresses[0];
+  }
+
   String getLogoAssetName(String site) {
     switch (site) {
       case 'amazon.sg':
@@ -133,7 +143,21 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                               Text(
                                   'Address'
                               ),
-                              TextField(),
+                              DropdownButton<String>(
+                                isExpanded: true,
+                                value: chosenAddress,
+                                items: userAddresses.map((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    chosenAddress = value;
+                                  });
+                                },
+                              ),
                             ]
                         )
                     ),
