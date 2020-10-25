@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 // Utilities
 import 'package:groupbuyapp/utils/navigators.dart';
 
+// Authentication
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
