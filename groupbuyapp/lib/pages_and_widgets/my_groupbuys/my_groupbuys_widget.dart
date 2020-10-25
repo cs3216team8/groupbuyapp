@@ -64,7 +64,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
           ),
           SizedBox(height: 20),
           IndexedStack(
-            index: _selectedIndex,
+            index: this._selectedIndex,
             children: <Widget>[
                 StreamBuilder<List<GroupBuy>>(
                   stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(widget.userCredential.user.uid),
