@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildSearchField() {
     return TextField(
       controller: _searchQueryController,
-      autofocus: true,
+      autofocus: false,
       decoration: InputDecoration(
         hintText: "Search Piggybuy...",
         border: InputBorder.none,
@@ -87,12 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: Container(),
           title: _buildSearchField(),
           actions: _buildActions(),
-          // actions: [
-          //   IconButton(
-          //       icon: Icon(Icons.chat_bubble_outline_rounded, color: iconColor),
-          //       onPressed: () => segueToPage(context, ChatList())
-          //   ),
-          // ],
         ),
       ),
       body: SingleChildScrollView(
