@@ -35,12 +35,12 @@ class _ListingsSectionState extends State<ListingsSection>
           builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
             List<Widget> children;
             if (snapshot.hasError) {
-              return FailedToLoadGroupbuys();
+              return FailedToLoadGroupBuys();
             }
 
             switch (snapshot.connectionState) {
               case ConnectionState.none:
-                return GroupbuysNotLoaded();
+                return GroupBuysNotLoaded();
               case ConnectionState.waiting:
                 return GroupbuysLoading();
               default:
@@ -78,7 +78,7 @@ class GroupbuysLoading extends StatelessWidget {
   }
 }
 
-class FailedToLoadGroupbuys extends StatelessWidget {
+class FailedToLoadGroupBuys extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,7 +90,7 @@ class FailedToLoadGroupbuys extends StatelessWidget {
 }
 
 //TODO note this condition.
-class GroupbuysNotLoaded extends StatelessWidget {
+class GroupBuysNotLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

@@ -5,14 +5,12 @@ import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 
 class ProfileStorage {
-  CollectionReference users = FirebaseFirestore.instance.collection(
+  CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
   String userId = "";
 
-  // String userId = FirebaseAuth.instance.currentUser.uid;
-
   Future<UserProfile> getUserProfile(String userId) async {
-    DocumentSnapshot document = await users
+    DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
     UserProfile userProfile = new UserProfile(
@@ -32,7 +30,7 @@ class ProfileStorage {
 
   Future<void> editUserProfile(UserProfile userProfile) async {
     String userId = userProfile.id;
-    return users.doc(userId).set({
+    return usersRef.doc(userId).set({
       'name': userProfile.name,
       'username': userProfile.username,
       'profilePicture': userProfile.profilePicture,
@@ -48,14 +46,14 @@ class ProfileStorage {
   }
 
   Future<void> addReview(Review review, String userId) async {
-    DocumentSnapshot document = await users
+    DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
     double currentRating = document.data()['rating'];
     double currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
-    return users.doc(userId).set({
+    return usersRef.doc(userId).set({
       'rating': newRating,
       'reviewCount': currentReviewCount + 1,
     });
