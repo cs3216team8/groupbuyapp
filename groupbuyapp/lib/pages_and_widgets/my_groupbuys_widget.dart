@@ -3,10 +3,17 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 import 'components/custom_appbars.dart';
 
 class MyGroupBuys extends StatefulWidget {
+  final GroupBuyStorage groupBuyStorage;
+
+  MyGroupBuys({
+    Key key,
+    @required this.groupBuyStorage,
+  }) : super(key: key);
 
   final Map<int, Widget> segments = <int, Widget>{
     0: Container(
@@ -30,8 +37,6 @@ class MyGroupBuys extends StatefulWidget {
         ]
     ),
   ];
-
-  MyGroupBuys({Key key}) : super(key: key);
 
   @override
   _MyGroupBuysState createState() => _MyGroupBuysState();
