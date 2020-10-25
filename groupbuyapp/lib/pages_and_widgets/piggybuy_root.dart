@@ -31,12 +31,18 @@ import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
+  final UserCredential userCredential;
+
+  PiggyBuyApp({
+    Key key,
+    @required this.userCredential,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: PiggyBuy(),
+      home: PiggyBuy(userCredential: this.userCredential),
       theme: ThemeData(
         primaryColor: Colors.pink,
         accentColor: Color(0xFFF2B1AB),
@@ -54,6 +60,13 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
+  final UserCredential userCredential;
+
+  PiggyBuy({
+    Key key,
+    @required this.userCredential,
+  }) : super(key: key);
+
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
   ActivitiesStorage activitiesStorage = ActivitiesStorage();
   ProfileStorage profileStorage = ProfileStorage();
@@ -99,8 +112,6 @@ class PiggyBuy extends StatefulWidget {
       label: 'Profile'
     )
   ];
-
-  PiggyBuy({Key key}) : super(key: key);
 
   @override
   _PiggyBuyState createState() => _PiggyBuyState();

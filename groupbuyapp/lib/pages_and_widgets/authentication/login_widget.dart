@@ -56,12 +56,16 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<User> _signInWithEmailAndPassword() async {
+  Future<UserCredential> _signInWithEmailAndPassword() async {
     try {
-      return (await FirebaseAuth.instance.signInWithEmailAndPassword(
+
+      UserCredential user = (await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
-      )).user;
+      ));
+      print(user);
+      print(FirebaseAuth.instance.currentUser.uid);
+      return user;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         showErrorFlushbar("User not found");
@@ -164,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -177,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -223,9 +227,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: "LOGIN",
                     onPress: () async {
                       if (_formKey.currentState.validate()) {
-                        User user = await _signInWithEmailAndPassword();
-                        if (user != null) {
-                          segueWithoutBack(context, PiggyBuyApp());
+                        UserCredential userCredential = await _signInWithEmailAndPassword();
+                        if (userCredential != null) {
+                          segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
                         }
                       }
                     },
