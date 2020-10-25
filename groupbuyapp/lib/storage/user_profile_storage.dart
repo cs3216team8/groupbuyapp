@@ -1,12 +1,10 @@
 import 'dart:async';
 
-import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 
-class UserProfileStorage {
+class ProfileStorage {
   CollectionReference users = FirebaseFirestore.instance.collection(
       'users');
   String userId = "";

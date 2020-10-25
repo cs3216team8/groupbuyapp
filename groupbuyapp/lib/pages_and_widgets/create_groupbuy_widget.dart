@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
-class CreateGroupBuy extends StatelessWidget{
+class CreateGroupBuy extends StatelessWidget {
+  final GroupBuyStorage groupBuyStorage;
+
+  CreateGroupBuy({
+    Key key,
+    @required this.groupBuyStorage,
+  }) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
