@@ -51,6 +51,7 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
                           future: widget.userProfileStream(widget.userId),
                           builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                             if (snapshot.hasError) {
+                              print(snapshot.error);
                               return FailedToLoadProfile();
                             }
 
