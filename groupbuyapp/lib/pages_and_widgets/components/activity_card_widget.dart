@@ -6,15 +6,20 @@ class ActivityCard extends StatelessWidget {
 
   ActivityCard(this.activity);
 
-  @override
-  Widget build(BuildContext context) {
-    final Duration timeDiff = activity.getTime().difference(DateTime.now());
+  String getTimeDifString(Duration timeDiff) {
     String time;
     if (timeDiff.inDays == 0) {
       time = timeDiff.inHours.toString() + "h";
     } else {
       time = timeDiff.inDays.toString() + "d";
     }
+    return time;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final Duration timeDiff = activity.getTime().difference(DateTime.now());
+    String time = getTimeDifString(timeDiff);
 
     void _openActivityDetail() {
       print("activity card pressed");
@@ -34,19 +39,22 @@ class ActivityCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(flex: 80, child: Text(activity.storeName + " Group Buy")),
+                    Expanded(flex: 170, child: Text(activity.storeName + " Group Buy", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),)),
                     Expanded(
                       flex: 20,
                       child: Text(time),
                     )
                   ],
                 ),
+                SizedBox(height: 3,),
                 Text(activity.organiserId ? "as organiser" : "as buyer"),
+                SizedBox(height: 10,),
                 Row(
                   children: [
                     Expanded(
-                        flex: 70,
+                        flex: 150,
                         child: Row(children: [
                           Icon(Icons.account_circle),
                           Text(activity.originUid)

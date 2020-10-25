@@ -18,6 +18,17 @@ class ReviewCard extends StatelessWidget {
       this.elevation = 10,
   }) : super(key: key);
 
+
+  String getTimeDifString(Duration timeDiff) {
+    String time;
+    if (timeDiff.inDays == 0) {
+      time = timeDiff.inHours.toString() + "h";
+    } else {
+      time = timeDiff.inDays.toString() + "d";
+    }
+    return time;
+  }
+
   // TODO: v2 - expandable reviews unless we restrict length of reviews like twitter?
   @override
   Widget build(BuildContext context) {
@@ -79,7 +90,7 @@ class ReviewCard extends StatelessWidget {
                       SizedBox(height: 5,),
                       Container(
                         child: Text(
-                          "${review.dateTime.difference(DateTime.now()).inDays} days ago",
+                          "${getTimeDifString(review.dateTime.difference(DateTime.now()))} ago",
                           style: TextStyle(color: Colors.black45,),
                         ),
                       ),
