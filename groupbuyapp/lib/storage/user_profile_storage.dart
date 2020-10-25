@@ -22,8 +22,8 @@ class ProfileStorage {
         document.data()['email'],
         List.from(document.data()['addresses']),
         List.from(document.data()['groupBuyIds']),
-        double.parse(document.data()['rating']),
-        int.parse(document.data()['reviewCount'])
+        document.data()['rating'],
+        document.data()['reviewCount']
     );
     return userProfile;
   }
