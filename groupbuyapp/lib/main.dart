@@ -7,6 +7,7 @@ import 'package:groupbuyapp/pages_and_widgets/splashscreen_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());

@@ -94,8 +94,10 @@ class _LoginScreenState extends State<LoginScreen> {
           'email',
         ]).signIn();
 
+    User user = await FirebaseAuth.instance.currentUser;
+    print(user);
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    /*final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
     // Create a new credential
     final GoogleAuthCredential credential = GoogleAuthProvider.credential(
@@ -105,6 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+     */
   }
 
   Future<UserCredential> signInWithFacebook() async {
@@ -114,6 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
     switch (result.status) {
       case FacebookLoginStatus.loggedIn:
         print('logged in');
+        User user = await FirebaseAuth.instance.currentUser;
+        print(user);
         break;
       case FacebookLoginStatus.cancelledByUser:
         print('cancel');
