@@ -34,19 +34,7 @@ class ProfilePart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        // stylistic background
-        TopDownLinearGradient(
-          colors: [Theme.of(context).accentColor, Colors.white, Colors.white, Colors.white,],
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage("assets/profilebkgrd.jpg"),
-            ),
-          ),
-        ),
+        // TODO: stylistic background
         Column(
           children: <Widget>[
             Container(
@@ -105,14 +93,6 @@ class ProfilePart extends StatelessWidget {
                             //   ),
                             // ),
                           ),
-                          Container(
-                            child: Text(
-                              "${userProfile.getActiveStatus()}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ],
