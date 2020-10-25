@@ -8,8 +8,15 @@ class SplashScreen extends StatelessWidget {
       home: Scaffold(
         body: Container(
           alignment: Alignment.center,
-          color: Colors.amber,
-          child: Image.asset('assets/tmp_pig.jpg'),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Image.asset('assets/piggyback.png'),
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.pink),
+              ),
+            ],
+          )
         ),
       ),
     );

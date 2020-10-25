@@ -93,14 +93,15 @@ class _PiggyBuyState extends State<PiggyBuy> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('PiggyBuy'),
+        title: const Text('PiggyBuy', style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
         actions: [
           IconButton(
-              icon: Icon(Icons.chat_bubble_outline_rounded),
+              icon: Icon(Icons.chat_bubble_outline_rounded, color: Colors.black,),
               onPressed: () => segueToPage(context, ChatScreen("dummy"))
           ),
           IconButton(
-              icon: Icon(Icons.login),
+              icon: Icon(Icons.login, color: Colors.black,),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
                 segueWithoutBack(context, LoginScreen());
