@@ -64,7 +64,10 @@ class PiggyBuy extends StatefulWidget {
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage),
       MyGroupBuys(groupBuyStorage: groupBuyStorage),
-      CreateGroupBuy(groupBuyStorage: groupBuyStorage),
+      CreateGroupBuyScreen(
+        groupBuyStorage: groupBuyStorage,
+        profileStorage: profileStorage,
+      ),
       ActivityScreen(activitiesStorage: activitiesStorage),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,

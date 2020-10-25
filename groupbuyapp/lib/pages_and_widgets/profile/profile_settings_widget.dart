@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
-  UserProfile profile;
+  final UserProfile profile;
+  final ProfileStorage profileStorage = ProfileStorage();
 
   ProfileSettingsScreen({
     Key key,
@@ -17,19 +18,49 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController(text: profile.username);
+    TextEditingController emailController = TextEditingController(text: profile.email);
+
     return Scaffold(
-      appBar: BackAppBar(
-        context: context,
-        title: "My Profile",
+      appBar: AppBar(
+        title: const Text('My Profile', style: TextStyle(color: Colors.black),),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black,),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        actions: [
+          IconButton(
+          icon: Icon(Icons.save_outlined, color: Colors.black,),
+            onPressed: () {
+              UserProfile newProfile = UserProfile(
+                  profile.id,
+                  profile.name,
+                  usernameController.text,
+                  profile.profilePicture,
+                  profile.phoneNumber,
+                  profile.email,
+                  profile.addresses,
+                  profile.groupBuyIds,
+                  profile.rating,
+                  profile.reviewCount
+              );
+              profileStorage.editUserProfile(newProfile);
+              Navigator.pop(context);
+            },
+          )
+        ]
       ),
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pic: profile.profilePicture),
-            InputHorizontal(itemText: "Username",),
-            InputHorizontal(itemText: "Email",),
-            SizedBox(height: 20,),
+            InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+            InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
+            SizedBox(height: 20),
             Expanded(
               child: AddressListModifier(
                 addresses: profile.addresses,
@@ -295,13 +326,24 @@ class _AddressListModifierState extends State<AddressListModifier> {
   }
 }
 
-class InputHorizontal extends StatelessWidget {
+class InputHorizontal extends StatefulWidget {
   final String itemText;
+  final TextEditingController controller;
+  final bool enabled;
 
   InputHorizontal({
     Key key,
     this.itemText,
+    this.controller,
+    this.enabled,
   }) : super(key: key);
+
+  @override
+  _InputHorizontalState createState () => _InputHorizontalState();
+
+}
+
+class _InputHorizontalState extends State<InputHorizontal> {
 
   @override
   Widget build(BuildContext context) {
@@ -315,7 +357,7 @@ class InputHorizontal extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                itemText,
+                widget.itemText,
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
               ),
             ),
@@ -324,6 +366,8 @@ class InputHorizontal extends StatelessWidget {
             flex: 7,
             child: TextField(
               decoration: InputDecoration(),
+              controller: widget.controller,
+              enabled: widget.enabled,
             ),
           )
         ],
