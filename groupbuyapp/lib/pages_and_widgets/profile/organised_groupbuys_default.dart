@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
-class MyGroupBuyDefaultScreen extends StatelessWidget {
+class OrganisedGroupBuyDefaultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
