@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
-import 'package:groupbuyapp/pages_and_widgets/my_groupbuys//my_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

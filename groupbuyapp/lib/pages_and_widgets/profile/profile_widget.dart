@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 
 // Widgets
-import 'package:groupbuyapp/pages_and_widgets/profile/profile_listing_reviews.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/profile_reviews_only.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
 
 // Storage
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -34,18 +33,7 @@ class ProfileScreen extends StatelessWidget {
         context: context,
         titleElement: Text("View Profile", style: TextStyle(color: Colors.black),)
       ),
-        body: isMe
-            ? ProfileReviewsOnly(
-            userProfileStream: profileStorage.getUserProfile,
-            isMe: isMe,
-            userId: userId,
-        )
-            : ProfileListingReviews(
-            createGroupBuyStream: groupBuyStorage.getAllGroupBuys, // TODO: wrong function; () => groupBuyStorage.getGroupBuysOf(userId: userId)
-            userProfileStream: profileStorage.getUserProfile,
-            isMe: isMe,
-            userId: userId,
-        )
+        body: MyGroupBuys(groupBuyStorage: this.groupBuyStorage)
     );
   }
 }
