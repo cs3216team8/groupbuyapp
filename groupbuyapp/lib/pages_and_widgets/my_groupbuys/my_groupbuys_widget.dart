@@ -151,10 +151,10 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                         }
                     }
                   )
-              ]
-            )
-          ]
-      );
+            ]
+          )
+        ]
+      )
     );
   }
 }
