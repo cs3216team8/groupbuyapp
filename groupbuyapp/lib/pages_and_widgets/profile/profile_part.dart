@@ -84,18 +84,20 @@ class ProfilePart extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
-                            child: RatingBarIndicator(
-                              rating: userProfile.rating,
-                              itemBuilder: (context, index) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              itemCount: 5,
-                              itemSize: 30.0,
-                              direction: Axis.horizontal,
-                            )
-                          ),
+                          userProfile.rating == null
+                              ? Container()
+                              : Container(
+                                  child: RatingBarIndicator(
+                                    rating: userProfile.rating,
+                                    itemBuilder: (context, index) => Icon(
+                                      Icons.star,
+                                      color: Colors.amber,
+                                    ),
+                                    itemCount: 5,
+                                    itemSize: 30.0,
+                                    direction: Axis.horizontal,
+                                  )
+                                ),
                         ],
                       ),
                     ],

@@ -199,7 +199,7 @@ class _SignUpFormState extends State<SignupForm> {
                   if (_formKey.currentState.validate()) {
                     UserCredential userCredential = await _register();
                     if (userCredential != null) {
-                      segueToPage(context, PiggyBuyApp());
+                      segueWithoutBack(context, PiggyBuyApp());
                     }
                   }
                 },

@@ -12,7 +12,7 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
 // My Piggybuys
-import 'package:groupbuyapp/pages_and_widgets/my_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/my_groupbuys/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 // Create
@@ -70,13 +70,12 @@ class PiggyBuy extends StatefulWidget {
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
   ActivitiesStorage activitiesStorage = ActivitiesStorage();
   ProfileStorage profileStorage = ProfileStorage();
-
   String userId = FirebaseAuth.instance.currentUser.uid;
 
   List<Widget> getMainScreens() {
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage),
-      MyGroupBuys(groupBuyStorage: groupBuyStorage),
+      MyGroupBuys(groupBuyStorage: groupBuyStorage, userCredential: userCredential),
       CreateGroupBuyScreen(
         groupBuyStorage: groupBuyStorage,
         profileStorage: profileStorage,
