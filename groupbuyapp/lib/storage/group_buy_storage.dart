@@ -180,23 +180,38 @@ class GroupBuyStorage {
         'users')
         .doc(userId)
         .get();
-    List<String> groupBuyIdsPiggyBackedOn = currentUser.data()['groupBuyIds'];
-    return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn).snapshots().map((snapshot) {
-      return snapshot.docs.map((document) {
-        return GroupBuy(
-            document.id,
-            document.data()['storeName'],
-            document.data()['storeWebsite'],
-            document.data()['storeLogo'],
-            document.data()['currentAmount'].toDouble(),
-            document.data()['targetAmount'].toDouble(),
-            document.data()['endTimestamp'],
-            document.data()['organiserId'],
-            document.data()['deposit'],
-            document.data()['description'],
-            document.data()['address']
-        );
-      }).toList();
-    });
+    List<String> groupBuyIdsPiggyBackedOn = new List<String>.from(
+        currentUser.data()['groupBuyIds']);
+    if (groupBuyIdsPiggyBackedOn.length > 0) {
+      return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn)
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((document) {
+          return GroupBuy(
+              document.id,
+              document.data()['storeName'],
+              document.data()['storeWebsite'],
+              document.data()['storeLogo'],
+              document.data()['currentAmount'].toDouble(),
+              document.data()['targetAmount'].toDouble(),
+              document.data()['endTimestamp'],
+              document.data()['organiserId'],
+              document.data()['deposit'],
+              document.data()['description'],
+              document.data()['address']
+          );
+        }).toList();
+      });
+    } else {
+      var completer = new Completer<Stream<List<GroupBuy>>>();
+
+      // At some time you need to complete the future:
+      List<GroupBuy> empty = List<GroupBuy>();
+      StreamController<List<GroupBuy>> controller = StreamController<List<GroupBuy>>();
+      controller.add(empty);
+      completer.complete(controller.stream);
+
+          return completer.future;
+    }
   }
 }
