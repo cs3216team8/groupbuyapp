@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -86,7 +87,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                     }
 
                     if (children.isEmpty) {
-                      return MyGroupBuyDefaultScreen();
+                      return OrganisedGroupBuyDefaultScreen();
                     }
 
                     return GridView.count(
@@ -102,6 +103,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                 future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
                     if (snapshot.hasError){
+                      print(snapshot.error);
                       return FailedToLoadMyGroupBuys();
                     }
 
@@ -134,7 +136,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                             }
 
                             if (children.isEmpty) {
-                              return MyGroupBuyDefaultScreen();
+                              return PiggyBackedGroupBuyDefaultScreen(groupBuyStorage: widget.groupBuyStorage);
                             }
 
                             return GridView.count(
@@ -185,7 +187,7 @@ class GroupBuysNotLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("No groupbuys are loaded. Git blame developers."),
+        child: Text("There are no group buys that you have joined."),
       ),
     );
   }
