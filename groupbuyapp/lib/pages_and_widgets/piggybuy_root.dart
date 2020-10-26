@@ -58,11 +58,9 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
-  final UserCredential userCredential;
 
   PiggyBuy({
-    Key key,
-    @required this.userCredential,
+    Key key
   }) : super(key: key);
 
   GroupBuyStorage groupBuyStorage = GroupBuyStorage();
