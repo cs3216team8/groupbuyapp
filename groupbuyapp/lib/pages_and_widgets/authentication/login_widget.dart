@@ -118,6 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Once signed in, return the UserCredential
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       // UserCredential(additionalUserInfo: AdditionalUserInfo(isNewUser: false, profile: {given_name: Agnes, locale: en, family_name: Natasya, picture: https://lh3.googleusercontent.com/-ebDtfoHeJe4/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucn1hd9DMkL0oBkEf-vD_CwMqcgLPw/s96-c/photo.jpg, aud: 584043471672-btgbhhtb0vnh2mbqmjkc32j5rbhfjngq.apps.googleusercontent.com, azp: 584043471672-vc4ajmg84bk51nvml8g3beshqaqvcnk4.apps.googleusercontent.com, exp: 1603630635, iat: 1603627035, iss: https://accounts.google.com, sub: 109095081159135266046, name: Agnes Natasya, email: an.agnesnatasya@gmail.com, email_verified: true}, providerId: google.com, username: null), credential: AuthCredential(providerId: google.com, signInMethod: google.com, token: null), user: User(displayName: Gabe Miguel, email: an.agnesnatasya@gmail.com, emailVerified: true, isAnonymous: false, metadata: UserMetadata(creationTime: 2020-10-23 00:27:51.939, lastSignInTime: 2020-10-25 20:05:18.872), phoneNumber: null, photoURL: https://lh3.googleusercontent.com/-ebDtfoHeJe4/
+      print(FirebaseAuth.instance.currentUser.uid);
       UserProfile userProfile = new UserProfile(
           userCredential.user.uid,
           userCredential.user.displayName,
@@ -214,7 +215,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
+                              segueWithoutBack(context, PiggyBuyApp());
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -227,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
+                              segueWithoutBack(context, PiggyBuyApp());
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -275,7 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState.validate()) {
                         UserCredential userCredential = await _signInWithEmailAndPassword();
                         if (userCredential != null) {
-                          segueWithoutBack(context, PiggyBuyApp(userCredential: userCredential));
+                          segueWithoutBack(context, PiggyBuyApp());
                         }
                       }
                     },

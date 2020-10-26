@@ -31,18 +31,16 @@ import 'chat/chat_list_screen.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
-  final UserCredential userCredential;
 
   PiggyBuyApp({
-    Key key,
-    @required this.userCredential,
+    Key key
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: _title,
-      home: PiggyBuy(userCredential: this.userCredential),
+      home: PiggyBuy(),
       theme: ThemeData(
         primaryColor: Colors.pink,
         accentColor: Color(0xFFF2B1AB),
@@ -75,7 +73,7 @@ class PiggyBuy extends StatefulWidget {
   List<Widget> getMainScreens() {
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage),
-      MyGroupBuys(groupBuyStorage: groupBuyStorage, userCredential: userCredential),
+      MyGroupBuys(groupBuyStorage: groupBuyStorage),
       CreateGroupBuyScreen(
         groupBuyStorage: groupBuyStorage,
         profileStorage: profileStorage,
