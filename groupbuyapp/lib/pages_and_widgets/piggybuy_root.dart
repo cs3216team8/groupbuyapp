@@ -12,7 +12,7 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
 // My Piggybuys
-import 'package:groupbuyapp/pages_and_widgets/my_groupbuys/my_groupbuys_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 // Create
@@ -71,12 +71,10 @@ class PiggyBuy extends StatefulWidget {
   List<Widget> getMainScreens() {
     return <Widget>[
       HomeScreen(groupBuyStorage: groupBuyStorage),
-      MyGroupBuys(groupBuyStorage: groupBuyStorage),
       CreateGroupBuyScreen(
         groupBuyStorage: groupBuyStorage,
         profileStorage: profileStorage,
       ),
-      ActivityScreen(activitiesStorage: activitiesStorage),
       ProfileScreen(
         groupBuyStorage: groupBuyStorage,
         profileStorage: profileStorage,
