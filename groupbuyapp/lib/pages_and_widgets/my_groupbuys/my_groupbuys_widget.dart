@@ -9,11 +9,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class MyGroupBuys extends StatefulWidget {
   final GroupBuyStorage groupBuyStorage;
-  final UserCredential userCredential;
   MyGroupBuys({
     Key key,
     @required this.groupBuyStorage,
-    @required this.userCredential,
   }) : super(key: key);
 
   final Map<int, Widget> segments = <int, Widget>{
@@ -67,7 +65,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
             index: this._selectedIndex,
             children: <Widget>[
                 StreamBuilder<List<GroupBuy>>(
-                  stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(widget.userCredential.user.uid),
+                  stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
                   builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasError) {
@@ -101,7 +99,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                   },
                 ),
               FutureBuilder<Stream<List<GroupBuy>>>(
-                future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(widget.userCredential.user.uid),
+                future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
                     if (snapshot.hasError){
                       return FailedToLoadMyGroupBuys();
