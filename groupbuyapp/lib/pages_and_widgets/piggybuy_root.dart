@@ -90,16 +90,9 @@ class PiggyBuy extends StatefulWidget {
       label: 'Explore',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.credit_card),
-      label: 'PiggyBuys'
-    ),
-    BottomNavigationBarItem(
       icon: Icon(Icons.add),
       label: 'Create'
     ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.bookmark_border),
-      label: 'Activity'),
     BottomNavigationBarItem(
       icon: Icon(Icons.account_circle_sharp),
       label: 'Profile'
