@@ -145,6 +145,22 @@ class GroupBuyStorage {
     });
   }
 
+  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
+  Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {
+    String groupBuyId = groupBuy.getId();
+    CollectionReference groupBuyRequestItems = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId()).collection('items');
+    return groupBuyRequestItems.snapshots().map((QuerySnapshot querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return new Item(
+          url: doc.data()['url'],
+          totalAmount: doc.data()['totalAmount'],
+          qty: doc.data()['qty'],
+          remarks: doc.data()['remarks'],
+        );
+      }).toList();
+    });
+  }
+
   // Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
   //   try {
   //     DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
