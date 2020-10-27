@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class Request {
-  String uid;
+  String id;
   List<Item> items;
   RequestStatus status;
 
   static Request getDummyRequest() {
     return Request(
-        uid: "dummyuid",
+        id: "dummyuid",
         items: [
           Item(url: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
           Item(url: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),
@@ -17,7 +17,7 @@ class Request {
   }
 
   Request({
-    @required this.uid,
+    @required this.id,
     @required this.items,
     @required this.status,
   });
