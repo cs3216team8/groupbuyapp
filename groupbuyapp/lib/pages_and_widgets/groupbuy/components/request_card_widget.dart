@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class RequestCard extends StatelessWidget {
@@ -58,7 +59,7 @@ class RequestCard extends StatelessWidget {
                   return ItemsLoading();
                 default:
                   children = snapshot.data.map((Item item) {
-                    return new ItemCard(item: item);
+                    return new ItemDisplay(item: item);
                   }).toList();
                   break;
               }

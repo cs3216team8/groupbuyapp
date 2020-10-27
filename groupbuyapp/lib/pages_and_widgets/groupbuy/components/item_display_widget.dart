@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/request.dart';
 
 class ItemDisplay extends StatelessWidget {
+  final Item item;
+
+  ItemDisplay({
+    Key key,
+    @required this.item,
+  }) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
