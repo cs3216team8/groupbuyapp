@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_default.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
@@ -11,6 +13,8 @@ class GroupBuyInfo extends StatelessWidget {
   final GroupBuy groupBuy;
   final bool isOrganiser;
   bool hasRequested;
+
+  final GroupBuyStorage groupBuyStorage = GroupBuyStorage();
 
   //TODO storage like as listings widget
   GroupBuyInfo({
@@ -201,13 +205,40 @@ class GroupBuyInfo extends StatelessWidget {
                             ),
                           ],
                         ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: 6,
-                          itemBuilder: (context, index) {
-                            return RequestCard(request: Request.getDummyRequest());
+                        StreamBuilder<List<Request>>(
+                          stream: this.groupBuyStorage.getAllGroupBuyRequests(this.groupBuy),
+                          builder: (BuildContext context, AsyncSnapshot<List<Request>> snapshot) {
+                            List<Widget> children;
+                            if (snapshot.hasError) {
+                              return FailedToLoadRequests();
+                            }
+
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return RequestsNotLoaded();
+                              case ConnectionState.waiting:
+                                return RequestsLoading();
+                              default:
+                                children = snapshot.data.map((Request request) {
+                                  return new RequestCard(isOrganiser: this.isOrganiser, request: request);
+                                }).toList();
+                                break;
+                            }
+
+                            if (children.isEmpty) {
+                              return RequestDefaultScreen();
+                            }
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: children.length,
+                              itemBuilder: (context, index) {
+                                return children[index];
+                              },
+                            );
                           },
-                        ),
+                        )
+
                       ],
                     )
                     : Column(
@@ -232,7 +263,37 @@ class GroupBuyInfo extends StatelessWidget {
                                       )
                                   ),
                                 ),
-                                RequestCard(request: Request.getDummyRequest()),
+                                FutureBuilder<Request>(
+                                  future: this.groupBuyStorage.getGroupBuyRequestsFromCurrentUser(this.groupBuy),
+                                  builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
+                                    List<Widget> children;
+                                    if (snapshot.hasError) {
+                                      return FailedToLoadRequests();
+                                    }
+
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                        return RequestsNotLoaded();
+                                      case ConnectionState.waiting:
+                                        return RequestsLoading();
+                                      default:
+                                        children = [RequestCard(request: snapshot.data, isOrganiser: this.isOrganiser)];
+                                          break;
+                                    }
+
+                                    if (children.isEmpty) {
+                                      return RequestDefaultScreen();
+                                    }
+
+                                    return ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: children.length,
+                                      itemBuilder: (context, index) {
+                                        return children[index];
+                                      },
+                                    );
+                                  },
+                                )
                               ],
                             )
                             : Container(),
@@ -243,6 +304,40 @@ class GroupBuyInfo extends StatelessWidget {
             )
         ),
       )
+    );
+  }
+}
+
+class RequestsLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: const CircularProgressIndicator(),
+      width: 60,
+      height: 60,
+    );
+  }
+}
+
+class FailedToLoadRequests extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+      ),
+    );
+  }
+}
+
+//TODO note this should not appear.
+class RequestsNotLoaded extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("No reviews are loaded. Git blame developers."),
+      ),
     );
   }
 }

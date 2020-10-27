@@ -3,14 +3,88 @@ import 'package:groupbuyapp/models/request.dart';
 
 class RequestCard extends StatelessWidget {
   final Request request;
+  final bool isOrganiser;
 
   RequestCard({
     Key key,
     @required this.request,
+    @required this.isOrganiser,
   }) : super(key: key);
 
-  void openDetailedRequest() {
-    print("open request details of items price etc");
+  Widget _logoutConfirmation(BuildContext context) {
+    return new AlertDialog(
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(height: 10,),
+          Divider(
+            color: Theme.of(context).dividerColor,
+            height: 5.5,
+          ),
+          SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                alignment: Alignment.topLeft,
+                child: Text(
+                    'Items:',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold
+                    )
+                ),
+              ),
+            ],
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return RequestCard(isOrganiser: this.isOrganiser, request: Request.getDummyRequest());
+            },
+          ),
+        ],
+      )
+
+    // Text(
+      //   'Are you sure you want to logout?',
+      //   style: TextStyle(
+      //       fontSize: 18
+      //   ),
+      // ),
+      // actions: <Widget>[
+      //   new FlatButton(
+      //     onPressed: () async {
+      //       Navigator.of(context).pop();
+      //     },
+      //     textColor: Theme.of(context).primaryColor,
+      //     child: const Text(
+      //       'No',
+      //       style: TextStyle(
+      //           fontSize: 16
+      //       ),
+      //     ),
+      //   ),
+      //   new FlatButton(
+      //       textColor: Theme.of(context).primaryColor,
+      //       child: Text(
+      //         'Yes',
+      //         style: TextStyle(
+      //             fontSize: 16
+      //         ),
+      //       )
+      //   ),
+      //
+      // ],
+    );
+  }
+
+  void openDetailedRequest(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => _logoutConfirmation(context),
+    );
   }
 
   Color getStatusColor(RequestStatus status) {
@@ -42,7 +116,7 @@ class RequestCard extends StatelessWidget {
       ),
       child: InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: () => openDetailedRequest(),
+        onTap: () => openDetailedRequest(context),
         child: Column(
           children: <Widget>[
             Row(
