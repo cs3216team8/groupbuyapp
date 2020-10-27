@@ -17,9 +17,16 @@ class GroupBuyInfo extends StatelessWidget {
     Key key,
     @required this.groupBuy,
     this.isOrganiser = false,
-    this.hasRequested = true, //TODO -- should be read from user's groupbuys list from storage..?
+    this.hasRequested = false, //TODO -- should be read from user's groupbuys list from storage..?
   }) : super(key: key);
 
+  void onTapChat(BuildContext context) {
+    print("tapped on chat"); //TODO
+  }
+
+  void onTapJoin() {
+    print("tapped on join"); //TODO
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,9 @@ class GroupBuyInfo extends StatelessWidget {
       appBar: BackAppBar(context: context, title: 'Group Buy Details'),
       floatingActionButton: hasRequested
           ? RaisedButton(
+            color: Theme.of(context).accentColor,
             elevation: 10,
+            onPressed: () => onTapChat(context),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -40,8 +49,30 @@ class GroupBuyInfo extends StatelessWidget {
           : Row(
             mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RaisedButton(child: Text('Button1'), onPressed: (){}),
-                RaisedButton(child: Text('Button1'), onPressed: (){}),
+                RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => onTapChat(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.chat_bubble),
+                      Text("Chat"),
+                    ],
+                  ),
+                ),
+                RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => onTapJoin(),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add_business),
+                      Text("Join"),
+                    ],
+                  ),
+                ),
               ]
           ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

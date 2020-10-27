@@ -14,7 +14,7 @@ class GroupBuyCard extends StatelessWidget {
   GroupBuyCard(this.groupBuy);
 
   void _openDetailedGroupBuy(BuildContext context) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: false,));
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: true, hasRequested: false,));
   }
 
   String getTimeDifString(Duration timeDiff) {
