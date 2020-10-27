@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 
-class RequestDefaultScreen extends StatelessWidget {
+class RequestAsPiggyBackerDefaultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +9,7 @@ class RequestDefaultScreen extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 20.0,),
         Text(
-          'There are no requests yet!',
+          'You haven\'t requested yet!',
           style: TextStyle(
               fontSize:  30,
               fontWeight: FontWeight.bold
@@ -21,7 +19,7 @@ class RequestDefaultScreen extends StatelessWidget {
         RaisedButton(
             textColor: Colors.white,
             child: Text(
-                'Jio your friends!',
+                'Join this group buy!',
                 style: TextStyle(fontSize: 20)
             )
         ),
