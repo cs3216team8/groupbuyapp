@@ -96,4 +96,11 @@ class GroupBuy {
     this.currentAmount -= amt;
   }
 
+  double getPercentageComplete() {
+    if (this.currentAmount >= this.targetAmount) {
+      return 1;
+    }
+    return this.currentAmount/this.targetAmount;
+  }
+
 }

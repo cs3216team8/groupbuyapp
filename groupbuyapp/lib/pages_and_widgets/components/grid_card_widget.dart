@@ -8,12 +8,23 @@ class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
       TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
 
-  final GroupBuy details;
+  final GroupBuy groupBuy;
 
-  GroupBuyCard(this.details);
+  // TODO: needs user info of each organiser -- either save in GroupBuy or query
+  GroupBuyCard(this.groupBuy);
 
   void _openDetailedGroupBuy(BuildContext context) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.details));
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy));
+  }
+
+  String getTimeDifString(Duration timeDiff) {
+    String time;
+    if (timeDiff.inDays == 0) {
+      time = timeDiff.inHours.toString() + " hours";
+    } else {
+      time = timeDiff.inDays.toString() + " days";
+    }
+    return time;
   }
 
   @override
@@ -29,9 +40,8 @@ class GroupBuyCard extends StatelessWidget {
           children: <Widget>[
             Expanded(
               flex: 40,
-              child: Image.asset(
-                'assets/Amazon-logo.png',
-                height: 100.0,
+              child: Image(
+                image: NetworkImage(this.groupBuy.storeLogo),
               ),
             ),
             Expanded(
@@ -42,7 +52,7 @@ class GroupBuyCard extends StatelessWidget {
                       lineHeight: 8.0,
                       backgroundColor: Colors.black12,
                       progressColor: Theme.of(context).buttonColor,
-                      percent: 0.7,
+                      percent: this.groupBuy.getPercentageComplete(),
                     ),
                     Row(children: <Widget>[
                       Padding(
@@ -53,7 +63,7 @@ class GroupBuyCard extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        "${details.getTimeEnd().difference(DateTime.now()).inDays} days",
+                        "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
                         style: textStyle,
                       ),
                       Spacer(
@@ -62,7 +72,7 @@ class GroupBuyCard extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.all(6),
                         child: Text(
-                          "\$${details.getCurrentAmount()}/\$100",
+                          "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
                           style: textStyle,
                         ),
                       ),
@@ -77,20 +87,20 @@ class GroupBuyCard extends StatelessWidget {
                             backgroundColor: Theme.of(context).primaryColor,
                             child: CircleAvatar(
                               radius: 13,
-                              backgroundImage:
+                              backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
                               AssetImage('assets/profpicplaceholder.jpg'),
                             ),
                           ),
                         ),
                         Text(
-                          "usertrunc",
+                          "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
                           style: textStyle,
                         ),
                         Spacer(
                           flex: 1,
                         ),
                         Text(
-                          "rating",
+                          "rating", // TODO: ???.getUserRating(groupBuy.organiserId)
                           style: textStyle,
                         ),
                         Icon(Icons.whatshot), // supposed to be star
@@ -104,7 +114,7 @@ class GroupBuyCard extends StatelessWidget {
                         ),
                         Expanded(
                           child: Text(
-                            "${details.address}",
+                            "${groupBuy.address}",
                             style: textStyle,
                             overflow: TextOverflow.ellipsis,
                           ),

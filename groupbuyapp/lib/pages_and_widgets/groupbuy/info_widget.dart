@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
@@ -16,17 +17,7 @@ class GroupBuyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () {
-              Navigator.pop(context);
-      },
-        ),
-        title: const Text('Group Buy Details', style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-      ),
+      appBar: BackAppBar(context: context, title: 'Group Buy Details'),
       body: Container(
           padding: EdgeInsets.all(20),
           alignment: Alignment.center,
