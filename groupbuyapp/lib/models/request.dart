@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Request {
   String id;
+  String requestorId;
   List<Item> items;
   RequestStatus status;
 
@@ -9,8 +10,8 @@ class Request {
     return Request(
         id: "dummyuid",
         items: [
-          Item(url: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
-          Item(url: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),
+          Item(itemLink: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
+          Item(itemLink: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),
         ],
         status: RequestStatus.confirmed,
     );
@@ -18,6 +19,7 @@ class Request {
 
   Request({
     @required this.id,
+    @required this.requestorId,
     @required this.items,
     @required this.status,
   });
@@ -41,13 +43,13 @@ enum RequestStatus {
 }
 
 class Item {
-  String url;
+  String itemLink;
   double totalAmount;
   int qty;
   String remarks;
 
   Item({
-    @required this.url,
+    @required this.itemLink,
     @required this.totalAmount,
     @required this.qty,
     @required this.remarks,
