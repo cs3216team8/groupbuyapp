@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
@@ -226,7 +227,7 @@ class GroupBuyInfo extends StatelessWidget {
                             }
 
                             if (children.isEmpty) {
-                              return RequestDefaultScreen();
+                              return RequestAsOrganiserDefaultScreen();
                             }
 
                             return ListView.builder(
@@ -282,7 +283,7 @@ class GroupBuyInfo extends StatelessWidget {
                                     }
 
                                     if (children.isEmpty) {
-                                      return RequestDefaultScreen();
+                                      return RequestAsPiggyBackerDefaultScreen();
                                     }
 
                                     return ListView.builder(

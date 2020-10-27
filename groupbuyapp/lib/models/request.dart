@@ -22,6 +22,10 @@ class Request {
     @required this.status,
   });
 
+  String getId() {
+    return this.id;
+  }
+
   String getStatus() {
     return status.toString().split('.').last;
   }
