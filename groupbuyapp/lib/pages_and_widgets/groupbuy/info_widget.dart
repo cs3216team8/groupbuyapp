@@ -10,12 +10,14 @@ import 'components/time_display_widget.dart';
 class GroupBuyInfo extends StatelessWidget {
   final GroupBuy groupBuy;
   final bool isOrganiser;
+  bool hasRequested;
 
   //TODO storage like as listings widget
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
     this.isOrganiser = false,
+    this.hasRequested = true, //TODO -- should be read from user's groupbuys list from storage..?
   }) : super(key: key);
 
 
@@ -23,6 +25,26 @@ class GroupBuyInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BackAppBar(context: context, title: 'Group Buy Details'),
+      floatingActionButton: hasRequested
+          ? RaisedButton(
+            elevation: 10,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.chat_bubble),
+                Text("Chat"),
+              ],
+            ),
+          )
+          : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(child: Text('Button1'), onPressed: (){}),
+                RaisedButton(child: Text('Button1'), onPressed: (){}),
+              ]
+          ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Container(
             padding: EdgeInsets.all(20),
@@ -166,17 +188,23 @@ class GroupBuyInfo extends StatelessWidget {
                           height: 5.5,
                         ),
                         SizedBox(height: 10,),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                              'You have requested:',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
-                              )
-                          ),
-                        ),
-                        RequestCard(request: Request.getDummyRequest()),
+                        hasRequested
+                            ? Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                      'You have requested:',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold
+                                      )
+                                  ),
+                                ),
+                                RequestCard(request: Request.getDummyRequest()),
+                              ],
+                            )
+                            : Container(),
                       ],
                     ),
 
