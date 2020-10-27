@@ -129,18 +129,19 @@ class GroupBuyStorage {
     });
   }
 
-  /// Show only buys which is created by this user, if the user is the piggybacker
-  Stream<List<Request>> getGroupBuyRequestsFromUser(GroupBuy groupBuy, String userId) {
+  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
+  Future<Request> getGroupBuyRequestsFromCurrentUser(GroupBuy groupBuy) {
+    String userId = FirebaseAuth.instance.currentUser.uid;
     String groupBuyId = groupBuy.getId();
     CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId);
-    return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
+    return groupBuyRequests.get().then((QuerySnapshot querySnapshot) {
       return querySnapshot.docs.map((doc) {
         return new Request(
           id: doc.id,
           items: [],
           status: doc.data()['status'],
         );
-      }).toList();
+      }).toList()[0];
     });
   }
 
