@@ -23,6 +23,8 @@ class RequestCard extends StatelessWidget {
         return Colors.grey;
       case RequestStatus.rejected:
         return Colors.red;
+      case RequestStatus.accepted:
+        return Colors.greenAccent;
       default:
         return Colors.black;
     }

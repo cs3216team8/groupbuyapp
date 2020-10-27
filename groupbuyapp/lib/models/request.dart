@@ -33,7 +33,7 @@ class Request {
 }
 
 enum RequestStatus {
-  pending, confirmed, completed, rejected
+  pending, confirmed, completed, rejected, accepted
 }
 
 class Item {
