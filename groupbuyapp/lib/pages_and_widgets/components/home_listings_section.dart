@@ -89,7 +89,7 @@ class FailedToLoadGroupBuys extends StatelessWidget {
   }
 }
 
-//TODO note this condition.
+//TODO note this should not appear.
 class GroupBuysNotLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

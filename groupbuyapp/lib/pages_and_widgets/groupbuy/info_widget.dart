@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
@@ -7,10 +9,13 @@ import 'components/time_display_widget.dart';
 
 class GroupBuyInfo extends StatelessWidget {
   final GroupBuy groupBuy;
+  final bool isOrganiser;
 
+  //TODO storage like as listings widget
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
+    this.isOrganiser = false,
   }) : super(key: key);
 
 
@@ -112,7 +117,37 @@ class GroupBuyInfo extends StatelessWidget {
                 // Deposit
                 leading: Text('Deposit:'),
                 title: Text('${this.groupBuy.deposit * 100} %'),
+              ),
+
+              isOrganiser
+              ? Container(
+                child: FlatButton(
+                    child: Text("Requests Received")
+                ),
               )
+              : Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 10,),
+                  Divider(
+                    color: Theme.of(context).dividerColor,
+                    height: 5.5,
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                        'You have requested:',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                  ),
+                  RequestCard(request: Request.getDummyRequest()),
+                ],
+              ),
+
             ],
           )
       )
