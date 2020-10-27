@@ -220,7 +220,7 @@ class GroupBuyInfo extends StatelessWidget {
                                 return RequestsLoading();
                               default:
                                 children = snapshot.data.map((Request request) {
-                                  return new RequestCard(isOrganiser: this.isOrganiser, request: request);
+                                  return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
                                 }).toList();
                                 break;
                             }
@@ -277,7 +277,7 @@ class GroupBuyInfo extends StatelessWidget {
                                       case ConnectionState.waiting:
                                         return RequestsLoading();
                                       default:
-                                        children = [RequestCard(request: snapshot.data, isOrganiser: this.isOrganiser)];
+                                        children = [RequestCard(groupBuy: this.groupBuy, request: snapshot.data, isOrganiser: this.isOrganiser)];
                                           break;
                                     }
 
