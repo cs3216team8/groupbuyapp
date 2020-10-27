@@ -114,6 +114,16 @@ class GroupBuyStorage {
   //       .catchError((error) => print("Failed to delete buy: $error"));
   // }
 
+  dynamic EnumFromString(List values, String comp){
+    dynamic enumValue = null;
+    values.forEach((item) {
+      if(item.toString() == comp){
+        enumValue =  item;
+      }
+    });
+    return enumValue;
+  }
+
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
   Stream<List<Request>> getAllGroupBuyRequests(GroupBuy groupBuy) {
     String groupBuyId = groupBuy.getId();
@@ -122,8 +132,9 @@ class GroupBuyStorage {
       return querySnapshot.docs.map((doc) {
         return new Request(
           id: doc.id,
+          requestorId: doc.data()['requestorId'],
           items: [],
-          status: doc.data()['status'],
+          status: EnumFromString(RequestStatus.values, doc.data()['status']),
         );
       }).toList();
     });
@@ -138,8 +149,9 @@ class GroupBuyStorage {
       return querySnapshot.docs.map((doc) {
         return new Request(
           id: doc.id,
+          requestorId: doc.data()['requestorId'],
           items: [],
-          status: doc.data()['status'],
+          status: EnumFromString(RequestStatus.values, doc.data()['status']),
         );
       }).toList()[0];
     });
@@ -152,8 +164,8 @@ class GroupBuyStorage {
     return groupBuyRequestItems.snapshots().map((QuerySnapshot querySnapshot) {
       return querySnapshot.docs.map((doc) {
         return new Item(
-          url: doc.data()['url'],
-          totalAmount: doc.data()['totalAmount'],
+          itemLink: doc.data()['itemLink'],
+          totalAmount: doc.data()['totalAmount'].toDouble(),
           qty: doc.data()['qty'],
           remarks: doc.data()['remarks'],
         );
