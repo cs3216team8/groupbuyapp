@@ -91,28 +91,28 @@ class GroupBuyStorage {
     });
   }
 
-  Future<void> editBuy(Buy buy) {
-    String buyId = buy.id;
-    String groupBuyId = buy.groupBuyId;
-    return groupBuys.doc(groupBuyId).set({
-      'id': buyId,
-      'buyerId': buy.buyerId,
-      'itemLink': buy.itemLink,
-      'amount': buy.amount,
-      'quantity': buy.quantity,
-      'comment': buy.comment,
-    })
-        .then((value) => print("By edited"))
-        .catchError((error) => print("Failed to edit buy: $error"));
-  }
-
-  Future<void> deleteBuy(Buy buy) {
-    String buyId = buy.id;
-    String groupBuyId = buy.groupBuyId;
-    return groupBuys.doc(groupBuyId).collection('buys').doc(buyId).delete()
-        .then((value) => print("By deleted"))
-        .catchError((error) => print("Failed to delete buy: $error"));
-  }
+  // Future<void> editBuy(Buy buy) {
+  //   String buyId = buy.id;
+  //   String groupBuyId = buy.groupBuyId;
+  //   return groupBuys.doc(groupBuyId).set({
+  //     'id': buyId,
+  //     'buyerId': buy.buyerId,
+  //     'itemLink': buy.itemLink,
+  //     'amount': buy.amount,
+  //     'quantity': buy.quantity,
+  //     'comment': buy.comment,
+  //   })
+  //       .then((value) => print("By edited"))
+  //       .catchError((error) => print("Failed to edit buy: $error"));
+  // }
+  //
+  // Future<void> deleteBuy(Buy buy) {
+  //   String buyId = buy.id;
+  //   String groupBuyId = buy.groupBuyId;
+  //   return groupBuys.doc(groupBuyId).collection('buys').doc(buyId).delete()
+  //       .then((value) => print("By deleted"))
+  //       .catchError((error) => print("Failed to delete buy: $error"));
+  // }
 
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
   Stream<List<Request>> getAllGroupBuyRequests(GroupBuy groupBuy) {
