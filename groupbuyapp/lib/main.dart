@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/pages_and_widgets/splashscreen_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 void main() {
