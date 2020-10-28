@@ -3,6 +3,12 @@ import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'components/custom_appbars.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
+  final bool needsBackButton;
+
+  CreateGroupBuyScreen({
+    Key key,
+    this.needsBackButton = false,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CreateGroupBuyState();
@@ -25,8 +31,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     chosenAddress = userAddresses[0];
   }
 
-  void createGroupBuy() {
+  void createGroupBuy(BuildContext context) {
     print("send create request to db"); //TODO input validation + hook storage
+    Navigator.pop(context);
   }
 
   String getLogoAssetName(String site) {
@@ -43,7 +50,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: regularAppBar(
+        appBar: widget.needsBackButton
+            ? backAppBar(context: context, title: "Start a jio!")
+            : regularAppBar(
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
         ),
@@ -157,7 +166,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     ),
                     RaisedButton(
                         child: Text('Create'),
-                        onPressed: createGroupBuy,
+                        onPressed: () => createGroupBuy(context),
                     )
                   ]
               )

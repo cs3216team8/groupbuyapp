@@ -19,7 +19,7 @@ class OrganisedGroupBuyDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: () => segueToPage(context, CreateGroupBuyScreen()),
+            onPressed: () => segueToPage(context, CreateGroupBuyScreen(needsBackButton: true,)),
             textColor: Colors.white,
             child: Text(
                 'Organise one',

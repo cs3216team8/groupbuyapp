@@ -65,7 +65,7 @@ class PiggyBuy extends StatefulWidget {
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.account_circle_sharp),
-      label: 'Profile'
+      label: 'Me'
     )
   ];
 

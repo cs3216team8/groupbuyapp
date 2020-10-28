@@ -17,14 +17,15 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: regularAppBar(
         context: context,
         titleElement: Text("View Profile", style: TextStyle(color: Colors.black),)
       ),
-        body: ProfileGroupBuys(
-            isMe: isMe,
-            userId: userId,
-        )
+      body: ProfileGroupBuys(
+          isMe: isMe,
+          userId: userId,
+      )
     );
   }
 }
