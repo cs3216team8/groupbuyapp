@@ -1,32 +1,38 @@
 import 'package:flutter/material.dart';
 
 class Request {
-  String uid;
+  String id;
+  String requestorId;
   List<Item> items;
   RequestStatus status;
 
   static Request getDummyRequest() {
     return Request(
-        uid: "dummyuid",
+        id: "dummyuid",
         items: [
-          Item(url: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
-          Item(url: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),
+          Item(itemLink: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
+          Item(itemLink: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),
         ],
         status: RequestStatus.confirmed,
     );
   }
 
   Request({
-    @required this.uid,
+    @required this.id,
+    @required this.requestorId,
     @required this.items,
     @required this.status,
   });
 
   Request.newRequest({
-    @required this.uid,
+    @required this.id,
     @required this.items,
   }) {
     status = RequestStatus.pending;
+  }
+
+  String getId() {
+    return this.id;
   }
 
   String getStatus() {
@@ -44,13 +50,13 @@ enum RequestStatus {
 }
 
 class Item {
-  String url;
+  String itemLink;
   double totalAmount;
   int qty;
   String remarks;
 
   Item({
-    @required this.url,
+    @required this.itemLink,
     @required this.totalAmount,
     @required this.qty,
     @required this.remarks,

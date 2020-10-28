@@ -55,6 +55,10 @@ class GroupBuy {
     return [Buy.getDummyData(), Buy.getDummyData(), Buy.getDummyData()];
   }
 
+  String getId() {
+    return this.id;
+  }
+
   void addBuy(Buy buy) {
     this.buys.add(buy);
   }

@@ -46,10 +46,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
 
     List<Item> items = [];
     for (int i = 0; i < itemCards.length; i++) {
-      items.add(Item(url: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
+      items.add(Item(itemLink: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
     }
 
-    Request request = Request.newRequest(uid: widget.piggybackerUid, items: items);
+    Request request = Request.newRequest(id: widget.piggybackerUid, items: items);
   }
 
   void onTapChat(BuildContext context) {
