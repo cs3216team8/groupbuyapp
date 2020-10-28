@@ -300,6 +300,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
               return Dismissible(
                 key: Key(address),
                 direction: DismissDirection.startToEnd,
+                background: Container(color: Colors.black26,),
                 child: ListTile(
                   title: Text(address),
                   trailing: IconButton(

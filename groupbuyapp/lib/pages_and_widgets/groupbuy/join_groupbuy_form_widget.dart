@@ -23,6 +23,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   List<TextEditingController> itemTotalAmtControllers = [];
 
   List<Widget> itemCards = [];
+  List<Widget> deleted = []; //TODO undo redo also
 
   @override
   void initState() {
@@ -49,7 +50,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       items.add(Item(itemLink: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
     }
 
-    Request request = Request.newRequest(id: widget.piggybackerUid, items: items);
+    Request request = Request.newRequest(requestorId: widget.piggybackerUid, items: items);
   }
 
   void onTapChat(BuildContext context) {
@@ -67,11 +68,19 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     itemTotalAmtControllers.add(amtController);
 
     return AddItemCard(
+      key: UniqueKey(),
       urlController: urlController,
       qtyController: qtyController,
       remarksController: rmksController,
       totalAmtController: amtController,
     );
+  }
+
+  void _deleteInputCard(int index) {
+    setState(() {
+      Widget itemCard = itemCards.removeAt(index);
+      deleted.add(itemCard);
+    });
   }
 
   @override
@@ -105,47 +114,66 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       ),
       body: SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.all(20),
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Text(
-                    'Items',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-                ),
+          margin: EdgeInsets.only(top: 20, bottom: 80, left: 10, right: 10),
+          // padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Text(
+                  'Items',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+              ),
+              SizedBox(height: 20,),
 
-                Expanded(
+              Container(
                   child: ListView.builder(
                     shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
                     itemCount: itemCards.length,
                     itemBuilder: (context, index) {
-                      return itemCards[index];
+                      Widget itemCard = itemCards[index];
+                      return Dismissible(
+                        key: itemCard.key,
+                        direction: DismissDirection.startToEnd,
+                        onDismissed: (direction) {
+                          _deleteInputCard(index);
+                        },
+                        background: Container(color: Colors.black26),
+                        child: ListTile(
+                          title: itemCard,
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete_rounded),
+                            onPressed: () => _deleteInputCard(index),
+                          ),
+                        ),
+                      );
                     },
                   ),
-                ),
+              ),
 
-                OutlineButton(
-                    child: Text('+ Add more items',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    onPressed: addItemInput
-                ),
-                Row(
-                    children: [
-                      Expanded(flex: 70, child: Text('Total: ')),
-                      Expanded(flex: 30, child: Text('\$57.90'))
-                    ]
-                ),
-                Row(
-                    children: [
-                      Expanded(flex: 70, child: Text('Deposit Amount:')),
-                      Expanded(flex: 30, child: Text('\$28.95'))
-                    ]
-                ),
-              ],
-            )
+              OutlineButton(
+                  child: Text('+ Add more items',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  onPressed: addItemInput
+              ),
+              Row(
+                  children: [
+                    Expanded(flex: 70, child: Text('Total: ')),
+                    Expanded(flex: 30, child: Text('\$57.90'))
+                  ]
+              ),
+              Row(
+                  children: [
+                    Expanded(flex: 70, child: Text('Deposit Amount:')),
+                    Expanded(flex: 30, child: Text('\$28.95'))
+                  ]
+              ),
+            ],
+          )
         ),
       ),
     );
