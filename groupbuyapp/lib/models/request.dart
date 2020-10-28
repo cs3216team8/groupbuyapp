@@ -8,7 +8,8 @@ class Request {
 
   static Request getDummyRequest() {
     return Request(
-        id: "dummyuid",
+        id: "dummyUid",
+        requestorId: "dummyUid",
         items: [
           Item(itemLink: 'someurl', totalAmount: 15.08, qty: 1, remarks: "someremarks"),
           Item(itemLink: 'someurl2', totalAmount: 3.60, qty: 2, remarks: "someremark2"),

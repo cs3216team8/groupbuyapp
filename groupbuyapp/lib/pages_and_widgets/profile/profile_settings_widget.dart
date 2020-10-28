@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
@@ -174,7 +174,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
             Navigator.pop(context);
-            segueWithoutBack(context, LoginScreen());
+            segueWithoutBack(context, PiggyBuyApp());
           },
           textColor: Theme.of(context).primaryColor,
           child: Text(

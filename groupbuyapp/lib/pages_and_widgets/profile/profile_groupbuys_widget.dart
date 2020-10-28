@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
@@ -7,7 +8,6 @@ import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class ProfileGroupBuys extends StatefulWidget {
   final bool isMe;
-  final String userId;
 
   final Color headerBackgroundColour, textColour;
   final double letterSpacing, topHeightFraction;
@@ -15,8 +15,6 @@ class ProfileGroupBuys extends StatefulWidget {
   ProfileGroupBuys({
     Key key,
     @required this.isMe,
-    @required this.userId,
-
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -32,6 +30,13 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
 
   @override
   Widget build(BuildContext context) {
+
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Container();
+    }
+
+    String userId = FirebaseAuth.instance.currentUser.uid;
+
     return DefaultTabController(
       length: 1,
       child: NestedScrollView(
@@ -47,10 +52,9 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                         ),
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<UserProfile>(
-                            future: ProfileStorage.instance.getUserProfile(widget.userId),
+                            future: ProfileStorage.instance.getUserProfile(userId),
                             builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                               if (snapshot.hasError) {
-                                print(snapshot.error);
                                 return FailedToLoadProfile();
                               }
 

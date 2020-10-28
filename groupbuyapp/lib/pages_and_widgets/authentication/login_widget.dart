@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/components/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
 import 'components/login_background.dart';
 
@@ -174,8 +172,8 @@ class _LoginScreenState extends State<LoginScreen> {
           } catch (e) {
             print(e);
           }
-          return userCredential;
         }
+        return userCredential;
         break;
 
       case FacebookLoginStatus.cancelledByUser:
@@ -192,10 +190,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('PiggyBuy'),
-        // ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottomOpacity: 0,
+          toolbarOpacity: 1,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ),
         body: Background(
           child: SingleChildScrollView(
             child: Form(
@@ -218,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -231,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -240,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 6,),
+                  SizedBox(height: 6),
                   OrDivider(
                     textColor: Theme.of(context).primaryColor,
                   ),
@@ -279,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState.validate()) {
                         UserCredential userCredential = await _signInWithEmailAndPassword();
                         if (userCredential != null) {
-                          segueWithoutBack(context, PiggyBuyApp());
+                          Navigator.pop(context);
                         }
                       }
                     },
