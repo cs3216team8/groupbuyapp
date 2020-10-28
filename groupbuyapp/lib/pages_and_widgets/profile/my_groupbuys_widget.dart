@@ -13,9 +13,9 @@ class MyGroupBuys extends StatefulWidget {
   final Map<int, Widget> segments = <int, Widget>{
     0: Container(
       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        child: Text("As Piggybuyer")
+        child: Text("As Organiser")
     ),
-    1: Text("As Organiser")
+    1: Text("As Piggybuyer")
   };
 
 

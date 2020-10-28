@@ -19,7 +19,7 @@ class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: () => segueToPage(context, HomeScreen()),
+            onPressed: () => segueToPage(context, HomeScreen()), //TODO: should redirect instead (note missing navbar)
             textColor: Colors.white,
             child: Text(
                 'PiggyBack one',
