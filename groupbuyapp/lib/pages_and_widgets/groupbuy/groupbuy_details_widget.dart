@@ -34,6 +34,40 @@ class GroupBuyInfo extends StatelessWidget {
     segueToPage(context, JoinGroupBuyForm());
   }
 
+  Widget getRequestPreview(Future<Request> futureRequest) {
+    return FutureBuilder<Request>(
+      future: futureRequest,
+      builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
+        List<Widget> children;
+        if (snapshot.hasError) {
+          return FailedToLoadRequests();
+        }
+
+        switch (snapshot.connectionState) {
+          case ConnectionState.none:
+            return RequestsNotLoaded();
+          case ConnectionState.waiting:
+            return RequestsLoading();
+          default:
+            children = [RequestCard(groupBuy: this.groupBuy, request: snapshot.data, isOrganiser: this.isOrganiser)];
+            break;
+        }
+
+        if (children.isEmpty) {
+          return RequestAsPiggyBackerDefaultScreen();
+        }
+
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: children.length,
+          itemBuilder: (context, index) {
+            return children[index];
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -207,11 +241,12 @@ class GroupBuyInfo extends StatelessWidget {
                             ),
                           ],
                         ),
-                        StreamBuilder<List<Request>>(
+                        StreamBuilder<List<Future<Request>>>(
                           stream: GroupBuyStorage.instance.getAllGroupBuyRequests(this.groupBuy),
-                          builder: (BuildContext context, AsyncSnapshot<List<Request>> snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
                             List<Widget> children;
                             if (snapshot.hasError) {
+                              print(snapshot.error);
                               return FailedToLoadRequests();
                             }
 
@@ -221,8 +256,9 @@ class GroupBuyInfo extends StatelessWidget {
                               case ConnectionState.waiting:
                                 return RequestsLoading();
                               default:
-                                children = snapshot.data.map((Request request) {
-                                  return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
+                                children = snapshot.data.map((Future<Request> futureRequest) {
+                                  return getRequestPreview(futureRequest);
+                                  // return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
                                 }).toList();
                                 break;
                             }
@@ -265,37 +301,7 @@ class GroupBuyInfo extends StatelessWidget {
                                       )
                                   ),
                                 ),
-                                FutureBuilder<Request>(
-                                  future: GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(this.groupBuy),
-                                  builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
-                                    List<Widget> children;
-                                    if (snapshot.hasError) {
-                                      return FailedToLoadRequests();
-                                    }
-
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.none:
-                                        return RequestsNotLoaded();
-                                      case ConnectionState.waiting:
-                                        return RequestsLoading();
-                                      default:
-                                        children = [RequestCard(groupBuy: this.groupBuy, request: snapshot.data, isOrganiser: this.isOrganiser)];
-                                          break;
-                                    }
-
-                                    if (children.isEmpty) {
-                                      return RequestAsPiggyBackerDefaultScreen();
-                                    }
-
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: children.length,
-                                      itemBuilder: (context, index) {
-                                        return children[index];
-                                      },
-                                    );
-                                  },
-                                )
+                                getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(this.groupBuy))
                               ],
                             )
                             : Container(),

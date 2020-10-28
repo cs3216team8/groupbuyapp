@@ -135,7 +135,7 @@ class GroupBuyStorage {
         qty: doc.data()['qty'],
         remarks: doc.data()['remarks'],
       );
-    });
+    }).toList();
     return new Request(
       id: document.id,
       requestorId: document.data()['requestorId'],
@@ -214,7 +214,7 @@ class GroupBuyStorage {
             qty: doc.data()['qty'],
             remarks: doc.data()['remarks'],
           );
-        });
+        }).toList();
         return new Request(
         id: doc.id,
         requestorId: doc.data()['requestorId'],
