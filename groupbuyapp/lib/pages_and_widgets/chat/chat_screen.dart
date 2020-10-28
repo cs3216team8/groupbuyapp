@@ -116,6 +116,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               ],
               timeFormat: DateFormat('HH:mm'),
+              dateFormat: DateFormat('MMM-dd'),
               messageDecorationBuilder: (ChatMessage msg, bool isUser){
                 return BoxDecoration(
                   color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE), // example
