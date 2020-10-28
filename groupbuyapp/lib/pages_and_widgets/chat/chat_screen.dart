@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -22,8 +23,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    user.name = widget.username;
-    user.uid = widget.uuid;
+    user.name = FirebaseAuth.instance.currentUser.displayName;
+    user.uid = FirebaseAuth.instance.currentUser.uid;
     super.initState();
   }
 
