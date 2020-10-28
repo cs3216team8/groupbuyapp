@@ -17,8 +17,6 @@ class GroupBuyInfo extends StatelessWidget {
   final bool isOrganiser;
   bool hasRequested;
 
-  final GroupBuyStorage groupBuyStorage = GroupBuyStorage();
-
   //TODO storage like as listings widget
   GroupBuyInfo({
     Key key,
@@ -39,7 +37,7 @@ class GroupBuyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(context: context, title: 'Group Buy Details'),
+      appBar: backAppBar(context: context, title: 'Group Buy Details'),
       floatingActionButton: hasRequested
           ? RaisedButton(
             color: Theme.of(context).accentColor,
@@ -210,7 +208,7 @@ class GroupBuyInfo extends StatelessWidget {
                           ],
                         ),
                         StreamBuilder<List<Request>>(
-                          stream: this.groupBuyStorage.getAllGroupBuyRequests(this.groupBuy),
+                          stream: GroupBuyStorage.instance.getAllGroupBuyRequests(this.groupBuy),
                           builder: (BuildContext context, AsyncSnapshot<List<Request>> snapshot) {
                             List<Widget> children;
                             if (snapshot.hasError) {
@@ -268,7 +266,7 @@ class GroupBuyInfo extends StatelessWidget {
                                   ),
                                 ),
                                 FutureBuilder<Request>(
-                                  future: this.groupBuyStorage.getGroupBuyRequestsFromCurrentUser(this.groupBuy),
+                                  future: GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(this.groupBuy),
                                   builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
                                     List<Widget> children;
                                     if (snapshot.hasError) {

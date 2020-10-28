@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/activity_model.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
 class MyGroupBuyCard extends StatelessWidget {

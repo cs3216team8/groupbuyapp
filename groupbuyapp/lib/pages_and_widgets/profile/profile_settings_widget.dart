@@ -9,7 +9,6 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   final UserProfile profile;
-  final ProfileStorage profileStorage = ProfileStorage();
 
   ProfileSettingsScreen({
     Key key,
@@ -49,7 +48,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.rating,
                   profile.reviewCount
               );
-              profileStorage.createOrUpdateUserProfile(newProfile);
+              ProfileStorage.instance.createOrUpdateUserProfile(newProfile);
               Navigator.pop(context);
             },
           )

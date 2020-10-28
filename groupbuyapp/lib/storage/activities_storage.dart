@@ -1,15 +1,15 @@
 import 'package:groupbuyapp/models/activity_model.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ActivitiesStorage {
-  final String userId = FirebaseAuth.instance.currentUser.uid;
+
+  ActivitiesStorage._privateConstructor();
+  static final ActivitiesStorage instance = ActivitiesStorage._privateConstructor();
 
   CollectionReference activityRef =
       FirebaseFirestore.instance.collection('activities');
 
-  Future<void> createActivity(Activity activity) async {
+  Future<void> createActivity(Activity activity, String userId) async {
     CollectionReference userActivityRef = activityRef.doc(userId).collection('activity');
 
     return userActivityRef.add({
@@ -21,7 +21,7 @@ class ActivitiesStorage {
     });
   }
 
-  Stream<List<Activity>> getAllActivities() {
+  Stream<List<Activity>> getAllActivities(String userId) {
     CollectionReference userActivityRef = activityRef.doc(userId).collection(
         'activity');
 
@@ -39,11 +39,11 @@ class ActivitiesStorage {
     });
   }
 
-  Future<void> updateActivityStatus(Activity activity) async {
+  Future<void> updateActivityStatus(Activity activity, String userId) async {
     CollectionReference userActivityRef = activityRef.doc(userId).collection('activity');
 
     if (activity.activityId == null) {
-      createActivity(activity);
+      createActivity(activity, userId);
       return;
     }
 

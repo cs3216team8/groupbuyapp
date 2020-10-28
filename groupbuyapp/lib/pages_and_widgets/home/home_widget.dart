@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
@@ -9,12 +8,6 @@ import 'package:groupbuyapp/utils/navigators.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-
-  HomeScreen({
-    Key key,
-    @required this.groupBuyStorage,
-  }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -98,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
               ),
               ListingsSection(
-                createGroupBuyStream: widget.groupBuyStorage.getAllGroupBuys,
+                createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
                 createDefaultScreen: () => HomeDefaultScreen(),
               )
             ],

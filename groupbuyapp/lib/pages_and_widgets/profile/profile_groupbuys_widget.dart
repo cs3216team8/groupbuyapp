@@ -3,23 +3,19 @@ import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class ProfileGroupBuys extends StatefulWidget {
-  final Future<UserProfile> Function(String) userProfileStream;
   final bool isMe;
   final String userId;
-  final GroupBuyStorage groupBuyStorage;
 
   final Color headerBackgroundColour, textColour;
   final double letterSpacing, topHeightFraction;
 
   ProfileGroupBuys({
     Key key,
-    @required this.userProfileStream,
     @required this.isMe,
     @required this.userId,
-    @required this.groupBuyStorage,
 
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
@@ -51,7 +47,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                         ),
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<UserProfile>(
-                            future: widget.userProfileStream(widget.userId),
+                            future: ProfileStorage.instance.getUserProfile(widget.userId),
                             builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                               if (snapshot.hasError) {
                                 print(snapshot.error);
@@ -75,7 +71,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             )
           ];
         },
-        body: MyGroupBuys(groupBuyStorage: widget.groupBuyStorage)
+        body: MyGroupBuys()
       ),
     );
   }
