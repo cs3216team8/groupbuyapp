@@ -1,43 +1,79 @@
 import 'package:flutter/material.dart';
 
-class AddItemWidget extends StatelessWidget {
+class AddItemCard extends StatelessWidget {
+  final TextEditingController urlController;
+  final TextEditingController qtyController;
+  final TextEditingController remarksController;
+  final TextEditingController totalAmtController;
+
+  AddItemCard({
+    Key key,
+    this.urlController,
+    this.qtyController,
+    this.remarksController,
+    this.totalAmtController,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      alignment: Alignment.center,
+    return Card(
       child: Column(
         children: [
-          Text('Item link'),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Paste your item link here'),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 6,
+                child: TextField(
+                  controller: urlController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Paste your item link here',
+                    hintText: 'Product link',
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: TextField(
+                  controller: qtyController,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter your quantity here',
+                    hintText: 'Qty'
+                  ),
+                ),
+              )
+            ],
           ),
-          Text('Amount'),
-          TextField(
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter the product price here'),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 5,
+                child: TextField(
+                  controller: remarksController,
+                  expands: true,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter any comments or options to indicate to the buyer',
+                    hintText: 'Remarks/options/comments'
+                  )
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: TextField(
+                  controller: totalAmtController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter the product price here',
+                    hintText: 'Total amt,'
+                  ),
+                ),
+              ),
+            ],
           ),
-          Text('Quantity'),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter your quantity here'),
-          ),
-          Text('Comments/Options'),
-          TextField(
-            expands: true,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText:
-                    'Enter any comments or options to indicate to the buyer'),
-          ),
-          RaisedButton(
-              color: Colors.pinkAccent, child: Text('Add'), onPressed: null)
-        ],
+        ]
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/info_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 

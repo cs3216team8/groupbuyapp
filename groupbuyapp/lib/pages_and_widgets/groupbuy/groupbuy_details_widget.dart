@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 
@@ -24,8 +26,9 @@ class GroupBuyInfo extends StatelessWidget {
     print("tapped on chat"); //TODO
   }
 
-  void onTapJoin() {
+  void onTapJoin(BuildContext context) {
     print("tapped on join"); //TODO
+    segueToPage(context, JoinGroupBuyForm());
   }
 
   @override
@@ -63,7 +66,7 @@ class GroupBuyInfo extends StatelessWidget {
                 ),
                 RaisedButton(
                   color: Theme.of(context).accentColor,
-                  onPressed: () => onTapJoin(),
+                  onPressed: () => onTapJoin(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
