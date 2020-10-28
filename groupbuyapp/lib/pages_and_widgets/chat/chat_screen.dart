@@ -25,6 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     user.name = FirebaseAuth.instance.currentUser.displayName;
     user.uid = FirebaseAuth.instance.currentUser.uid;
+    user.avatar = FirebaseAuth.instance.currentUser.photoURL;
     super.initState();
   }
 
@@ -116,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               ],
               timeFormat: DateFormat('HH:mm'),
-              dateFormat: DateFormat('MMM-dd'),
+              dateFormat: DateFormat('MMM dd'),
               messageDecorationBuilder: (ChatMessage msg, bool isUser){
                 return BoxDecoration(
                   color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE), // example
