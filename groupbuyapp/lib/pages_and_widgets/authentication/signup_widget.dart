@@ -93,9 +93,8 @@ class _SignUpFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: BackAppBar(
+      appBar: backAppBar(
         context: context,
         title: "Sign up now!",
         color: Colors.white,

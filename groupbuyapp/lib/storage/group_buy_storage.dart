@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/request.dart';
 
@@ -117,8 +115,8 @@ class GroupBuyStorage {
   //       .catchError((error) => print("Failed to delete buy: $error"));
   // }
 
-  dynamic EnumFromString(List values, String comp){
-    dynamic enumValue = null;
+  dynamic enumFromString(List values, String comp){
+    dynamic enumValue;
     values.forEach((item) {
       if(item.toString() == comp){
         enumValue =  item;
@@ -137,7 +135,7 @@ class GroupBuyStorage {
           id: doc.id,
           requestorId: doc.data()['requestorId'],
           items: [],
-          status: EnumFromString(RequestStatus.values, doc.data()['status']),
+          status: enumFromString(RequestStatus.values, doc.data()['status']),
         );
       }).toList();
     });
@@ -154,7 +152,7 @@ class GroupBuyStorage {
           id: doc.id,
           requestorId: doc.data()['requestorId'],
           items: [],
-          status: EnumFromString(RequestStatus.values, doc.data()['status']),
+          status: enumFromString(RequestStatus.values, doc.data()['status']),
         );
       }).toList()[0];
     });
@@ -272,8 +270,7 @@ class GroupBuyStorage {
       StreamController<List<GroupBuy>> controller = StreamController<List<GroupBuy>>();
       controller.add(empty);
       completer.complete(controller.stream);
-
-          return completer.future;
+      return completer.future;
     }
   }
 }

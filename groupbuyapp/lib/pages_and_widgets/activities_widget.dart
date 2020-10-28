@@ -16,7 +16,7 @@ class ActivityScreen extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: RegularAppBar(
+      appBar: regularAppBar(
           context: context,
           titleElement: Text("Activities", style: TextStyle(color: Colors.black),)
       ),

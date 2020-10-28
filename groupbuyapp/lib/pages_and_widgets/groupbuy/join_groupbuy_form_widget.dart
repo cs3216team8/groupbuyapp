@@ -77,7 +77,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(
+      appBar: backAppBar(
           context: context,
           title: "Join",
       ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'components/custom_appbars.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
@@ -45,7 +43,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: RegularAppBar(
+        appBar: regularAppBar(
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
         ),

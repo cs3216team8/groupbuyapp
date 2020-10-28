@@ -3,10 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
-// Storage
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
-
 class ProfileScreen extends StatelessWidget {
   final bool isMe; // true if clicked from my profile
 
@@ -19,11 +15,9 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size =
-        MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: RegularAppBar(
+      appBar: regularAppBar(
         context: context,
         titleElement: Text("View Profile", style: TextStyle(color: Colors.black),)
       ),

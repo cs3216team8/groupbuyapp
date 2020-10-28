@@ -4,18 +4,11 @@ import 'package:flutter/material.dart';
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
-// My Piggybuys
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
-
 // Create
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
-// Activities
-import 'package:groupbuyapp/storage/activities_storage.dart';
-
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';

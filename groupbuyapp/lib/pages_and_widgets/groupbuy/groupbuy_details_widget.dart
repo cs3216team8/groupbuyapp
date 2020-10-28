@@ -37,7 +37,7 @@ class GroupBuyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: BackAppBar(context: context, title: 'Group Buy Details'),
+      appBar: backAppBar(context: context, title: 'Group Buy Details'),
       floatingActionButton: hasRequested
           ? RaisedButton(
             color: Theme.of(context).accentColor,

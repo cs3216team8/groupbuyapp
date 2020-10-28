@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
