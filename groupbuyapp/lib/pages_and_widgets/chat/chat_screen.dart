@@ -24,6 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     user.name = FirebaseAuth.instance.currentUser.displayName;
+    print(user.name);
     user.uid = FirebaseAuth.instance.currentUser.uid;
     user.avatar = FirebaseAuth.instance.currentUser.photoURL;
     super.initState();
@@ -55,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
       String id = Uuid().v4().toString();
 
       final StorageReference storageRef =
-      FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
+          FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
 
       StorageUploadTask uploadTask = storageRef.putFile(
         result,
@@ -101,7 +102,7 @@ class _ChatScreenState extends State<ChatScreen> {
           } else {
             List<DocumentSnapshot> items = snapshot.data.documents;
             var messages =
-            items.map((i) => ChatMessage.fromJson(i.data())).toList();
+                items.map((i) => ChatMessage.fromJson(i.data())).toList();
             return DashChat(
               user: user,
               messages: messages,
@@ -118,9 +119,10 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
               timeFormat: DateFormat('HH:mm'),
               dateFormat: DateFormat('MMM dd'),
-              messageDecorationBuilder: (ChatMessage msg, bool isUser){
+              messageDecorationBuilder: (ChatMessage msg, bool isUser) {
                 return BoxDecoration(
-                  color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE), // example
+                  color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE),
+                  // example
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 );
               },
