@@ -116,49 +116,14 @@ class _LoginScreenState extends State<LoginScreen> {
       // Once signed in, return the UserCredential
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       // UserCredential(additionalUserInfo: AdditionalUserInfo(isNewUser: false, profile: {given_name: Agnes, locale: en, family_name: Natasya, picture: https://lh3.googleusercontent.com/-ebDtfoHeJe4/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucn1hd9DMkL0oBkEf-vD_CwMqcgLPw/s96-c/photo.jpg, aud: 584043471672-btgbhhtb0vnh2mbqmjkc32j5rbhfjngq.apps.googleusercontent.com, azp: 584043471672-vc4ajmg84bk51nvml8g3beshqaqvcnk4.apps.googleusercontent.com, exp: 1603630635, iat: 1603627035, iss: https://accounts.google.com, sub: 109095081159135266046, name: Agnes Natasya, email: an.agnesnatasya@gmail.com, email_verified: true}, providerId: google.com, username: null), credential: AuthCredential(providerId: google.com, signInMethod: google.com, token: null), user: User(displayName: Gabe Miguel, email: an.agnesnatasya@gmail.com, emailVerified: true, isAnonymous: false, metadata: UserMetadata(creationTime: 2020-10-23 00:27:51.939, lastSignInTime: 2020-10-25 20:05:18.872), phoneNumber: null, photoURL: https://lh3.googleusercontent.com/-ebDtfoHeJe4/
-      print(FirebaseAuth.instance.currentUser.uid);
-      UserProfile userProfile = new UserProfile(
-          userCredential.user.uid,
-          userCredential.user.displayName,
-          "",
-          userCredential.additionalUserInfo.profile['picture'],
-          userCredential.user.phoneNumber,
-          userCredential.user.email,
-          [],
-          [],
-          null,
-          0
-      );
-      try {
-        await profileStorage.createOrUpdateUserProfile(userProfile);
-        return userCredential;
-      } catch (e) {
-        print(e);
-      }
-      return userCredential;
-    }
-  }
+      bool isExistingUser = await profileStorage.checkIfProfileExists(FirebaseAuth.instance.currentUser.uid);
 
-  Future<UserCredential> signInWithFacebook() async {
-    final facebookLogin = FacebookLogin();
-    final result = await facebookLogin.logIn(['email', 'public_profile']);
-
-    switch (result.status) {
-      case FacebookLoginStatus.loggedIn:
-        print('logged in');
-        final token = result.accessToken.token;
-        // final graphResponse = await http.get(
-        //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
-        // // {name: Daniel Wong, first_name: Daniel, last_name: Wong, email: facebook@dawo.me, id: 10220694904295568}
-        // Map<String, dynamic> userDetails = jsonDecode(graphResponse.body);
-        // User(displayName: Daniel Wong, email: facebook@dawo.me, emailVerified: false, isAnonymous: false, metadata: UserMetadata(creationTime: 2020-10-25 20:56:13.785, lastSignInTime: 2020-10-25 21:00:06.231), phoneNumber: null, photoURL: https://graph.facebook.com/10220694904295568/picture, providerData, [UserInfo(displayName: Daniel Wong, email: facebook@dawo.me, phoneNumber: null, photoURL: https://graph.facebook.com/10220694904295568/picture, providerId: facebook.com, uid: 10220694904295568)], refreshToken: , tenantId: null, uid: 2MBjN3oKmoerKo6vXKCIc1Dfp2j2)
-        final OAuthCredential credential =  FacebookAuthProvider.credential(token); // _token is your facebook access token as a string
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      if (!isExistingUser) {
         UserProfile userProfile = new UserProfile(
             userCredential.user.uid,
             userCredential.user.displayName,
             "",
-            userCredential.additionalUserInfo.profile['picture']['data']['url'],
+            userCredential.additionalUserInfo.profile['picture'],
             userCredential.user.phoneNumber,
             userCredential.user.email,
             [],
@@ -172,11 +137,52 @@ class _LoginScreenState extends State<LoginScreen> {
         } catch (e) {
           print(e);
         }
-        return userCredential;
+      }
+
+      return userCredential;
+    }
+  }
+
+  Future<UserCredential> signInWithFacebook() async {
+    final facebookLogin = FacebookLogin();
+    final result = await facebookLogin.logIn(['email', 'public_profile']);
+
+    switch (result.status) {
+      case FacebookLoginStatus.loggedIn:
+        print('logged in');
+        final token = result.accessToken.token;
+        final OAuthCredential credential = FacebookAuthProvider.credential(token); // _token is your facebook access token as a string
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+        bool isExistingUser = await profileStorage.checkIfProfileExists(FirebaseAuth.instance.currentUser.uid);
+
+        if (!isExistingUser) {
+          UserProfile userProfile = new UserProfile(
+              userCredential.user.uid,
+              userCredential.user.displayName,
+              "",
+              userCredential.additionalUserInfo.profile['picture']['data']['url'],
+              userCredential.user.phoneNumber,
+              userCredential.user.email,
+              [],
+              [],
+              null,
+              0
+          );
+          try {
+            await profileStorage.createOrUpdateUserProfile(userProfile);
+            return userCredential;
+          } catch (e) {
+            print(e);
+          }
+          return userCredential;
+        }
         break;
+
       case FacebookLoginStatus.cancelledByUser:
         print('cancel');
         break;
+        
       case FacebookLoginStatus.error:
         print('error');
         break;
