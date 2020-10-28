@@ -25,9 +25,10 @@ class Request {
   });
 
   Request.newRequest({
-    @required this.id,
+    @required this.requestorId,
     @required this.items,
   }) {
+    // this.id = "" //TODO: need to pass in empty id? how will storage create id
     status = RequestStatus.pending;
   }
 
