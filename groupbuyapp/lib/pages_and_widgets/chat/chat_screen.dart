@@ -115,6 +115,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 )
               ],
               timeFormat: DateFormat('HH:mm'),
+              messageDecorationBuilder: (ChatMessage msg, bool isUser){
+                return BoxDecoration(
+                  color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE), // example
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                );
+              },
             );
           }
         },
