@@ -136,7 +136,7 @@ class RequestCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "INSERTUNAME", // TODO: ???.getUsername(request.uid)
+                  this.request.requestorId, // TODO: ???.getUsername(request.uid)
                 ),
                 Spacer(
                   flex: 1,
