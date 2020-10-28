@@ -8,9 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
-import 'background.dart';
-import 'login_signup_option_widget.dart';
-
+import 'components/login_background.dart';
+import 'components/login_signup_option_widget.dart';
 
 class SignupForm extends StatefulWidget {
   @override

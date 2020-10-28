@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/components/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,9 +11,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:http/http.dart' as http;
-import 'background.dart';
-import 'dart:convert' show jsonDecode;
+import 'components/login_background.dart';
 
 class LoginPage extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
