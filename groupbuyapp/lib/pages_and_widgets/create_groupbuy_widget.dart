@@ -5,14 +5,6 @@ import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'components/custom_appbars.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-  final ProfileStorage profileStorage;
-
-  CreateGroupBuyScreen({
-    Key key,
-    @required this.groupBuyStorage,
-    @required this.profileStorage,
-  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _CreateGroupBuyState();

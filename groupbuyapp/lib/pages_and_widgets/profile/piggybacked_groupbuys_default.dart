@@ -4,11 +4,6 @@ import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
-  final GroupBuyStorage groupBuyStorage;
-  PiggyBackedGroupBuyDefaultScreen({
-    Key key,
-    @required this.groupBuyStorage,
-  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +20,7 @@ class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: () => segueToPage(context, HomeScreen(groupBuyStorage: this.groupBuyStorage)),
+            onPressed: () => segueToPage(context, HomeScreen()),
             textColor: Colors.white,
             child: Text(
                 'PiggyBack one',

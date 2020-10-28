@@ -9,11 +9,6 @@ import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyGroupBuys extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-  MyGroupBuys({
-    Key key,
-    @required this.groupBuyStorage,
-  }) : super(key: key);
 
   final Map<int, Widget> segments = <int, Widget>{
     0: Container(
@@ -66,7 +61,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
             index: this._selectedIndex,
             children: <Widget>[
                 StreamBuilder<List<GroupBuy>>(
-                  stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+                  stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
                   builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasError) {
@@ -100,7 +95,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                   },
                 ),
               FutureBuilder<Stream<List<GroupBuy>>>(
-                future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
+                future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
                     if (snapshot.hasError){
                       print(snapshot.error);
@@ -136,7 +131,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                             }
 
                             if (children.isEmpty) {
-                              return PiggyBackedGroupBuyDefaultScreen(groupBuyStorage: widget.groupBuyStorage);
+                              return PiggyBackedGroupBuyDefaultScreen();
                             }
 
                             return GridView.count(

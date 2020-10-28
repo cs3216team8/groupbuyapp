@@ -9,12 +9,6 @@ import 'package:groupbuyapp/utils/navigators.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-
-  HomeScreen({
-    Key key,
-    @required this.groupBuyStorage,
-  }) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -98,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
               ),
               ListingsSection(
-                createGroupBuyStream: widget.groupBuyStorage.getAllGroupBuys,
+                createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
                 createDefaultScreen: () => HomeDefaultScreen(),
               )
             ],

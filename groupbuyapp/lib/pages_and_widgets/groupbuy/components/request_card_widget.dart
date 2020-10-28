@@ -9,8 +9,6 @@ class RequestCard extends StatelessWidget {
   final Request request;
   final bool isOrganiser;
 
-  final GroupBuyStorage groupBuyStorage = GroupBuyStorage();
-
   RequestCard({
     Key key,
     @required this.groupBuy,
@@ -45,7 +43,7 @@ class RequestCard extends StatelessWidget {
             ],
           ),
           StreamBuilder<List<Item>>(
-            stream: this.groupBuyStorage.getItemsOfRequest(this.groupBuy, this.request),
+            stream: GroupBuyStorage.instance.getItemsOfRequest(this.groupBuy, this.request),
             builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
               List<Widget> children;
               if (snapshot.hasError) {

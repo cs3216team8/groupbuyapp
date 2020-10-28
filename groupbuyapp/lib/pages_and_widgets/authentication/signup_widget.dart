@@ -17,7 +17,6 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignupForm> {
-  ProfileStorage profileStorage = new ProfileStorage();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -52,7 +51,7 @@ class _SignUpFormState extends State<SignupForm> {
           0
       );
       try {
-        await profileStorage.createOrUpdateUserProfile(userProfile);
+        await ProfileStorage.instance.createOrUpdateUserProfile(userProfile);
         return userCredential;
       } catch (e) {
         print(e);

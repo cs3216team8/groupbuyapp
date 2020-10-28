@@ -6,6 +6,10 @@ import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 
 class ProfileStorage {
+
+  ProfileStorage._privateConstructor();
+  static final ProfileStorage instance = ProfileStorage._privateConstructor();
+
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
 
