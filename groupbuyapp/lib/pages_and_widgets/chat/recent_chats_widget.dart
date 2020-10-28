@@ -18,7 +18,7 @@ class RecentChats extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ChatScreen("dummy"),
+                  builder: (_) => ChatScreen(),
                 ),
               ),
               child: Container(
