@@ -7,7 +7,7 @@ class AddItemCard extends StatelessWidget {
   final TextEditingController totalAmtController;
 
   AddItemCard({
-    Key key,
+    @required Key key,
     this.urlController,
     this.qtyController,
     this.remarksController,
@@ -17,31 +17,26 @@ class AddItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       child: Column(
         children: [
           Row(
             children: <Widget>[
               Expanded(
                 flex: 6,
-                child: TextField(
+                child: MyTextField(
                   controller: urlController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Paste your item link here',
-                    hintText: 'Product link',
-                  ),
+                  labelText: 'Paste your item link here',
+                  hintText: 'Product link',
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: TextField(
+                child: MyTextField(
                   controller: qtyController,
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter your quantity here',
-                    hintText: 'Qty'
-                  ),
+                  labelText: 'Enter your quantity here',
+                  hintText: 'Qty'
                 ),
               )
             ],
@@ -50,30 +45,61 @@ class AddItemCard extends StatelessWidget {
             children: <Widget>[
               Expanded(
                 flex: 5,
-                child: TextField(
+                child: MyTextField(
                   controller: remarksController,
-                  expands: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter any comments or options to indicate to the buyer',
-                    hintText: 'Remarks/options/comments'
-                  )
+                  //expands: true,
+                  labelText: 'Enter any comments or options to indicate to the buyer',
+                  hintText: 'Remarks/options/comments'
                 ),
               ),
               Expanded(
                 flex: 1,
-                child: TextField(
+                child: MyTextField(
                   controller: totalAmtController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Enter the product price here',
-                    hintText: 'Total amt,'
-                  ),
+                  keyboardType: TextInputType.number,
+                  labelText: 'Enter the product price here',
+                  hintText: 'Total amt,'
                 ),
               ),
             ],
           ),
         ]
+      ),
+    );
+  }
+}
+
+class MyTextField extends StatelessWidget {
+  TextEditingController controller;
+  String hintText, labelText;
+  TextInputType keyboardType;
+
+  MyTextField({
+    Key key,
+    this.controller,
+    this.hintText,
+    this.labelText,
+    this.keyboardType,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 3),
+      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+      //width: ,
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        decoration: InputDecoration(
+          isDense: true,
+          hintText: hintText,
+          labelText: labelText,
+          border: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(5.0),
+            borderSide: const BorderSide(color: Colors.black54, width: 1.0),
+          ),
+        ),
       ),
     );
   }

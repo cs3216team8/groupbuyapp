@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: [
-              Image.asset('assets/piggyback.png'),
+              Image.asset('assets/piggyback.png', scale: 2,),
               CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.pink),
               ),

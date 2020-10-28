@@ -130,6 +130,7 @@ class AddressListModifier extends StatefulWidget {
 
 class _AddressListModifierState extends State<AddressListModifier> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController addAddressController;
   List<String> deleted = []; // TODO: undoable history
 
   void _deleteAddress(int index) {
@@ -139,7 +140,8 @@ class _AddressListModifierState extends State<AddressListModifier> {
     });
   }
 
-  void _addAddress(String addr) {
+  void _addAddress(BuildContext context, String addr) {
+    Navigator.of(context).pop();
     setState(() {
       widget.addresses.add(addr);
     });
@@ -228,6 +230,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                 child: new Icon(Icons.add),
                 onPressed: () {
                   setState(() {
+                    addAddressController = TextEditingController();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -240,6 +243,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                 top: -40.0,
                                 child: InkResponse(
                                   onTap: () {
+                                    addAddressController = null;
                                     Navigator.of(context).pop();
                                   },
                                   child: CircleAvatar(
@@ -255,7 +259,9 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
-                                      child: TextFormField(),
+                                      child: TextFormField(
+                                        controller: addAddressController,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -264,6 +270,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                         onPressed: () {
                                           if (_formKey.currentState.validate()) {
                                             _formKey.currentState.save();
+                                            _addAddress(context, addAddressController.text);
                                           }
                                         },
                                       ),
@@ -292,6 +299,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
               return Dismissible(
                 key: Key(address),
                 direction: DismissDirection.startToEnd,
+                background: Container(color: Colors.black26,),
                 child: ListTile(
                   title: Text(address),
                   trailing: IconButton(
