@@ -35,6 +35,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     chosenAddress = userAddresses[0];
   }
 
+  void createGroupBuy() {
+    print("send create request to db"); //TODO input validation + hook storage
+  }
+
   String getLogoAssetName(String site) {
     switch (site) {
       case 'amazon.sg':
@@ -163,7 +167,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     ),
                     RaisedButton(
                         child: Text('Create'),
-                        onPressed: null
+                        onPressed: createGroupBuy,
                     )
                   ]
               )

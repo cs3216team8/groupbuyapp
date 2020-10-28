@@ -284,9 +284,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
             ),
           ],
         ),
-        // TODO: @kx add undo delete option here
-        // TODO: make address editable
-        // TODO: fab: allow adding of addresses -- add to top so dunnid scroll
+        // TODO: @kx add undo delete option here & make address editable & fab: allow adding of addresses -- add to top so dunnid scroll
         Expanded(
           child: ListView.builder(
             itemCount: widget.addresses.length,

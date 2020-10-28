@@ -22,6 +22,13 @@ class Request {
     @required this.status,
   });
 
+  Request.newRequest({
+    @required this.uid,
+    @required this.items,
+  }) {
+    status = RequestStatus.pending;
+  }
+
   String getStatus() {
     return status.toString().split('.').last;
   }
