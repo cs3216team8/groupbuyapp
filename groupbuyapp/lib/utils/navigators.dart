@@ -9,9 +9,3 @@ void segueWithoutBack(BuildContext context, Widget screen) {
   Navigator.pushReplacement(
       context, MaterialPageRoute(builder: (context) => screen));
 }
-
-void segueToLogin(BuildContext context) {
-  Navigator.push(context, MaterialPageRoute(
-    builder: (context) => LoginPage()
-  ));
-}

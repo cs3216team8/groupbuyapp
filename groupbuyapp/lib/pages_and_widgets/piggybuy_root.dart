@@ -1,5 +1,7 @@
 // Essentials
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
@@ -9,13 +11,12 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
 
-  PiggyBuyApp({
-    Key key
-  }) : super(key: key);
+  PiggyBuyApp({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +40,7 @@ class PiggyBuyApp extends StatelessWidget {
 }
 
 class PiggyBuy extends StatefulWidget {
-
-  PiggyBuy({
-    Key key
-  }) : super(key: key);
+  PiggyBuy({Key key}) : super(key: key);
 
   List<Widget> getMainScreens() {
     return <Widget>[
@@ -59,14 +57,9 @@ class PiggyBuy extends StatefulWidget {
       icon: Icon(Icons.search),
       label: 'Explore',
     ),
+    BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Create'),
     BottomNavigationBarItem(
-      icon: Icon(Icons.add),
-      label: 'Create'
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.account_circle_sharp),
-      label: 'Profile'
-    )
+        icon: Icon(Icons.account_circle_sharp), label: 'Profile')
   ];
 
   @override
@@ -76,9 +69,13 @@ class PiggyBuy extends StatefulWidget {
 class _PiggyBuyState extends State<PiggyBuy> {
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index, BuildContext context) {
     setState(() {
-      _selectedIndex = index;
+      if (index != 0 && FirebaseAuth.instance.currentUser == null) {
+        segueToPage(context, LoginScreen());
+      } else {
+        _selectedIndex = index;
+      }
     });
   }
 
@@ -92,12 +89,13 @@ class _PiggyBuyState extends State<PiggyBuy> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: widget.navItems,
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+          type: BottomNavigationBarType.fixed,
+          items: widget.navItems,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.amber[800],
+          onTap: (int index) {
+            _onItemTapped(index, context);
+          }),
     );
   }
 }

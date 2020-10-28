@@ -11,7 +11,6 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
 
-  Future<UserProfile> getUserProfile(String userId) async {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();

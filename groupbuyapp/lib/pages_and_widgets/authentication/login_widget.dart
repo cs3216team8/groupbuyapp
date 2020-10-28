@@ -192,10 +192,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('PiggyBuy'),
-        // ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottomOpacity: 0,
+          toolbarOpacity: 1,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ),
         body: Background(
           child: SingleChildScrollView(
             child: Form(
