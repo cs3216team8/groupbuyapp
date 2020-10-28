@@ -42,37 +42,11 @@ class RequestCard extends StatelessWidget {
               ),
             ],
           ),
-          StreamBuilder<List<Item>>(
-            stream: GroupBuyStorage.instance.getItemsOfRequest(this.groupBuy, this.request),
-            builder: (BuildContext context, AsyncSnapshot<List<Item>> snapshot) {
-              List<Widget> children;
-              if (snapshot.hasError) {
-                return FailedToLoadItems();
-              }
-
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return ItemsNotLoaded();
-                case ConnectionState.waiting:
-                  return ItemsLoading();
-                default:
-                  children = snapshot.data.map((Item item) {
-                    return new ItemDisplay(item: item);
-                  }).toList();
-                  break;
-              }
-
-              if (children.isEmpty) {
-                return ItemsNotLoaded();
-              }
-
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: children.length,
-                itemBuilder: (context, index) {
-                  return children[index];
-                },
-              );
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: request.getItems().length,
+            itemBuilder: (context, index) {
+              return ItemDisplay(item: request.getItems()[index]);
             },
           )
         ],

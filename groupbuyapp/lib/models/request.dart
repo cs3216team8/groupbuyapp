@@ -33,6 +33,10 @@ class Request {
     status = RequestStatus.pending;
   }
 
+  List<Item> getItems() {
+    return this.items;
+  }
+
   String getId() {
     return this.id;
   }
