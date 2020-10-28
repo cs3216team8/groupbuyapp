@@ -125,19 +125,75 @@ class GroupBuyStorage {
     return enumValue;
   }
 
+  Future<Request> getRequestWithItems(String groupBuyId, QueryDocumentSnapshot document) async {
+    QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
+    List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+    List<Item> items = itemDocs.map((doc) {
+      return new Item(
+        itemLink: doc.data()['itemLink'],
+        totalAmount: doc.data()['totalAmount'].toDouble(),
+        qty: doc.data()['qty'],
+        remarks: doc.data()['remarks'],
+      );
+    });
+    return new Request(
+      id: document.id,
+      requestorId: document.data()['requestorId'],
+      items: items,
+      status: enumFromString(RequestStatus.values, document.data()['status']),
+    );
+  }
+
+
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
-  Stream<List<Request>> getAllGroupBuyRequests(GroupBuy groupBuy) {
+  Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
     String groupBuyId = groupBuy.getId();
     CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests');
     return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
-      return querySnapshot.docs.map((doc) {
-        return new Request(
-          id: doc.id,
-          requestorId: doc.data()['requestorId'],
-          items: [],
-          status: enumFromString(RequestStatus.values, doc.data()['status']),
-        );
-      }).toList();
+
+      return querySnapshot.docs.map((document) async {
+        Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
+        return itemsOfRequest;
+      }
+      ).toList();
+
+      // List<Future<Request>> requests = querySnapshot.docs.map((document) async {
+      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
+      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+      //   List<Item> items = itemDocs.map((doc) {
+      //     return new Item(
+      //       itemLink: doc.data()['itemLink'],
+      //       totalAmount: doc.data()['totalAmount'].toDouble(),
+      //       qty: doc.data()['qty'],
+      //       remarks: doc.data()['remarks'],
+      //     );
+      //   });
+      //   return new Request(
+      //     id: doc.id,
+      //     requestorId: doc.data()['requestorId'],
+      //     items: [],
+      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
+      //   );
+      // }).toList();
+
+      // return querySnapshot.docs.map((doc) async {
+      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+      //   List<Item> items = itemDocs.map((doc) {
+      //     return new Item(
+      //       itemLink: doc.data()['itemLink'],
+      //       totalAmount: doc.data()['totalAmount'].toDouble(),
+      //       qty: doc.data()['qty'],
+      //       remarks: doc.data()['remarks'],
+      //     );
+      //   });
+      //   return new Request(
+      //     id: doc.id,
+      //     requestorId: doc.data()['requestorId'],
+      //     items: [],
+      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
+      //   );
+      // }).toList();
     });
   }
 
@@ -146,7 +202,7 @@ class GroupBuyStorage {
     String userId = FirebaseAuth.instance.currentUser.uid;
     String groupBuyId = groupBuy.getId();
 
-      CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId);
+    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId);
     return groupBuyRequests.get().then((QuerySnapshot querySnapshot) {
       return querySnapshot.docs.map((doc) async {
         QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
