@@ -174,8 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
           } catch (e) {
             print(e);
           }
-          return userCredential;
         }
+        return userCredential;
         break;
 
       case FacebookLoginStatus.cancelledByUser:
@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -241,7 +241,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -250,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 6,),
+                  SizedBox(height: 6),
                   OrDivider(
                     textColor: Theme.of(context).primaryColor,
                   ),
@@ -289,7 +289,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState.validate()) {
                         UserCredential userCredential = await _signInWithEmailAndPassword();
                         if (userCredential != null) {
-                          segueWithoutBack(context, PiggyBuyApp());
+                          Navigator.pop(context);
                         }
                       }
                     },
