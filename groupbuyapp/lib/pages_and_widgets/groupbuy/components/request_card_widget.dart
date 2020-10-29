@@ -16,6 +16,15 @@ class RequestCard extends StatelessWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
+  void onTapChat(BuildContext context) {
+    print("tapped on chat"); //TODO
+  }
+
+  void onTapConfirm(BuildContext context) async {
+    print("tapped on join"); //TODO
+    await GroupBuyStorage.instance.confirmRequest(this.groupBuy.id, this.request);
+  }
+
   Widget _logoutConfirmation(BuildContext context) {
     return new AlertDialog(
       content: Column(
@@ -48,7 +57,52 @@ class RequestCard extends StatelessWidget {
             itemBuilder: (context, index) {
               return ItemDisplay(item: request.getItems()[index]);
             },
-          )
+          ),
+          isOrganiser? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => onTapChat(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.chat_bubble),
+                      Text("Chat"),
+                    ],
+                  ),
+                ),
+                RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => onTapConfirm(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add_business),
+                      Text("Confirm"),
+                    ],
+                  ),
+                ),
+              ]
+          ): Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RaisedButton(
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => onTapChat(context),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.chat_bubble),
+                      Text("Chat"),
+                    ],
+                  ),
+                ),
+              ]
+          ),
         ],
       )
     );

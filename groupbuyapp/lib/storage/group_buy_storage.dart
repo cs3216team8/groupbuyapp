@@ -241,6 +241,13 @@ class GroupBuyStorage {
     });
   }
 
+  Future<void> confirmRequest(String groupBuyId, Request request) {
+    DocumentReference groupBuyRequest = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId());
+    return groupBuyRequest.update({'status': 'confirmed'})
+        .then((value) => print("Request edited"))
+        .catchError((error) => print("Failed to edit group buy: $error"));
+  }
+
   // Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
   //   try {
   //     DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
