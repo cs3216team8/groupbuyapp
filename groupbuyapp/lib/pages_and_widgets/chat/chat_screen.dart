@@ -24,7 +24,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     user.name = FirebaseAuth.instance.currentUser.displayName;
-    print(user.name);
     user.uid = FirebaseAuth.instance.currentUser.uid;
     user.avatar = FirebaseAuth.instance.currentUser.photoURL;
     super.initState();
@@ -42,6 +41,22 @@ class _ChatScreenState extends State<ChatScreen> {
       );
     });
   }
+
+  void onSendMessage(ChatMessage message) {
+    var documentReference = FirebaseFirestore.instance
+        .collection('chatRooms')
+        .doc("testChatRoom")
+        .collection('messages')
+        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      await transaction.set(
+        documentReference,
+        message.toJson(),
+      );
+    });
+  }
+
 
   void uploadFile() async {
     PickedFile pickedFile = await (new ImagePicker()).getImage(
@@ -71,6 +86,8 @@ class _ChatScreenState extends State<ChatScreen> {
       ChatMessage message = ChatMessage(text: "", user: user, image: url);
 
       var documentReference = FirebaseFirestore.instance
+          .collection('chatRooms')
+          .doc("testChatRoom")
           .collection('messages')
           .doc(DateTime.now().millisecondsSinceEpoch.toString());
 
@@ -90,7 +107,10 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Text("Chat"),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('messages').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('chatRooms')
+            .doc("testChatRoom")
+            .collection('messages').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -110,7 +130,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 hintText: "Message here...",
                 border: InputBorder.none,
               ),
-              onSend: onSend,
+              onSend: onSendMessage,
               trailing: <Widget>[
                 IconButton(
                   icon: Icon(Icons.photo),
