@@ -3,23 +3,19 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
-import 'package:groupbuyapp/pages_and_widgets/my_groupbuys//my_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyGroupBuys extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-  MyGroupBuys({
-    Key key,
-    @required this.groupBuyStorage,
-  }) : super(key: key);
 
   final Map<int, Widget> segments = <int, Widget>{
     0: Container(
       padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        child: Text("As Piggybuyer")
+        child: Text("As Organiser")
     ),
-    1: Text("As Organiser")
+    1: Text("As Piggybuyer")
   };
 
 
@@ -65,7 +61,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
             index: this._selectedIndex,
             children: <Widget>[
                 StreamBuilder<List<GroupBuy>>(
-                  stream: widget.groupBuyStorage.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+                  stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
                   builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
                     List<Widget> children;
                     if (snapshot.hasError) {
@@ -86,7 +82,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                     }
 
                     if (children.isEmpty) {
-                      return MyGroupBuyDefaultScreen();
+                      return OrganisedGroupBuyDefaultScreen();
                     }
 
                     return GridView.count(
@@ -99,9 +95,10 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                   },
                 ),
               FutureBuilder<Stream<List<GroupBuy>>>(
-                future: widget.groupBuyStorage.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
+                future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
                     if (snapshot.hasError){
+                      print(snapshot.error);
                       return FailedToLoadMyGroupBuys();
                     }
 
@@ -134,7 +131,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                             }
 
                             if (children.isEmpty) {
-                              return MyGroupBuyDefaultScreen();
+                              return PiggyBackedGroupBuyDefaultScreen();
                             }
 
                             return GridView.count(
@@ -185,7 +182,7 @@ class GroupBuysNotLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("No groupbuys are loaded. Git blame developers."),
+        child: Text("There are no group buys that you have joined."),
       ),
     );
   }

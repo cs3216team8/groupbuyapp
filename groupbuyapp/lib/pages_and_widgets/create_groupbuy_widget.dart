@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
-  final GroupBuyStorage groupBuyStorage;
-  final ProfileStorage profileStorage;
+  final bool needsBackButton;
 
   CreateGroupBuyScreen({
     Key key,
-    @required this.groupBuyStorage,
-    @required this.profileStorage,
+    this.needsBackButton = false,
   }) : super(key: key);
 
   @override
@@ -21,6 +19,10 @@ class CreateGroupBuyScreen extends StatefulWidget {
 class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _productWebsiteController = TextEditingController();
+  final TextEditingController _targetAmt = TextEditingController();
+  final TextEditingController _currentAmt = TextEditingController(); //TODO default 0
+
+  DateTime endDate = DateTime.now().add(Duration(days: 3));
 
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
   String chosenSite;
@@ -33,6 +35,19 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   void initState() {
     chosenSite = supportedSites[0];
     chosenAddress = userAddresses[0];
+  }
+
+  void createGroupBuy(BuildContext context) {
+    print("send create request to db"); //TODO input validation + hook storage
+    if (widget.needsBackButton) {
+      Navigator.pop(context);
+    } else {
+      //TODO clear inputs
+      _productWebsiteController.clear();
+      _targetAmt.clear();
+      _currentAmt.clear();
+      segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
+    }
   }
 
   String getLogoAssetName(String site) {
@@ -49,7 +64,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: RegularAppBar(
+        appBar: widget.needsBackButton
+            ? backAppBar(context: context, title: "Start a jio!")
+            : regularAppBar(
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
         ),
@@ -104,7 +121,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                             Text(
                                 'Target Amount'
                             ),
-                            TextField(),
+                            TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _targetAmt,
+                            ),
                             ]
                         )
                     ),
@@ -117,7 +137,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                               Text(
                                   'Current Amount'
                               ),
-                              TextField(),
+                              TextField(
+                                keyboardType: TextInputType.number,
+                                controller: _currentAmt,
+                              ),
                             ]
                         )
                     ),
@@ -130,7 +153,11 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                               Text(
                                   'Date end'
                               ),
-                              TextField(),
+                              InputDatePickerFormField(
+                                firstDate: DateTime(2020),
+                                lastDate: DateTime(2025),
+                                initialDate: endDate,
+                              ),
                             ]
                         )
                     ),
@@ -163,7 +190,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     ),
                     RaisedButton(
                         child: Text('Create'),
-                        onPressed: null
+                        onPressed: () => createGroupBuy(context),
                     )
                   ]
               )

@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_signup_option_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/social_icon_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/components/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
-import 'package:http/http.dart' as http;
-import 'background.dart';
-import 'dart:convert' show jsonDecode;
+import 'components/login_background.dart';
 
 class LoginPage extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -45,7 +41,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  ProfileStorage profileStorage = new ProfileStorage();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -118,25 +113,29 @@ class _LoginScreenState extends State<LoginScreen> {
       // Once signed in, return the UserCredential
       UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       // UserCredential(additionalUserInfo: AdditionalUserInfo(isNewUser: false, profile: {given_name: Agnes, locale: en, family_name: Natasya, picture: https://lh3.googleusercontent.com/-ebDtfoHeJe4/AAAAAAAAAAI/AAAAAAAAAAA/AMZuucn1hd9DMkL0oBkEf-vD_CwMqcgLPw/s96-c/photo.jpg, aud: 584043471672-btgbhhtb0vnh2mbqmjkc32j5rbhfjngq.apps.googleusercontent.com, azp: 584043471672-vc4ajmg84bk51nvml8g3beshqaqvcnk4.apps.googleusercontent.com, exp: 1603630635, iat: 1603627035, iss: https://accounts.google.com, sub: 109095081159135266046, name: Agnes Natasya, email: an.agnesnatasya@gmail.com, email_verified: true}, providerId: google.com, username: null), credential: AuthCredential(providerId: google.com, signInMethod: google.com, token: null), user: User(displayName: Gabe Miguel, email: an.agnesnatasya@gmail.com, emailVerified: true, isAnonymous: false, metadata: UserMetadata(creationTime: 2020-10-23 00:27:51.939, lastSignInTime: 2020-10-25 20:05:18.872), phoneNumber: null, photoURL: https://lh3.googleusercontent.com/-ebDtfoHeJe4/
-      print(FirebaseAuth.instance.currentUser.uid);
-      UserProfile userProfile = new UserProfile(
-          userCredential.user.uid,
-          userCredential.user.displayName,
-          "",
-          userCredential.additionalUserInfo.profile['picture'],
-          userCredential.user.phoneNumber,
-          userCredential.user.email,
-          [],
-          [],
-          null,
-          0
-      );
-      try {
-        await profileStorage.createOrUpdateUserProfile(userProfile);
-        return userCredential;
-      } catch (e) {
-        print(e);
+      bool isExistingUser = await ProfileStorage.instance.checkIfProfileExists(FirebaseAuth.instance.currentUser.uid);
+
+      if (!isExistingUser) {
+        UserProfile userProfile = new UserProfile(
+            userCredential.user.uid,
+            userCredential.user.displayName,
+            "",
+            userCredential.additionalUserInfo.profile['picture'],
+            userCredential.user.phoneNumber,
+            userCredential.user.email,
+            [],
+            [],
+            null,
+            0
+        );
+        try {
+          await ProfileStorage.instance.createOrUpdateUserProfile(userProfile);
+          return userCredential;
+        } catch (e) {
+          print(e);
+        }
       }
+
       return userCredential;
     }
   }
@@ -149,36 +148,38 @@ class _LoginScreenState extends State<LoginScreen> {
       case FacebookLoginStatus.loggedIn:
         print('logged in');
         final token = result.accessToken.token;
-        // final graphResponse = await http.get(
-        //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
-        // // {name: Daniel Wong, first_name: Daniel, last_name: Wong, email: facebook@dawo.me, id: 10220694904295568}
-        // Map<String, dynamic> userDetails = jsonDecode(graphResponse.body);
-        // User(displayName: Daniel Wong, email: facebook@dawo.me, emailVerified: false, isAnonymous: false, metadata: UserMetadata(creationTime: 2020-10-25 20:56:13.785, lastSignInTime: 2020-10-25 21:00:06.231), phoneNumber: null, photoURL: https://graph.facebook.com/10220694904295568/picture, providerData, [UserInfo(displayName: Daniel Wong, email: facebook@dawo.me, phoneNumber: null, photoURL: https://graph.facebook.com/10220694904295568/picture, providerId: facebook.com, uid: 10220694904295568)], refreshToken: , tenantId: null, uid: 2MBjN3oKmoerKo6vXKCIc1Dfp2j2)
-        final OAuthCredential credential =  FacebookAuthProvider.credential(token); // _token is your facebook access token as a string
+        final OAuthCredential credential = FacebookAuthProvider.credential(token); // _token is your facebook access token as a string
         UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-        UserProfile userProfile = new UserProfile(
-            userCredential.user.uid,
-            userCredential.user.displayName,
-            "",
-            userCredential.additionalUserInfo.profile['picture']['data']['url'],
-            userCredential.user.phoneNumber,
-            userCredential.user.email,
-            [],
-            [],
-            null,
-            0
-        );
-        try {
-          await profileStorage.createOrUpdateUserProfile(userProfile);
-          return userCredential;
-        } catch (e) {
-          print(e);
+
+        bool isExistingUser = await ProfileStorage.instance.checkIfProfileExists(FirebaseAuth.instance.currentUser.uid);
+
+        if (!isExistingUser) {
+          UserProfile userProfile = new UserProfile(
+              userCredential.user.uid,
+              userCredential.user.displayName,
+              "",
+              userCredential.additionalUserInfo.profile['picture']['data']['url'],
+              userCredential.user.phoneNumber,
+              userCredential.user.email,
+              [],
+              [],
+              null,
+              0
+          );
+          try {
+            await ProfileStorage.instance.createOrUpdateUserProfile(userProfile);
+            return userCredential;
+          } catch (e) {
+            print(e);
+          }
         }
         return userCredential;
         break;
+
       case FacebookLoginStatus.cancelledByUser:
         print('cancel');
         break;
+
       case FacebookLoginStatus.error:
         print('error');
         break;
@@ -189,10 +190,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('PiggyBuy'),
-        // ),
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          bottomOpacity: 0,
+          toolbarOpacity: 1,
+          shadowColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          )
+        ),
         body: Background(
           child: SingleChildScrollView(
             child: Form(
@@ -215,7 +226,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -228,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
                             if (userCredential != null) {
-                              segueWithoutBack(context, PiggyBuyApp());
+                              Navigator.pop(context);
                             }
                           } catch (e) {
                             showErrorFlushbar(e.toString());
@@ -237,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       )
                     ],
                   ),
-                  SizedBox(height: 6,),
+                  SizedBox(height: 6),
                   OrDivider(
                     textColor: Theme.of(context).primaryColor,
                   ),
@@ -276,7 +287,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (_formKey.currentState.validate()) {
                         UserCredential userCredential = await _signInWithEmailAndPassword();
                         if (userCredential != null) {
-                          segueWithoutBack(context, PiggyBuyApp());
+                          Navigator.pop(context);
                         }
                       }
                     },

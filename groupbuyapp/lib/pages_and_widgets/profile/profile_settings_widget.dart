@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   final UserProfile profile;
-  final ProfileStorage profileStorage = ProfileStorage();
 
   ProfileSettingsScreen({
     Key key,
@@ -49,7 +48,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.rating,
                   profile.reviewCount
               );
-              profileStorage.createOrUpdateUserProfile(newProfile);
+              ProfileStorage.instance.createOrUpdateUserProfile(newProfile);
               Navigator.pop(context);
             },
           )
@@ -131,6 +130,7 @@ class AddressListModifier extends StatefulWidget {
 
 class _AddressListModifierState extends State<AddressListModifier> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController addAddressController;
   List<String> deleted = []; // TODO: undoable history
 
   void _deleteAddress(int index) {
@@ -140,7 +140,8 @@ class _AddressListModifierState extends State<AddressListModifier> {
     });
   }
 
-  void _addAddress(String addr) {
+  void _addAddress(BuildContext context, String addr) {
+    Navigator.of(context).pop();
     setState(() {
       widget.addresses.add(addr);
     });
@@ -173,7 +174,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
             await GoogleSignIn().signOut();
             await FacebookLogin().logOut();
             Navigator.pop(context);
-            segueWithoutBack(context, LoginScreen());
+            segueWithoutBack(context, PiggyBuyApp());
           },
           textColor: Theme.of(context).primaryColor,
           child: Text(
@@ -229,6 +230,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                 child: new Icon(Icons.add),
                 onPressed: () {
                   setState(() {
+                    addAddressController = TextEditingController();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -241,6 +243,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                 top: -40.0,
                                 child: InkResponse(
                                   onTap: () {
+                                    addAddressController = null;
                                     Navigator.of(context).pop();
                                   },
                                   child: CircleAvatar(
@@ -256,7 +259,9 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                   children: <Widget>[
                                     Padding(
                                       padding: EdgeInsets.all(8.0),
-                                      child: TextFormField(),
+                                      child: TextFormField(
+                                        controller: addAddressController,
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -265,6 +270,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                                         onPressed: () {
                                           if (_formKey.currentState.validate()) {
                                             _formKey.currentState.save();
+                                            _addAddress(context, addAddressController.text);
                                           }
                                         },
                                       ),
@@ -284,9 +290,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
             ),
           ],
         ),
-        // TODO: @kx add undo delete option here
-        // TODO: make address editable
-        // TODO: fab: allow adding of addresses -- add to top so dunnid scroll
+        // TODO: @kx add undo delete option here & make address editable & fab: allow adding of addresses -- add to top so dunnid scroll
         Expanded(
           child: ListView.builder(
             itemCount: widget.addresses.length,
@@ -295,6 +299,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
               return Dismissible(
                 key: Key(address),
                 direction: DismissDirection.startToEnd,
+                background: Container(color: Colors.black26,),
                 child: ListTile(
                   title: Text(address),
                   trailing: IconButton(

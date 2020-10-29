@@ -2,13 +2,16 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:groupbuyapp/models/request.dart';
 
 class GroupBuyStorage {
+
+  GroupBuyStorage._privateConstructor();
+  static final GroupBuyStorage instance = GroupBuyStorage._privateConstructor();
+
   CollectionReference groupBuys = FirebaseFirestore.instance.collection(
       'groupBuys');
-  // String userId = FirebaseAuth.instance.currentUser.uid;
 
   Future<void> addGroupBuy(GroupBuy groupBuy) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -89,70 +92,194 @@ class GroupBuyStorage {
     });
   }
 
-  Future<void> editBuy(Buy buy) {
-    String buyId = buy.id;
-    String groupBuyId = buy.groupBuyId;
-    return groupBuys.doc(groupBuyId).set({
-      'id': buyId,
-      'buyerId': buy.buyerId,
-      'itemLink': buy.itemLink,
-      'amount': buy.amount,
-      'quantity': buy.quantity,
-      'comment': buy.comment,
-    })
-        .then((value) => print("By edited"))
-        .catchError((error) => print("Failed to edit buy: $error"));
-  }
+  // Future<void> editBuy(Buy buy) {
+  //   String buyId = buy.id;
+  //   String groupBuyId = buy.groupBuyId;
+  //   return groupBuys.doc(groupBuyId).set({
+  //     'id': buyId,
+  //     'buyerId': buy.buyerId,
+  //     'itemLink': buy.itemLink,
+  //     'amount': buy.amount,
+  //     'quantity': buy.quantity,
+  //     'comment': buy.comment,
+  //   })
+  //       .then((value) => print("By edited"))
+  //       .catchError((error) => print("Failed to edit buy: $error"));
+  // }
+  //
+  // Future<void> deleteBuy(Buy buy) {
+  //   String buyId = buy.id;
+  //   String groupBuyId = buy.groupBuyId;
+  //   return groupBuys.doc(groupBuyId).collection('buys').doc(buyId).delete()
+  //       .then((value) => print("By deleted"))
+  //       .catchError((error) => print("Failed to delete buy: $error"));
+  // }
 
-  Future<void> deleteBuy(Buy buy) {
-    String buyId = buy.id;
-    String groupBuyId = buy.groupBuyId;
-    return groupBuys.doc(groupBuyId).collection('buys').doc(buyId).delete()
-        .then((value) => print("By deleted"))
-        .catchError((error) => print("Failed to delete buy: $error"));
-  }
-
-  /// Get group buy details and all buys under this group buy, if the user is the organiser
-  /// Show only buys which is created by this user, if the user is the piggybacker
-  Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
-    try {
-      DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
-      GroupBuy groupBuy = new GroupBuy(
-          groupBuyId,
-          document.data()['storeName'],
-          document.data()['storeWebsite'],
-          document.data()['storeLogo'],
-          document.data()['currentAmount'].toDouble(),
-          document.data()['targetAmount'].toDouble(),
-          document.data()['endTimestamp'],
-          document.data()['organiserId'],
-          document.data()['deposit'],
-          document.data()['description'],
-          document.data()['address']
-      );
-      if (document.exists) {
-        Query filteredBuys = (document.data()['organiserId'] == userId) ?
-          groupBuys.doc(groupBuyId).collection('buys') :
-          groupBuys.doc(groupBuyId).collection('buys').where('buyerId', isEqualTo:userId);
-        List<Buy> buys = await filteredBuys.get()
-            .then((QuerySnapshot querySnapshot) {
-          return querySnapshot.docs.map((doc) {
-            return Buy(
-              doc.id,
-              doc.data()['buyerId'],
-              doc.data()['itemLink'],
-              doc.data()['amount'],
-              doc.data()['quantity'],
-              doc.data()['comment'],
-            );
-          }).toList();
-        });
-        groupBuy.setBuys(buys);
+  dynamic enumFromString(List values, String comp){
+    dynamic enumValue;
+    values.forEach((item) {
+      if(item.toString() == comp){
+        enumValue =  item;
       }
-    } catch(error) {
-      print("Failed to retrieve group buy detail: $error");
-    }
+    });
+    return enumValue;
   }
+
+  Future<Request> getRequestWithItems(String groupBuyId, QueryDocumentSnapshot document) async {
+    QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
+    List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+    List<Item> items = itemDocs.map((doc) {
+      return new Item(
+        itemLink: doc.data()['itemLink'],
+        totalAmount: doc.data()['totalAmount'].toDouble(),
+        qty: doc.data()['qty'],
+        remarks: doc.data()['remarks'],
+      );
+    }).toList();
+    return new Request(
+      id: document.id,
+      requestorId: document.data()['requestorId'],
+      items: items,
+      status: enumFromString(RequestStatus.values, document.data()['status']),
+    );
+  }
+
+
+  /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
+  Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
+    String groupBuyId = groupBuy.getId();
+    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests');
+    return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
+
+      return querySnapshot.docs.map((document) async {
+        Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
+        return itemsOfRequest;
+      }
+      ).toList();
+
+      // List<Future<Request>> requests = querySnapshot.docs.map((document) async {
+      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
+      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+      //   List<Item> items = itemDocs.map((doc) {
+      //     return new Item(
+      //       itemLink: doc.data()['itemLink'],
+      //       totalAmount: doc.data()['totalAmount'].toDouble(),
+      //       qty: doc.data()['qty'],
+      //       remarks: doc.data()['remarks'],
+      //     );
+      //   });
+      //   return new Request(
+      //     id: doc.id,
+      //     requestorId: doc.data()['requestorId'],
+      //     items: [],
+      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
+      //   );
+      // }).toList();
+
+      // return querySnapshot.docs.map((doc) async {
+      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+      //   List<Item> items = itemDocs.map((doc) {
+      //     return new Item(
+      //       itemLink: doc.data()['itemLink'],
+      //       totalAmount: doc.data()['totalAmount'].toDouble(),
+      //       qty: doc.data()['qty'],
+      //       remarks: doc.data()['remarks'],
+      //     );
+      //   });
+      //   return new Request(
+      //     id: doc.id,
+      //     requestorId: doc.data()['requestorId'],
+      //     items: [],
+      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
+      //   );
+      // }).toList();
+    });
+  }
+
+  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
+  Future<Request> getGroupBuyRequestsFromCurrentUser(GroupBuy groupBuy) {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    String groupBuyId = groupBuy.getId();
+
+    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId);
+    return groupBuyRequests.get().then((QuerySnapshot querySnapshot) {
+      return querySnapshot.docs.map((doc) async {
+        QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+        List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+        List<Item> items = itemDocs.map((doc) {
+          return new Item(
+            itemLink: doc.data()['itemLink'],
+            totalAmount: doc.data()['totalAmount'].toDouble(),
+            qty: doc.data()['qty'],
+            remarks: doc.data()['remarks'],
+          );
+        }).toList();
+        return new Request(
+        id: doc.id,
+        requestorId: doc.data()['requestorId'],
+        items: items,
+        status: enumFromString(RequestStatus.values, doc.data()['status']),
+        );
+      }).toList()[0];
+    });
+  }
+
+  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
+  Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {
+    String groupBuyId = groupBuy.getId();
+    CollectionReference groupBuyRequestItems = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId()).collection('items');
+    return groupBuyRequestItems.snapshots().map((QuerySnapshot querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        return new Item(
+          itemLink: doc.data()['itemLink'],
+          totalAmount: doc.data()['totalAmount'].toDouble(),
+          qty: doc.data()['qty'],
+          remarks: doc.data()['remarks'],
+        );
+      }).toList();
+    });
+  }
+
+  // Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
+  //   try {
+  //     DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
+  //     GroupBuy groupBuy = new GroupBuy(
+  //         groupBuyId,
+  //         document.data()['storeName'],
+  //         document.data()['storeWebsite'],
+  //         document.data()['storeLogo'],
+  //         document.data()['currentAmount'].toDouble(),
+  //         document.data()['targetAmount'].toDouble(),
+  //         document.data()['endTimestamp'],
+  //         document.data()['organiserId'],
+  //         document.data()['deposit'],
+  //         document.data()['description'],
+  //         document.data()['address']
+  //     );
+  //     if (document.exists) {
+  //       Query filteredBuys = (document.data()['organiserId'] == userId) ?
+  //         groupBuys.doc(groupBuyId).collection('buys') :
+  //         groupBuys.doc(groupBuyId).collection('buys').where('buyerId', isEqualTo:userId);
+  //       List<Buy> buys = await filteredBuys.get()
+  //           .then((QuerySnapshot querySnapshot) {
+  //         return querySnapshot.docs.map((doc) {
+  //           return Buy(
+  //             doc.id,
+  //             doc.data()['buyerId'],
+  //             doc.data()['itemLink'],
+  //             doc.data()['amount'],
+  //             doc.data()['quantity'],
+  //             doc.data()['comment'],
+  //           );
+  //         }).toList();
+  //       });
+  //       groupBuy.setBuys(buys);
+  //     }
+  //   } catch(error) {
+  //     print("Failed to retrieve group buy detail: $error");
+  //   }
+  // }
 
   Stream<List<GroupBuy>> getGroupBuysOrganisedBy(String userId) {
     return groupBuys.where('organiserId', isEqualTo: userId).snapshots().map((snapshot) {
@@ -180,23 +307,37 @@ class GroupBuyStorage {
         'users')
         .doc(userId)
         .get();
-    List<String> groupBuyIdsPiggyBackedOn = currentUser.data()['groupBuyIds'];
-    return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn).snapshots().map((snapshot) {
-      return snapshot.docs.map((document) {
-        return GroupBuy(
-            document.id,
-            document.data()['storeName'],
-            document.data()['storeWebsite'],
-            document.data()['storeLogo'],
-            document.data()['currentAmount'].toDouble(),
-            document.data()['targetAmount'].toDouble(),
-            document.data()['endTimestamp'],
-            document.data()['organiserId'],
-            document.data()['deposit'],
-            document.data()['description'],
-            document.data()['address']
-        );
-      }).toList();
-    });
+    List<String> groupBuyIdsPiggyBackedOn = new List<String>.from(
+        currentUser.data()['groupBuyIds']);
+    if (groupBuyIdsPiggyBackedOn.length > 0) {
+      return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn)
+          .snapshots()
+          .map((snapshot) {
+        return snapshot.docs.map((document) {
+          return GroupBuy(
+              document.id,
+              document.data()['storeName'],
+              document.data()['storeWebsite'],
+              document.data()['storeLogo'],
+              document.data()['currentAmount'].toDouble(),
+              document.data()['targetAmount'].toDouble(),
+              document.data()['endTimestamp'],
+              document.data()['organiserId'],
+              document.data()['deposit'],
+              document.data()['description'],
+              document.data()['address']
+          );
+        }).toList();
+      });
+    } else {
+      var completer = new Completer<Stream<List<GroupBuy>>>();
+
+      // At some time you need to complete the future:
+      List<GroupBuy> empty = List<GroupBuy>();
+      StreamController<List<GroupBuy>> controller = StreamController<List<GroupBuy>>();
+      controller.add(empty);
+      completer.complete(controller.stream);
+      return completer.future;
+    }
   }
 }

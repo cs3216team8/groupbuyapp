@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/recent_chats_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatList extends StatefulWidget {
 

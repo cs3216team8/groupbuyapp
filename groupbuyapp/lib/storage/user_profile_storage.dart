@@ -1,14 +1,18 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 
 class ProfileStorage {
+
+  ProfileStorage._privateConstructor();
+  static final ProfileStorage instance = ProfileStorage._privateConstructor();
+
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
 
   Future<UserProfile> getUserProfile(String userId) async {
+
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
@@ -25,6 +29,13 @@ class ProfileStorage {
         document.data()['reviewCount']
     );
     return userProfile;
+  }
+
+  Future<bool> checkIfProfileExists(String userId) async {
+    DocumentReference docRef = usersRef.doc(userId);
+    DocumentSnapshot doc = await docRef.get();
+
+    return doc.exists;
   }
 
   Future<void> createOrUpdateUserProfile(UserProfile userProfile) async {

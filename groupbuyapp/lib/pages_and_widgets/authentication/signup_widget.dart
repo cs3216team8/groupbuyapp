@@ -8,9 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
-import 'background.dart';
-import 'login_signup_option_widget.dart';
-
+import 'components/login_background.dart';
+import 'components/login_signup_option_widget.dart';
 
 class SignupForm extends StatefulWidget {
   @override
@@ -18,7 +17,6 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignupForm> {
-  ProfileStorage profileStorage = new ProfileStorage();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -53,7 +51,7 @@ class _SignUpFormState extends State<SignupForm> {
           0
       );
       try {
-        await profileStorage.createOrUpdateUserProfile(userProfile);
+        await ProfileStorage.instance.createOrUpdateUserProfile(userProfile);
         return userCredential;
       } catch (e) {
         print(e);
@@ -95,9 +93,8 @@ class _SignUpFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: BackAppBar(
+      appBar: backAppBar(
         context: context,
         title: "Sign up now!",
         color: Colors.white,

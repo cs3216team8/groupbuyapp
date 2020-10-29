@@ -55,6 +55,10 @@ class GroupBuy {
     return [Buy.getDummyData(), Buy.getDummyData(), Buy.getDummyData()];
   }
 
+  String getId() {
+    return this.id;
+  }
+
   void addBuy(Buy buy) {
     this.buys.add(buy);
   }
@@ -94,6 +98,13 @@ class GroupBuy {
   void removeAmount(double amt) {
     assert(this.currentAmount - amt >= 0, "Error: attempting to remove more than current amount.");
     this.currentAmount -= amt;
+  }
+
+  double getPercentageComplete() {
+    if (this.currentAmount >= this.targetAmount) {
+      return 1;
+    }
+    return this.currentAmount/this.targetAmount;
   }
 
 }

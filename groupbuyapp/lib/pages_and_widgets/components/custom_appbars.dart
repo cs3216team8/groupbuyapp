@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
-PreferredSize BackAppBar({
+PreferredSize backAppBar({
   @required BuildContext context,
   @required String title,
   double elevation = 0,
@@ -28,7 +28,7 @@ PreferredSize BackAppBar({
   );
 }
 
-PreferredSize RegularAppBar({
+PreferredSize regularAppBar({
   @required BuildContext context,
   @required Widget titleElement,
   double elevation = 0,

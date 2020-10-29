@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
-class MyGroupBuyDefaultScreen extends StatelessWidget {
+class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class MyGroupBuyDefaultScreen extends StatelessWidget {
       children: <Widget>[
         SizedBox(height: 20.0,),
         Text(
-          "You haven't organised any group buys!",
+          "You haven't piggybacked any group buys!",
           style: TextStyle(
               fontSize:  30,
               fontWeight: FontWeight.bold
@@ -19,10 +19,10 @@ class MyGroupBuyDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: () => segueToPage(context, CreateGroupBuyScreen()),
+            onPressed: () => segueToPage(context, HomeScreen()), //TODO: should redirect instead (note missing navbar)
             textColor: Colors.white,
             child: Text(
-                'Organise one',
+                'PiggyBack one',
                 style: TextStyle(fontSize: 20)
             )
         ),
