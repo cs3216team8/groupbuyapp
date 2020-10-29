@@ -10,10 +10,9 @@ import 'package:uuid/uuid.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 
 class ChatScreen extends StatefulWidget {
-  final String username;
-  final String uuid;
+  final String chatRoomId;
 
-  ChatScreen({this.username, this.uuid});
+  ChatScreen(this.chatRoomId);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -47,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chatRooms')
-            .doc("testChatRoom")
+            .doc('testChatRoom')
             .collection('messages').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
