@@ -24,7 +24,6 @@ class ChatStorage {
     });
   }
 
-
   void uploadFileToStorage(ChatUser user) async {
     PickedFile pickedFile = await (new ImagePicker()).getImage(
       source: ImageSource.gallery,
@@ -67,13 +66,19 @@ class ChatStorage {
     }
   }
 
-
   // For chat list
 
   getUserChats(String myId) async {
     return await FirebaseFirestore.instance
-        .collection("chatRoom")
+        .collection("chatRooms")
         .where("members", arrayContains: myId)
         .snapshots();
+  }
+
+  Future<bool> addChatRoom(chatRoom, chatRoomId) {
+    return FirebaseFirestore.instance
+        .collection("chatRooms")
+        .doc(chatRoomId)
+        .set(chatRoom);
   }
 }
