@@ -80,11 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: Container(),
           title: _buildSearchField(),
           actions: _buildActions(),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(10),
-            ),
-          ),
         ),
       ),
       body: SingleChildScrollView(
