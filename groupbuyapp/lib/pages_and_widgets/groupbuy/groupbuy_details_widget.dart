@@ -149,7 +149,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
         if (children.isEmpty) {
           return RequestAsPiggyBackerDefaultScreen();
-        }
+        } //TODO: check if this case is even reached/ any case missed out
 
         return ListView.builder(
           shrinkWrap: true,
@@ -462,7 +462,7 @@ class FailedToLoadRequests extends StatelessWidget {
   }
 }
 
-//TODO note this should not appear.
+//note this should not appear.
 class RequestsNotLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
