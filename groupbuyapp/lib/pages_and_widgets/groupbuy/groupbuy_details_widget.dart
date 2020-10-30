@@ -297,22 +297,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                 //     ],
                 //   ),
                 // ),
-                Row(children: <Widget>[
-                  Padding(
-                      padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                      child: Icon(
-                        Icons.pending_rounded,
-                        color: Colors.grey,
-                        size: 30.0,
-                        semanticLabel: 'Target',
-                    )
-                  ),
-                  Text(
-                    "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
-                    style: textStyle,
-                  ),
-                ]),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Row(
                       // Organiser information
@@ -320,35 +306,72 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                         Padding(
                           padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                           child: Icon(
-                          Icons.account_circle,
-                          color: Colors.grey,
+                          Icons.account_circle_outlined, color: Colors.black,
                           size: 30.0,
                           semanticLabel: 'User profile photo',
                         )
                         ),
                         widget.isOrganiser
                         ? Text('by You')
-                        : Text('by ${widget.groupBuy.organiserId}')
+                        : Text('by ${widget.groupBuy.organiserId}'),
                       ],
                     ),
+                    Row(
+                        children: <Widget>[
+                          Text(
+                            "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left",
+                            style: this.textStyle,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
+                              child:  Icon(
+                                Icons.alarm,
+                                color: Colors.black,
+                                size: 30.0,
+                              )
+                          ),
+                        ]
+                    ),
+
                   ],
                 ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
                 Row(
-                    children: <Widget>[
-                      Padding(
-                          padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                          child:  Icon(
-                          Icons.alarm,
-                          color: Colors.grey,
+                  // Location
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
+                        child: Icon(
+                          Icons.monetization_on_outlined,
+                          color: Colors.black,
                           size: 30.0,
-                      )
-                      ),
-                      Text(
-                        "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left",
-                        style: this.textStyle,
-                      ),
-                    ]
+                          semanticLabel: 'Deposit',
+                        )
+                    ),
+                    Text('${widget.groupBuy.deposit * 100} % deposit'),
+                  ],
                 ),
+                Row(children: <Widget>[
+                  Text(
+                    "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
+                    style: textStyle,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
+                      child: Icon(
+                        Icons.pending_rounded,
+                        color: Colors.black,
+                        size: 30.0,
+                        semanticLabel: 'Target',
+                      )
+                  ),
+
+                ]),
+              ]
+            ),
+
                 Row(
                   // Location
                     children: <Widget>[
@@ -356,7 +379,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                         padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                         child: Icon(
                         Icons.location_on,
-                        color: Colors.grey,
+                        color: Colors.black,
                         size: 30.0,
                         semanticLabel: 'Location',
                       )
@@ -372,27 +395,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                       padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                       child: Icon(
                         Icons.description,
-                        color: Colors.grey,
+                        color: Colors.black,
                         size: 30.0,
                         semanticLabel: 'Description',
                       )
                     ),
                     Text('${widget.groupBuy.description}')
-                  ],
-                ),
-                Row(
-                  // Location
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                      child: Icon(
-                      Icons.monetization_on_outlined,
-                      color: Colors.grey,
-                      size: 30.0,
-                      semanticLabel: 'Deposit',
-                      )
-                    ),
-                    Text('${widget.groupBuy.deposit * 100} % deposit'),
                   ],
                 ),
                 widget.isOrganiser
