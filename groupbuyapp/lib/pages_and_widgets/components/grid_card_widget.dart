@@ -7,7 +7,7 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
       TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
-  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold); //fontSize: 15, fontWeight: FontWeight.normal);
 
   final GroupBuy groupBuy;
 
@@ -30,138 +30,145 @@ class GroupBuyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Color(0x00FFFFFF),
-      elevation: 10,
-      shadowColor: Color(0x00000000),
-      child: InkWell(
-        splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: () {_openDetailedGroupBuy(context);},
-        child: Container(
-          margin: const EdgeInsets.all(3.0),
-          decoration: new BoxDecoration(
-            color: Color(0xFFFFFFFF),
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            border: Border.all(color: Color(0xFFFFFF), width: 0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 1,
-                offset: Offset(1,1), // changes position of shadow
-              )
-            ],
-
-          ),
-          child: Column(
-          children: <Widget>[
-            // Expanded(
-            //   flex: 40,
-            //   child: Image(
-            //     image: NetworkImage(this.groupBuy.storeLogo),
-            //   ),
-            // ),
-          Container(
+    return Container(
+      margin: const EdgeInsets.all(1.0),
+    child: Card(
+        color: Color(0x00FFFFFF),
+        elevation: 10,
+        shadowColor: Color(0x00000000),
+        child: InkWell(
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          onTap: () {_openDetailedGroupBuy(context);},
+          child: Container(
+            margin: const EdgeInsets.all(1.0),
             decoration: new BoxDecoration(
               color: Color(0xFFFFFFFF),
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
               border: Border.all(color: Color(0xFFFFFF), width: 0),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
                   spreadRadius: 2,
-                  blurRadius: 0,
+                  blurRadius: 2,
                   offset: Offset(1,1), // changes position of shadow
                 )
               ],
-
-            ), child: Column(
-                  children: [
-                    Row(children: <Widget>[Padding(
-                      padding: EdgeInsets.all(6),
+            ),
+            child: Column(
+                children: <Widget>[
+              Expanded(
+                flex: 30,
+                child: this.groupBuy.storeLogo.startsWith('assets/')?
+                  Image.asset(this.groupBuy.storeLogo):
+                  Image(
+                  image: NetworkImage(this.groupBuy.storeLogo),
+                ),
+              ),
+              Expanded(
+                  flex: 70,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      color: Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      border: Border.all(color: Color(0xFFFFFF), width: 0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 1,
+                          offset: Offset(1,1), // changes position of shadow
+                        )
+                      ],
                     ),
-                      Text(
-                        "Amazon.sg",
-                        style: titleStyle,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      )]),
-                    Row(children: <Widget>[
-
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Icon(
-                          Icons.access_time,
-                          size: 30,
-                        ),
-                      ),
-                      Text(
-                        "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
-                        style: textStyle,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Text(
-                          "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
-                          style: textStyle,
-                        ),
-                      ),
-                      // 7 days, $70/$100
-                    ]),
-                    Row(
-                      children: <Widget>[
+                        child: Column(
+                    children: [
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 8, left: 6, bottom: 8, right: 6),
+                          child: Flexible(
+                            child: new Text(
+                                  this.groupBuy.address.substring(0, 15),
+                                  style: titleStyle,
+                                )
+                          )
+                        )
+                        // 7 days, $70/$100
+                      ]),
+                      Row(children: <Widget>[
                         Padding(
                           padding: EdgeInsets.all(6),
-                          child: CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: CircleAvatar(
-                              radius: 13,
-                              backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
-                              AssetImage('assets/profpicplaceholder.jpg'),
-                            ),
+                          child: Icon(
+                            Icons.access_time,
+                            size: 30,
                           ),
                         ),
                         Text(
-                          "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
+                          "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
                           style: textStyle,
                         ),
                         Spacer(
                           flex: 1,
                         ),
-                        Text(
-                          "rating", // TODO: ???.getUserRating(groupBuy.organiserId)
-                          style: textStyle,
-                        ),
-                        Icon(Icons.whatshot), // supposed to be star
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
                         Padding(
                           padding: EdgeInsets.all(6),
-                          child: Icon(Icons.location_on_outlined),
-                        ),
-                        Expanded(
                           child: Text(
-                            "${groupBuy.address}",
+                            "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
                             style: textStyle,
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ],
-                    )
-                  ],
-                )
-              ),
-          ]
+                        // 7 days, $70/$100
+                      ]),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(6),
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: CircleAvatar(
+                                radius: 13,
+                                backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
+                                AssetImage('assets/profpicplaceholder.jpg'),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
+                            style: textStyle,
+                          ),
+                          Spacer(
+                            flex: 1,
+                          ),
+                          Text(
+                            "rating", // TODO: ???.getUserRating(groupBuy.organiserId)
+                            style: textStyle,
+                          ),
+                          Icon(Icons.whatshot), // supposed to be star
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.all(6),
+                            child: Icon(Icons.location_on_outlined),
+                          ),
+                          Expanded(
+                            child: Text(
+                              "${groupBuy.address}",
+                              style: textStyle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+                ),
+            )]
+            ),
           ),
         ),
-      ),
+      )
     );
   }
 }
