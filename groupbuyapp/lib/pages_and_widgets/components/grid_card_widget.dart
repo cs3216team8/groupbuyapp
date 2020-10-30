@@ -30,13 +30,29 @@ class GroupBuyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Color(0x00FFFFFF),
       elevation: 10,
-      shadowColor: Colors.black12,
+      shadowColor: Color(0x00000000),
       child: InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
         onTap: () {_openDetailedGroupBuy(context);},
-        child: Column(
+        child: Container(
+          margin: const EdgeInsets.all(3.0),
+          decoration: new BoxDecoration(
+            color: Color(0xFFFFFFFF),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            border: Border.all(color: Color(0xFFFFFF), width: 0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 1,
+                offset: Offset(1,1), // changes position of shadow
+              )
+            ],
+
+          ),
+          child: Column(
           children: <Widget>[
             Expanded(
               flex: 40,
@@ -44,7 +60,21 @@ class GroupBuyCard extends StatelessWidget {
                 image: NetworkImage(this.groupBuy.storeLogo),
               ),
             ),
-            Expanded(
+          Container(
+            decoration: new BoxDecoration(
+              color: Color(0xFFFFFFFF),
+              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+              border: Border.all(color: Color(0xFFFFFF), width: 0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  spreadRadius: 2,
+                  blurRadius: 1,
+                  offset: Offset(1,1), // changes position of shadow
+                )
+              ],
+
+            ), child: Expanded(
                 flex: 60,
                 child: Column(
                   children: [
@@ -123,8 +153,9 @@ class GroupBuyCard extends StatelessWidget {
                     )
                   ],
                 )
-            ),
-          ],
+              ),
+          )]
+          ),
         ),
       ),
     );
