@@ -7,6 +7,7 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
       TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
+  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   final GroupBuy groupBuy;
 
@@ -54,12 +55,12 @@ class GroupBuyCard extends StatelessWidget {
           ),
           child: Column(
           children: <Widget>[
-            Expanded(
-              flex: 40,
-              child: Image(
-                image: NetworkImage(this.groupBuy.storeLogo),
-              ),
-            ),
+            // Expanded(
+            //   flex: 40,
+            //   child: Image(
+            //     image: NetworkImage(this.groupBuy.storeLogo),
+            //   ),
+            // ),
           Container(
             decoration: new BoxDecoration(
               color: Color(0xFFFFFFFF),
@@ -69,22 +70,25 @@ class GroupBuyCard extends StatelessWidget {
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
                   spreadRadius: 2,
-                  blurRadius: 1,
+                  blurRadius: 0,
                   offset: Offset(1,1), // changes position of shadow
                 )
               ],
 
-            ), child: Expanded(
-                flex: 60,
-                child: Column(
+            ), child: Column(
                   children: [
-                    LinearPercentIndicator(
-                      lineHeight: 8.0,
-                      backgroundColor: Colors.black12,
-                      progressColor: Theme.of(context).buttonColor,
-                      percent: this.groupBuy.getPercentageComplete(),
+                    Row(children: <Widget>[Padding(
+                      padding: EdgeInsets.all(6),
                     ),
+                      Text(
+                        "Amazon.sg",
+                        style: titleStyle,
+                      ),
+                      Spacer(
+                        flex: 1,
+                      )]),
                     Row(children: <Widget>[
+
                       Padding(
                         padding: EdgeInsets.all(6),
                         child: Icon(
@@ -154,7 +158,7 @@ class GroupBuyCard extends StatelessWidget {
                   ],
                 )
               ),
-          )]
+          ]
           ),
         ),
       ),
