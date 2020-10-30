@@ -7,8 +7,8 @@ import 'dart:math';
 
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
-      TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
-  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold); //fontSize: 15, fontWeight: FontWeight.normal);
+      TextStyle(fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
+  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   final GroupBuy groupBuy;
 
@@ -36,7 +36,7 @@ class GroupBuyCard extends StatelessWidget {
             decoration: new BoxDecoration(
               color: Color(0xFFFFFFFF),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              border: Border.all(color: Color(0xFFF98B83), width: 0.7),
+              border: Border.all(color: Color(0xFF810020), width: 0.7),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
@@ -91,7 +91,8 @@ class GroupBuyCard extends StatelessWidget {
                         Padding(
                           padding: EdgeInsets.all(6),
                           child: Icon(
-                            Icons.access_time,
+                            Icons.access_time_rounded,
+                            color: Color(0xFF810020),
                             size: 30,
                           ),
                         ),
@@ -106,6 +107,7 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.only(left: 6, right: 6, bottom: 6),
                           child: Icon(
                             Icons.pending_rounded,
+                            color: Color(0xFF810020),
                             size: 30,
                           ),
                         ),
@@ -121,7 +123,7 @@ class GroupBuyCard extends StatelessWidget {
                             padding: EdgeInsets.only(left: 6, right: 6),
                             child: CircleAvatar(
                               radius: 15,
-                              backgroundColor: Theme.of(context).primaryColor,
+                              backgroundColor: Color(0xFF810020),
                               child: CircleAvatar(
                                 radius: 13,
                                 backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
@@ -137,10 +139,10 @@ class GroupBuyCard extends StatelessWidget {
                             flex: 1,
                           ),
                           Text(
-                            "rating", // TODO: ???.getUserRating(groupBuy.organiserId)
+                            "5.0", // TODO: ???.getUserRating(groupBuy.organiserId)
                             style: textStyle,
                           ),
-                          Icon(Icons.whatshot), // supposed to be star
+                          Icon(Icons.star, color: Color(0xFF810020)), // supposed to be star
                         ],
                       ),
                     ],
