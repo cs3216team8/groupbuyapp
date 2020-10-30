@@ -173,7 +173,21 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: backAppBar(context: context, title: 'Group Buy Details'),
+      appBar: backAppBarWithoutText(context: context,
+        actions: <Widget>[
+        PopupMenuButton<String>(
+          color: Colors.white,
+          icon: new Icon(Icons.menu, color: Colors.white),
+          itemBuilder: (BuildContext context) {
+            return {'Logout', 'Settings'}.map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList();
+          },
+        ),
+      ],),
       floatingActionButton: widget.isOrganiser
         ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -368,7 +382,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     Padding(
                       padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                       child: Icon(
-                      Icons.monetization_on_outlinedg,
+                      Icons.monetization_on_outlined,
                       color: Colors.grey,
                       size: 30.0,
                       semanticLabel: 'Deposit',
