@@ -7,8 +7,8 @@ PreferredSize backAppBar({
   @required BuildContext context,
   @required String title,
   List<Widget> actions,
-  double elevation = 10,
-  Color color=Colors.white,
+  double elevation = 0,
+  Color color=const Color(0xFFFEE8E6),
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
 }) {
@@ -26,7 +26,7 @@ PreferredSize backAppBar({
         child: Text(title, style: TextStyle(color: textColor,),),
       ),
       backgroundColor: color,
-      actions: actions
+      actions: actions,
     ),
   );
 }
@@ -35,7 +35,7 @@ PreferredSize backAppBarWithoutText({
   @required BuildContext context,
   List<Widget> actions,
   double elevation = 0,
-  Color color=Colors.white,
+  Color color=const Color(0xFFFFF3E7),
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
 }) {
@@ -51,6 +51,11 @@ PreferredSize backAppBarWithoutText({
       ),
       backgroundColor: color,
       actions: actions,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(10),
+        ),
+      ),
     ),
   );
 }
