@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/chat_room.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
@@ -29,14 +30,27 @@ class GroupBuyInfo extends StatelessWidget {
   }) : super(key: key);
 
   // create a chatroom with the necesssary details, send user to the chatroom
-  void onTapChat(BuildContext context) {
+  void onTapChat(BuildContext context) async {
+    print("tapped on chat");
+    // create a chatroom with the necessary details
     String groupBuyId = groupBuy.id;
     String organizerId = groupBuy.organiserId;
     String userId = FirebaseAuth.instance.currentUser.uid;
     String chatRoomId = organizerId + "_" + userId;
     List<String> members = [organizerId, userId];
-    ChatRoom chatRoom = new ChatRoom(chatRoomId, members);
-    (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+    Map<String, dynamic> chatRoom = {
+      "chatRoomId" : chatRoomId,
+      "members": members,
+    };
+    await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+
+    // send user to chatroom
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatScreen(chatRoomId),
+      ),
+    );
   }
 
   void onTapJoin(BuildContext context) {
