@@ -186,6 +186,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.normal, fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: backAppBar(context: context,
         title: "Group Buy Details",
@@ -306,27 +307,27 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                         Padding(
                           padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                           child: Icon(
-                          Icons.account_circle_outlined, color: Colors.black,
+                          Icons.account_circle, color: Color(0xFF810020),
                           size: 30.0,
                           semanticLabel: 'User profile photo',
                         )
                         ),
                         widget.isOrganiser
-                        ? Text('by You')
-                        : Text('by ${widget.groupBuy.organiserId}'),
+                        ? Text('by You', style: textStyle,)
+                        : Text('by ${widget.groupBuy.organiserId}', style: textStyle),
                       ],
                     ),
                     Row(
                         children: <Widget>[
                           Text(
                             "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left",
-                            style: this.textStyle,
+                            style: textStyle,
                           ),
                           Padding(
                               padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
                               child:  Icon(
                                 Icons.alarm,
-                                color: Colors.black,
+                                color: Color(0xFF810020),
                                 size: 30.0,
                               )
                           ),
@@ -344,13 +345,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     Padding(
                         padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                         child: Icon(
-                          Icons.monetization_on_outlined,
-                          color: Colors.black,
+                          Icons.monetization_on,
+                          color: Color(0xFF810020),
                           size: 30.0,
                           semanticLabel: 'Deposit',
                         )
                     ),
-                    Text('${widget.groupBuy.deposit * 100} % deposit'),
+                    Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
                   ],
                 ),
                 Row(children: <Widget>[
@@ -361,8 +362,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                   Padding(
                       padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
                       child: Icon(
-                        Icons.pending_rounded,
-                        color: Colors.black,
+                        Icons.pending,
+                        color: Color(0xFF810020),
                         size: 30.0,
                         semanticLabel: 'Target',
                       )
@@ -379,12 +380,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                         padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                         child: Icon(
                         Icons.location_on,
-                        color: Colors.black,
+                          color: Color(0xFF810020),
                         size: 30.0,
                         semanticLabel: 'Location',
                       )
                       ),
-                      Text('${widget.groupBuy.address}')
+                      Flexible(
+                        child: new Text('${widget.groupBuy.address}', style: textStyle)
+                      )
                     ],
                 ),
                 // Description
@@ -395,12 +398,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                       padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
                       child: Icon(
                         Icons.description,
-                        color: Colors.black,
+                        color: Color(0xFF810020),
                         size: 30.0,
                         semanticLabel: 'Description',
                       )
                     ),
-                    Text('${widget.groupBuy.description}')
+                    Flexible(
+                      child: new Text('${widget.groupBuy.description}', style: textStyle)
+                    )
                   ],
                 ),
                 widget.isOrganiser
