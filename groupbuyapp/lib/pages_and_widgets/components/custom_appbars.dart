@@ -6,7 +6,8 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 PreferredSize backAppBar({
   @required BuildContext context,
   @required String title,
-  double elevation = 0,
+  List<Widget> actions,
+  double elevation = 10,
   Color color=Colors.white,
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
@@ -25,11 +26,36 @@ PreferredSize backAppBar({
         child: Text(title, style: TextStyle(color: textColor,),),
       ),
       backgroundColor: color,
+      actions: actions
     ),
   );
 }
 
 PreferredSize backAppBarWithoutText({
+  @required BuildContext context,
+  List<Widget> actions,
+  double elevation = 0,
+  Color color=Colors.white,
+  Color textColor=Colors.black,
+  Color iconColor=Colors.black,
+}) {
+  return PreferredSize(
+    preferredSize: Size.fromHeight(50.0),
+    child: AppBar(
+      elevation: elevation,
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: iconColor,),
+        onPressed:() {
+          Navigator.pop(context);
+        },
+      ),
+      backgroundColor: color,
+      actions: actions,
+    ),
+  );
+}
+
+PreferredSize backAppBarWithoutTextWithGradient({
   @required BuildContext context,
   List<Widget> actions,
   double elevation = 0,

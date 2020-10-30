@@ -170,21 +170,37 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     );
   }
 
+  void handleGroupBuyDetailMenu(String value, BuildContext context) {
+    if (widget.isOrganiser) {
+      if (value == "Get items list in email") {
+        onTapSendEmail(context);
+      } else {
+        RaisedButton(
+            color: Theme
+                .of(context)
+                .accentColor,
+            onPressed: widget.isClosed ? null : () => onTapCloseGB());
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: backAppBarWithoutText(context: context,
+      appBar: backAppBar(context: context,
+        title: "Group Buy Details",
         actions: <Widget>[
         PopupMenuButton<String>(
           color: Colors.white,
-          icon: new Icon(Icons.menu, color: Colors.white),
+          onSelected: (value) => handleGroupBuyDetailMenu(value, context),
           itemBuilder: (BuildContext context) {
-            return {'Logout', 'Settings'}.map((String choice) {
+            return widget.isOrganiser? {'Get items list in email', 'Close group buy now'}.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
               );
-            }).toList();
+            }).toList()
+                : null;
           },
         ),
       ],),
@@ -197,12 +213,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                 elevation: 10,
                 onPressed: () => onTapBroadcast(context),
                 child: Text("Broadcast message"),
-            ),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              elevation: 10,
-              onPressed: () => onTapSendEmail(context),
-              child: Text("Get items list in email"),
             ),
           ]
         )
@@ -287,12 +297,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                 //     ],
                 //   ),
                 // ),
-                widget.isOrganiser
-                    ? RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: widget.isClosed ? null : () => onTapCloseGB(),
-                  child: Text("Close jio now"),
-                ) : Container(),
                 Row(children: <Widget>[
                   Padding(
                       padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
