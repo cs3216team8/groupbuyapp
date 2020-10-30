@@ -42,7 +42,7 @@ PreferredSize backAppBarWithoutText({
     child: Container(
       decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Color(0xFFC9C9CD), Colors.transparent],
+              colors: [Color(0xCC000000), Color(0x99000000), Colors.transparent],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
           )
