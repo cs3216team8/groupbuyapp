@@ -97,7 +97,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
           type: BottomNavigationBarType.fixed,
           items: widget.navItems,
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Color(0xFFF98B83),
           onTap: (int index) {
             _onItemTapped(index, context);
           }),
