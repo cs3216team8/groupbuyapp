@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:groupbuyapp/utils/time_calculation.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'dart:math';
 
@@ -17,16 +17,6 @@ class GroupBuyCard extends StatelessWidget {
 
   void _openDetailedGroupBuy(BuildContext context) {
     segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: true, hasRequested: false,));
-  }
-
-  String getTimeDifString(Duration timeDiff) {
-    String time;
-    if (timeDiff.inDays == 0) {
-      time = timeDiff.inHours.toString() + " hours";
-    } else {
-      time = timeDiff.inDays.toString() + " days";
-    }
-    return time;
   }
 
   @override
