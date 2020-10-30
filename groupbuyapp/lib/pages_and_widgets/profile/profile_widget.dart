@@ -17,7 +17,10 @@ class ProfileScreen extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       appBar: regularAppBar(
         context: context,
-        titleElement: Text("View Profile", style: TextStyle(color: Colors.black),)
+        titleElement: Text(
+          isMe ? "Your Profile" : "View Profile",
+          style: TextStyle(color: Colors.black),
+        )
       ),
       body: ProfileGroupBuys(
           isMe: isMe,
