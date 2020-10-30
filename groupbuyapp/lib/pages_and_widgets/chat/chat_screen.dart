@@ -1,12 +1,7 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:uuid/uuid.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -46,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chatRooms')
-            .doc('testChatRoom')
+            .doc(widget.chatRoomId)
             .collection('messages').snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
