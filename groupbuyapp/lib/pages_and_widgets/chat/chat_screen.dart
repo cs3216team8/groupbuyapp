@@ -25,11 +25,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendMessage(ChatMessage message) {
-    ChatStorage().onSendMessage(message);
+    ChatStorage().onSendMessage(message, widget.chatRoomId);
   }
 
   void uploadFile() async {
-    ChatStorage().uploadFileToStorage(user);
+    ChatStorage().uploadFileToStorage(user, widget.chatRoomId);
   }
 
   @override

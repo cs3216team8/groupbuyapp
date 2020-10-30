@@ -9,10 +9,10 @@ import 'package:uuid/uuid.dart';
 class ChatStorage {
 
   // for chat screen
-  void onSendMessage(ChatMessage message) {
+  void onSendMessage(ChatMessage message, String chatRoomId) {
     var documentReference = FirebaseFirestore.instance
         .collection('chatRooms')
-        .doc("testChatRoom")
+        .doc(chatRoomId)
         .collection('messages')
         .doc(DateTime.now().millisecondsSinceEpoch.toString());
 
@@ -24,7 +24,7 @@ class ChatStorage {
     });
   }
 
-  void uploadFileToStorage(ChatUser user) async {
+  void uploadFileToStorage(ChatUser user, String chatRoomId) async {
     PickedFile pickedFile = await (new ImagePicker()).getImage(
       source: ImageSource.gallery,
       imageQuality: 80,
@@ -53,7 +53,7 @@ class ChatStorage {
 
       var documentReference = FirebaseFirestore.instance
           .collection('chatRooms')
-          .doc("testChatRoom")
+          .doc(chatRoomId)
           .collection('messages')
           .doc(DateTime.now().millisecondsSinceEpoch.toString());
 
