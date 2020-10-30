@@ -3,6 +3,7 @@ import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'dart:math';
 
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
@@ -30,6 +31,7 @@ class GroupBuyCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int addressLength = min(20,this.groupBuy.address.length);
     return Container(
       margin: const EdgeInsets.all(1.0),
     child: Card(
@@ -58,11 +60,13 @@ class GroupBuyCard extends StatelessWidget {
                 children: <Widget>[
               Expanded(
                 flex: 30,
-                child: this.groupBuy.storeLogo.startsWith('assets/')?
-                  Image.asset(this.groupBuy.storeLogo):
-                  Image(
-                  image: NetworkImage(this.groupBuy.storeLogo),
-                ),
+                child: Container(
+                  child:this.groupBuy.storeLogo.startsWith('assets/')?
+                    Image.asset(this.groupBuy.storeLogo):
+                    Image(
+                    image: NetworkImage(this.groupBuy.storeLogo),
+                  )
+                )
               ),
               Expanded(
                   flex: 70,
@@ -84,15 +88,15 @@ class GroupBuyCard extends StatelessWidget {
                     children: [
                       Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 8, left: 6, bottom: 8, right: 6),
-                          child: Flexible(
+                          padding: EdgeInsets.only(top: 30, left: 6, bottom: 8, right: 6),
+
+                        ),
+                        Flexible(
                             child: new Text(
-                                  this.groupBuy.address.substring(0, 15),
-                                  style: titleStyle,
-                                )
-                          )
+                              "${this.groupBuy.address.substring(0, addressLength)} ..",
+                              style: titleStyle,
+                            )
                         )
-                        // 7 days, $70/$100
                       ]),
                       Row(children: <Widget>[
                         Padding(
@@ -106,22 +110,26 @@ class GroupBuyCard extends StatelessWidget {
                           "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
                           style: textStyle,
                         ),
-                        Spacer(
-                          flex: 1,
-                        ),
+                        // 7 days, $70/$100
+                      ]),
+                      Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Text(
-                            "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
-                            style: textStyle,
+                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 6),
+                          child: Icon(
+                            Icons.pending_rounded,
+                            size: 30,
                           ),
                         ),
-                        // 7 days, $70/$100
+                        Text(
+                          "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
+                          style: textStyle,
+                        ),
+
                       ]),
                       Row(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.all(6),
+                            padding: EdgeInsets.only(left: 6, right: 6),
                             child: CircleAvatar(
                               radius: 15,
                               backgroundColor: Theme.of(context).primaryColor,
@@ -146,21 +154,6 @@ class GroupBuyCard extends StatelessWidget {
                           Icon(Icons.whatshot), // supposed to be star
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.all(6),
-                            child: Icon(Icons.location_on_outlined),
-                          ),
-                          Expanded(
-                            child: Text(
-                              "${groupBuy.address}",
-                              style: textStyle,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      )
                     ],
                   )
                 ),
