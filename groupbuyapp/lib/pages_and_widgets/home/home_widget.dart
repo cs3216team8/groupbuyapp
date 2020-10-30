@@ -80,15 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
           leading: Container(),
           title: _buildSearchField(),
           actions: _buildActions(),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(10),
+            ),
+          ),
         ),
       ),
       body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              HomeCarouselBanner(),
-              Container(
-                child:
-                Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              Padding(
+                padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
               ),
               ListingsSection(
                 createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,

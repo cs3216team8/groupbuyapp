@@ -33,7 +33,7 @@ class GroupBuyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     int addressLength = min(20,this.groupBuy.address.length);
     return Container(
-      margin: const EdgeInsets.all(1.0),
+      margin: const EdgeInsets.all(2.0),
     child: Card(
         color: Color(0x00FFFFFF),
         elevation: 10,
@@ -46,13 +46,13 @@ class GroupBuyCard extends StatelessWidget {
             decoration: new BoxDecoration(
               color: Color(0xFFFFFFFF),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              border: Border.all(color: Color(0xFFFFFF), width: 0),
+              border: Border.all(color: Color(0xFFF98B83), width: 0.7),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 2,
-                  offset: Offset(1,1), // changes position of shadow
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: Offset(0.5,0.5), // changes position of shadow
                 )
               ],
             ),
@@ -73,14 +73,14 @@ class GroupBuyCard extends StatelessWidget {
                   child: Container(
                     decoration: new BoxDecoration(
                       color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                       border: Border.all(color: Color(0xFFFFFF), width: 0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
+                          spreadRadius: 0,
                           blurRadius: 1,
-                          offset: Offset(1,1), // changes position of shadow
+                          offset: Offset(0, -0.3), // changes position of shadow
                         )
                       ],
                     ),
@@ -88,8 +88,7 @@ class GroupBuyCard extends StatelessWidget {
                     children: [
                       Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 30, left: 6, bottom: 8, right: 6),
-
+                          padding: EdgeInsets.only(top: 45, left: 6, bottom: 8, right: 6),
                         ),
                         Flexible(
                             child: new Text(
