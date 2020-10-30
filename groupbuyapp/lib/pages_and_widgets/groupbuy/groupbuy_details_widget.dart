@@ -1,3 +1,4 @@
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
@@ -12,9 +13,10 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 
 import 'components/time_display_widget.dart';
 
-class GroupBuyInfo extends StatelessWidget {
+class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
   final bool isOrganiser;
+  bool isClosed;
   bool hasRequested;
 
   //TODO storage like as listings widget
@@ -23,7 +25,15 @@ class GroupBuyInfo extends StatelessWidget {
     @required this.groupBuy,
     this.isOrganiser = false,
     this.hasRequested = false, //TODO -- should be read from user's groupbuys list from storage..?
+    this.isClosed = false, //TODO
   }) : super(key: key);
+
+  @override
+  _GroupBuyInfoState createState() => _GroupBuyInfoState();
+}
+
+class _GroupBuyInfoState extends State<GroupBuyInfo> {
+  TextEditingController broadcastMsgController;
 
   void onTapChat(BuildContext context) {
     print("tapped on chat"); //TODO
@@ -32,6 +42,90 @@ class GroupBuyInfo extends StatelessWidget {
   void onTapJoin(BuildContext context) {
     print("tapped on join"); //TODO
     segueToPage(context, JoinGroupBuyForm());
+  }
+
+  void onTapBroadcast(BuildContext context) {
+    print("tapped on broadcast"); //TODO modal for broadcasting
+    setState(() {
+      broadcastMsgController = TextEditingController();
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  Positioned(
+                    right: -40.0,
+                    top: -40.0,
+                    child: InkResponse(
+                      onTap: () {
+                        broadcastMsgController = null;
+                        Navigator.of(context).pop();
+                      },
+                      child: CircleAvatar(
+                        child: Icon(Icons.close),
+                        backgroundColor: Colors.red,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: broadcastMsgController,
+                        decoration: InputDecoration(
+                          hintText: "Notify all your piggybuyers...",
+                          labelText: "Your message",
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          child: Text("Add"),
+                          onPressed: () {
+                            String msg = broadcastMsgController.text;
+                            if (msg.isEmpty) {
+                              showErrorFlushbar("Your broadcast message should not be empty!");
+                              return;
+                            }
+                            // hasSubmittedEmpty = false;
+                            print("broadcast msg: ${msg}");
+                            //TODO: call to messaging to broadcast msg.
+
+                            Navigator.pop(context);
+                          },
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            );
+          }
+      );
+    });
+  }
+
+  void showErrorFlushbar(String message) {
+    Flushbar(
+        flushbarPosition: FlushbarPosition.TOP,
+        flushbarStyle: FlushbarStyle.FLOATING,
+        margin: EdgeInsets.only(top: 60, left: 8, right: 8),
+        duration: Duration(seconds: 3),
+        animationDuration: Duration(seconds: 1),
+        borderRadius: 8,
+        backgroundColor: Color(0xFFF2B1AB),
+        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+        title: "Please check again!",
+        message: message).show(context);
+  }
+
+  void onTapCloseGB() {
+    print("tapped on close group buy"); //TODO send request
+    setState(() {
+      widget.isClosed = true;
+    });
   }
 
   Widget getRequestPreview(Future<Request> futureRequest) {
@@ -49,7 +143,7 @@ class GroupBuyInfo extends StatelessWidget {
           case ConnectionState.waiting:
             return RequestsLoading();
           default:
-            children = [RequestCard(groupBuy: this.groupBuy, request: snapshot.data, isOrganiser: this.isOrganiser)];
+            children = [RequestCard(groupBuy: widget.groupBuy, request: snapshot.data, isOrganiser: widget.isOrganiser)];
             break;
         }
 
@@ -72,7 +166,14 @@ class GroupBuyInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: backAppBar(context: context, title: 'Group Buy Details'),
-      floatingActionButton: hasRequested
+      floatingActionButton: widget.isOrganiser
+        ? RaisedButton(
+            color: Theme.of(context).accentColor,
+            elevation: 10,
+            onPressed: () => onTapBroadcast(context),
+            child: Text("Broadcast to piggybuyers"),
+        )
+        : widget.hasRequested
           ? RaisedButton(
             color: Theme.of(context).accentColor,
             elevation: 10,
@@ -131,7 +232,7 @@ class GroupBuyInfo extends StatelessWidget {
                       Expanded(
                           child: Image(
                             image: NetworkImage(
-                                this.groupBuy.storeLogo),
+                                widget.groupBuy.storeLogo),
                           ),
                           flex: 65),
                       Expanded(child: TimeDisplay(), flex: 35)
@@ -146,8 +247,8 @@ class GroupBuyInfo extends StatelessWidget {
                       Expanded(
                           child: LinearPercentIndicator(
                             lineHeight: 20,
-                            percent: this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100,
-                            center: new Text("${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}%",
+                            percent: widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100,
+                            center: new Text("${(widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100).round()}%",
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white)
@@ -156,7 +257,7 @@ class GroupBuyInfo extends StatelessWidget {
                           ),
                           flex: 65),
                       Expanded(
-                          child: Text('${(this.groupBuy.currentAmount/this.groupBuy.targetAmount * 100).round()}/100',
+                          child: Text('${(widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100).round()}/100',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
@@ -164,24 +265,47 @@ class GroupBuyInfo extends StatelessWidget {
                     ],
                   ),
                 ),
-                ListTile(
-                  // Organiser information
-                    leading: Icon(
-                      Icons.account_circle,
-                      color: Colors.grey,
-                      size: 24.0,
-                      semanticLabel: 'User profile photo',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      // Organiser information
+                      children: <Widget>[
+                        Icon(
+                          Icons.account_circle,
+                          color: Colors.grey,
+                          size: 24.0,
+                          semanticLabel: 'User profile photo',
+                        ),
+                        SizedBox(width: 10,),
+                        widget.isOrganiser
+                        ? Text('by You')
+                        : Text('by ${widget.groupBuy.organiserId}')
+                      ],
                     ),
-                    title: Text('by ${this.groupBuy.organiserId}')),
-                ListTile(
+                    widget.isOrganiser
+                    ? RaisedButton(
+                      color: Theme.of(context).accentColor,
+                      onPressed: widget.isClosed ? null : () => onTapCloseGB(),
+                      child: Text("Close jio now"),
+                    )
+                    : Container(),
+                  ],
+                ),
+
+                Row(
                   // Location
-                    leading: Icon(
-                      Icons.location_on,
-                      color: Colors.grey,
-                      size: 24.0,
-                      semanticLabel: 'Location',
-                    ),
-                    title: Text('${this.groupBuy.address}')),
+                    children: <Widget>[
+                      Icon(
+                        Icons.location_on,
+                        color: Colors.grey,
+                        size: 24.0,
+                        semanticLabel: 'Location',
+                      ),
+                      SizedBox(width: 10,),
+                      Text('${widget.groupBuy.address}')
+                    ],
+                ),
                 // Description
                 Container(
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
@@ -200,7 +324,7 @@ class GroupBuyInfo extends StatelessWidget {
                       Container(
                         alignment: Alignment.topLeft,
                         child: Text(
-                            '${this.groupBuy.address}'
+                            '${widget.groupBuy.address}'
                         ),
                       ),
                     ],
@@ -210,10 +334,10 @@ class GroupBuyInfo extends StatelessWidget {
                 ListTile(
                   // Deposit
                   leading: Text('Deposit:'),
-                  title: Text('${this.groupBuy.deposit * 100} %'),
+                  title: Text('${widget.groupBuy.deposit * 100} %'),
                 ),
 
-                isOrganiser
+                widget.isOrganiser
                     ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -242,7 +366,7 @@ class GroupBuyInfo extends StatelessWidget {
                           ],
                         ),
                         StreamBuilder<List<Future<Request>>>(
-                          stream: GroupBuyStorage.instance.getAllGroupBuyRequests(this.groupBuy),
+                          stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),
                           builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
                             List<Widget> children;
                             if (snapshot.hasError) {
@@ -288,7 +412,7 @@ class GroupBuyInfo extends StatelessWidget {
                           height: 5.5,
                         ),
                         SizedBox(height: 10,),
-                        hasRequested
+                        widget.hasRequested
                             ? Column(
                               children: [
                                 Container(
@@ -301,7 +425,7 @@ class GroupBuyInfo extends StatelessWidget {
                                       )
                                   ),
                                 ),
-                                getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(this.groupBuy))
+                                getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
                               ],
                             )
                             : Container(),
