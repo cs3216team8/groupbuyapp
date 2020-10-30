@@ -326,7 +326,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           Padding(
                               padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
                               child:  Icon(
-                                Icons.alarm,
+                                Icons.access_time_rounded,
                                 color: Color(0xFF810020),
                                 size: 30.0,
                               )
