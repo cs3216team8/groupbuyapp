@@ -26,6 +26,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _productWebsiteController = TextEditingController();
   final TextEditingController _targetAmtController = TextEditingController();
   final TextEditingController _currentAmtController = TextEditingController(); //TODO default 0
+  final TextEditingController _addressController = TextEditingController();
 
   DateTime endDate = DateTime.now().add(Duration(days: 3));
 
@@ -77,6 +78,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       _productWebsiteController.clear();
       _targetAmtController.clear();
       _currentAmtController.clear();
+      _addressController.clear();
       segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
     }
   }
@@ -220,31 +222,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     },
                   ),
                   Container(
-                      margin: EdgeInsets.symmetric(vertical: 6),
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-
-                      width: size.width * 0.8,
-                      child: FlatButton(
-                          padding: EdgeInsets.symmetric(vertical: 23),
-                          color: Theme.of(context).accentColor.withAlpha(60),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                          ),
-                          onPressed: () {
-                            DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
-                              print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                            }, currentTime: DateTime.now());
-                          },
-                          child: Text(
-                            'Pick a deadline!',
-                            style: TextStyle(color: Colors.black),
-                          )),
-                  ),
-
-
-                  Container(
                     margin: EdgeInsets.symmetric(vertical: 6),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                     width: size.width * 0.8,
@@ -266,10 +243,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                   ),
                   chosenAddress == 'New address'
                       ? RoundedInputField(
-                    icon: Icons.public,
+                    icon: Icons.location_city,
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
-                    hintText: "Product Website",
+                    hintText: "Address for meetup",
                     controller: _productWebsiteController,
                     validator: (String value) {
                       if (value.isEmpty) {
@@ -284,6 +261,29 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       :
                   Container(),
 
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 6),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+
+                    width: size.width * 0.8,
+                    child: FlatButton(
+                        padding: EdgeInsets.symmetric(vertical: 23),
+                        color: Theme.of(context).accentColor.withAlpha(60),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        onPressed: () {
+                          DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
+                            print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                          }, onConfirm: (date) {
+                            print('confirm $date');
+                          }, currentTime: DateTime.now());
+                        },
+                        child: Text(
+                          'Pick a deadline!',
+                          style: TextStyle(color: Colors.black),
+                        )),
+                  ),
 
                   RaisedButton(
                     child: Text('Create'),
