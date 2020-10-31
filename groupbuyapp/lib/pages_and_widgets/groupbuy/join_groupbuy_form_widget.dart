@@ -51,6 +51,8 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     }
 
     Request request = Request.newRequest(requestorId: widget.piggybackerUid, items: items);
+
+    //TODO @storage send
   }
 
   void onTapChat(BuildContext context) {
