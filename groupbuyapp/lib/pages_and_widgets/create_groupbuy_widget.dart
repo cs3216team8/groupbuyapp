@@ -129,6 +129,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020), fontWeight: FontWeight.w500,); //fontSize: 15, fontWeight: FontWeight.normal);
 
     return Scaffold(
         appBar: widget.needsBackButton
@@ -284,11 +285,15 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           style: TextStyle(color: Colors.black),
                         )),
                   ),
-
                   RaisedButton(
-                    child: Text('Create'),
+                    padding: EdgeInsets.all(10.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    color: Theme.of(context).accentColor,
                     onPressed: () => createGroupBuy(context),
-                  )
+                    child: Text("Create", style: subtitleStyle),
+                  ),
                 ]
               )
             )
