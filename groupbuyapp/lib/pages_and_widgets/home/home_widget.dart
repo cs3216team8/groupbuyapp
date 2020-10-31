@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color appbarColor = Color(0xFFe87d74);
+  final Color appbarColor = Color(0xFFFFFFFF);
   final Color appbarElementColor = Colors.white;
   final Color appbarTextColor = Colors.white;
 
@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           backgroundColor: appbarColor,
           // leading: Container(),
-          title: Text("PiggyBuy",),
+          title: Text("PiggyBuy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white)), //fontSize: 15, fontWeight: FontWeight.normal);),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),

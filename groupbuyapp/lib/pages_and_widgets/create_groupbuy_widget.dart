@@ -136,10 +136,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: widget.needsBackButton
-            ? backAppBar(context: context, title: "Start a jio!")
+            ? backAppBar(context: context, title: "PiggyBuy")
             : regularAppBar(
             context: context,
-            titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
+            titleElement: Text("PiggyBuy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white))
         ),
         body: SingleChildScrollView(
           child: Container(
