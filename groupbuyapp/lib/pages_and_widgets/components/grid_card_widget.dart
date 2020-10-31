@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'dart:math';
+
 
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
@@ -15,22 +18,46 @@ class GroupBuyCard extends StatelessWidget {
   // TODO: needs user info of each organiser -- either save in GroupBuy or query
   GroupBuyCard(this.groupBuy);
 
-  void _openDetailedGroupBuy(BuildContext context) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: true, hasRequested: false,));
+  void _openDetailedGroupBuy(BuildContext context, UserProfile organiserProfile) {
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy,organiserProfile: organiserProfile, isClosed: false,));
   }
 
   @override
   Widget build(BuildContext context) {
-    int addressLength = min(20,this.groupBuy.address.length);
     return Container(
-      margin: const EdgeInsets.all(2.0),
-    child: Card(
-        color: Color(0x00FFFFFF),
-        elevation: 10,
-        shadowColor: Color(0x00000000),
-        child: InkWell(
+        margin: const EdgeInsets.all(2.0),
+        child: Card(
+          color: Color(0x00FFFFFF),
+          elevation: 10,
+          shadowColor: Color(0x00000000),
+          child: FutureBuilder(
+            future: ProfileStorage.instance.getUserProfile(groupBuy.organiserId),
+            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+              if (snapshot.hasError) {
+                return FailedToLoadCard();
+              }
+
+              Card card;
+
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return CardNotLoaded();
+                case ConnectionState.waiting:
+                  return CardLoading();
+                default:
+                  return groupBuyCardInsides(context, snapshot.data);
+              }
+            },
+          ),
+        )
+    );
+  }
+
+  Widget groupBuyCardInsides(BuildContext context, UserProfile profile) {
+    int addressLength = min(20,this.groupBuy.address.length);
+    return InkWell(
           splashColor: Theme.of(context).primaryColor.withAlpha(30),
-          onTap: () {_openDetailedGroupBuy(context);},
+          onTap: () {_openDetailedGroupBuy(context, profile);},
           child: Container(
             margin: const EdgeInsets.all(1.0),
             decoration: new BoxDecoration(
@@ -126,13 +153,12 @@ class GroupBuyCard extends StatelessWidget {
                               backgroundColor: Color(0xFF810020),
                               child: CircleAvatar(
                                 radius: 13,
-                                backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
-                                AssetImage('assets/profpicplaceholder.jpg'),
+                                backgroundImage: NetworkImage(profile.profilePicture),
                               ),
                             ),
                           ),
                           Text(
-                            "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
+                            profile.username,
                             style: textStyle,
                           ),
                         ],
@@ -142,9 +168,41 @@ class GroupBuyCard extends StatelessWidget {
                 ),
             )]
             ),
-          ),
-        ),
-      )
+          )
+        );
+      }
+    }
+
+class CardLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: const CircularProgressIndicator(),
+      width: 60,
+      height: 60,
+    );
+  }
+}
+
+class FailedToLoadCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+      ),
+    );
+  }
+}
+
+//note this should not appear
+class CardNotLoaded extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("The groupbuy was not loaded. Git blame developers."),
+      ),
     );
   }
 }

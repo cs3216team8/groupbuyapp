@@ -33,7 +33,7 @@ class GroupBuyStorage {
         });
     groupBuy.getBuys().map((buy) {
       DocumentReference buyDocument = groupBuys.doc(groupBuyId).collection('buys').doc();
-      String buyId = buyDocument.id;
+      String buyId = buyDocument.id; //TODO IMPT*** check if this buys is requests on firestore
       batch.set(groupBuys.doc(groupBuyId).collection('buys').doc(buyId), {
         'id': buyId,
         'buyerId': buy.buyerId,
@@ -144,7 +144,6 @@ class GroupBuyStorage {
     );
   }
 
-
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
   Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
     String groupBuyId = groupBuy.getId();
@@ -229,6 +228,32 @@ class GroupBuyStorage {
       }
     });
   }
+
+  //TODO addrequest if rly not here
+  // Future<void> addRequest(String groupBuyId, Request request) async {
+  //   WriteBatch batch = FirebaseFirestore.instance.batch();
+  //
+  //   String reqId = groupBuys.doc(groupBuyId).collection('requests').doc().id;
+  //   batch.set(
+  //       groupBuys.doc(groupBuyId).collection('requests').doc(reqId), {
+  //     'id': reqId,
+  //
+  //   });
+  //   groupBuy.getBuys().map((buy) {
+  //     DocumentReference buyDocument = groupBuys.doc(groupBuyId).collection('buys').doc();
+  //     String buyId = buyDocument.id;
+  //     batch.set(groupBuys.doc(groupBuyId).collection('buys').doc(buyId), {
+  //       'id': buyId,
+  //       'buyerId': buy.buyerId,
+  //       'itemLink': buy.itemLink,
+  //       'amount': buy.amount,
+  //       'quantity': buy.quantity,
+  //       'comment': buy.comment,
+  //     });
+  //   });
+  //
+  //   batch.commit();
+  // }
 
   /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
   Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {

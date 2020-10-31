@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
@@ -8,13 +10,12 @@ import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
-  final bool isOrganiser;
+  final UserProfile organiserProfile;
   bool isClosed;
   bool hasRequested;
 
@@ -25,7 +26,7 @@ class GroupBuyInfo extends StatefulWidget {
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
-    this.isOrganiser = false,
+    @required this.organiserProfile,
     this.hasRequested = false, //TODO -- should be read from user's groupbuys list from storage..?
     this.isClosed = false, //TODO
   }) : super(key: key);
@@ -37,6 +38,12 @@ class GroupBuyInfo extends StatefulWidget {
 class _GroupBuyInfoState extends State<GroupBuyInfo> {
   TextEditingController broadcastMsgController;
   TextStyle textStyle = TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
+  List<Future<Request>> _futureRequests = [];
+
+  bool isOrganiser() {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    return uid == widget.organiserProfile.id;
+  }
 
   void onTapChat(BuildContext context) {
     print("tapped on chat"); //TODO
@@ -53,7 +60,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void onTapBroadcast(BuildContext context) {
-    print("tapped on broadcast"); //TODO modal for broadcasting
     setState(() {
       broadcastMsgController = TextEditingController();
       showDialog(
@@ -99,7 +105,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                             }
                             // hasSubmittedEmpty = false;
                             print("broadcast msg: ${msg}");
-                            //TODO: call to messaging to broadcast msg.
+                            //TODO: call to messaging to broadcast msg. @teikjun
 
                             Navigator.pop(context);
                           },
@@ -152,7 +158,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
             return RequestsLoading();
           default:
 
-            children = [RequestCard(groupBuy: widget.groupBuy, request: snapshot.data, isOrganiser: widget.isOrganiser)];
+            children = [RequestCard(groupBuy: widget.groupBuy, request: snapshot.data, isOrganiser: isOrganiser())];
             break;
         }
 
@@ -172,7 +178,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void handleGroupBuyDetailMenu(String value, BuildContext context) {
-    if (widget.isOrganiser) {
+    if (isOrganiser()) {
       if (value == "Get items list in email") {
         onTapSendEmail(context);
       } else {
@@ -196,7 +202,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           color: Colors.white,
           onSelected: (value) => handleGroupBuyDetailMenu(value, context),
           itemBuilder: (BuildContext context) {
-            return widget.isOrganiser? {'Get items list in email', 'Close group buy now'}.map((String choice) {
+            return isOrganiser() ? {'Get items list in email', 'Close group buy now'}.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
@@ -206,7 +212,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           },
         ),
       ],),
-      floatingActionButton: widget.isOrganiser
+      floatingActionButton: isOrganiser()
         ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -218,7 +224,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
             ),
           ]
         )
-        : widget.hasRequested
+        : widget.hasRequested //TODO need to refactor (see ui-storage-integration commit a2c9e821a86b1dd645a80e2873db1018550b49a3)
           ? RaisedButton(
             color: Theme.of(context).accentColor,
             elevation: 10,
@@ -313,7 +319,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           semanticLabel: 'User profile photo',
                         )
                         ),
-                        widget.isOrganiser
+                        isOrganiser()
                         ? Text('by You', style: textStyle,)
                         : Text('by ${widget.groupBuy.organiserId}', style: textStyle),
                       ],
@@ -409,7 +415,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     )
                   ],
                 ),
-                widget.isOrganiser
+                isOrganiser()
                     ? Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[

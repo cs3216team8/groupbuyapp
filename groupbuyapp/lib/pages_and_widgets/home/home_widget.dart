@@ -77,9 +77,16 @@ class _HomeScreenState extends State<HomeScreen> {
         child: AppBar(
           elevation: 0,
           backgroundColor: appbarColor,
-          leading: Container(),
-          title: _buildSearchField(),
-          actions: _buildActions(),
+          // leading: Container(),
+          title: Text("Piggybuy", style: TextStyle(color: Colors.black),),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
+                onPressed: () => segueToPage(context, ChatList())
+            ),
+          ],
+          // title: _buildSearchField(),
+          // actions: _buildActions(),
         ),
       ),
       body: SingleChildScrollView(
