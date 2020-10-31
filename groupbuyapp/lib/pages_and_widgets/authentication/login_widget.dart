@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_signup_option_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
@@ -8,6 +9,7 @@ import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flushbar/flushbar.dart';
 import 'components/login_background.dart';
 
@@ -221,7 +223,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SocialIcon(
-                        iconSrc: "assets/facebook.svg",
+                        icon: SvgPicture.asset(
+                          "assets/facebook.svg",
+                          height: 20,
+                          width: 20,
+                          color: Colors.white,
+                        ),
+                        outlineColor: Color.fromRGBO(59, 89, 152, 1),
+                        backgroundColor: Color.fromRGBO(59, 89, 152, 1),
                         onPress: () async {
                           try {
                             UserCredential userCredential = await signInWithFacebook();
@@ -234,7 +243,32 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                       ),
                       SocialIcon(
-                        iconSrc: "assets/google-plus.svg",
+                        icon: SvgPicture.asset(
+                          "assets/google.svg",
+                          height: 20,
+                          width: 20,
+                        ),
+                        outlineColor: Theme.of(context).accentColor,
+                        onPress: () async {
+                          try {
+                            UserCredential userCredential = await signInWithGoogle();
+                            if (userCredential != null) {
+                              Navigator.pop(context);
+                            }
+                          } catch (e) {
+                            showErrorFlushbar(e.toString());
+                          }
+                        },
+                      ),
+                      SocialIcon(
+                        icon: SvgPicture.asset(
+                          "assets/apple.svg",
+                          height: 20,
+                          width: 20,
+                          color: Colors.white
+                        ),
+                        outlineColor: Colors.black,
+                        backgroundColor: Colors.black,
                         onPress: () async {
                           try {
                             UserCredential userCredential = await signInWithGoogle();
