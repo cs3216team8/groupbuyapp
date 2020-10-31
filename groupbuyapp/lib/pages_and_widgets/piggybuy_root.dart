@@ -1,5 +1,6 @@
 // Essentials
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 // Home
@@ -20,6 +21,9 @@ class PiggyBuyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
     return MaterialApp(
       title: _title,
       home: PiggyBuy(),
