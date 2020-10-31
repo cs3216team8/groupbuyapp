@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
@@ -69,6 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _getData() async {
+    setState(() {
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,18 +95,21 @@ class _HomeScreenState extends State<HomeScreen> {
           // actions: _buildActions(),
         ),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
-              ),
-              ListingsSection(
-                createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
-                createDefaultScreen: () => HomeDefaultScreen(),
-              )
-            ],
-          )
+      body: RefreshIndicator(
+        onRefresh: _getData,
+        child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
+                ),
+                ListingsSection(
+                  createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
+                  createDefaultScreen: () => HomeDefaultScreen(),
+                )
+              ],
+            )
+        ),
       ),
     );
   }
