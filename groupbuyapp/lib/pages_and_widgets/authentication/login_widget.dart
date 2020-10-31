@@ -242,6 +242,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
+                      SizedBox(width: 5),
                       SocialIcon(
                         icon: SvgPicture.asset(
                           "assets/google.svg",
@@ -260,6 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                       ),
+                      SizedBox(width: 5),
                       SocialIcon(
                         icon: SvgPicture.asset(
                           "assets/apple.svg",
@@ -316,7 +318,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   RoundedButton(
                     color: Theme.of(context).primaryColor,
-                    text: "LOGIN",
+                    text: "Login with Email",
                     onPress: () async {
                       if (_formKey.currentState.validate()) {
                         UserCredential userCredential = await _signInWithEmailAndPassword();
@@ -326,11 +328,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                   ),
+                  SizedBox(height: 10),
                   LoginOrSignupOption(
                     textColor: Theme.of(context).primaryColor,
                     isLogin: true,
                     onPress: () {
-                      print("should seg to signup now");
                       Navigator.push(
                         context,
                         MaterialPageRoute(
