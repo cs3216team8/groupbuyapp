@@ -100,8 +100,9 @@ PreferredSize regularAppBar({
   @required BuildContext context,
   @required Widget titleElement,
   double elevation = 0,
-  Color color = Colors.white,
-  Color iconColor = Colors.black,
+  Color color = const Color(0xFFF98B83),
+
+  Color iconColor = Colors.white,
 }) {
   return PreferredSize(
     preferredSize: Size.fromHeight(50.0), // here the desired height
