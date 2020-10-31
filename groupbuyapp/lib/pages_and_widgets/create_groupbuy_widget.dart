@@ -33,12 +33,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   String chosenSite;
 
   List<String> userAddresses = []; //['blash', 'bifbodauhaasfouabf wetawetw dfsge rywadfsy t qwr jg'];
+
   String chosenAddress;
 
   @override
   void initState() {
     chosenSite = supportedSites[0];
-    chosenAddress = null; //userAddresses[0];
+    chosenAddress = "New address"; //userAddresses[0];
     fetchAddresses();
   }
 
@@ -53,6 +54,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     fprof.then((prof) => {
       setState(() {
         userAddresses = prof.addresses;
+        userAddresses.add('New address');
       })
     });
   }
@@ -90,43 +92,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     }
   }
 
-  Widget _addressAndSubmitPart() {
-    return Column(
-      children: [
-        Card(
-          color: Colors.white,
-          elevation: 10,
-          shadowColor: Colors.black12,
-          child: Column(
-            children: [
-              Text(
-              'Address'
-              ),
-              DropdownButton<String>(
-                isExpanded: true,
-                value: chosenAddress,
-                items: userAddresses.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String value) {
-                  setState(() {
-                    chosenAddress = value;
-                  });
-                },
-              ),
-            ]
-          )
-        ),
-        RaisedButton(
-          child: Text('Create'),
-          onPressed: () => createGroupBuy(context),
-        )
-      ],
-    );
-  }
 
   bool isNumeric(String s) {
     if(s == null) {
@@ -135,13 +100,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     return double.parse(s, (e) => null) != null;
   }
 
-
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    InputDecoration inputFieldDecoration = InputDecoration(
+  InputDecoration getInputDecoration(IconData iconData) {
+    return InputDecoration(
       errorStyle: TextStyle(height: 0.3),
-      prefixIcon: Icon(Icons.local_grocery_store, color: Theme.of(context).primaryColor),
+      prefixIcon: Icon(iconData, color: Theme.of(context).primaryColor),
       fillColor: Theme.of(context).accentColor.withAlpha(60),
       filled: true,
       enabledBorder: new OutlineInputBorder(
@@ -158,6 +120,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       ),
 
     );
+
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
 
     return Scaffold(
         appBar: widget.needsBackButton
@@ -200,7 +169,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       child: DropdownButtonFormField<String>(
-                          decoration: inputFieldDecoration,
+                          decoration: getInputDecoration(Icons.local_grocery_store),
                           value: chosenSite,
                           items: supportedSites.map((String value) {
                             return DropdownMenuItem<String>(
@@ -232,6 +201,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       return null;
                     },
                   ),
+
 
                   RoundedInputField(
                     icon: Icons.monetization_on,
@@ -272,8 +242,54 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                             style: TextStyle(color: Colors.black),
                           )),
                   ),
-                   _addressAndSubmitPart()
-                  ]
+
+
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 6),
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                    width: size.width * 0.8,
+                    child: DropdownButtonFormField<String>(
+                      decoration: getInputDecoration(Icons.location_on),
+                      value: chosenAddress,
+                      items: userAddresses.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          chosenAddress = value;
+                        });
+                      },
+                    ),
+                  ),
+                  chosenAddress == 'New address'
+                      ? RoundedInputField(
+                    icon: Icons.public,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Product Website",
+                    controller: _productWebsiteController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter product website';
+                      }
+                      if (Uri.parse(value).isAbsolute) {
+                        return 'Please enter a valid product website';
+                      }
+                      return null;
+                    },
+                  )
+                      :
+                  Container(),
+
+
+                  RaisedButton(
+                    child: Text('Create'),
+                    onPressed: () => createGroupBuy(context),
+                  )
+                ]
               )
             )
         )
