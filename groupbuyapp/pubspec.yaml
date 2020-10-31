@@ -105,6 +105,31 @@ flutter:
         - asset: fonts/Montserrat/Montserrat-Regular.ttf
         - asset: fonts/Montserrat/Montserrat-Italic.ttf
           style: italic
+    - family: Roboto
+      fonts:
+        - asset: fonts/Roboto/Roboto-Regular.ttf
+        - asset: fonts/Roboto/Roboto-Italic.ttf
+          style: italic
+    - family: Nunito
+      fonts:
+        - asset: fonts/Nunito/Nunito-Regular.ttf
+        - asset: fonts/Nunito/Nunito-Italic.ttf
+          style: italic
+        - asset: fonts/Nunito/Nunito-Bold.ttf
+          weight: 700
+
+    - family: Nexa
+      fonts:
+        - asset: fonts/Nexa/NexaDemo-Light.ttf
+        - asset: fonts/Nexa/NexaDemo-Bold.ttf
+          style: italic
+    - family: WorkSans
+      fonts:
+        - asset: fonts/Work_Sans/static/WorkSans-Regular.ttf
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter/static/Inter-Light.ttf
+          weight: 300
 
   assets:
     - assets/
