@@ -71,6 +71,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
       return;
     }
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
 
     print("send create request to db"); //TODO input validation + hook storage
 
