@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
@@ -9,10 +8,9 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({
     Key key,
   }) : super(key: key);
-  //TODO @kx: add userId (optional) and propagate to
 
   bool isMe() {
-    if (FirebaseAuth.instance.currentUser == null) {
+    if (FirebaseAuth.instance.currentUser.uid == null) {
       return false;
     }
     return true;
