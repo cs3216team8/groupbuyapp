@@ -5,15 +5,16 @@ import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final String userId;
 
   ProfileScreen({
     Key key,
-    @required this.userId,
   }) : super(key: key);
 
   bool isMe() {
-    return FirebaseAuth.instance.currentUser.uid == userId;
+    if (FirebaseAuth.instance.currentUser.uid == null) {
+      return true;
+    }
+    return false;
   }
 
   @override

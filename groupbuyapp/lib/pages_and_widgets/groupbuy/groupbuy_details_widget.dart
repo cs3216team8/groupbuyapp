@@ -41,8 +41,10 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   List<Future<Request>> _futureRequests = [];
 
   bool isOrganiser() {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    return uid == widget.organiserProfile.id;
+    if (FirebaseAuth.instance.currentUser == null) {
+      return false;
+    }
+    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.id;
   }
 
   void onTapChat(BuildContext context) {
