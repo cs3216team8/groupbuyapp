@@ -251,30 +251,31 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       return null;
                     },
                   ),
-              DateTimePicker(
-                type: DateTimePickerType.dateTimeSeparate,
-                dateMask: 'd MMM, yyyy',
+            Container(
+                margin: EdgeInsets.symmetric(vertical: 6),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25.0),
+                  color: Theme.of(context).accentColor.withAlpha(60),
+                ),
+
+                width: size.width * 0.8,
+                child: DateTimePicker(
+                  type: DateTimePickerType.date,
+                  dateMask: 'd MMM, yyyy',
                 initialValue: DateTime.now().toString(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
-                icon: Icon(Icons.event),
+                icon: Icon(Icons.event, color: Theme.of(context).primaryColor),
                 dateLabelText: 'Date',
-                timeLabelText: "Hour",
-                selectableDayPredicate: (date) {
-                  // Disable weekend days to select from the calendar
-                  if (date.weekday == 6 || date.weekday == 7) {
-                    return false;
-                  }
-
-                  return true;
-                },
                 onChanged: (val) => print(val),
                 validator: (val) {
                   print(val);
                   return null;
                 },
                 onSaved: (val) => print(val),
-              ),
+              )
+            ),
 
                     // Card(
                     //     color: Colors.white,

@@ -38,6 +38,7 @@ dependencies:
   gradient_app_bar: "^0.0.1"
   flushbar: ^1.10.4
   http: "^0.12.2"
+  date_time_picker: "1.0.2"
 
   google_sign_in: "^4.5.1"
   flutter_facebook_login: "^3.0.0"
