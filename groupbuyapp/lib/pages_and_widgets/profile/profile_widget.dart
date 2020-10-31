@@ -12,9 +12,9 @@ class ProfileScreen extends StatelessWidget {
 
   bool isMe() {
     if (FirebaseAuth.instance.currentUser.uid == null) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   }
 
   @override
