@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
@@ -27,6 +28,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _productWebsiteController = TextEditingController();
   final TextEditingController _targetAmt = TextEditingController();
   final TextEditingController _currentAmt = TextEditingController(); //TODO default 0
+  final TextEditingController _depositCtrlr = TextEditingController();
+  final TextEditingController _descrCtrlr = TextEditingController();
 
   DateTime endDate = DateTime.now().add(Duration(days: 3));
 
@@ -67,8 +70,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     print("send create request to db"); //TODO input validation + hook storage
 
-    // GroupBuy groupBuy = GroupBuy(id, storeName, storeWebsite, storeLogo, currentAmount, targetAmount, endTimestamp, organiserId, deposit, description, address);
-    // GroupBuyStorage.instance.addGroupBuy(groupBuy);
+    String storeName = chosenSite;
+    if (chosenSite == 'Others') {
+      storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
+    }
+
+    GroupBuy groupBuy = GroupBuy("", storeName, storeName, "logo", double.parse(_currentAmt.text), double.parse(_targetAmt.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositCtrlr.text), _descrCtrlr.text, chosenAddress);
+    GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
       Navigator.pop(context);

@@ -113,8 +113,6 @@ class GroupBuyStorage {
     return enumValue;
   }
 
-  RequestStatus stringFromEnum(string)
-
   Future<Request> getRequestWithItems(String groupBuyId, QueryDocumentSnapshot document) async {
     QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
     List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;

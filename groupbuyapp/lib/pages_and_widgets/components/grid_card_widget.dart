@@ -15,7 +15,6 @@ class GroupBuyCard extends StatelessWidget {
 
   final GroupBuy groupBuy;
 
-  // TODO: needs user info of each organiser -- either save in GroupBuy or query
   GroupBuyCard(this.groupBuy);
 
   void _openDetailedGroupBuy(BuildContext context, UserProfile organiserProfile) {
@@ -61,7 +60,7 @@ class GroupBuyCard extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.all(1.0),
             decoration: new BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: groupBuy.isPresent() ? Color(0xFFFFFFFF) : Colors.black26, //greying out past groupbuys
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
               border: Border.all(color: Color(0xFFFFFFFF), width: 0),
               boxShadow: [

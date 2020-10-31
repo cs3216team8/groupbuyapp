@@ -33,7 +33,7 @@ class _ListingsSectionState extends State<ListingsSection>
         child: StreamBuilder<List<GroupBuy>>(
           stream: widget.createGroupBuyStream(),
           builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-            List<Widget> children;
+            List<GroupBuy> groupBuys;
             if (snapshot.hasError) {
               return FailedToLoadGroupBuys();
             }
@@ -44,22 +44,25 @@ class _ListingsSectionState extends State<ListingsSection>
               case ConnectionState.waiting:
                 return GroupbuysLoading();
               default:
-                children = snapshot.data.map((GroupBuy groupBuy) {
-                  return new GroupBuyCard(groupBuy);
+                groupBuys = snapshot.data.map((GroupBuy groupBuy) {
+                  return groupBuy;
                 }).toList();
                 break;
             }
 
-            if (children.isEmpty) {
+            if (groupBuys.isEmpty) {
               return widget.createDefaultScreen();
             }
+
+            List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
+            List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
 
             return GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 childAspectRatio: 5.0/7.0,
-                children: children
+                children: presentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList() + pastGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
             );
           },
         )
