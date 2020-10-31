@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
@@ -27,6 +30,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _targetAmtController = TextEditingController();
   final TextEditingController _currentAmtController = TextEditingController(); //TODO default 0
   final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _depositController = TextEditingController();
+  final TextEditingController _descrController = TextEditingController();
 
   DateTime endDate = DateTime.now().add(Duration(days: 3));
 
@@ -61,6 +66,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   }
 
   void createGroupBuy(BuildContext context) {
+
     if (chosenAddress == null) {
       showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
       return;
@@ -68,8 +74,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     print("send create request to db"); //TODO input validation + hook storage
 
-    // GroupBuy groupBuy = GroupBuy(id, storeName, storeWebsite, storeLogo, currentAmount, targetAmount, endTimestamp, organiserId, deposit, description, address);
-    // GroupBuyStorage.instance.addGroupBuy(groupBuy);
+    String storeName = chosenSite;
+    if (chosenSite == 'Others') {
+      storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
+    }
+
+    GroupBuy groupBuy = GroupBuy("", storeName, storeName, "logo", double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, chosenAddress);
+    GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
       Navigator.pop(context);
@@ -79,6 +90,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       _targetAmtController.clear();
       _currentAmtController.clear();
       _addressController.clear();
+      _depositController.clear();
+      _descrController.clear();
       segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
     }
   }
@@ -138,12 +151,19 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white))
         ),
-        body: SingleChildScrollView(
+        body: RefreshIndicator(
+        onRefresh: _getData,
+        backgroundColor: Colors.black26,
+        child: SingleChildScrollView(
           child: Container(
+            alignment: Alignment.center,
             padding: EdgeInsets.all(20),
             child: Form(
               key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center ,//Center Column contents vertically,
+                crossAxisAlignment: CrossAxisAlignment.center, //Center Column contents horizontally,
+
                 children: [
                   chosenSite == 'Others'
                       ? RoundedInputField(
@@ -222,6 +242,36 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       return null;
                     },
                   ),
+                  RoundedInputField(
+                    icon: Icons.monetization_on_rounded,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Deposit percentage",
+                    controller: _depositController,
+                    validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter the deposit percentage';
+                    }
+                    if (isNumeric(value)) {
+                      return 'Please enter a valid deposit percentage';
+                    }
+                      return null;
+                    },
+                  ),
+
+                  RoundedInputField(
+                    icon: Icons.description,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Description",
+                    controller: _descrController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter the deposit percentage';
+                      }
+                        return null;
+                      },
+                  ),
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 6),
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -296,9 +346,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                   ),
                 ]
               )
-            )
+          ),
         )
-      )
+    )
+    )
     );
   }
 }

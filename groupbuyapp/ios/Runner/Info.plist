@@ -9,24 +9,22 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-                <string>fb629234327773921</string>
+				<string>fb629234327773921</string>
 				<string>com.googleusercontent.apps.584043471672-mubi3e5smod7o78vsohcmffd8l75c2sg</string>
 			</array>
 		</dict>
 	</array>
-    <key>FacebookAppID</key>
-    <string>629234327773921</string>
-    <key>FacebookDisplayName</key>
-    <string>PiggyBuy</string>
-
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
-
+	<key>FacebookAppID</key>
+	<string>629234327773921</string>
+	<key>FacebookDisplayName</key>
+	<string>PiggyBuy</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -43,6 +41,10 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera access is required to take a profile photo.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library access is required to select a profile photo.</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -54,8 +56,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

@@ -30,18 +30,6 @@ class GroupBuyStorage {
           'deposit': groupBuy.deposit,
           'description': groupBuy.description,
           'address': groupBuy.address
-        });
-    groupBuy.getBuys().map((buy) {
-      DocumentReference buyDocument = groupBuys.doc(groupBuyId).collection('buys').doc();
-      String buyId = buyDocument.id; //TODO IMPT*** check if this buys is requests on firestore
-      batch.set(groupBuys.doc(groupBuyId).collection('buys').doc(buyId), {
-        'id': buyId,
-        'buyerId': buy.buyerId,
-        'itemLink': buy.itemLink,
-        'amount': buy.amount,
-        'quantity': buy.quantity,
-        'comment': buy.comment,
-      });
     });
 
     batch.commit();
@@ -153,46 +141,7 @@ class GroupBuyStorage {
       return querySnapshot.docs.map((document) async {
         Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
         return itemsOfRequest;
-      }
-      ).toList();
-
-      // List<Future<Request>> requests = querySnapshot.docs.map((document) async {
-      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
-      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
-      //   List<Item> items = itemDocs.map((doc) {
-      //     return new Item(
-      //       itemLink: doc.data()['itemLink'],
-      //       totalAmount: doc.data()['totalAmount'].toDouble(),
-      //       qty: doc.data()['qty'],
-      //       remarks: doc.data()['remarks'],
-      //     );
-      //   });
-      //   return new Request(
-      //     id: doc.id,
-      //     requestorId: doc.data()['requestorId'],
-      //     items: [],
-      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
-      //   );
-      // }).toList();
-
-      // return querySnapshot.docs.map((doc) async {
-      //   QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
-      //   List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
-      //   List<Item> items = itemDocs.map((doc) {
-      //     return new Item(
-      //       itemLink: doc.data()['itemLink'],
-      //       totalAmount: doc.data()['totalAmount'].toDouble(),
-      //       qty: doc.data()['qty'],
-      //       remarks: doc.data()['remarks'],
-      //     );
-      //   });
-      //   return new Request(
-      //     id: doc.id,
-      //     requestorId: doc.data()['requestorId'],
-      //     items: [],
-      //     status: enumFromString(RequestStatus.values, doc.data()['status']),
-      //   );
-      // }).toList();
+      }).toList();
     });
   }
 
@@ -229,31 +178,30 @@ class GroupBuyStorage {
     });
   }
 
-  //TODO addrequest if rly not here
-  // Future<void> addRequest(String groupBuyId, Request request) async {
-  //   WriteBatch batch = FirebaseFirestore.instance.batch();
-  //
-  //   String reqId = groupBuys.doc(groupBuyId).collection('requests').doc().id;
-  //   batch.set(
-  //       groupBuys.doc(groupBuyId).collection('requests').doc(reqId), {
-  //     'id': reqId,
-  //
-  //   });
-  //   groupBuy.getBuys().map((buy) {
-  //     DocumentReference buyDocument = groupBuys.doc(groupBuyId).collection('buys').doc();
-  //     String buyId = buyDocument.id;
-  //     batch.set(groupBuys.doc(groupBuyId).collection('buys').doc(buyId), {
-  //       'id': buyId,
-  //       'buyerId': buy.buyerId,
-  //       'itemLink': buy.itemLink,
-  //       'amount': buy.amount,
-  //       'quantity': buy.quantity,
-  //       'comment': buy.comment,
-  //     });
-  //   });
-  //
-  //   batch.commit();
-  // }
+  Future<void> addRequest(String groupBuyId, Request request) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    request.id = groupBuys.doc(groupBuyId).collection('requests').doc().id;
+    DocumentReference requestDoc = groupBuys.doc(groupBuyId).collection('requests').doc(request.id);
+
+    batch.set(requestDoc, {
+      'id': request.id,
+      'requestorId': request.requestorId,
+      'status': Request.stringFromRequestStatus(RequestStatus.confirmed),
+    });
+
+    request.items.forEach((item) {
+      String itemId = requestDoc.collection('items').doc().id;
+      batch.set(requestDoc.collection('items').doc(itemId), {
+        'itemLink': item.itemLink,
+        'qty': item.qty,
+        'remarks': item.remarks,
+        'totalAmount': item.totalAmount,
+      });
+    });
+
+    batch.commit();
+  }
 
   /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
   Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {

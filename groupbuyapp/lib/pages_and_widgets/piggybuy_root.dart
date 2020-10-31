@@ -1,5 +1,4 @@
 // Essentials
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
@@ -11,6 +10,7 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/utils/loginCheck.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -74,8 +74,8 @@ class _PiggyBuyState extends State<PiggyBuy> {
 
   void _onItemTapped(int index, BuildContext context) {
     setState(() {
-      if (index != 0 && FirebaseAuth.instance.currentUser == null) {
-        segueToPage(context, LoginScreen());
+      if (index != 0 && !isUserLoggedIn()) {
+        segueWithLoginCheck(context, LoginScreen());
       } else {
         _selectedIndex = index;
       }

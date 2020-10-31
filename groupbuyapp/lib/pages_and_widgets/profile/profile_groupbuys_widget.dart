@@ -37,45 +37,55 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
 
     String userId = FirebaseAuth.instance.currentUser.uid;
 
+    Future<void> _getData() async {
+      setState(() {
+
+      });
+    }
+
     return DefaultTabController(
       length: 1,
-      child: NestedScrollView(
-        // allows you to build a list of elements that would be scrolled away till the body reached the top
-        headerSliverBuilder: (context, _) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
-                  <Widget>[
-                    Container(
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
-                        ),
-                        height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                        child: FutureBuilder<UserProfile>(
-                            future: ProfileStorage.instance.getUserProfile(userId),
-                            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
-                              if (snapshot.hasError) {
-                                return FailedToLoadProfile();
-                              }
+      child: RefreshIndicator(
+        onRefresh: _getData,
+        child: NestedScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          // allows you to build a list of elements that would be scrolled away till the body reached the top
+            headerSliverBuilder: (context, _) {
+              return [
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                      <Widget>[
+                        Container(
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
+                            ),
+                            height: MediaQuery.of(context).size.height * widget.topHeightFraction,
+                            child: FutureBuilder<UserProfile>(
+                                future: ProfileStorage.instance.getUserProfile(userId),
+                                builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                                  if (snapshot.hasError) {
+                                    return FailedToLoadProfile();
+                                  }
 
-                              switch (snapshot.connectionState) {
-                                case ConnectionState.none:
-                                  return ProfileNotLoaded();
-                                case ConnectionState.waiting:
-                                  return ProfileLoading();
-                                default:
-                                  UserProfile userProfile = snapshot.data;
-                                  return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
-                              }
-                            }
-                        )
-                    ),
-                  ]
-              ),
-            )
-          ];
-        },
-        body: MyGroupBuys()
+                                  switch (snapshot.connectionState) {
+                                    case ConnectionState.none:
+                                      return ProfileNotLoaded();
+                                    case ConnectionState.waiting:
+                                      return ProfileLoading();
+                                    default:
+                                      UserProfile userProfile = snapshot.data;
+                                      return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
+                                  }
+                                }
+                            )
+                        ),
+                      ]
+                  ),
+                )
+              ];
+            },
+            body: MyGroupBuys()
+        ),
       ),
     );
   }

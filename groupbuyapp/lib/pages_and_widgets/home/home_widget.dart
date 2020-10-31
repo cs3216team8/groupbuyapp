@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         IconButton(
             icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-            onPressed: () => segueToPage(context, ChatList())
+            onPressed: () => segueWithLoginCheck(context, ChatList())
         ),
       ];
   }
@@ -65,6 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _searchQueryController.clear();
       updateSearchQuery("");
+    });
+  }
+
+  Future<void> _getData() async {
+    setState(() {
     });
   }
 
@@ -88,18 +93,21 @@ class _HomeScreenState extends State<HomeScreen> {
           // actions: _buildActions(),
         ),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
-              ),
-              ListingsSection(
-                createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
-                createDefaultScreen: () => HomeDefaultScreen(),
-              )
-            ],
-          )
+      body: RefreshIndicator(
+        onRefresh: _getData,
+        child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
+                ),
+                ListingsSection(
+                  createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
+                  createDefaultScreen: () => HomeDefaultScreen(),
+                )
+              ],
+            )
+        ),
       ),
     );
   }
