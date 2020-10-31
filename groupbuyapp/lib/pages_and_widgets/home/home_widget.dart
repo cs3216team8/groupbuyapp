@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color appbarColor = Colors.white;
+  final Color appbarColor = Color(0xFFF98B83);
   final Color appbarElementColor = Colors.black;
   final Color appbarTextColor = Colors.black;
 
@@ -92,10 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              HomeCarouselBanner(),
-              Container(
-                child:
-                Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+              Padding(
+                padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
               ),
               ListingsSection(
                 createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,

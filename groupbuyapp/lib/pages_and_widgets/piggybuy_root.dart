@@ -24,7 +24,7 @@ class PiggyBuyApp extends StatelessWidget {
       title: _title,
       home: PiggyBuy(),
       theme: ThemeData(
-        primaryColor: Colors.pink,
+        primaryColor: Color(0xFFF98B83),
         accentColor: Color(0xFFF2B1AB),
         cardColor: Color(0xFFFFE1AD),
         backgroundColor: Color(0xFFF4E9E7),
@@ -97,7 +97,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
           type: BottomNavigationBarType.fixed,
           items: widget.navItems,
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Color(0xFFF98B83),
           onTap: (int index) {
             _onItemTapped(index, context);
           }),
