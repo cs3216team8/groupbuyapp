@@ -48,7 +48,7 @@ class GroupBuyInfo extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChatScreen(chatRoomId),
+        builder: (_) => ChatScreen(chatRoomId: chatRoomId),
       ),
     );
   }

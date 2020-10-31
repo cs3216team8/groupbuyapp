@@ -23,7 +23,7 @@ class RecentChats extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ChatScreen("testChatRoom"),
+                  builder: (_) => ChatScreen(chatRoomId: "testChatRoom"),
                 ),
               ),
               child: Container(

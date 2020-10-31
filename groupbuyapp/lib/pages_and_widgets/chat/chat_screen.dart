@@ -7,7 +7,7 @@ import 'package:groupbuyapp/storage/chat_storage.dart';
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
 
-  ChatScreen(this.chatRoomId);
+  ChatScreen({this.chatRoomId});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
