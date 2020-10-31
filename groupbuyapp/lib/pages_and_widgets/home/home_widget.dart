@@ -96,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: RefreshIndicator(
         onRefresh: _getData,
         child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: <Widget>[
                 Padding(
