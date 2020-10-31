@@ -62,7 +62,7 @@ class GroupBuyCard extends StatelessWidget {
           child: Container(
             margin: const EdgeInsets.all(1.0),
             decoration: new BoxDecoration(
-              color: Color(0xFFFFFFFF),
+              color: Color(0xFFFFF3E7),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
               border: Border.all(color: Color(0xFFFFFFFF), width: 0),
               boxShadow: [
@@ -96,13 +96,6 @@ class GroupBuyCard extends StatelessWidget {
 
                         child: Column(
                     children: [
-                      const Divider(
-                        color: Color(0xFFe87d74),
-                        height: 10,
-                        thickness: 0.5,
-                        indent: 0,
-                        endIndent: 0,
-                      ),
                       Row(children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: 45, left: 6, bottom: 8, right: 6),

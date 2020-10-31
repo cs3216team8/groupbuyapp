@@ -133,6 +133,9 @@ flutter:
     - family: Grotesk
       fonts:
         - asset: fonts/hk-grotesk/HKGrotesk-Bold.otf
+    - family: Coiny
+      fonts:
+        - asset: fonts/Coiny/Coiny-Regular.ttf
 
   assets:
     - assets/

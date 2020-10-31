@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget {
         context: context,
         titleElement: Text(
           isMe() ? "Your Profile" : "View Profile",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white)
         )
       ),
       body: ProfileGroupBuys(
