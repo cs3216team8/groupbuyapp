@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatStorage {
-
   // for chat screen
 
   void onSendMessage(ChatMessage message, String chatRoomId) {
@@ -39,7 +38,7 @@ class ChatStorage {
       String id = Uuid().v4().toString();
 
       final StorageReference storageRef =
-      FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
+          FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
 
       StorageUploadTask uploadTask = storageRef.putFile(
         result,
@@ -83,5 +82,11 @@ class ChatStorage {
         .collection("chatRooms")
         .doc(chatRoomId)
         .set(chatRoom);
+  }
+
+  getUserInfo() async {
+    return FirebaseFirestore.instance
+        .collection("users")
+        .snapshots();
   }
 }

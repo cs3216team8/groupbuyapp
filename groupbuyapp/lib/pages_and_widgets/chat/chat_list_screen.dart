@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
@@ -6,19 +7,23 @@ import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class ChatList extends StatefulWidget {
-
   @override
   _ChatListState createState() => _ChatListState();
 }
 
 class _ChatListState extends State<ChatList> {
   Stream chatRooms;
+  Stream users;
 
   @override
   Widget build(BuildContext context) {
-    if (FirebaseAuth.instance.currentUser == null) { segueToPage(context, LoginScreen()); }
+    if (FirebaseAuth.instance.currentUser == null) {
+      segueToPage(context, LoginScreen());
+    }
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -41,7 +46,9 @@ class _ChatListState extends State<ChatList> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
+                color: Theme
+                    .of(context)
+                    .accentColor,
               ),
               child: Column(
                 children: <Widget>[
@@ -58,6 +65,7 @@ class _ChatListState extends State<ChatList> {
   @override
   void initState() {
     getChatRooms();
+    getUsers();
     super.initState();
   }
 
@@ -66,29 +74,50 @@ class _ChatListState extends State<ChatList> {
     ChatStorage().getUserChats(currentUserId).then((snapshots) {
       setState(() {
         chatRooms = snapshots;
-        print(
-            "we got the data + ${chatRooms.toString()}");
+        print("we got the data + ${chatRooms.toString()}");
+      });
+    });
+  }
+
+  getUsers() async {
+    ChatStorage().getUserInfo().then((snapshots) {
+      setState(() {
+        users = snapshots;
       });
     });
   }
 
   Widget chatRoomsList() {
+    String currentUserId = FirebaseAuth.instance.currentUser.uid;
+
     return StreamBuilder(
-      stream: chatRooms,
-      builder: (context, snapshot) {
-        return snapshot.hasData
-            ? ListView.builder(
-            itemCount: snapshot.data.documents.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return ChatRoomsTile(
-                userName: "bob",
-                chatRoomId: snapshot.data.documents[index].data()["chatRoomId"],
-              );
-            })
-            : Container();
-      },
-    );
+        stream: users,
+        builder: (usersContext, usersSnapshot) {
+          return StreamBuilder(
+            stream: chatRooms,
+            builder: (context, snapshot) {
+              return snapshot.hasData
+                  ? ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    String senderId = snapshot.data.documents[index]
+                        .data()['chatRoomId']
+                        .toString()
+                        .replaceAll("_", "")
+                        .replaceAll(currentUserId, "");
+                    // print(usersSnapshot.data[senderId]);
+                    // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: senderId).get();
+                    return ChatRoomsTile(
+                      userName: "username",
+                      chatRoomId: snapshot.data.documents[index]
+                          .data()["chatRoomId"],
+                    );
+                  })
+                  : Container();
+            },
+          );
+        });
   }
 }
 
@@ -96,17 +125,19 @@ class ChatRoomsTile extends StatelessWidget {
   final String userName;
   final String chatRoomId;
 
-  ChatRoomsTile({this.userName,@required this.chatRoomId});
+  ChatRoomsTile({this.userName, @required this.chatRoomId});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => ChatScreen(
-              chatRoomId: chatRoomId,
-            )
-        ));
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    ChatScreen(
+                      chatRoomId: chatRoomId,
+                    )));
       },
       child: Container(
         color: Colors.black26,
@@ -117,8 +148,7 @@ class ChatRoomsTile extends StatelessWidget {
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                  color: Colors.pink,
-                  borderRadius: BorderRadius.circular(30)),
+                  color: Colors.pink, borderRadius: BorderRadius.circular(30)),
               child: Text(userName.substring(0, 1),
                   textAlign: TextAlign.center,
                   style: TextStyle(
