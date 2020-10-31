@@ -1,6 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
 
@@ -27,22 +33,46 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
   String chosenSite;
 
-  // TODO: @agnes or @dawo where to get the address from profilestorage :o
-  List<String> userAddresses = ['blash', 'bifbodauhaasfouabf wetawetw dfsge rywadfsy t qwr jg'];
+  List<String> userAddresses = []; //['blash', 'bifbodauhaasfouabf wetawetw dfsge rywadfsy t qwr jg'];
   String chosenAddress;
 
   @override
   void initState() {
     chosenSite = supportedSites[0];
-    chosenAddress = userAddresses[0];
+    chosenAddress = null; //userAddresses[0];
+    fetchAddresses();
+  }
+
+  Future<void> _getData() async {
+    setState(() {
+      fetchAddresses();
+    });
+  }
+
+  void fetchAddresses() async {
+    Future<UserProfile> fprof = ProfileStorage.instance.getUserProfile(FirebaseAuth.instance.currentUser.uid);
+    fprof.then((prof) => {
+      setState(() {
+        userAddresses = prof.addresses;
+      })
+    });
   }
 
   void createGroupBuy(BuildContext context) {
+    if (chosenAddress == null) {
+      showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
+      return;
+    }
+
     print("send create request to db"); //TODO input validation + hook storage
+
+    GroupBuy groupBuy = GroupBuy(id, storeName, storeWebsite, storeLogo, currentAmount, targetAmount, endTimestamp, organiserId, deposit, description, address);
+    GroupBuyStorage.instance.addGroupBuy(groupBuy);
+
     if (widget.needsBackButton) {
       Navigator.pop(context);
     } else {
-      //TODO clear inputs
+      //clear inputs
       _productWebsiteController.clear();
       _targetAmt.clear();
       _currentAmt.clear();
@@ -59,6 +89,47 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       default:
         return '';
     }
+  }
+
+  Widget _addressAndSubmitPart() {
+    return userAddresses.isEmpty
+      ? Text("You have not filled in your address yet! Head over to profile settings to add addresses, or pull to refresh.")
+
+      : Column(
+      children: [
+        Card(
+          color: Colors.white,
+          elevation: 10,
+          shadowColor: Colors.black12,
+          child: Column(
+            children: [
+              Text(
+              'Address'
+              ),
+              DropdownButton<String>(
+                isExpanded: true,
+                value: chosenAddress,
+                items: userAddresses.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String value) {
+                  setState(() {
+                    chosenAddress = value;
+                  });
+                },
+              ),
+            ]
+          )
+        ),
+        RaisedButton(
+          child: Text('Create'),
+          onPressed: () => createGroupBuy(context),
+        )
+      ],
+    );
   }
 
   @override
@@ -161,37 +232,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                             ]
                         )
                     ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Address'
-                              ),
-                              DropdownButton<String>(
-                                isExpanded: true,
-                                value: chosenAddress,
-                                items: userAddresses.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    chosenAddress = value;
-                                  });
-                                },
-                              ),
-                            ]
-                        )
-                    ),
-                    RaisedButton(
-                        child: Text('Create'),
-                        onPressed: () => createGroupBuy(context),
-                    )
+                    _addressAndSubmitPart()
                   ]
               )
             )
