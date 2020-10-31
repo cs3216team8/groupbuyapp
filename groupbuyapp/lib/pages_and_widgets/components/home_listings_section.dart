@@ -58,7 +58,7 @@ class _ListingsSectionState extends State<ListingsSection>
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
-                childAspectRatio: 5.0/7.0,
+                childAspectRatio: 5.5/7.0,
                 children: children
             );
           },

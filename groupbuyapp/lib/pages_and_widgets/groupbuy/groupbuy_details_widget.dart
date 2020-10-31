@@ -320,9 +320,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                       ],
                     ),
                     child:Column(
+                      mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
                         Container(
                             padding: EdgeInsets.all(20,),
+                            margin: EdgeInsets.all(10,),
                             decoration: new BoxDecoration(
                               color: Color(0xFFFBECE6),
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),

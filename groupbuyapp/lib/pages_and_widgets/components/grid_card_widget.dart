@@ -25,7 +25,8 @@ class GroupBuyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.all(2.0),
+        margin: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(1.0),
         child: Card(
           color: Color(0x00FFFFFF),
           elevation: 10,
@@ -96,7 +97,7 @@ class GroupBuyCard extends StatelessWidget {
                         child: Column(
                     children: [
                       const Divider(
-                        color: Color(0xFFd93b4b),
+                        color: Color(0xFFe87d74),
                         height: 10,
                         thickness: 0.5,
                         indent: 0,
@@ -119,8 +120,8 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top: 3),
                           child: Icon(
                             Icons.access_time_rounded,
-                            color: Color(0xFFd93b4b),
-                            size: 30,
+                            color: Color(0xFFe87d74),
+                            size: 24,
                           ),
                         ),
                         Text(
@@ -134,8 +135,8 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top:3 ),
                           child: Icon(
                             Icons.pending_rounded,
-                            color: Color(0xFFd93b4b),
-                            size: 30,
+                            color: Color(0xFFe87d74),
+                            size: 24,
                           ),
                         ),
                         Text(
@@ -149,10 +150,10 @@ class GroupBuyCard extends StatelessWidget {
                           Padding(
                             padding: EdgeInsets.only(left: 6, top: 3,  bottom: 3, right: 6),
                             child: CircleAvatar(
-                              radius: 15,
+                              radius: 12,
                               backgroundColor: Color(0xFFd93b4b),
                               child: CircleAvatar(
-                                radius: 13,
+                                radius: 10,
                                 backgroundImage: NetworkImage(profile.profilePicture),
                               ),
                             ),
