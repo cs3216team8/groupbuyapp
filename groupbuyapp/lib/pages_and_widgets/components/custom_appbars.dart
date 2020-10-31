@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 PreferredSize backAppBar({
   @required BuildContext context,

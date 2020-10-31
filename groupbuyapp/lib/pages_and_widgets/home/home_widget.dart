@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -52,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         IconButton(
             icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-            onPressed: () => segueToPage(context, ChatList())
+            onPressed: () => segueWithLoginCheck(context, ChatList())
         ),
       ];
   }

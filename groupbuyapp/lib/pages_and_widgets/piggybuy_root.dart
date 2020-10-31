@@ -1,5 +1,4 @@
 // Essentials
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
@@ -76,7 +75,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
   void _onItemTapped(int index, BuildContext context) {
     setState(() {
       if (index != 0 && !isUserLoggedIn()) {
-        segueToPage(context, LoginScreen());
+        segueWithLoginCheck(context, LoginScreen());
       } else {
         _selectedIndex = index;
       }
