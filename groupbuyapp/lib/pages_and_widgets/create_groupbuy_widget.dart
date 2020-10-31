@@ -141,103 +141,108 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(color: Colors.black),)
         ),
-        body: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.all(20),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  DropdownButton<String>(
-                    value: chosenSite,
-                    items: supportedSites.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String value) {
-                      setState(() {
-                        chosenSite = value;
-                      });
-                    },
-                  ),
-                  chosenSite == 'Others'
-                      ? RoundedInputField(
-                        color: Color(0xFFFBE3E1),
-                        iconColor: Theme.of(context).primaryColor,
-                        hintText: "Product Website",
-                        controller: _productWebsiteController,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Please enter product website';
-                          }
-                          if (Uri.parse(value).isAbsolute) {
-                            return 'Please enter a valid product website';
-                          }
-                          return null;
-                        },
-                      )
-                      : Image.asset(
-                        'assets/${getLogoAssetName(chosenSite)}',
-                        height: 100.0,
-                      ),
-
-                  Card(
-                      color: Colors.white,
-                      elevation: 10,
-                      shadowColor: Colors.black12,
+        body: RefreshIndicator(
+          onRefresh: _getData,
+          backgroundColor: Colors.black26,
+          child:  SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+              child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: Form(
+                      key: _formKey,
                       child: Column(
                           children: [
-                            Text(
-                                'Target Amount'
+                            DropdownButton<String>(
+                              value: chosenSite,
+                              items: supportedSites.map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String value) {
+                                setState(() {
+                                  chosenSite = value;
+                                });
+                              },
                             ),
-                            TextField(
-                              keyboardType: TextInputType.number,
-                              controller: _targetAmt,
+                            chosenSite == 'Others'
+                                ? RoundedInputField(
+                              color: Color(0xFFFBE3E1),
+                              iconColor: Theme.of(context).primaryColor,
+                              hintText: "Product Website",
+                              controller: _productWebsiteController,
+                              validator: (String value) {
+                                if (value.isEmpty) {
+                                  return 'Please enter product website';
+                                }
+                                if (Uri.parse(value).isAbsolute) {
+                                  return 'Please enter a valid product website';
+                                }
+                                return null;
+                              },
+                            )
+                                : Image.asset(
+                              'assets/${getLogoAssetName(chosenSite)}',
+                              height: 100.0,
                             ),
-                            ]
-                        )
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Current Amount'
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                controller: _currentAmt,
-                              ),
-                            ]
-                        )
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Date end'
-                              ),
-                              InputDatePickerFormField(
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2025),
-                                initialDate: endDate,
-                              ),
-                            ]
-                        )
-                    ),
-                    _addressAndSubmitPart()
-                  ]
+
+                            Card(
+                                color: Colors.white,
+                                elevation: 10,
+                                shadowColor: Colors.black12,
+                                child: Column(
+                                    children: [
+                                      Text(
+                                          'Target Amount'
+                                      ),
+                                      TextField(
+                                        keyboardType: TextInputType.number,
+                                        controller: _targetAmt,
+                                      ),
+                                    ]
+                                )
+                            ),
+                            Card(
+                                color: Colors.white,
+                                elevation: 10,
+                                shadowColor: Colors.black12,
+                                child: Column(
+                                    children: [
+                                      Text(
+                                          'Current Amount'
+                                      ),
+                                      TextField(
+                                        keyboardType: TextInputType.number,
+                                        controller: _currentAmt,
+                                      ),
+                                    ]
+                                )
+                            ),
+                            Card(
+                                color: Colors.white,
+                                elevation: 10,
+                                shadowColor: Colors.black12,
+                                child: Column(
+                                    children: [
+                                      Text(
+                                          'Date end'
+                                      ),
+                                      InputDatePickerFormField(
+                                        firstDate: DateTime(2020),
+                                        lastDate: DateTime(2025),
+                                        initialDate: endDate,
+                                      ),
+                                    ]
+                                )
+                            ),
+                            _addressAndSubmitPart()
+                          ]
+                      )
+                  )
               )
-            )
+          ),
         )
-      )
     );
   }
 }
