@@ -65,7 +65,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     });
   }
 
-  void createGroupBuy(BuildContext context) {
+  void createGroupBuy(BuildContext context) async {
 
     if (chosenAddress == null) {
       showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
@@ -82,8 +82,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
     }
 
+    print(chosenAddress);
     GroupBuy groupBuy = GroupBuy("", storeName, storeName, "logo", double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, chosenAddress);
-    GroupBuyStorage.instance.addGroupBuy(groupBuy);
+    await GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
       Navigator.pop(context);
@@ -221,7 +222,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       if (value.isEmpty) {
                         return 'Please enter target amount';
                       }
-                      if (isNumeric(value)) {
+                      if (!isNumeric(value)) {
                         return 'Please enter a valid target amount';
                       }
                       return null;
@@ -239,7 +240,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       if (value.isEmpty) {
                         return 'Please enter current amount';
                       }
-                      if (isNumeric(value)) {
+                      if (!isNumeric(value)) {
                         return 'Please enter a valid current amount';
                       }
                       return null;
@@ -255,7 +256,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     if (value.isEmpty) {
                       return 'Please enter the deposit percentage';
                     }
-                    if (isNumeric(value)) {
+                    if (!isNumeric(value)) {
                       return 'Please enter a valid deposit percentage';
                     }
                       return null;
