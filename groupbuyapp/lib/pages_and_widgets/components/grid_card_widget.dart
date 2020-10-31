@@ -96,7 +96,7 @@ class GroupBuyCard extends StatelessWidget {
                         child: Column(
                     children: [
                       const Divider(
-                        color: Color(0xFF810020),
+                        color: Color(0xFFd93b4b),
                         height: 10,
                         thickness: 0.5,
                         indent: 0,
@@ -119,7 +119,7 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top: 3),
                           child: Icon(
                             Icons.access_time_rounded,
-                            color: Color(0xFF810020),
+                            color: Color(0xFFd93b4b),
                             size: 30,
                           ),
                         ),
@@ -134,7 +134,7 @@ class GroupBuyCard extends StatelessWidget {
                           padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top:3 ),
                           child: Icon(
                             Icons.pending_rounded,
-                            color: Color(0xFF810020),
+                            color: Color(0xFFd93b4b),
                             size: 30,
                           ),
                         ),
@@ -150,7 +150,7 @@ class GroupBuyCard extends StatelessWidget {
                             padding: EdgeInsets.only(left: 6, top: 3,  bottom: 3, right: 6),
                             child: CircleAvatar(
                               radius: 15,
-                              backgroundColor: Color(0xFF810020),
+                              backgroundColor: Color(0xFFd93b4b),
                               child: CircleAvatar(
                                 radius: 13,
                                 backgroundImage: NetworkImage(profile.profilePicture),

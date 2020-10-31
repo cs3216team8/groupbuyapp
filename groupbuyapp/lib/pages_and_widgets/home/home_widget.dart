@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -14,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color appbarColor = Color(0xFFF98B83);
-  final Color appbarElementColor = Colors.black;
-  final Color appbarTextColor = Colors.black;
+  final Color appbarColor = Color(0xFFd93b4b);
+  final Color appbarElementColor = Colors.white;
+  final Color appbarTextColor = Colors.white;
 
   // SEARCH FUNCTIONALITY
   TextEditingController _searchQueryController = TextEditingController();

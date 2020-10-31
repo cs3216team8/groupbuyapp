@@ -24,7 +24,7 @@ class PiggyBuyApp extends StatelessWidget {
       title: _title,
       home: PiggyBuy(),
       theme: ThemeData(
-        primaryColor: Color(0xFFF98B83),
+        primaryColor: Color(0xFFd93b4b),
         accentColor: Color(0xFFF2B1AB),
         cardColor: Color(0xFFFFE1AD),
         backgroundColor: Color(0xFFF4E9E7),

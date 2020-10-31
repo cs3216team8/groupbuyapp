@@ -8,7 +8,7 @@ PreferredSize backAppBar({
   @required String title,
   List<Widget> actions,
   double elevation = 0,
-  Color color=const Color(0xFFFEE8E6),
+  Color color=const Color(0xFFFFFFFF),
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
 }) {
@@ -35,7 +35,7 @@ PreferredSize backAppBarWithoutText({
   @required BuildContext context,
   List<Widget> actions,
   double elevation = 0,
-  Color color=const Color(0xFFFFF3E7),
+  Color color=const Color(0xFFFFFFFF),
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
 }) {
