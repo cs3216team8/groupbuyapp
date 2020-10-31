@@ -447,14 +447,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                               Container(
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                    'Requests:',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold
-                                    )
-                                ),
+                                    'Requests',
+                                    style: titleStyle,
                               ),
-                            ],
+                              )
+                            ]
                           ),
                           StreamBuilder<List<Future<Request>>>(
                             stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),

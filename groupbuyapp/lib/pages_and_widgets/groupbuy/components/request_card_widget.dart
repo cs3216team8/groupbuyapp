@@ -134,60 +134,81 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
+    return Container(
+        padding: EdgeInsets.all(10,),
+    child: Card(
       color: Colors.white,
       elevation: 10,
       shadowColor: Colors.black12,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-          side: BorderSide(width: 1.0, color: Colors.grey)
-      ),
+      child: Container(
+          padding: EdgeInsets.only(left:10, right: 20, top: 6, bottom: 6),
+          decoration: new BoxDecoration(
+            color: Color(0xFFFBECE6),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 2,
+                offset: Offset(1,1), // changes position of shadow
+              )
+            ],
+          ),
+      alignment: Alignment.center,
       child: InkWell(
-        splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: () => openDetailedRequest(context),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.all(6),
-                  child: CircleAvatar(
-                    radius: 15,
-                    backgroundColor: Theme.of(context).primaryColor,
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          onTap: () => openDetailedRequest(context),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Padding(
                     child: CircleAvatar(
-                      radius: 13,
-                      backgroundImage: // TODO: Image.network(???.getProfilePicture(request.uid)).image
-                      AssetImage('assets/profpicplaceholder.jpg'),
+                      radius: 15,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: CircleAvatar(
+                        radius: 13,
+                        backgroundImage: // TODO: Image.network(???.getProfilePicture(request.uid)).image
+                        AssetImage('assets/profpicplaceholder.jpg'),
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  this.request.requestorId, // TODO: ???.getUsername(request.uid)
-                ),
-                Spacer(
-                  flex: 1,
-                ),
-                FlatButton(
-                  child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status)),),
-                ), // supposed to be star
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(left: 10, bottom: 10),
-                  child: Text("${request.items.length} items"),
-                ),
-                Container(
-                  margin: EdgeInsets.only(right: 10, bottom: 10),
-                  child: Text("\S${request.getTotalAmount()}"),
-                )
-              ],
-            )
-          ],
-        ),
+                  Text(
+                    this.request.requestorId, // TODO: ???.getUsername(request.uid)
+                    style: textStyle,
+                  ),
+                  Spacer(
+                    flex: 1,
+                  ),
+                  FlatButton(
+                    child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status)),),
+                  ), // supposed to be star
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 10, bottom: 10),
+                    child: Text("${request.items.length} items", style: textStyle,),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 10, bottom: 10),
+                    child: Text("\$${request.getTotalAmount()}", style: textStyle,),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 10, bottom: 10),
+                    child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status), fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5)),
+                  )
+                ],
+              )
+            ],
+          ),
+        )
       )
+    )
     );
   }
 }

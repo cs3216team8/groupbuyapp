@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           backgroundColor: appbarColor,
           // leading: Container(),
-          title: Text("Piggybuy", style: TextStyle(color: Colors.black),),
+          title: Text("PiggyBuy",),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
