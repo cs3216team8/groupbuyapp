@@ -31,11 +31,11 @@ PreferredSize backAppBar({
   );
 }
 
-PreferredSize backAppBarWithoutText({
+PreferredSize backAppBarWithoutTitle({
   @required BuildContext context,
   List<Widget> actions,
   double elevation = 0,
-  Color color=const Color(0xFFFFFFFF),
+  Color color=const Color(0xFFFFF3E7),
   Color textColor=Colors.black,
   Color iconColor=Colors.black,
 }) {

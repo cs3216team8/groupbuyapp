@@ -198,11 +198,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
-      appBar: backAppBar(context: context,
-        title: "Group Buy Details",
+      appBar: backAppBarWithoutTitle(context: context,
         actions: <Widget>[
         PopupMenuButton<String>(
           color: Colors.white,
+          icon: Icon(Icons.more_vert, color: Colors.black,),
           onSelected: (value) => handleGroupBuyDetailMenu(value, context),
           itemBuilder: (BuildContext context) {
             return isOrganiser() ? {'Get items list in email', 'Close group buy now'}.map((String choice) {
@@ -273,248 +273,258 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.all(20),
+            decoration: new BoxDecoration(
+              color: Color(0xFFFFF3E7),
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(1,1), // changes position of shadow
+                )
+              ],
+            ),
             alignment: Alignment.center,
-            child: Column(
+            child: Container(
+              child: Column(
               children: <Widget>[
                 Container(
-                  alignment: Alignment.center,
-                  height: 80,
-                  child: Container(
-                      child:widget.groupBuy.storeLogo.startsWith('assets/')?
-                      Image.asset(widget.groupBuy.storeLogo):
-                      Image(
-                        image: NetworkImage(widget.groupBuy.storeLogo),
-                      )
-                  )
-                ),
-                // Container(
-                //   height: 40,
-                //   child: Row(
-                //     // Progress Bar + Completion 65/35
-                //     children: <Widget>[
-                //       Expanded(
-                //           child: LinearPercentIndicator(
-                //             lineheight: 50,
-                //             percent: widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100,
-                //             center: new Text("${widget.groupBuy.currentAmount}/${widget.groupBuy.targetAmount}",
-                //                 style: TextStyle(
-                //                     fontWeight: FontWeight.bold,
-                //                     color: Colors.white)
-                //             ),
-                //             progressColor: Theme.of(context).buttonColor,
-                //           ),
-                //       )
-                //     ],
-                //   ),
-                // ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    // Row(
-                    //   // Organiser information
-                    //   children: <Widget>[
-                    //     Padding(
-                    //       padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                    //       child: Icon(
-                    //       Icons.account_circle, color: Color(0xFF810020),
-                    //       size: 30.0,
-                    //       semanticLabel: 'User profile photo',
-                    //     )
-                    //     ),
-                    //     isOrganiser()
-                    //     ? Text('by You', style: textStyle,)
-                    //     : Text('by ${widget.groupBuy.organiserId}', style: textStyle),
-                    //   ],
-                    // ),
-                    Row(
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.only(right: 10, left: 3, bottom: 6),
-                              child:  Icon(
-                                Icons.access_time_rounded,
-                                color: Color(0xFFe87d74),
-                                size: 24.0,
-                              )
-                          ),
-                          Text(
-                            "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser()? 'by You': 'by ${widget.groupBuy.organiserId}'}",
-                            style: textStyle,
-                          ),
-                        ]
-                    ),
-
-                  ],
-                ),
-                SizedBox(height: 5),
-                Row(
-                  // Location
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                        child: Icon(
-                          Icons.monetization_on,
-                          color: Color(0xFFe87d74),
-                          size: 24.0,
-                          semanticLabel: 'Deposit',
+                    alignment: Alignment.center,
+                    height: 80,
+                    child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.only(bottom: 20),
+                        color: Color(0xFFFFF3E7),
+                        child:widget.groupBuy.storeLogo.startsWith('assets/')?
+                        Image.asset(widget.groupBuy.storeLogo):
+                        Image(
+                          image: NetworkImage(widget.groupBuy.storeLogo),
                         )
-                    ),
-                    Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
-                  ],
-                ),
-                SizedBox(height: 5),
-            Row(children: <Widget>[
-              Padding(
-                  padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                  child: Icon(
-                    Icons.pending,
-                    color: Color(0xFFe87d74),
-                    size: 24.0,
-                    semanticLabel: 'Target',
-                  )
-              ),
-              Text(
-                "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
-                style: textStyle,
-              ),
-
-            ]
-              ),
-                SizedBox(height: 5),
-
-                Row(
-                  // Location
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                        child: Icon(
-                        Icons.location_on,
-                          color: Color(0xFFe87d74),
-                        size: 24.0,
-                        semanticLabel: 'Location',
-                      )
-                      ),
-                      Flexible(
-                        child: new Text('${widget.groupBuy.address}', style: textStyle)
-                      )
-                    ],
-                ),
-                // Description
-                SizedBox(height: 5),
-                Row(
-                  // Location
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
-                      child: Icon(
-                        Icons.description,
-                        color: Color(0xFFe87d74),
-                        size: 24.0,
-                        semanticLabel: 'Description',
-                      )
-                    ),
-                    Flexible(
-                      child: new Text('${widget.groupBuy.description}', style: textStyle)
                     )
-                  ],
                 ),
-                isOrganiser()
-                    ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(height: 10,),
-                        Divider(
-                          color: Theme.of(context).dividerColor,
-                          height: 5.5,
-                        ),
-                        SizedBox(height: 10,),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                  'Requests:',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold
-                                  )
-                              ),
-                            ),
-                          ],
-                        ),
-                        StreamBuilder<List<Future<Request>>>(
-                          stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),
-                          builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
-                            List<Widget> children;
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                              return FailedToLoadRequests();
-                            }
-
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                                return RequestsNotLoaded();
-                              case ConnectionState.waiting:
-                                return RequestsLoading();
-                              default:
-                                children = snapshot.data.map((Future<Request> futureRequest) {
-                                  return getRequestPreview(futureRequest);
-                                  // return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
-                                }).toList();
-                                break;
-                            }
-
-                            if (children.isEmpty) {
-                              return RequestAsOrganiserDefaultScreen();
-                            }
-
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: children.length,
-                              itemBuilder: (context, index) {
-                                return children[index];
-                              },
-                            );
-                          },
+                Container(
+                    padding: const EdgeInsets.all(20.0),
+                    decoration: new BoxDecoration(
+                      color: Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset: Offset(1,1), // changes position of shadow
                         )
-
                       ],
-                    )
-                    : Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    ),
+                    child:Column(
                       children: <Widget>[
-                        SizedBox(height: 10,),
-                        Divider(
-                          color: Theme.of(context).dividerColor,
-                          height: 5.5,
-                        ),
-                        SizedBox(height: 10,),
-                        widget.hasRequested
-                            ? Column(
-                              children: [
-                                Container(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                      'You have requested:',
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold
+                        Container(
+                            padding: EdgeInsets.all(20,),
+                            decoration: new BoxDecoration(
+                              color: Color(0xFFFBECE6),
+                              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 2,
+                                  offset: Offset(1,1), // changes position of shadow
+                                )
+                              ],
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                Row(
+                                      children: <Widget>[
+                                        Padding(
+                                            padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
+                                            child:  Icon(
+                                              Icons.access_time_rounded,
+                                              color: Color(0xFFe87d74),
+                                              size: 24.0,
+                                            )
+                                        ),
+                                        Text(
+                                          "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser()? 'by You': 'by ${widget.groupBuy.organiserId}'}",
+                                          style: textStyle,
+                                        ),
+                                  ],
+                                ),
+                                SizedBox(height: 7),
+                                Row(
+                                  // Location
+                                  children: <Widget>[
+                                    Padding(
+                                        padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
+                                        child: Icon(
+                                          Icons.monetization_on,
+                                          color: Color(0xFFe87d74),
+                                          size: 24.0,
+                                          semanticLabel: 'Deposit',
+                                        )
+                                    ),
+                                    Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
+                                  ],
+                                ),
+                                SizedBox(height: 7),
+                                Row(children: <Widget>[
+                                  Padding(
+                                      padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
+                                      child: Icon(
+                                        Icons.pending,
+                                        color: Color(0xFFe87d74),
+                                        size: 24.0,
+                                        semanticLabel: 'Target',
                                       )
                                   ),
-                                ),
-                                getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
-                              ],
-                            )
-                            : Container(),
-                      ],
-                    ),
+                                  Text(
+                                    "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
+                                    style: textStyle,
+                                  ),
 
+                                ]
+                              ),
+                                SizedBox(height: 7),
+                                Row(
+                                  // Location
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 6,left: 3, right: 10, bottom: 6),
+                                        child: Icon(
+                                        Icons.location_on,
+                                          color: Color(0xFFe87d74),
+                                        size: 24.0,
+                                        semanticLabel: 'Location',
+                                      )
+                                      ),
+                                      Flexible(
+                                        child: new Text('${widget.groupBuy.address}', style: textStyle)
+                                      )
+                                    ],
+                                ),
+                                SizedBox(height: 7),
+                                Row(
+                                  // Location
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
+                                      child: Icon(
+                                        Icons.description,
+                                        color: Color(0xFFe87d74),
+                                        size: 24.0,
+                                        semanticLabel: 'Description',
+                                      )
+                                    ),
+                                    Flexible(
+                                      child: new Text('${widget.groupBuy.description}', style: textStyle)
+                                    )
+                                  ],
+                                ),
+                              ]
+                            )
+                        ),
+                        Container(
+                      // height: double.infinity,
+                      child: isOrganiser()
+                          ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 10,),
+                          Divider(
+                            color: Theme.of(context).dividerColor,
+                            height: 5.5,
+                          ),
+                          SizedBox(height: 10,),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                    'Requests:',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                              ),
+                            ],
+                          ),
+                          StreamBuilder<List<Future<Request>>>(
+                            stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),
+                            builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
+                              List<Widget> children;
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                                return FailedToLoadRequests();
+                              }
+
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return RequestsNotLoaded();
+                                case ConnectionState.waiting:
+                                  return RequestsLoading();
+                                default:
+                                  children = snapshot.data.map((Future<Request> futureRequest) {
+                                    return getRequestPreview(futureRequest);
+                                    // return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
+                                  }).toList();
+                                  break;
+                              }
+
+                              if (children.isEmpty) {
+                                return RequestAsOrganiserDefaultScreen();
+                              }
+
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: children.length,
+                                itemBuilder: (context, index) {
+                                  return children[index];
+                                },
+                              );
+                            },
+                          )
+
+                        ],
+                      )
+                          : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 10,),
+                          Divider(
+                            color: Theme.of(context).dividerColor,
+                            height: 5.5,
+                          ),
+                          SizedBox(height: 10,),
+                          widget.hasRequested
+                              ? Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                    'You have requested:',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold
+                                    )
+                                ),
+                              ),
+                              getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
+                            ],
+                          )
+                              : Container(),
+                        ],
+                      ),
+                    ),
               ],
             )
         ),
-      )
-    );
+    ])))));
   }
 }
 
