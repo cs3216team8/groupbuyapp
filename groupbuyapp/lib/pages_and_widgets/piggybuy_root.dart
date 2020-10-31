@@ -47,7 +47,7 @@ class PiggyBuy extends StatefulWidget {
       HomeScreen(),
       CreateGroupBuyScreen(),
       ProfileScreen(
-        isMe: true, //true,
+        userId: FirebaseAuth.instance.currentUser.uid, //true,
       ),
     ];
   }

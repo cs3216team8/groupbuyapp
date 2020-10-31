@@ -1,14 +1,20 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final bool isMe; // true if clicked from my profile
+  final String userId;
 
   ProfileScreen({
     Key key,
-    this.isMe = false,
+    @required this.userId,
   }) : super(key: key);
+
+  bool isMe() {
+    return FirebaseAuth.instance.currentUser.uid == userId;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,12 +24,12 @@ class ProfileScreen extends StatelessWidget {
       appBar: regularAppBar(
         context: context,
         titleElement: Text(
-          isMe ? "Your Profile" : "View Profile",
+          isMe() ? "Your Profile" : "View Profile",
           style: TextStyle(color: Colors.black),
         )
       ),
       body: ProfileGroupBuys(
-          isMe: isMe,
+          isMe: isMe(),
       )
     );
   }

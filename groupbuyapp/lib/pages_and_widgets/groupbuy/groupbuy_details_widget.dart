@@ -6,6 +6,7 @@ import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
@@ -234,7 +235,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                   ),
                   flex: 65),
               Expanded(
-                  child: Text('${(widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100).round()}/100',
+                  child: Text('\$${widget.groupBuy.currentAmount}/\$${widget.groupBuy.targetAmount}',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold)),
@@ -245,20 +246,35 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              // Organiser information
-              children: <Widget>[
-                Icon(
-                  Icons.account_circle,
-                  color: Colors.grey,
-                  size: 24.0,
-                  semanticLabel: 'User profile photo',
-                ),
-                SizedBox(width: 10,),
-                isOrganiser()
-                    ? Text('by You')
-                    : Text('by ${widget.groupBuy.organiserId}')
-              ],
+            GestureDetector(
+              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.id,)), //TODO: leave as segue or redirect?
+              child: Row(
+                // Organiser information
+                children: <Widget>[
+                  // Icon(
+                  //   Icons.account_circle,
+                  //   color: Colors.grey,
+                  //   size: 24.0,
+                  //   semanticLabel: 'User profile photo',
+                  // ),
+                  Padding(
+                    padding: EdgeInsets.all(6),
+                    child: CircleAvatar(
+                      radius: 24,
+                      backgroundColor: Theme.of(context).primaryColor,
+                      child: CircleAvatar(
+                          radius: 22,
+                          backgroundImage: Image.network(widget.organiserProfile.profilePicture).image
+                        // AssetImage('assets/profpicplaceholder.jpg'),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10,),
+                  isOrganiser()
+                      ? Text('${widget.organiserProfile.username} (You)')
+                      : Text('${widget.organiserProfile.username}')
+                ],
+              ),
             ),
             isOrganiser()
                 ? RaisedButton(
