@@ -59,6 +59,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   }
 
   void createGroupBuy(BuildContext context) {
+
     if (chosenAddress == null) {
       showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
       return;
