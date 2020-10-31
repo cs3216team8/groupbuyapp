@@ -6,25 +6,28 @@ import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-
-import 'components/time_display_widget.dart';
+import 'package:groupbuyapp/utils/time_calculation.dart';
 
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
   final UserProfile organiserProfile;
   bool isClosed;
+  bool hasRequested;
 
+  TextStyle textStyle =
+    TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
+
+  //TODO storage like as listings widget
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
     @required this.organiserProfile,
+    this.hasRequested = false, //TODO -- should be read from user's groupbuys list from storage..?
     this.isClosed = false, //TODO
   }) : super(key: key);
 
@@ -34,6 +37,7 @@ class GroupBuyInfo extends StatefulWidget {
 
 class _GroupBuyInfoState extends State<GroupBuyInfo> {
   TextEditingController broadcastMsgController;
+  TextStyle textStyle = TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
   List<Future<Request>> _futureRequests = [];
 
   bool isOrganiser() {
@@ -45,13 +49,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     print("tapped on chat"); //TODO
   }
 
+  void onTapSendEmail(BuildContext context) {
+    print("tapped on chat"); //TODO
+  }
+
+
   void onTapJoin(BuildContext context) {
     print("tapped on join"); //TODO
     segueToPage(context, JoinGroupBuyForm());
-  }
-
-  void onTapSendCompiledEmail() {
-    print("tapped on send email"); //TODO
   }
 
   void onTapBroadcast(BuildContext context) {
@@ -100,7 +105,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                             }
                             // hasSubmittedEmpty = false;
                             print("broadcast msg: ${msg}");
-                            //TODO: call to messaging to broadcast msg.
+                            //TODO: call to messaging to broadcast msg. @teikjun
 
                             Navigator.pop(context);
                           },
@@ -137,33 +142,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     });
   }
 
-  Future<void> _getData() async {
-    setState(() {
-      fetchRequests();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchRequests();
-  }
-
-  void fetchRequests() async {
-    List<Future<Request>> freqs;
-    if (isOrganiser()) {
-      freqs = await GroupBuyStorage.instance
-          .getAllGroupBuyRequests(widget.groupBuy)
-          .single;
-    } else {
-      freqs = [GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy)];
-    }
-    // assert(isOrganiser || freqs.length <= 1)
-    setState(() {
-      _futureRequests = freqs;
-    });
-  }
-
   Widget getRequestPreview(Future<Request> futureRequest) {
     return FutureBuilder<Request>(
       future: futureRequest,
@@ -179,13 +157,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           case ConnectionState.waiting:
             return RequestsLoading();
           default:
+
             children = [RequestCard(groupBuy: widget.groupBuy, request: snapshot.data, isOrganiser: isOrganiser())];
-            break; //TODO change to just put the card since only 1 child
+            break;
         }
 
         if (children.isEmpty) {
           return RequestAsPiggyBackerDefaultScreen();
-        } //TODO: check if this case is even reached/ any case missed out
+        }
 
         return ListView.builder(
           shrinkWrap: true,
@@ -198,156 +177,54 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     );
   }
 
-  Widget _buildDetailsPart() {
-    return Column(
-      children: <Widget>[
-        Container(
-          alignment: Alignment.center,
-          height: 80,
-          child: Row(
-            // Amazon Logo + Time widget 65/35
-            children: <Widget>[
-              Expanded(
-                  child: Image(
-                    image: Image.asset(
-                        widget.groupBuy.storeLogo).image,
-                  ),
-                  flex: 65),
-              Expanded(child: TimeDisplay(), flex: 35)
-            ],
-          ),
-        ),
-        Container(
-          height: 40,
-          child: Row(
-            // Progress Bar + Completion 65/35
-            children: <Widget>[
-              Expanded(
-                  child: LinearPercentIndicator(
-                    lineHeight: 20,
-                    percent: widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100,
-                    center: new Text("${(widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100).round()}%",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white)
-                    ),
-                    progressColor: Theme.of(context).buttonColor,
-                  ),
-                  flex: 65),
-              Expanded(
-                  child: Text('\$${widget.groupBuy.currentAmount}/\$${widget.groupBuy.targetAmount}',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold)),
-                  flex: 35),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            GestureDetector(
-              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.id,)), //TODO: leave as segue or redirect?
-              child: Row(
-                // Organiser information
-                children: <Widget>[
-                  // Icon(
-                  //   Icons.account_circle,
-                  //   color: Colors.grey,
-                  //   size: 24.0,
-                  //   semanticLabel: 'User profile photo',
-                  // ),
-                  Padding(
-                    padding: EdgeInsets.all(6),
-                    child: CircleAvatar(
-                      radius: 24,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: CircleAvatar(
-                          radius: 22,
-                          backgroundImage: Image.network(widget.organiserProfile.profilePicture).image
-                        // AssetImage('assets/profpicplaceholder.jpg'),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10,),
-                  isOrganiser()
-                      ? Text('${widget.organiserProfile.username} (You)')
-                      : Text('${widget.organiserProfile.username}')
-                ],
-              ),
-            ),
-            isOrganiser()
-                ? RaisedButton(
-              color: Theme.of(context).accentColor,
-              onPressed: widget.isClosed ? null : () => onTapCloseGB(),
-              child: Text("Close jio now"),
-            )
-                : Container(),
-          ],
-        ),
-
-        Row(
-          // Location
-          children: <Widget>[
-            Icon(
-              Icons.location_on,
-              color: Colors.grey,
-              size: 24.0,
-              semanticLabel: 'Location',
-            ),
-            SizedBox(width: 10,),
-            Text('${widget.groupBuy.address}')
-          ],
-        ),
-        // Description
-        Container(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                    'Description:',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold
-                    )
-                ),
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: Text(
-                    '${widget.groupBuy.address}'
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        ListTile(
-          // Deposit
-          leading: Text('Deposit:'),
-          title: Text('${widget.groupBuy.deposit * 100} %'),
-        ),
-
-      ],
-    );
+  void handleGroupBuyDetailMenu(String value, BuildContext context) {
+    if (isOrganiser()) {
+      if (value == "Get items list in email") {
+        onTapSendEmail(context);
+      } else {
+        RaisedButton(
+            color: Theme
+                .of(context)
+                .accentColor,
+            onPressed: widget.isClosed ? null : () => onTapCloseGB());
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = TextStyle(fontSize: 15, fontWeight: FontWeight.normal, fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
-      appBar: backAppBar(context: context, title: 'Group Buy Details'),
+      appBar: backAppBar(context: context,
+        title: "Group Buy Details",
+        actions: <Widget>[
+        PopupMenuButton<String>(
+          color: Colors.white,
+          onSelected: (value) => handleGroupBuyDetailMenu(value, context),
+          itemBuilder: (BuildContext context) {
+            return isOrganiser() ? {'Get items list in email', 'Close group buy now'}.map((String choice) {
+              return PopupMenuItem<String>(
+                value: choice,
+                child: Text(choice),
+              );
+            }).toList()
+                : null;
+          },
+        ),
+      ],),
       floatingActionButton: isOrganiser()
-        ? RaisedButton(
-            color: Theme.of(context).accentColor,
-            elevation: 10,
-            onPressed: () => onTapBroadcast(context),
-            child: Text("Broadcast to piggybuyers"),
+        ? Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            RaisedButton(
+                color: Theme.of(context).accentColor,
+                elevation: 10,
+                onPressed: () => onTapBroadcast(context),
+                child: Text("Broadcast message"),
+            ),
+          ]
         )
-
-        : _futureRequests.isNotEmpty
-        // : widget.hasRequested //TODO NOW @kx: future builder yo
+        : widget.hasRequested //TODO need to refactor (see ui-storage-integration commit a2c9e821a86b1dd645a80e2873db1018550b49a3)
           ? RaisedButton(
             color: Theme.of(context).accentColor,
             elevation: 10,
@@ -393,116 +270,243 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20),
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              _buildDetailsPart(),
-              isOrganiser()
-              ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 10,),
-                  Divider(
-                    color: Theme.of(context).dividerColor,
-                    height: 5.5,
-                  ),
-                  SizedBox(height: 10,),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            'Requests:',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                            )
+            padding: EdgeInsets.all(20),
+            alignment: Alignment.center,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.center,
+                  height: 80,
+                  child: Container(
+                      child:widget.groupBuy.storeLogo.startsWith('assets/')?
+                      Image.asset(widget.groupBuy.storeLogo):
+                      Image(
+                        image: NetworkImage(widget.groupBuy.storeLogo),
+                      )
+                  )
+                ),
+                // Container(
+                //   height: 40,
+                //   child: Row(
+                //     // Progress Bar + Completion 65/35
+                //     children: <Widget>[
+                //       Expanded(
+                //           child: LinearPercentIndicator(
+                //             lineHeight: 20,
+                //             percent: widget.groupBuy.currentAmount/widget.groupBuy.targetAmount * 100,
+                //             center: new Text("${widget.groupBuy.currentAmount}/${widget.groupBuy.targetAmount}",
+                //                 style: TextStyle(
+                //                     fontWeight: FontWeight.bold,
+                //                     color: Colors.white)
+                //             ),
+                //             progressColor: Theme.of(context).buttonColor,
+                //           ),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      // Organiser information
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
+                          child: Icon(
+                          Icons.account_circle, color: Color(0xFF810020),
+                          size: 30.0,
+                          semanticLabel: 'User profile photo',
+                        )
                         ),
-                      ),
-                      RaisedButton(
-                        child: Text("Send compiled list to email"),
-                        onPressed: () => onTapSendCompiledEmail(),
-                      ),
-                    ],
-                  ),
-
-                  Column(
-                    children: _futureRequests.map((freq) => getRequestPreview(freq)),
-                  ),
-                  // StreamBuilder<List<Future<Request>>>(
-                  //   stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),
-                  //   builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
-                  //     List<Widget> children;
-                  //     if (snapshot.hasError) {
-                  //       print(snapshot.error);
-                  //       return FailedToLoadRequests();
-                  //     }
-                  //
-                  //     switch (snapshot.connectionState) {
-                  //       case ConnectionState.none:
-                  //         return RequestsNotLoaded();
-                  //       case ConnectionState.waiting:
-                  //         return RequestsLoading();
-                  //       default:
-                  //         children = snapshot.data.map((Future<Request> futureRequest) {
-                  //           return getRequestPreview(futureRequest);
-                  //           // return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
-                  //         }).toList();
-                  //         break;
-                  //     }
-                  //
-                  //     if (children.isEmpty) {
-                  //       return RequestAsOrganiserDefaultScreen();
-                  //     }
-                  //
-                  //     return ListView.builder(
-                  //       shrinkWrap: true,
-                  //       itemCount: children.length,
-                  //       itemBuilder: (context, index) {
-                  //         return children[index];
-                  //       },
-                  //     );
-                  //   },
-                  // )
-
-                ],
-              )
-              : Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 10,),
-                  Divider(
-                    color: Theme.of(context).dividerColor,
-                    height: 5.5,
-                  ),
-                  SizedBox(height: 10,),
-
-                  _futureRequests.isNotEmpty
-                  // widget.hasRequested
-                    ? Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                              'You have requested:',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold
+                        isOrganiser()
+                        ? Text('by You', style: textStyle,)
+                        : Text('by ${widget.groupBuy.organiserId}', style: textStyle),
+                      ],
+                    ),
+                    Row(
+                        children: <Widget>[
+                          Text(
+                            "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left",
+                            style: textStyle,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
+                              child:  Icon(
+                                Icons.access_time_rounded,
+                                color: Color(0xFF810020),
+                                size: 30.0,
                               )
                           ),
+                        ]
+                    ),
+
+                  ],
+                ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  // Location
+                  children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
+                        child: Icon(
+                          Icons.monetization_on,
+                          color: Color(0xFF810020),
+                          size: 30.0,
+                          semanticLabel: 'Deposit',
+                        )
+                    ),
+                    Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
+                  ],
+                ),
+                Row(children: <Widget>[
+                  Text(
+                    "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
+                    style: textStyle,
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(right: 3, left: 10, bottom: 6),
+                      child: Icon(
+                        Icons.pending,
+                        color: Color(0xFF810020),
+                        size: 30.0,
+                        semanticLabel: 'Target',
+                      )
+                  ),
+
+                ]),
+              ]
+            ),
+
+                Row(
+                  // Location
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
+                        child: Icon(
+                        Icons.location_on,
+                          color: Color(0xFF810020),
+                        size: 30.0,
+                        semanticLabel: 'Location',
+                      )
+                      ),
+                      Flexible(
+                        child: new Text('${widget.groupBuy.address}', style: textStyle)
+                      )
+                    ],
+                ),
+                // Description
+                Row(
+                  // Location
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 3, right: 10, bottom: 6),
+                      child: Icon(
+                        Icons.description,
+                        color: Color(0xFF810020),
+                        size: 30.0,
+                        semanticLabel: 'Description',
+                      )
+                    ),
+                    Flexible(
+                      child: new Text('${widget.groupBuy.description}', style: textStyle)
+                    )
+                  ],
+                ),
+                isOrganiser()
+                    ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 10,),
+                        Divider(
+                          color: Theme.of(context).dividerColor,
+                          height: 5.5,
                         ),
-                        getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
+                        SizedBox(height: 10,),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                  'Requests:',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold
+                                  )
+                              ),
+                            ),
+                          ],
+                        ),
+                        StreamBuilder<List<Future<Request>>>(
+                          stream: GroupBuyStorage.instance.getAllGroupBuyRequests(widget.groupBuy),
+                          builder: (BuildContext context, AsyncSnapshot<List<Future<Request>>> snapshot) {
+                            List<Widget> children;
+                            if (snapshot.hasError) {
+                              print(snapshot.error);
+                              return FailedToLoadRequests();
+                            }
+
+                            switch (snapshot.connectionState) {
+                              case ConnectionState.none:
+                                return RequestsNotLoaded();
+                              case ConnectionState.waiting:
+                                return RequestsLoading();
+                              default:
+                                children = snapshot.data.map((Future<Request> futureRequest) {
+                                  return getRequestPreview(futureRequest);
+                                  // return new RequestCard(groupBuy: this.groupBuy, isOrganiser: this.isOrganiser, request: request);
+                                }).toList();
+                                break;
+                            }
+
+                            if (children.isEmpty) {
+                              return RequestAsOrganiserDefaultScreen();
+                            }
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: children.length,
+                              itemBuilder: (context, index) {
+                                return children[index];
+                              },
+                            );
+                          },
+                        )
+
                       ],
                     )
                     : Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Text("You have yet to join this group buy. Chat or Join now!", style: TextStyle(fontWeight: FontWeight.bold),),
-                      ]
+                        SizedBox(height: 10,),
+                        Divider(
+                          color: Theme.of(context).dividerColor,
+                          height: 5.5,
+                        ),
+                        SizedBox(height: 10,),
+                        widget.hasRequested
+                            ? Column(
+                              children: [
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                      'You have requested:',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold
+                                      )
+                                  ),
+                                ),
+                                getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
+                              ],
+                            )
+                            : Container(),
+                      ],
                     ),
-                  ],
-                ),
+
               ],
             )
         ),
@@ -533,7 +537,7 @@ class FailedToLoadRequests extends StatelessWidget {
   }
 }
 
-//note this should not appear.
+//TODO note this should not appear.
 class RequestsNotLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

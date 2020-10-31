@@ -66,8 +66,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     print("send create request to db"); //TODO input validation + hook storage
 
-    GroupBuy groupBuy = GroupBuy(id, storeName, storeWebsite, storeLogo, currentAmount, targetAmount, endTimestamp, organiserId, deposit, description, address);
-    GroupBuyStorage.instance.addGroupBuy(groupBuy);
+    // GroupBuy groupBuy = GroupBuy(id, storeName, storeWebsite, storeLogo, currentAmount, targetAmount, endTimestamp, organiserId, deposit, description, address);
+    // GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
       Navigator.pop(context);

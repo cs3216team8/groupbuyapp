@@ -11,7 +11,6 @@ class TimeDisplay extends StatelessWidget {
                 child: Icon(
                     Icons.alarm
                 ),
-                flex: 60
             ),
             Expanded(
                 child: Text(
@@ -21,7 +20,6 @@ class TimeDisplay extends StatelessWidget {
                         fontWeight: FontWeight.bold
                     )
                 ),
-                flex: 40
             )
           ],
         )
