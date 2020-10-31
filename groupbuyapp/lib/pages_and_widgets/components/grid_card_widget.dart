@@ -12,11 +12,10 @@ class GroupBuyCard extends StatelessWidget {
 
   final GroupBuy groupBuy;
 
-  // TODO: needs user info of each organiser -- either save in GroupBuy or query
   GroupBuyCard(this.groupBuy);
 
-  void _openDetailedGroupBuy(BuildContext context) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: true, hasRequested: false,));
+  void _openDetailedGroupBuy(BuildContext context, UserProfile organiserProfile) {
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, organiserProfile: organiserProfile, isClosed: false,));
   }
 
   String getTimeDifString(Duration timeDiff) {
@@ -32,13 +31,13 @@ class GroupBuyCard extends StatelessWidget {
   Widget groupBuyCardInsides(BuildContext context, UserProfile profile) {
     return InkWell(
       splashColor: Theme.of(context).primaryColor.withAlpha(30),
-      onTap: () {_openDetailedGroupBuy(context);},
+      onTap: () {_openDetailedGroupBuy(context, profile);},
       child: Column(
         children: <Widget>[
           Expanded(
             flex: 40,
             child: Image(
-              image: NetworkImage(this.groupBuy.storeLogo),
+              image: AssetImage(this.groupBuy.storeLogo), //TODO: whhy is ezbuy logo stored as exbuy logo2
             ),
           ),
           Expanded(
