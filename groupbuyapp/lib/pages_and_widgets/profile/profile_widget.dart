@@ -4,9 +4,11 @@ import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final String userId;
 
   ProfileScreen({
     Key key,
+    this.userId, //TODO add uid loading for other profiles @KX
   }) : super(key: key);
 
   bool isMe() {
