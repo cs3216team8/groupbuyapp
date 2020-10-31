@@ -197,6 +197,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
+    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020)); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
         actions: <Widget>[
@@ -220,10 +221,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RaisedButton(
-                color: Theme.of(context).accentColor,
+              padding: EdgeInsets.all(10.0),
+              shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                ),
+              color: Theme.of(context).accentColor,
                 elevation: 10,
                 onPressed: () => onTapBroadcast(context),
-                child: Text("Broadcast message"),
+                child: Text("Broadcast", style: subtitleStyle),
             ),
           ]
         )
@@ -273,6 +278,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Container(
+
             decoration: new BoxDecoration(
               color: Color(0xFFFFF3E7),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -305,10 +311,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     )
                 ),
                 Container(
+                    child: Container(
+
                     padding: const EdgeInsets.all(20.0),
                     decoration: new BoxDecoration(
                       color: Color(0xFFFFFFFF),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.only(topRight:  Radius.circular(20), topLeft:  Radius.circular(20),),
                       border: Border.all(color: Color(0xFFFFFFFF), width: 0),
                       boxShadow: [
                         BoxShadow(
@@ -322,9 +330,22 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     child:Column(
                       mainAxisSize: MainAxisSize.max,
                       children: <Widget>[
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  'DETAILS',
+                                  style: subtitleStyle,
+                                ),
+                              )
+                            ]
+                        ),
                         Container(
                             padding: EdgeInsets.all(20,),
-                            margin: EdgeInsets.all(10,),
+                            margin: EdgeInsets.only(left: 10, right: 10),
                             decoration: new BoxDecoration(
                               color: Color(0xFFFBECE6),
                               borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -338,7 +359,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                 )
                               ],
                             ),
-                            child: Column(
+                            child: Column (
                               children: <Widget>[
                                 Row(
                                       children: <Widget>[
@@ -445,10 +466,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
+                                padding: EdgeInsets.only(left: 20, bottom: 5),
                                 alignment: Alignment.topLeft,
                                 child: Text(
-                                    'Requests',
-                                    style: titleStyle,
+                                    'REQUESTS',
+                                    style: subtitleStyle,
                               ),
                               )
                             ]
@@ -523,6 +545,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               ],
             )
         ),
+                )
     ])))));
   }
 }

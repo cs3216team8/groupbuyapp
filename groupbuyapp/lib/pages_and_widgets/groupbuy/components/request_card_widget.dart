@@ -136,7 +136,7 @@ class RequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
     return Container(
-        padding: EdgeInsets.all(10,),
+        padding: EdgeInsets.only(left: 10, right: 10),
     child: Card(
       color: Colors.white,
       elevation: 10,
@@ -165,6 +165,7 @@ class RequestCard extends StatelessWidget {
               Row(
                 children: <Widget>[
                   Padding(
+                    padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
                     child: CircleAvatar(
                       radius: 15,
                       backgroundColor: Theme.of(context).primaryColor,

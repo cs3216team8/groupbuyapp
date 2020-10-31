@@ -130,6 +130,9 @@ flutter:
       fonts:
         - asset: fonts/Inter/static/Inter-Light.ttf
           weight: 300
+    - family: Grotesk
+      fonts:
+        - asset: fonts/hk-grotesk/HKGrotesk-Bold.otf
 
   assets:
     - assets/
