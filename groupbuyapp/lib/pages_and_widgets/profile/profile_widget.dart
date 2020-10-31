@@ -9,9 +9,10 @@ class ProfileScreen extends StatelessWidget {
   ProfileScreen({
     Key key,
   }) : super(key: key);
+  //TODO @kx: add userId (optional) and propagate to
 
   bool isMe() {
-    if (FirebaseAuth.instance.currentUser.uid == null) {
+    if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
     return true;
