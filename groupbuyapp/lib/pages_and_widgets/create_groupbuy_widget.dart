@@ -7,7 +7,7 @@ import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
-import 'package:date_time_picker/date_time_picker.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
   final bool needsBackButton;
@@ -91,10 +91,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   }
 
   Widget _addressAndSubmitPart() {
-    return userAddresses.isEmpty
-      ? Text("You have not filled in your address yet! Head over to profile settings to add addresses, or pull to refresh.")
-
-      : Column(
+    return Column(
       children: [
         Card(
           color: Colors.white,
@@ -142,6 +139,25 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    InputDecoration inputFieldDecoration = InputDecoration(
+      errorStyle: TextStyle(height: 0.3),
+      prefixIcon: Icon(Icons.local_grocery_store, color: Theme.of(context).primaryColor),
+      fillColor: Theme.of(context).accentColor.withAlpha(60),
+      filled: true,
+      enabledBorder: new OutlineInputBorder(
+        borderRadius: new BorderRadius.circular(25.0),
+        borderSide: const BorderSide(color: Color(0x00000000), width: 0.0),
+      ),
+      focusedBorder: new OutlineInputBorder(
+        borderRadius: new BorderRadius.circular(25.0),
+        borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
+      ),
+      border: new OutlineInputBorder(
+        borderRadius: new BorderRadius.circular(25.0),
+        borderSide: const BorderSide(color: Colors.red, width: 1.0),
+      ),
+
+    );
 
     return Scaffold(
         appBar: widget.needsBackButton
@@ -184,25 +200,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                       width: size.width * 0.8,
                       child: DropdownButtonFormField<String>(
-                          decoration: InputDecoration(
-                            errorStyle: TextStyle(height: 0.3),
-                            prefixIcon: Icon(Icons.local_grocery_store, color: Theme.of(context).primaryColor),
-                            fillColor: Theme.of(context).accentColor.withAlpha(60),
-                            filled: true,
-                            enabledBorder: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(25.0),
-                              borderSide: const BorderSide(color: Color(0x00000000), width: 0.0),
-                            ),
-                            focusedBorder: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(25.0),
-                              borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
-                            ),
-                            border: new OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(25.0),
-                              borderSide: const BorderSide(color: Colors.red, width: 1.0),
-                            ),
-
-                          ),
+                          decoration: inputFieldDecoration,
                           value: chosenSite,
                           items: supportedSites.map((String value) {
                             return DropdownMenuItem<String>(
@@ -251,50 +249,30 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       return null;
                     },
                   ),
-            Container(
-                margin: EdgeInsets.symmetric(vertical: 6),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  color: Theme.of(context).accentColor.withAlpha(60),
-                ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
 
-                width: size.width * 0.8,
-                child: DateTimePicker(
-                  type: DateTimePickerType.date,
-                  dateMask: 'd MMM, yyyy',
-                initialValue: DateTime.now().toString(),
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                icon: Icon(Icons.event, color: Theme.of(context).primaryColor),
-                dateLabelText: 'Date',
-                onChanged: (val) => print(val),
-                validator: (val) {
-                  print(val);
-                  return null;
-                },
-                onSaved: (val) => print(val),
-              )
-            ),
-
-                    // Card(
-                    //     color: Colors.white,
-                    //     elevation: 10,
-                    //     shadowColor: Colors.black12,
-                    //     child: Column(
-                    //         children: [
-                    //           Text(
-                    //               'Date end'
-                    //           ),
-                    //           InputDatePickerFormField(
-                    //             firstDate: DateTime(2020),
-                    //             lastDate: DateTime(2025),
-                    //             initialDate: endDate,
-                    //           ),
-                    //         ]
-                    //     )
-                    // ),
-                    _addressAndSubmitPart()
+                      width: size.width * 0.8,
+                      child: FlatButton(
+                          padding: EdgeInsets.symmetric(vertical: 23),
+                          color: Theme.of(context).accentColor.withAlpha(60),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                          ),
+                          onPressed: () {
+                            DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
+                              print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                            }, onConfirm: (date) {
+                              print('confirm $date');
+                            }, currentTime: DateTime.now());
+                          },
+                          child: Text(
+                            'Pick a deadline!',
+                            style: TextStyle(color: Colors.black),
+                          )),
+                  ),
+                   _addressAndSubmitPart()
                   ]
               )
             )
