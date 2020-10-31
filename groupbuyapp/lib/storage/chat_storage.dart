@@ -71,6 +71,7 @@ class ChatStorage {
   // For chat list
 
   getUserChats(String myId) async {
+    print("hi");
     return await FirebaseFirestore.instance
         .collection("chatRooms")
         .where("members", arrayContains: myId)

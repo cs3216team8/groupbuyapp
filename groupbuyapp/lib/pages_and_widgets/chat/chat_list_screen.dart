@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat/recent_chats_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 
 class ChatList extends StatefulWidget {
@@ -43,7 +42,7 @@ class _ChatListState extends State<ChatList> {
               ),
               child: Column(
                 children: <Widget>[
-                  ChatList(),
+                  chatRoomsList(),
                 ],
               ),
             ),
@@ -81,7 +80,7 @@ class _ChatListState extends State<ChatList> {
             itemBuilder: (context, index) {
               return ChatRoomsTile(
                 userName: "bob",
-                chatRoomId: snapshot.data.documents[index].data["chatRoomId"],
+                chatRoomId: snapshot.data.documents[index].data()["chatRoomId"],
               );
             })
             : Container();
@@ -122,7 +121,6 @@ class ChatRoomsTile extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
-                      fontFamily: 'OverpassRegular',
                       fontWeight: FontWeight.w300)),
             ),
             SizedBox(
@@ -133,7 +131,6 @@ class ChatRoomsTile extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
-                    fontFamily: 'OverpassRegular',
                     fontWeight: FontWeight.w300))
           ],
         ),
