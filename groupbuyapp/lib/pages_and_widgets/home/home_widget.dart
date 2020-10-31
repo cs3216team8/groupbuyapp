@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color appbarColor = Color(0xFFFFFFFF);
+  final Color appbarColor = Color(0xFFF98B83);
   final Color appbarElementColor = Colors.white;
   final Color appbarTextColor = Colors.white;
 

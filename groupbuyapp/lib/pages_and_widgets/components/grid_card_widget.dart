@@ -98,7 +98,7 @@ class GroupBuyCard extends StatelessWidget {
                     children: [
                       Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(top: 45, left: 6, bottom: 8, right: 6),
+                          padding: EdgeInsets.only(top: 50, left: 6, bottom: 8, right: 6),
                         ),
                         Flexible(
                             flex: 1,

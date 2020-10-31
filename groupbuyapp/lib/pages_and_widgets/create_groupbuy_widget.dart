@@ -1,14 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {
   final bool needsBackButton;
@@ -25,8 +24,8 @@ class CreateGroupBuyScreen extends StatefulWidget {
 class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _productWebsiteController = TextEditingController();
-  final TextEditingController _targetAmt = TextEditingController();
-  final TextEditingController _currentAmt = TextEditingController(); //TODO default 0
+  final TextEditingController _targetAmtController = TextEditingController();
+  final TextEditingController _currentAmtController = TextEditingController(); //TODO default 0
 
   DateTime endDate = DateTime.now().add(Duration(days: 3));
 
@@ -74,8 +73,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     } else {
       //clear inputs
       _productWebsiteController.clear();
-      _targetAmt.clear();
-      _currentAmt.clear();
+      _targetAmtController.clear();
+      _currentAmtController.clear();
       segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
     }
   }
@@ -85,7 +84,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       case 'amazon.sg':
         return 'Amazon-logo.png';
       case 'ezbuy.sg':
-        return 'ezbuy-logo.jpg';
+        return 'ezbuy-logo.png';
       default:
         return '';
     }
@@ -132,8 +131,18 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     );
   }
 
+  bool isNumeric(String s) {
+    if(s == null) {
+      return false;
+    }
+    return double.parse(s, (e) => null) != null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
         appBar: widget.needsBackButton
             ? backAppBar(context: context, title: "Start a jio!")
@@ -148,90 +157,142 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
               key: _formKey,
               child: Column(
                 children: [
-                  DropdownButton<String>(
-                    value: chosenSite,
-                    items: supportedSites.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (String value) {
-                      setState(() {
-                        chosenSite = value;
-                      });
-                    },
-                  ),
                   chosenSite == 'Others'
                       ? RoundedInputField(
-                        color: Color(0xFFFBE3E1),
-                        iconColor: Theme.of(context).primaryColor,
-                        hintText: "Product Website",
-                        controller: _productWebsiteController,
-                        validator: (String value) {
-                          if (value.isEmpty) {
-                            return 'Please enter product website';
-                          }
-                          if (Uri.parse(value).isAbsolute) {
-                            return 'Please enter a valid product website';
-                          }
-                          return null;
-                        },
-                      )
+                    icon: Icons.public,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Product Website",
+                    controller: _productWebsiteController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter product website';
+                      }
+                      if (Uri.parse(value).isAbsolute) {
+                        return 'Please enter a valid product website';
+                      }
+                      return null;
+                    },
+                  )
                       : Image.asset(
-                        'assets/${getLogoAssetName(chosenSite)}',
-                        height: 100.0,
-                      ),
+                    'assets/${getLogoAssetName(chosenSite)}',
+                    height: 100.0,
+                  ),
 
-                  Card(
-                      color: Colors.white,
-                      elevation: 10,
-                      shadowColor: Colors.black12,
-                      child: Column(
-                          children: [
-                            Text(
-                                'Target Amount'
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 6),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                      width: size.width * 0.8,
+                      child: DropdownButtonFormField<String>(
+                          decoration: InputDecoration(
+                            errorStyle: TextStyle(height: 0.3),
+                            prefixIcon: Icon(Icons.local_grocery_store, color: Theme.of(context).primaryColor),
+                            fillColor: Theme.of(context).accentColor.withAlpha(60),
+                            filled: true,
+                            enabledBorder: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(color: Color(0x00000000), width: 0.0),
                             ),
-                            TextField(
-                              keyboardType: TextInputType.number,
-                              controller: _targetAmt,
+                            focusedBorder: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
                             ),
-                            ]
+                            border: new OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(25.0),
+                              borderSide: const BorderSide(color: Colors.red, width: 1.0),
+                            ),
+
+                          ),
+                          value: chosenSite,
+                          items: supportedSites.map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String value) {
+                            setState(() {
+                              chosenSite = value;
+                            });
+                          },
                         )
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Current Amount'
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.number,
-                                controller: _currentAmt,
-                              ),
-                            ]
-                        )
-                    ),
-                    Card(
-                        color: Colors.white,
-                        elevation: 10,
-                        shadowColor: Colors.black12,
-                        child: Column(
-                            children: [
-                              Text(
-                                  'Date end'
-                              ),
-                              InputDatePickerFormField(
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2025),
-                                initialDate: endDate,
-                              ),
-                            ]
-                        )
-                    ),
+                  ),
+
+                  RoundedInputField(
+                    icon: Icons.pending_rounded,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Target Amount",
+                    controller: _targetAmtController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter target amount';
+                      }
+                      if (isNumeric(value)) {
+                        return 'Please enter a valid target amount';
+                      }
+                      return null;
+                    },
+                  ),
+
+                  RoundedInputField(
+                    icon: Icons.monetization_on,
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    hintText: "Current Amount",
+                    controller: _currentAmtController,
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return 'Please enter current amount';
+                      }
+                      if (isNumeric(value)) {
+                        return 'Please enter a valid current amount';
+                      }
+                      return null;
+                    },
+                  ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTimeSeparate,
+                dateMask: 'd MMM, yyyy',
+                initialValue: DateTime.now().toString(),
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                icon: Icon(Icons.event),
+                dateLabelText: 'Date',
+                timeLabelText: "Hour",
+                selectableDayPredicate: (date) {
+                  // Disable weekend days to select from the calendar
+                  if (date.weekday == 6 || date.weekday == 7) {
+                    return false;
+                  }
+
+                  return true;
+                },
+                onChanged: (val) => print(val),
+                validator: (val) {
+                  print(val);
+                  return null;
+                },
+                onSaved: (val) => print(val),
+              ),
+
+                    // Card(
+                    //     color: Colors.white,
+                    //     elevation: 10,
+                    //     shadowColor: Colors.black12,
+                    //     child: Column(
+                    //         children: [
+                    //           Text(
+                    //               'Date end'
+                    //           ),
+                    //           InputDatePickerFormField(
+                    //             firstDate: DateTime(2020),
+                    //             lastDate: DateTime(2025),
+                    //             initialDate: endDate,
+                    //           ),
+                    //         ]
+                    //     )
+                    // ),
                     _addressAndSubmitPart()
                   ]
               )
