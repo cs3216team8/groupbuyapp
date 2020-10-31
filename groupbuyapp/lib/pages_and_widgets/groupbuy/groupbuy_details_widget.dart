@@ -197,7 +197,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020)); //fontSize: 15, fontWeight: FontWeight.normal);
+    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020), fontWeight: FontWeight.w500,); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
         actions: <Widget>[
