@@ -7,8 +7,8 @@ import 'dart:math';
 
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
-      TextStyle(fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
-  static const TextStyle titleStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'); //fontSize: 15, fontWeight: FontWeight.normal);
+      TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
+  static const TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   final GroupBuy groupBuy;
 
@@ -36,20 +36,20 @@ class GroupBuyCard extends StatelessWidget {
             decoration: new BoxDecoration(
               color: Color(0xFFFFFFFF),
               borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              border: Border.all(color: Color(0xFF810020), width: 0.7),
+              border: Border.all(color: Color(0xFFFFFFFF), width: 0),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 1,
-                  blurRadius: 1,
-                  offset: Offset(0.5,0.5), // changes position of shadow
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(1,1), // changes position of shadow
                 )
               ],
             ),
             child: Column(
                 children: <Widget>[
               Expanded(
-                flex: 30,
+                flex: 25,
                 child: Container(
                   child:this.groupBuy.storeLogo.startsWith('assets/')?
                     Image.asset(this.groupBuy.storeLogo):
@@ -59,28 +59,28 @@ class GroupBuyCard extends StatelessWidget {
                 )
               ),
               Expanded(
-                  flex: 70,
+                  flex: 75,
                   child: Container(
                     decoration: new BoxDecoration(
                       color: Color(0xFFFFFFFF),
                       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      border: Border.all(color: Color(0xFFFFFF), width: 0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 0,
-                          blurRadius: 1,
-                          offset: Offset(0, -0.3), // changes position of shadow
-                        )
-                      ],
                     ),
+
                         child: Column(
                     children: [
+                      const Divider(
+                        color: Color(0xFF810020),
+                        height: 10,
+                        thickness: 0.5,
+                        indent: 0,
+                        endIndent: 0,
+                      ),
                       Row(children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(top: 45, left: 6, bottom: 8, right: 6),
                         ),
                         Flexible(
+                            flex: 1,
                             child: new Text(
                               "${this.groupBuy.address.substring(0, addressLength)} ..",
                               style: titleStyle,
@@ -89,7 +89,7 @@ class GroupBuyCard extends StatelessWidget {
                       ]),
                       Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.all(6),
+                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top: 3),
                           child: Icon(
                             Icons.access_time_rounded,
                             color: Color(0xFF810020),
@@ -104,7 +104,7 @@ class GroupBuyCard extends StatelessWidget {
                       ]),
                       Row(children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 6),
+                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top:3 ),
                           child: Icon(
                             Icons.pending_rounded,
                             color: Color(0xFF810020),
@@ -120,7 +120,7 @@ class GroupBuyCard extends StatelessWidget {
                       Row(
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.only(left: 6, right: 6),
+                            padding: EdgeInsets.only(left: 6, top: 3,  bottom: 3, right: 6),
                             child: CircleAvatar(
                               radius: 15,
                               backgroundColor: Color(0xFF810020),
@@ -135,14 +135,6 @@ class GroupBuyCard extends StatelessWidget {
                             "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
                             style: textStyle,
                           ),
-                          Spacer(
-                            flex: 1,
-                          ),
-                          Text(
-                            "5.0", // TODO: ???.getUserRating(groupBuy.organiserId)
-                            style: textStyle,
-                          ),
-                          Icon(Icons.star, color: Color(0xFF810020)), // supposed to be star
                         ],
                       ),
                     ],
