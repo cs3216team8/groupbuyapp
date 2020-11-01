@@ -17,7 +17,10 @@ class _ChatListState extends State<ChatList> {
   @override
   Widget build(BuildContext context) {
     if (FirebaseAuth.instance.currentUser == null) {
-      segueToPage(context, LoginScreen());
+      segueWithLoginCheck(
+          context,
+          ChatList(),
+      );
     }
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
