@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
@@ -16,41 +17,43 @@ class ProfilePart extends StatelessWidget {
 
   Widget ownProfileSettings(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(width: 1, color: Theme.of(context).dividerColor)
-      ),
-      child: IconButton(
-        icon: Icon(Icons.settings),
-        onPressed: () {
-          segueToPage(context, ProfileSettingsScreen(profile: userProfile));
+      width: MediaQuery.of(context).size.width,
+      alignment: Alignment.center,
+        child:  GestureDetector(
+      onTap: () {
+        segueToPage(context, ProfileSettingsScreen(profile: userProfile));
         },
-      ),
+      child: Container(
+        padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+      child: new Text("EDIT PROFILE",
+          textAlign: TextAlign.center,
+          style: Styles.minorStyle
+      )))
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return Column(
       children: <Widget>[
         // TODO: stylistic background
         Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.only(top: 10.0),
-              padding: EdgeInsets.symmetric(vertical: 10.0),
+              margin: EdgeInsets.only(top: 5.0),
+              padding: EdgeInsets.only(bottom: 5.0, top: 20),
               child: Stack(
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        padding: EdgeInsets.only(left: 30.0),
                         child: CircleAvatar(
-                          radius: 50,
+                          radius: 43,
                           backgroundColor: Theme.of(context).primaryColor,
                           child: CircleAvatar(
-                            radius: 47,
+                            radius: 40,
                             backgroundImage: Image.network(userProfile.profilePicture).image,
                           ),
                         ),
@@ -58,29 +61,23 @@ class ProfilePart extends StatelessWidget {
                     ],
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       SizedBox(width: 140,),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 20,),
+                          SizedBox(height: 15,),
                           Container(
                             child: Text(
                               "${userProfile.name}",
-                              style: TextStyle(
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: Styles.nameStyle
                             ),
                           ),
+                          SizedBox(height: 5,),
                           Container(
                             child: Text(
                               "${userProfile.username}",
-                              style: TextStyle(
-                                fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style:Styles.usernameStyle
                             ),
                           ),
                           userProfile.rating == null
@@ -101,19 +98,19 @@ class ProfilePart extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(right: 31.0, top: 18.0),
-                        child: isMe ? ownProfileSettings(context) : Container(),
-                      ),
-                    ],
-                  )
                 ],)
+            ),
+
+            Row(
+              children: <Widget>[
+                Container(
+                  child: isMe ? ownProfileSettings(context) : Container(),
+                ),
+              ],
             ),
           ],
         ),
+
       ],
     );
   }
