@@ -119,7 +119,10 @@ class _ChatListState extends State<ChatList> {
                               .data()["chatRoomId"],
                         );
                       })
-                  : Container();
+                  : Container(
+                      child:
+                          Text("There are no group buys that you have joined."),
+                    );
             },
           );
         });

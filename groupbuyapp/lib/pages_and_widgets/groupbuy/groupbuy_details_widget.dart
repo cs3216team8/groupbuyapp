@@ -41,6 +41,7 @@ class GroupBuyInfo extends StatelessWidget {
     Map<String, dynamic> chatRoom = {
       "chatRoomId" : chatRoomId,
       "members": members,
+      "groupBuyId": groupBuyId,
     };
     await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
 
