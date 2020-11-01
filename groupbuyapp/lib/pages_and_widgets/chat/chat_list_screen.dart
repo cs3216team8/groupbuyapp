@@ -104,12 +104,15 @@ class _ChatListState extends State<ChatList> {
                             .replaceAll(currentUserId, "");
                         // print(usersSnapshot.data[senderId]);
                         // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: senderId).get();
-                        String username = usersSnapshot.data.documents
+
+                        dynamic userInfo = usersSnapshot.data.documents
                             .where((x) {
                               return x.documentID == senderId;
                             })
                             .toList()[0]
-                            .data()["username"];
+                            .data();
+                        String username = userInfo["username"];
+                        String profilePic = userInfo["profilePicture"];
                         return ChatRoomsTile(
                           userName: username,
                           chatRoomId: snapshot.data.documents[index]
@@ -141,7 +144,7 @@ class ChatRoomsTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        color: Colors.black26,
+        color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         child: Row(
           children: [
@@ -150,12 +153,15 @@ class ChatRoomsTile extends StatelessWidget {
               width: 30,
               decoration: BoxDecoration(
                   color: Colors.pink, borderRadius: BorderRadius.circular(30)),
-              child: Text(userName.substring(0, 1),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300)),
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 4),
+                child: Text(userName.substring(0, 1).toUpperCase(),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400)),
+              ),
             ),
             SizedBox(
               width: 12,
@@ -163,9 +169,9 @@ class ChatRoomsTile extends StatelessWidget {
             Text(userName,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 16,
-                    fontWeight: FontWeight.w300))
+                    fontWeight: FontWeight.w400))
           ],
         ),
       ),
