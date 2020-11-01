@@ -58,6 +58,12 @@ class Styles {
       fontSize: 18,
       fontWeight: FontWeight.bold,
       color: Color(0xFF800020),
-  ); //fontSize: 15, fontWeight: FontWeight.normal);
+  );
 
+  static const TextStyle popupButtonStyle = TextStyle(
+    fontFamily: 'WorkSans',
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  );
 }

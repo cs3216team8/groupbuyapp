@@ -69,11 +69,15 @@ class ProfilePart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                     Container(
-                      child: Text(
-                          "${userProfile.name}",
-                          style: Styles.nameStyle
-                      ),
-                    ),
+                      child:Flexible(
+                      flex: 1,
+                      child: new Text(
+                      "${userProfile.name}",
+                      style: Styles.nameStyle,
+                        textAlign:TextAlign.center,
+
+                      ))
+                    )
                 ]),
             SizedBox(height: 3,),
             Row(
@@ -89,25 +93,25 @@ class ProfilePart extends StatelessWidget {
               ]
             ),
             SizedBox(height: 5,),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-
-                children: [
-              userProfile.rating == null
-                  ? Container()
-                  : Container(
-                  child: RatingBarIndicator(
-                    rating: userProfile.rating,
-                    itemBuilder: (context, index) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
-                    ),
-                    itemCount: 5,
-                    itemSize: 30.0,
-                    direction: Axis.horizontal,
-                  )
-              )
-              ]),
+            // Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //
+            //     children: [
+            //   userProfile.rating == null
+            //       ? Container()
+            //       : Container(
+            //       child: RatingBarIndicator(
+            //         rating: userProfile.rating,
+            //         itemBuilder: (context, index) => Icon(
+            //           Icons.star,
+            //           color: Colors.amber,
+            //         ),
+            //         itemCount: 5,
+            //         itemSize: 30.0,
+            //         direction: Axis.horizontal,
+            //       )
+            //   )
+            //   ]),
             SizedBox(height: 10,),
             Row(
               children: <Widget>[

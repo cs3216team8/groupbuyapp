@@ -141,14 +141,15 @@ class TextFieldContainer extends StatelessWidget {
 
 class RoundedButton extends StatelessWidget {
   final String text;
+  final TextStyle textStyle;
   final Function onPress;
-  final Color color, textColor;
+  final Color color;
   const RoundedButton({
     Key key,
     this.text,
+    this.textStyle,
     this.onPress,
     this.color = Colors.black26,
-    this.textColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -157,16 +158,16 @@ class RoundedButton extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-      width: (size.width * 0.8),
+      width: size.width * 0.8,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(29),
         child: FlatButton(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
           color: color,
           onPressed: onPress,
           child: Text(
             text,
-            style: TextStyle(color: textColor),
+            style: textStyle,
           ),
         ),
       ),

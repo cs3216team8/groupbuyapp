@@ -100,8 +100,11 @@ class OrganisedGroupBuyDefaultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Container(
+        alignment: Alignment.center,
         child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SizedBox(height: 20.0,),
         isMe()
@@ -124,7 +127,7 @@ class OrganisedGroupBuyDefaultScreen extends StatelessWidget {
                 onPressed: () => segueToPage(context, CreateGroupBuyScreen(needsBackButton: true,)),
                 textColor: Colors.white,
                 child: Text(
-                    'Organise one',
+                    'Organise one!',
                     style: TextStyle(fontSize: 20)
                 )
             ),
@@ -152,6 +155,7 @@ class OrganisedGroupBuyDefaultScreen extends StatelessWidget {
         )
 
       ],
+    )
     )
     );
   }

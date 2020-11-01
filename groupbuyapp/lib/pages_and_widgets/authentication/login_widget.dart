@@ -224,6 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   RoundedButton(
                     color: Theme.of(context).primaryColor,
                     text: "LOGIN WITH EMAIL",
+                    textStyle: TextStyle(color:Colors.white),
                     onPress: onPressUsernameAndPasswordLogin
                   ),
                   SizedBox(height: 10),

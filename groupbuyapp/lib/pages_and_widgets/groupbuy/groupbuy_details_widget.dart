@@ -272,30 +272,42 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+
             RaisedButton(
-              padding: EdgeInsets.all(10.0),
+              elevation: 15,
+              padding: EdgeInsets.all(14.0),
               shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
+                    borderRadius: BorderRadius.circular(10.0),
                 ),
-              color: Theme.of(context).accentColor,
-                elevation: 10,
+              color: Theme.of(context).primaryColor,
                 onPressed: () => onTapBroadcast(context),
-                child: Text("Broadcast", style: Styles.subtitleStyle),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.chat_bubble, color: Colors.white),
+                  Text(" BROADCAST", style: Styles.popupButtonStyle),
+                ],
+              ),
             ),
           ]
         )
         : widget.groupBuy.isOpen()
           ? hasRequested
             ? RaisedButton(
-              color: Theme.of(context).accentColor,
-              elevation: 10,
+              padding: EdgeInsets.all(15.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        color: Theme.of(context).primaryColor,
+              elevation: 15,
               onPressed: () => onTapChat(context),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.chat_bubble),
-                  Text("Chat"),
+                  Icon(Icons.chat_bubble, color: Colors.white),
+                  Text(" CHAT", style: Styles.popupButtonStyle),
                 ],
               ),
             )
@@ -303,26 +315,36 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RaisedButton(
-                  color: Theme.of(context).accentColor,
+                  elevation: 15,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
+                  ),
+                  color: Theme.of(context).primaryColor,
                   onPressed: () => onTapChat(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.chat_bubble),
-                      Text("Chat"),
+                      Icon(Icons.chat_bubble, color: Colors.white),
+                      Text(" CHAT", style: Styles.popupButtonStyle),
                     ],
                   ),
                 ),
                 RaisedButton(
-                  color: Theme.of(context).accentColor,
+                  elevation: 15,
+                  padding: EdgeInsets.all(15.0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+                  ),
+                  color: Theme.of(context).primaryColor,
                   onPressed: () => onTapJoin(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.add_business),
-                      Text("Join"),
+                      Icon(Icons.add_business, color: Colors.white),
+                      Text(" JOIN", style: Styles.popupButtonStyle),
                     ],
                   ),
                 ),
@@ -546,17 +568,17 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                             height: 5.5,
                                           ),
                                           SizedBox(height: 10,),
+                                          Container(
+                                            padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                                'YOUR REQUESTS',
+                                                style: Styles.subtitleStyle
+                                            ),
+                                          ),
                                           hasRequested
                                               ? Column(
                                             children: [
-                                              Container(
-                                                padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                    'YOUR REQUESTS',
-                                                    style: Styles.subtitleStyle
-                                                ),
-                                              ),
                                               getRequestPreview(_futureRequests[0])
                                             ],
                                           )
