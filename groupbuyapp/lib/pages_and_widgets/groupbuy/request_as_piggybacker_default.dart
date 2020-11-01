@@ -11,7 +11,6 @@ class RequestAsPiggyBackerDefaultScreen extends StatelessWidget {
         padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
         child: Column(
           children: <Widget>[
-            SizedBox(height: 20.0,),
             Container(
               child: SvgPicture.asset(
                 'assets/undraw_empty_xct9.svg',
@@ -22,7 +21,7 @@ class RequestAsPiggyBackerDefaultScreen extends StatelessWidget {
             ),
 
             Text(
-              'You haven\'t requested yet!',
+              'You have yet to join this group buy. Chat or Join now!',
               style: Styles.emptyStyle,
               textAlign: TextAlign.center,
             ),
