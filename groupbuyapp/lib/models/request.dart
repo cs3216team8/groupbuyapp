@@ -63,7 +63,7 @@ class Request {
       case RequestStatus.accepted:
         return 'accepted';
       default:
-        throw("nani not supposed to be here");
+        throw("${status.toString()} -- nani not supposed to be here");
     }
   }
 
@@ -76,7 +76,7 @@ class Request {
   }
 
   String getStatus() {
-    return status.toString().split('.').last;
+    return stringFromRequestStatus(status);
   }
 
   double getTotalAmount() {

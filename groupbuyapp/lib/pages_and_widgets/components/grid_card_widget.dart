@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
@@ -17,7 +17,7 @@ class GroupBuyCard extends StatelessWidget {
 
   GroupBuyCard(this.groupBuy);
 
-  void _openDetailedGroupBuy(BuildContext context, UserProfile organiserProfile) {
+  void _openDetailedGroupBuy(BuildContext context, Profile organiserProfile) {
     segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy,organiserProfile: organiserProfile, isClosed: false,));
   }
 
@@ -32,7 +32,7 @@ class GroupBuyCard extends StatelessWidget {
           shadowColor: Color(0x00000000),
           child: FutureBuilder(
             future: ProfileStorage.instance.getUserProfile(groupBuy.organiserId),
-            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
               if (snapshot.hasError) {
                 return FailedToLoadCard();
               }
@@ -53,7 +53,7 @@ class GroupBuyCard extends StatelessWidget {
     );
   }
 
-  Widget groupBuyCardInsides(BuildContext context, UserProfile profile) {
+  Widget groupBuyCardInsides(BuildContext context, Profile profile) {
     int addressLength = min(20,this.groupBuy.address.length);
     return InkWell(
           splashColor: Theme.of(context).primaryColor.withAlpha(30),

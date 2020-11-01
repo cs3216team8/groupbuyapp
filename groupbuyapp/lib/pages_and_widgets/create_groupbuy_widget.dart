@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'components/custom_appbars.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -57,7 +57,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   // }
 
   void fetchAddresses() async {
-    Future<UserProfile> fprof = ProfileStorage.instance.getUserProfile(FirebaseAuth.instance.currentUser.uid);
+    Future<Profile> fprof = ProfileStorage.instance.getUserProfile(FirebaseAuth.instance.currentUser.uid);
     fprof.then((prof) => {
       setState(() {
         userAddresses = prof.addresses;

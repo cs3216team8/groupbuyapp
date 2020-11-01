@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -98,7 +98,7 @@ class ChatStorage {
   }
 
   // For broadcast
-  broadcast(String msg, GroupBuy groupBuy, UserProfile organiserProfile) async {
+  broadcast(String msg, GroupBuy groupBuy, Profile organiserProfile) async {
     print("hallo");
     await createChatRoomForPiggyBackers(groupBuy);
     QuerySnapshot chatRooms = await FirebaseFirestore.instance
@@ -108,7 +108,7 @@ class ChatStorage {
 
     chatRooms.docs.forEach((element) {
       String chatRoomId = element.get("chatRoomId");
-      ChatUser chatUser = ChatUser(uid: organiserProfile.id,
+      ChatUser chatUser = ChatUser(uid: organiserProfile.userId,
           name: organiserProfile.username,
           avatar: organiserProfile.profilePicture);
       ChatMessage message = ChatMessage(text: msg, user: chatUser);

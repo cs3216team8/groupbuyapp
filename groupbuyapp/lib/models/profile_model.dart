@@ -1,5 +1,5 @@
-class UserProfile {
-  final String id;
+class Profile {
+  final String userId;
   final String name;
   final String username;
   final String profilePicture;
@@ -11,8 +11,8 @@ class UserProfile {
   double rating; //TODO @agnes
   int reviewCount;
 
-  UserProfile (
-      this.id,
+  Profile (
+      this.userId,
       this.name,
       this.username,
       this.profilePicture,
@@ -29,8 +29,8 @@ class UserProfile {
     return "Verified, very active";
   }
 
-  static UserProfile getDummyData() {
-    return new UserProfile (
+  static Profile getDummyData() {
+    return new Profile (
         "3434sgdfga",
         "Daniel Wong",
         "dawo",

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/review_model.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 
 class ProfileStorage {
 
@@ -11,12 +11,12 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
 
-  Future<UserProfile> getUserProfile(String userId) async {
+  Future<Profile> getUserProfile(String userId) async {
 
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    UserProfile userProfile = new UserProfile(
+    Profile userProfile = new Profile(
         userId,
         document.data()['name'],
         document.data()['username'],
@@ -38,8 +38,8 @@ class ProfileStorage {
     return doc.exists;
   }
 
-  Future<void> createOrUpdateUserProfile(UserProfile userProfile) async {
-    String userId = userProfile.id;
+  Future<void> createOrUpdateUserProfile(Profile userProfile) async {
+    String userId = userProfile.userId;
     return usersRef.doc(userId).set({
       'name': userProfile.name,
       'username': userProfile.username,
@@ -50,9 +50,10 @@ class ProfileStorage {
       'groupBuyIds': userProfile.groupBuyIds,
       'rating': userProfile.rating,
       'reviewCount': userProfile.reviewCount,
-    })
-        .then((value) => print("User profile edited"))
-        .catchError((error) => print("Failed to edit user: $error"));
+    }).then((value) => print("User profile created/updated successfully."))
+        .catchError((error) {
+          throw Exception(error.toString());
+    });
   }
 
   Future<void> addReview(Review review, String userId) async {

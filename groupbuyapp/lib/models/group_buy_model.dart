@@ -32,6 +32,10 @@ class GroupBuy {
     return endTimestamp.toDate().isAfter(DateTime.now());
   }
 
+  bool isOpen() {
+    return status == GroupBuyStatus.open && isPresent();
+  }
+
   static GroupBuyStatus groupBuyStatusFromString(String val) {
     switch (val) {
       case 'cancelled':

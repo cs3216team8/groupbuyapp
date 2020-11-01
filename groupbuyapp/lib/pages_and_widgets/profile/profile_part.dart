@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
-  final UserProfile userProfile;
+  final Profile userProfile;
 
   ProfilePart({
     Key key,
