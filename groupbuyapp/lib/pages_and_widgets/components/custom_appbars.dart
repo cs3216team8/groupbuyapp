@@ -112,7 +112,7 @@ PreferredSize regularAppBar({
       actions: [
         IconButton(
             icon: Icon(Icons.chat_bubble_outline_rounded, color: iconColor),
-            onPressed: () => segueToPage(context, ChatList())
+            onPressed: () => segueWithLoginCheck(context, ChatList())
         ),
       ],
     ),
