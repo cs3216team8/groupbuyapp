@@ -141,14 +141,15 @@ class TextFieldContainer extends StatelessWidget {
 
 class RoundedButton extends StatelessWidget {
   final String text;
+  final TextStyle textStyle;
   final Function onPress;
-  final Color color, textColor;
+  final Color color;
   const RoundedButton({
     Key key,
     this.text,
+    this.textStyle,
     this.onPress,
     this.color = Colors.black26,
-    this.textColor = Colors.white,
   }) : super(key: key);
 
   @override
@@ -166,7 +167,7 @@ class RoundedButton extends StatelessWidget {
           onPressed: onPress,
           child: Text(
             text,
-            style: TextStyle(color: textColor),
+            style: textStyle,
           ),
         ),
       ),

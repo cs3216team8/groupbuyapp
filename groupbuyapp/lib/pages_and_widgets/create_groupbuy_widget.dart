@@ -349,15 +349,11 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           style: TextStyle(color: Colors.black),
                         )),
                   ),
-
-                  RaisedButton(
-                    padding: EdgeInsets.all(10.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    color: Theme.of(context).accentColor,
-                    onPressed: () => createGroupBuy(context),
-                    child: Text("Create", style: subtitleStyle),
+                  RoundedButton(
+                      color: Theme.of(context).primaryColor,
+                      text: "CREATE",
+                      textStyle: subtitleStyle,
+                      onPress:() => createGroupBuy(context)
                   ),
                 ]
               )
