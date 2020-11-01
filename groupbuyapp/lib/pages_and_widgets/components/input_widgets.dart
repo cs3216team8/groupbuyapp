@@ -39,10 +39,10 @@ class RoundedInputField extends StatelessWidget {
               borderRadius: new BorderRadius.circular(25.0),
               borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
             ),
-          border: new OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(25.0),
-            borderSide: const BorderSide(color: Colors.red, width: 1.0),
-          ),
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(25.0),
+              borderSide: const BorderSide(color: Colors.red, width: 1.0),
+            ),
 
         ),
       ),
@@ -83,10 +83,11 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
         validator: widget.validator,
         controller: widget.controller,
         decoration: InputDecoration(
-          hintText: widget.hintText,
+          errorStyle: TextStyle(height: 0.3),
           prefixIcon: Icon(Icons.lock, color: Theme.of(context).primaryColor),
           fillColor: Theme.of(context).accentColor.withAlpha(60),
           filled: true,
+          hintText: widget.hintText,
           suffixIcon: IconButton(
             icon: Icon(
               _showPassword ? Icons.visibility : Icons.visibility_off,
@@ -103,6 +104,10 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
             borderSide: const BorderSide(color: Color(0x00000000), width: 0.0),
           ),
           focusedBorder: new OutlineInputBorder(
+            borderRadius: new BorderRadius.circular(25.0),
+            borderSide: const BorderSide(color: Colors.red, width: 1.0),
+          ),
+          border: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(25.0),
             borderSide: const BorderSide(color: Colors.red, width: 1.0),
           ),
