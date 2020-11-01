@@ -11,7 +11,7 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
-import 'package:groupbuyapp/utils/loginCheck.dart';
+import 'package:groupbuyapp/utils/authCheck.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {

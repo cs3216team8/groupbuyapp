@@ -16,27 +16,50 @@ class GroupBuy {
   final String address;
   List<Buy> buys;
 
-  GroupBuy(
-      this.id,
-      this.storeName,
-      this.storeWebsite,
-      this.storeLogo,
-      this.currentAmount,
-      this.targetAmount,
-      this.endTimestamp,
-      this.organiserId,
-      this.deposit,
-      this.description,
-      this.address
-      );
+  GroupBuyStatus status;
+
+  GroupBuy(this.id, this.storeName, this.storeWebsite, this.storeLogo,
+      this.currentAmount, this.targetAmount, this.endTimestamp,
+      this.organiserId, this.deposit, this.description, this.address, this.status,);
+
+  GroupBuy.newOpenBuy(this.id, this.storeName, this.storeWebsite, this.storeLogo,
+      this.currentAmount, this.targetAmount, this.endTimestamp,
+      this.organiserId, this.deposit, this.description, this.address,) {
+    status = GroupBuyStatus.open;
+  }
 
   bool isPresent() {
     return endTimestamp.toDate().isAfter(DateTime.now());
   }
 
+  static GroupBuyStatus groupBuyStatusFromString(String val) {
+    switch (val) {
+      case 'cancelled':
+        return GroupBuyStatus.cancelled;
+      case 'closed':
+        return GroupBuyStatus.closed;
+      case 'open':
+        return GroupBuyStatus.open;
+      default:
+        throw("${val} is not a supported group buy status");
+    }
+  }
+
+  static String stringFromGroupBuyStatus(GroupBuyStatus status) {
+    switch (status) {
+      case GroupBuyStatus.cancelled:
+        return 'cancelled';
+      case GroupBuyStatus.closed:
+        return 'closed';
+      case GroupBuyStatus.open:
+        return 'open';
+      default:
+        throw("nani not supposed to be here");
+    }
+  }
 
   static GroupBuy getDummyData() {
-    return new GroupBuy(
+    return new GroupBuy.newOpenBuy(
         "asdasdasdasd",
         "amazon.sg",
         "https://www.amazon.sg/",
@@ -50,11 +73,9 @@ class GroupBuy {
         "17 Dover Cres 130017"
     );
   }
-
   static List<GroupBuy> getDummyDataAllGroupBuys() {
     return [getDummyData(), getDummyData(), getDummyData()];
   }
-
   static List<Buy> getDummyDataBuysOfGroupBuy() {
     return [Buy.getDummyData(), Buy.getDummyData(), Buy.getDummyData()];
   }
@@ -111,4 +132,8 @@ class GroupBuy {
     return this.currentAmount/this.targetAmount;
   }
 
+}
+
+enum GroupBuyStatus {
+  open, closed, cancelled
 }

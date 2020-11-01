@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flushbar/flushbar.dart';
+
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/chat_room.dart';
 import 'package:groupbuyapp/models/request.dart';
@@ -13,12 +14,12 @@ import 'package:groupbuyapp/storage/chat_storage.dart';
 
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
@@ -31,6 +32,7 @@ class GroupBuyInfo extends StatefulWidget {
   bool isClosed;
 
   //TODO storage like as listings widget
+
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
@@ -136,8 +138,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           onPressed: () {
                             String msg = broadcastMsgController.text;
                             if (msg.isEmpty) {
-                              showErrorFlushbar(
-                                  "Your broadcast message should not be empty!");
+                              showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
                               return;
                             }
                             // hasSubmittedEmpty = false;
@@ -156,6 +157,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           });
     });
   }
+
 
   void showErrorFlushbar(String message) {
     Flushbar(

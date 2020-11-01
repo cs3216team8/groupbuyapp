@@ -25,7 +25,7 @@ class RequestCard extends StatelessWidget {
     await GroupBuyStorage.instance.confirmRequest(this.groupBuy.id, this.request);
   }
 
-  Widget _logoutConfirmation(BuildContext context) {
+  Widget _showDetailedRequest(BuildContext context) {
     return new AlertDialog(
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,12 +51,8 @@ class RequestCard extends StatelessWidget {
               ),
             ],
           ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: request.getItems().length,
-            itemBuilder: (context, index) {
-              return ItemDisplay(item: request.getItems()[index]);
-            },
+          Column(
+            children: request.getItems().map((item) => ItemDisplay(item: item)).toList(),
           ),
           isOrganiser? Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +107,7 @@ class RequestCard extends StatelessWidget {
   void openDetailedRequest(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) => _logoutConfirmation(context),
+      builder: (BuildContext context) => _showDetailedRequest(context),
     );
   }
 

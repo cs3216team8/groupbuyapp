@@ -90,7 +90,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     String logo = 'assets/' + getLogoAssetName(chosenSite);
 
-    GroupBuy groupBuy = GroupBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
+    GroupBuy groupBuy = GroupBuy.newOpenBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
     await GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
