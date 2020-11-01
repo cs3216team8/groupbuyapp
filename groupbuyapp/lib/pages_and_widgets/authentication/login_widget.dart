@@ -1,3 +1,4 @@
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_signup_option_widget.dart';
@@ -35,6 +36,60 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   String emailErrorMessage = '';
   String passwordErrorMessage = '';
+  List<Widget> socialLoginWidgets = <Widget>[];
+
+  @override
+  void didChangeDependencies() {
+    loadSocialLoginWidgets();
+  }
+
+  Future<void> loadSocialLoginWidgets() async {
+    List socialLoginWidgets = <Widget>[];
+    socialLoginWidgets.addAll(<Widget>[
+      SocialIcon(
+          icon: SvgPicture.asset(
+            "assets/facebook.svg",
+            height: 20,
+            width: 20,
+            color: Colors.white,
+          ),
+          outlineColor: Color.fromRGBO(59, 89, 152, 1),
+          backgroundColor: Color.fromRGBO(59, 89, 152, 1),
+          onPress: onPressFacebookLogin
+      ),
+      SizedBox(width: 5),
+      SocialIcon(
+          icon: SvgPicture.asset(
+            "assets/google.svg",
+            height: 20,
+            width: 20,
+          ),
+          outlineColor: Theme.of(context).accentColor,
+          onPress: onPressGoogleLogin
+      ),
+    ]);
+
+    if (await AppleSignIn.isAvailable()) {
+      socialLoginWidgets.addAll(<Widget>[
+        SizedBox(width: 5),
+        SocialIcon(
+            icon: SvgPicture.asset(
+                "assets/apple.svg",
+                height: 20,
+                width: 20,
+                color: Colors.white
+            ),
+            outlineColor: Colors.black,
+            backgroundColor: Colors.black,
+            onPress: onPressAppleLogin
+        )
+      ]);
+    }
+    print("Loaded Social Widgets");
+    setState(() {
+      this.socialLoginWidgets = socialLoginWidgets;
+    });
+  }
 
   @override
   void dispose() {
@@ -133,41 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: size.height * 0.03,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SocialIcon(
-                        icon: SvgPicture.asset(
-                          "assets/facebook.svg",
-                          height: 20,
-                          width: 20,
-                          color: Colors.white,
-                        ),
-                        outlineColor: Color.fromRGBO(59, 89, 152, 1),
-                        backgroundColor: Color.fromRGBO(59, 89, 152, 1),
-                        onPress: onPressFacebookLogin
-                      ),
-                      SizedBox(width: 5),
-                      SocialIcon(
-                        icon: SvgPicture.asset(
-                          "assets/google.svg",
-                          height: 20,
-                          width: 20,
-                        ),
-                        outlineColor: Theme.of(context).accentColor,
-                        onPress: onPressGoogleLogin
-                      ),
-                      SizedBox(width: 5),
-                      SocialIcon(
-                        icon: SvgPicture.asset(
-                          "assets/apple.svg",
-                          height: 20,
-                          width: 20,
-                          color: Colors.white
-                        ),
-                        outlineColor: Colors.black,
-                        backgroundColor: Colors.black,
-                        onPress: onPressAppleLogin
-                      )
-                    ],
+                    children: socialLoginWidgets
                   ),
                   SizedBox(height: 6),
                   OrDivider(

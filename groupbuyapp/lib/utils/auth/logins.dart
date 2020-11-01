@@ -1,5 +1,4 @@
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -51,8 +50,6 @@ class Logins {
       }
 
       return userCredential;
-    } else {
-      throw Exception("Error with Google sign-in");
     }
   }
 
@@ -84,7 +81,6 @@ class Logins {
         break;
 
       case FacebookLoginStatus.cancelledByUser:
-        throw Exception("You have cancelled Facebook login.");
         break;
 
       case FacebookLoginStatus.error:
@@ -94,9 +90,6 @@ class Logins {
   }
 
   static Future<UserCredential> signInWithApple() async {
-    if (!await AppleSignIn.isAvailable()) {
-      throw Exception("Apple Sign-in not available");
-    }
 
     final AuthorizationResult result = await AppleSignIn.performRequests([
       AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
@@ -116,8 +109,8 @@ class Logins {
         if (!isExistingUser) {
           final profile = ProfileBuilder.buildNewUserProfile(
               userId: userCredential.user.uid,
-              name: userCredential.user.displayName,
-              username: ProfileBuilder.createUsernameFromName(userCredential.user.displayName),
+              name: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
+              username: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
               email: userCredential.user.email,
           );
           await ProfileStorage.instance.createOrUpdateUserProfile(profile);
@@ -127,7 +120,6 @@ class Logins {
         break;
 
       case AuthorizationStatus.cancelled:
-        throw Exception("You have cancelled Sign-in with Apple.");
         break;
 
       case AuthorizationStatus.error:

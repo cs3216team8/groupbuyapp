@@ -6,7 +6,15 @@ class ProfileBuilder {
   static String createUsernameFromName (String name) {
     String username = name.split(" ")[0];
     if (username.length > 12) {
-      username = username.substring(0, 11);
+      username = username.substring(0, 12);
+    }
+    return username;
+  }
+
+  static String createUsernameFromEmail (String email) {
+    String username = email.split("@")[0];
+    if (username.length > 12) {
+      username = username.substring(0, 12);
     }
     return username;
   }
