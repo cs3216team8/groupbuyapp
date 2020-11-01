@@ -29,7 +29,8 @@ class GroupBuyStorage {
           'organiserId': groupBuy.organiserId,
           'deposit': groupBuy.deposit,
           'description': groupBuy.description,
-          'address': groupBuy.address
+          'address': groupBuy.address,
+          'status': GroupBuy.stringFromGroupBuyStatus(groupBuy.status),
     });
 
     batch.commit();
@@ -47,7 +48,8 @@ class GroupBuyStorage {
       'organiserId': groupBuy.organiserId,
       'deposit': groupBuy.deposit,
       'description': groupBuy.description,
-      'address': groupBuy.address
+      'address': groupBuy.address,
+      'status': GroupBuy.stringFromGroupBuyStatus(groupBuy.status),
     })
         .then((value) => print("Group buy edited"))
         .catchError((error) => print("Failed to edit group buy: $error"));
@@ -74,7 +76,9 @@ class GroupBuyStorage {
             document.data()['organiserId'],
             document.data()['deposit'],
             document.data()['description'],
-            document.data()['address']
+            document.data()['address'],
+
+            GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
     });
@@ -280,13 +284,14 @@ class GroupBuyStorage {
             document.data()['organiserId'],
             document.data()['deposit'],
             document.data()['description'],
-            document.data()['address']
+            document.data()['address'],
+
+            GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
     });
   }
 
-  // TODO??????
   Future<Stream<List<GroupBuy>>> getGroupBuysPiggyBackedOnBy(String userId) async {
     DocumentSnapshot currentUser = await FirebaseFirestore.instance.collection(
         'users')
@@ -310,7 +315,9 @@ class GroupBuyStorage {
               document.data()['organiserId'],
               document.data()['deposit'],
               document.data()['description'],
-              document.data()['address']
+              document.data()['address'],
+
+              GroupBuy.groupBuyStatusFromString(document.data()['status']),
           );
         }).toList();
       });
