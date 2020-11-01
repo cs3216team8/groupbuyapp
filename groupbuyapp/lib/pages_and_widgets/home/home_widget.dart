@@ -17,56 +17,56 @@ class _HomeScreenState extends State<HomeScreen> {
   final Color appbarElementColor = Colors.white;
   final Color appbarTextColor = Colors.white;
 
-  // SEARCH FUNCTIONALITY
-  TextEditingController _searchQueryController = TextEditingController();
-  String searchQuery = "Search query";
+  // // SEARCH FUNCTIONALITY
+  // TextEditingController _searchQueryController = TextEditingController();
+  // String searchQuery = "Search query";
 
-  Widget _buildSearchField() {
-    return TextField(
-      controller: _searchQueryController,
-      autofocus: false,
-      decoration: InputDecoration(
-        hintText: "Search Piggybuy...",
-        border: InputBorder.none,
-        hintStyle: TextStyle(color: appbarTextColor.withOpacity(0.7)),
-      ),
-      style: TextStyle(color: appbarTextColor, fontSize: 16.0),
-      onChanged: (query) => updateSearchQuery(query),
-    );
-  }
+  // Widget _buildSearchField() {
+  //   return TextField(
+  //     controller: _searchQueryController,
+  //     autofocus: false,
+  //     decoration: InputDecoration(
+  //       hintText: "Search Piggybuy...",
+  //       border: InputBorder.none,
+  //       hintStyle: TextStyle(color: appbarTextColor.withOpacity(0.7)),
+  //     ),
+  //     style: TextStyle(color: appbarTextColor, fontSize: 16.0),
+  //     onChanged: (query) => updateSearchQuery(query),
+  //   );
+  // }
+  //
+  // List<Widget> _buildActions() {
+  //     return <Widget>[
+  //       IconButton(
+  //         icon: Icon(Icons.clear, color: appbarElementColor,),
+  //         onPressed: () {
+  //           if (_searchQueryController == null ||
+  //               _searchQueryController.text.isEmpty) {
+  //             // Navigator.pop(context);
+  //             return;
+  //           }
+  //           _clearSearchQuery();
+  //         },
+  //       ),
+  //       IconButton(
+  //           icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
+  //           onPressed: () => segueWithLoginCheck(context, ChatList())
+  //       ),
+  //     ];
+  // }
 
-  List<Widget> _buildActions() {
-      return <Widget>[
-        IconButton(
-          icon: Icon(Icons.clear, color: appbarElementColor,),
-          onPressed: () {
-            if (_searchQueryController == null ||
-                _searchQueryController.text.isEmpty) {
-              // Navigator.pop(context);
-              return;
-            }
-            _clearSearchQuery();
-          },
-        ),
-        IconButton(
-            icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-            onPressed: () => segueWithLoginCheck(context, ChatList())
-        ),
-      ];
-  }
-
-  void updateSearchQuery(String newQuery) {
-    setState(() {
-      searchQuery = newQuery;
-    });
-  }
-
-  void _clearSearchQuery() {
-    setState(() {
-      _searchQueryController.clear();
-      updateSearchQuery("");
-    });
-  }
+  // void updateSearchQuery(String newQuery) {
+  //   setState(() {
+  //     searchQuery = newQuery;
+  //   });
+  // }
+  //
+  // void _clearSearchQuery() {
+  //   setState(() {
+  //     _searchQueryController.clear();
+  //     updateSearchQuery("");
+  //   });
+  // }
 
   Future<void> _getData() async {
     setState(() {
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-                onPressed: () => segueToPage(context, ChatList())
+                onPressed: () => segueWithLoginCheck(context, ChatList())
             ),
           ],
           // title: _buildSearchField(),
