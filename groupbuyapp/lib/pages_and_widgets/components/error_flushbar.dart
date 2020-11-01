@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-void showErrorFlushbar(BuildContext context, String title, String message) {
+void showFlushbar(BuildContext context, String title, String message, {bool isError=true}) {
   Flushbar(
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
@@ -10,7 +10,7 @@ void showErrorFlushbar(BuildContext context, String title, String message) {
       duration: Duration(seconds: 3),
       animationDuration: Duration(seconds: 1),
       borderRadius: 8,
-      backgroundColor: Color(0xFFF2B1AB),
+      backgroundColor: isError ? Color(0xFFF2B1AB) : Colors.green,
       dismissDirection: FlushbarDismissDirection.HORIZONTAL,
       title: title,
       message: message).show(context);

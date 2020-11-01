@@ -38,14 +38,15 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
   String chosenSite;
 
-  List<String> userAddresses = []; //['blash', 'bifbodauhaasfouabf wetawetw dfsge rywadfsy t qwr jg'];
+  final String newAddressPlaceholder = 'New address';
+  List<String> userAddresses = [];
 
   String chosenAddress;
 
   @override
   void initState() {
     chosenSite = supportedSites[0];
-    chosenAddress = "New address"; //userAddresses[0];
+    chosenAddress = newAddressPlaceholder;
     fetchAddresses();
   }
 
@@ -60,7 +61,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     fprof.then((prof) => {
       setState(() {
         userAddresses = prof.addresses;
-        userAddresses.add('New address');
+        userAddresses.add(newAddressPlaceholder);
       })
     });
   }
@@ -68,22 +69,28 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   void createGroupBuy(BuildContext context) async {
 
     if (chosenAddress == null) {
-      showErrorFlushbar(context, "Invalid input", "Address cannot be empty!");
+      showFlushbar(context, "Invalid input", "Address cannot be empty!");
       return;
     }
     if (!_formKey.currentState.validate()) {
       return;
     }
 
-    print("send create request to db"); //TODO input validation + hook storage
-
     String storeName = chosenSite;
     if (chosenSite == 'Others') {
       storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
     }
 
-    print(chosenAddress);
-    GroupBuy groupBuy = GroupBuy("", storeName, storeName, "logo", double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, chosenAddress);
+    String addr;
+    if (chosenAddress == newAddressPlaceholder) {
+      addr = _addressController.text;
+    } else {
+      addr = chosenAddress;
+    }
+
+    String logo = getLogoAssetName(chosenSite);
+
+    GroupBuy groupBuy = GroupBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
     await GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
@@ -96,7 +103,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       _addressController.clear();
       _depositController.clear();
       _descrController.clear();
-      segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
+      // segueToPage(context, HomeScreen()); // TODO: redirect instead of pushing
+      showFlushbar(context, "Success!", "Find it in Me > As organiser.", isError: false);
     }
   }
 
@@ -107,7 +115,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       case 'ezbuy.sg':
         return 'ezbuy-logo.png';
       default:
-        return '';
+        return 'placeholder-image.png';
     }
   }
 
@@ -273,7 +281,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     controller: _descrController,
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'Please enter the deposit percentage';
+                        return 'Please enter a description or nil';
                       }
                         return null;
                       },
@@ -304,7 +312,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
                     hintText: "Address for meetup",
-                    controller: _productWebsiteController,
+                    controller: _addressController,
                     validator: (String value) {
                       if (value.isEmpty) {
                         return 'Please enter product website';
