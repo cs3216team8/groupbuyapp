@@ -21,9 +21,7 @@ class _ChatListState extends State<ChatList> {
       segueToPage(context, LoginScreen());
     }
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .primaryColor,
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -46,9 +44,7 @@ class _ChatListState extends State<ChatList> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).accentColor,
               ),
               child: Column(
                 children: <Widget>[
@@ -98,22 +94,28 @@ class _ChatListState extends State<ChatList> {
             builder: (context, snapshot) {
               return snapshot.hasData
                   ? ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    String senderId = snapshot.data.documents[index]
-                        .data()['chatRoomId']
-                        .toString()
-                        .replaceAll("_", "")
-                        .replaceAll(currentUserId, "");
-                    // print(usersSnapshot.data[senderId]);
-                    // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: senderId).get();
-                    return ChatRoomsTile(
-                      userName: "username",
-                      chatRoomId: snapshot.data.documents[index]
-                          .data()["chatRoomId"],
-                    );
-                  })
+                      itemCount: snapshot.data.documents.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        String senderId = snapshot.data.documents[index]
+                            .data()['chatRoomId']
+                            .toString()
+                            .replaceAll("_", "")
+                            .replaceAll(currentUserId, "");
+                        // print(usersSnapshot.data[senderId]);
+                        // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: senderId).get();
+                        String username = usersSnapshot.data.documents
+                            .where((x) {
+                              return x.documentID == senderId;
+                            })
+                            .toList()[0]
+                            .data()["username"];
+                        return ChatRoomsTile(
+                          userName: username,
+                          chatRoomId: snapshot.data.documents[index]
+                              .data()["chatRoomId"],
+                        );
+                      })
                   : Container();
             },
           );
@@ -134,8 +136,7 @@ class ChatRoomsTile extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    ChatScreen(
+                builder: (context) => ChatScreen(
                       chatRoomId: chatRoomId,
                     )));
       },
