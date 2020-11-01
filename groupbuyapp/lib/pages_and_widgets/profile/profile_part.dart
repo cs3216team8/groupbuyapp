@@ -42,26 +42,32 @@ class ProfilePart extends StatelessWidget {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(top:30, bottom: 20),
-                 child: CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: CircleAvatar(
-                      radius: 47,
-                      backgroundImage: Image.network(userProfile.profilePicture).image,
-                    ),
-                  )
-                ),
-              ],
+            Container(
+                constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
+                decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
+                child:
+                Stack(
+                    alignment: Alignment.topCenter,
+                    overflow: Overflow.visible,
+                    children: [
+                      Positioned(
+                          bottom: -50,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: CircleAvatar(
+                              radius: 47,
+                              backgroundImage: Image.network(userProfile.profilePicture).image,
+                            ),
+                          )
+                      )
+                    ]
+                )
             ),
+            SizedBox(height: 60,),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                    SizedBox(height: 15,),
                     Container(
                       child: Text(
                           "${userProfile.name}",
@@ -69,11 +75,11 @@ class ProfilePart extends StatelessWidget {
                       ),
                     ),
                 ]),
+            SizedBox(height: 3,),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
 
                 children: <Widget>[
-                SizedBox(height: 10,),
                 Container(
                   child: Text(
                       "${userProfile.username}",
