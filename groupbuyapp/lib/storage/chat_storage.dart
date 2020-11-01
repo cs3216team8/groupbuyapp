@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:groupbuyapp/models/chat_room.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,7 +16,10 @@ class ChatStorage {
         .collection('chatRooms')
         .doc(chatRoomId)
         .collection('messages')
-        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+        .doc(DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString());
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       await transaction.set(
@@ -38,7 +42,7 @@ class ChatStorage {
       String id = Uuid().v4().toString();
 
       final StorageReference storageRef =
-          FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
+      FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
 
       StorageUploadTask uploadTask = storageRef.putFile(
         result,
@@ -56,7 +60,10 @@ class ChatStorage {
           .collection('chatRooms')
           .doc(chatRoomId)
           .collection('messages')
-          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+          .doc(DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString());
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
         await transaction.set(
@@ -88,5 +95,45 @@ class ChatStorage {
     return FirebaseFirestore.instance
         .collection("users")
         .snapshots();
+  }
+
+  // For broadcast
+  broadcast(String msg, GroupBuy groupBuy, UserProfile organiserProfile) async {
+    print("hallo");
+    await createChatRoomForPiggyBackers(groupBuy);
+    QuerySnapshot chatRooms = await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .where("groupBuyId", isEqualTo: groupBuy.id)
+        .get();
+
+    chatRooms.docs.forEach((element) {
+      String chatRoomId = element.get("chatRoomId");
+      ChatUser chatUser = ChatUser(uid: organiserProfile.id,
+          name: organiserProfile.username,
+          avatar: organiserProfile.profilePicture);
+      ChatMessage message = ChatMessage(text: msg, user: chatUser);
+      onSendMessage(message, chatRoomId);
+    });
+  }
+
+  Future<void> createChatRoomForPiggyBackers(GroupBuy groupBuy) async {
+    QuerySnapshot usersInGroupBuy = await FirebaseFirestore.instance
+        .collection("users")
+        .where("groupBuyIds", arrayContains: groupBuy.id)
+        .get();
+    usersInGroupBuy.docs.forEach((user) async {
+      String groupBuyId = groupBuy.id;
+      String organiserId = groupBuy.organiserId;
+      String userId = user.id;
+      String chatRoomId = organiserId + "_" + userId;
+      List<String> members = [organiserId, userId];
+      Map<String, dynamic> chatRoom = {
+        "chatRoomId": chatRoomId,
+        "members": members,
+        "groupBuyId": groupBuyId,
+      };
+      await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+    });
+
   }
 }

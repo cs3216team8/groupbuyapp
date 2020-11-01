@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/chat_room.dart';
 import 'package:groupbuyapp/models/request.dart';
 
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
@@ -60,9 +59,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     return _futureRequests.isNotEmpty;
   }
 
-  // create a chatroom with the necesssary details, send user to the chatroom
-  void onTapChat(BuildContext context) async {
-    print("tapped on chat");
+  Future<String> createChatRoom() async {
     // create a chatroom with the necessary details
     String groupBuyId = widget.groupBuy.id;
     String organizerId = widget.groupBuy.organiserId;
@@ -75,7 +72,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       "groupBuyId": groupBuyId,
     };
     await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+    return chatRoomId;
+  }
 
+  // create a chatroom with the necesssary details, send user to the chatroom
+  void onTapChat(BuildContext context) async {
+    print("tapped on chat");
+    String chatRoomId = await createChatRoom();
     // send user to chatroom
     Navigator.push(
       context,
@@ -141,10 +144,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                               showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
                               return;
                             }
-                            // hasSubmittedEmpty = false;
                             print("broadcast msg: ${msg}");
-                            //TODO: call to messaging to broadcast msg. @teikjun
-
+                            ChatStorage().broadcast(msg, widget.groupBuy, widget.organiserProfile);
                             Navigator.pop(context);
                           },
                         ),
