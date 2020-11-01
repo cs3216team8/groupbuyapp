@@ -32,7 +32,7 @@ class _ChatListState extends State<ChatList> {
           },
         ),
         title: Text(
-          'Chats',
+          'All Chats',
           style: TextStyle(
             fontFamily: 'Nunito',
             fontWeight: FontWeight.w500,
@@ -47,7 +47,7 @@ class _ChatListState extends State<ChatList> {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
+                color: Color(0xFFFAFAFA),
               ),
               child: Column(
                 children: <Widget>[
@@ -95,7 +95,7 @@ class _ChatListState extends State<ChatList> {
           return StreamBuilder(
             stream: chatRooms,
             builder: (context, snapshot) {
-              return snapshot.hasData
+              return snapshot.hasData && snapshot.data.documents.length > 0
                   ? ListView.builder(
                       itemCount: snapshot.data.documents.length,
                       shrinkWrap: true,
@@ -123,8 +123,36 @@ class _ChatListState extends State<ChatList> {
                         );
                       })
                   : Container(
-                      child:
-                          Text("There are no group buys that you have joined."),
+                      padding: EdgeInsets.symmetric(vertical: 60),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                "It's quiet in here...",
+                                style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text("Start a chat with an organizer",
+                                style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              Text("on the GroupBuy details page",
+                                style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     );
             },
           );

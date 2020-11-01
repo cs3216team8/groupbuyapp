@@ -36,13 +36,31 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          iconSize: 30.0,
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Chat",
+          style: TextStyle(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w500,
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
       ),
+
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chatRooms')
             .doc(widget.chatRoomId)
-            .collection('messages').snapshots(),
+            .collection('messages')
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
