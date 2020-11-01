@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class ProfileLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: const CircularProgressIndicator(),
-      width: 60,
-      height: 60,
+    return Center(
+      child: SizedBox(
+        child: const CircularProgressIndicator(),
+        width: 60,
+        height: 60,
+      )
     );
   }
 }

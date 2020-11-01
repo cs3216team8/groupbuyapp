@@ -12,6 +12,7 @@ import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_defa
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 
 class GroupBuyInfo extends StatefulWidget {
@@ -19,8 +20,6 @@ class GroupBuyInfo extends StatefulWidget {
   final UserProfile organiserProfile;
   bool isClosed;
 
-  static const TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-  static const TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   //TODO storage like as listings widget
   GroupBuyInfo({
@@ -36,8 +35,6 @@ class GroupBuyInfo extends StatefulWidget {
 
 class _GroupBuyInfoState extends State<GroupBuyInfo> {
   TextEditingController broadcastMsgController;
-  TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-  TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   List<Future<Request>> _futureRequests = [];
 
@@ -214,8 +211,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020), fontWeight: FontWeight.w500,); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
         actions: <Widget>[
@@ -246,7 +241,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               color: Theme.of(context).accentColor,
                 elevation: 10,
                 onPressed: () => onTapBroadcast(context),
-                child: Text("Broadcast", style: subtitleStyle),
+                child: Text("Broadcast", style: Styles.subtitleStyle),
             ),
           ]
         )
@@ -356,7 +351,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           alignment: Alignment.topLeft,
                                           child: Text(
                                             'DETAILS',
-                                            style: subtitleStyle,
+                                            style: Styles.subtitleStyle,
                                           ),
                                         )
                                       ]
@@ -393,7 +388,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                   ),
                                                   Text(
                                                     "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser()? 'by ${widget.organiserProfile.username} (You)': 'by ${widget.organiserProfile.username}'}",
-                                                    style: textStyle,
+                                                    style: Styles.textStyle,
                                                   ),
                                                 ],
                                               ),
@@ -411,7 +406,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                       semanticLabel: 'Deposit',
                                                     )
                                                 ),
-                                                Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
+                                                Text('${widget.groupBuy.deposit * 100} % deposit', style: Styles.textStyle),
                                               ],
                                             ),
                                             SizedBox(height: 7),
@@ -427,7 +422,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                               ),
                                               Text(
                                                 "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
-                                                style: textStyle,
+                                                style: Styles.textStyle,
                                               ),
 
                                             ]
@@ -446,7 +441,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                     )
                                                 ),
                                                 Flexible(
-                                                    child: new Text('${widget.groupBuy.address}', style: textStyle)
+                                                    child: new Text('${widget.groupBuy.address}', style: Styles.textStyle)
                                                 )
                                               ],
                                             ),
@@ -464,7 +459,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                     )
                                                 ),
                                                 Flexible(
-                                                    child: new Text('${widget.groupBuy.description}', style: textStyle)
+                                                    child: new Text('${widget.groupBuy.description}', style: Styles.textStyle)
                                                 )
                                               ],
                                             ),
@@ -491,7 +486,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
                                                   'REQUESTS',
-                                                  style: subtitleStyle,
+                                                  style: Styles.subtitleStyle,
                                                 ),
                                               )
                                             ]

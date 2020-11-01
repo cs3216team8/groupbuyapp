@@ -60,10 +60,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
 
   @override
   Widget build(BuildContext context) {
-
-    if (FirebaseAuth.instance.currentUser == null) {
-      return Container();
-    }
     
     return DefaultTabController(
       length: 1,
