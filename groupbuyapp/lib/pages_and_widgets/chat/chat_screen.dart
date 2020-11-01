@@ -7,7 +7,7 @@ import 'package:groupbuyapp/storage/chat_storage.dart';
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
 
-  ChatScreen(this.chatRoomId);
+  ChatScreen({this.chatRoomId});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -25,24 +25,42 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendMessage(ChatMessage message) {
-    ChatStorage().onSendMessage(message);
+    ChatStorage().onSendMessage(message, widget.chatRoomId);
   }
 
   void uploadFile() async {
-    ChatStorage().uploadFileToStorage(user);
+    ChatStorage().uploadFileToStorage(user, widget.chatRoomId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          iconSize: 30.0,
+          color: Colors.white,
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text(
+          "Chat",
+          style: TextStyle(
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w500,
+            fontSize: 24,
+            color: Colors.white,
+          ),
+        ),
       ),
+
       body: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('chatRooms')
-            .doc('testChatRoom')
-            .collection('messages').snapshots(),
+            .doc(widget.chatRoomId)
+            .collection('messages')
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
