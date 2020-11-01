@@ -191,7 +191,7 @@ class GroupBuyStorage {
     batch.set(requestDoc, {
       'id': request.id,
       'requestorId': request.requestorId,
-      'status': Request.stringFromRequestStatus(RequestStatus.confirmed),
+      'status': Request.stringFromRequestStatus(request.status),
     });
 
     request.items.forEach((item) {
