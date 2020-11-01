@@ -201,6 +201,7 @@ class _SignUpFormState extends State<SignupForm> {
                   }
                 },
               ),
+              SizedBox(height: 10),
               LoginOrSignupOption(
                 textColor: Theme.of(context).primaryColor,
                 isLogin: false,

@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SocialIcon extends StatelessWidget {
-  final String iconSrc;
+  final SvgPicture icon;
   final Function onPress;
 
+  final Color outlineColor;
   final Color backgroundColor;
-  final double backgroundOpacity;
 
   const SocialIcon({
     Key key,
-    this.iconSrc,
+    this.icon,
     this.onPress,
+    this.outlineColor,
     this.backgroundColor = Colors.white,
-    this.backgroundOpacity = 0.9,
   }) : super(key: key);
 
   @override
@@ -26,16 +26,12 @@ class SocialIcon extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: Theme.of(context).accentColor,
+            color: outlineColor
           ),
           shape: BoxShape.circle,
-          color: backgroundColor.withOpacity(backgroundOpacity),
+          color: backgroundColor
         ),
-        child: SvgPicture.asset(
-          iconSrc,
-          height: 20,
-          width: 20,
-        ),
+        child: icon
       ),
     );
   }

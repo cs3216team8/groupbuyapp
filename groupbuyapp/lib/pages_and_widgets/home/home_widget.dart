@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
-import 'package:groupbuyapp/pages_and_widgets/home/home_banner.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -14,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final Color appbarColor = Colors.white;
-  final Color appbarElementColor = Colors.black;
-  final Color appbarTextColor = Colors.black;
+  final Color appbarColor = Color(0xFFF98B83);
+  final Color appbarElementColor = Colors.white;
+  final Color appbarTextColor = Colors.white;
 
   // SEARCH FUNCTIONALITY
   TextEditingController _searchQueryController = TextEditingController();
@@ -51,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         IconButton(
             icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
-            onPressed: () => segueToPage(context, ChatList())
+            onPressed: () => segueWithLoginCheck(context, ChatList())
         ),
       ];
   }
@@ -69,6 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _getData() async {
+    setState(() {
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,25 +81,34 @@ class _HomeScreenState extends State<HomeScreen> {
         child: AppBar(
           elevation: 0,
           backgroundColor: appbarColor,
-          leading: Container(),
-          title: _buildSearchField(),
-          actions: _buildActions(),
+          // leading: Container(),
+          title: Text("PiggyBuy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white)), //fontSize: 15, fontWeight: FontWeight.normal);),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.chat_bubble_outline_rounded, color: appbarElementColor),
+                onPressed: () => segueToPage(context, ChatList())
+            ),
+          ],
+          // title: _buildSearchField(),
+          // actions: _buildActions(),
         ),
       ),
-      body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              HomeCarouselBanner(),
-              Container(
-                child:
-                Text("Groupbuys around you", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-              ),
-              ListingsSection(
-                createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
-                createDefaultScreen: () => HomeDefaultScreen(),
-              )
-            ],
-          )
+      body: RefreshIndicator(
+        onRefresh: _getData,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 6, left: 6, bottom: 8, right: 6),
+                ),
+                ListingsSection(
+                  createGroupBuyStream: GroupBuyStorage.instance.getAllGroupBuys,
+                  createDefaultScreen: () => HomeDefaultScreen(),
+                )
+              ],
+            )
+        ),
       ),
     );
   }

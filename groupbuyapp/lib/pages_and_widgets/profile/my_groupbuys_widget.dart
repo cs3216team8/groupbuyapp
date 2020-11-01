@@ -2,28 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MyGroupBuys extends StatefulWidget {
 
-  final Map<int, Widget> segments = <int, Widget>{
-    0: Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        child: Text("As Organiser")
-    ),
-    1: Text("As Piggybuyer")
-  };
-
-
   @override
   _MyGroupBuysState createState() => _MyGroupBuysState();
 }
 
 class _MyGroupBuysState extends State<MyGroupBuys> {
+
+  final Map<int, Widget> segments = <int, Widget>{
+    0: Container(
+        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        child: Text("As Organiser")
+    ),
+    1: Text("As Piggybuyer")
+  };
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int val) {
@@ -32,27 +33,14 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
     });
   }
 
-
-  // final List<Widget> screens = <Widget>[
-  //   Container(
-  //       child:
-  //   ),
-  //   Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         MyGroupBuyCard(GroupBuy.getDummyData())
-  //       ]
-  //   ),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      height: double.infinity,
       child: Column(
         children: [
           CupertinoSlidingSegmentedControl(
-            children: widget.segments,
+            children: segments,
             onValueChanged: _onItemTapped,
             groupValue: _selectedIndex,
           ),
@@ -60,40 +48,40 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
           IndexedStack(
             index: this._selectedIndex,
             children: <Widget>[
-                StreamBuilder<List<GroupBuy>>(
-                  stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-                  builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-                    List<Widget> children;
-                    if (snapshot.hasError) {
-                      print(snapshot.error);
-                      return FailedToLoadMyGroupBuys();
-                    }
+              StreamBuilder<List<GroupBuy>>(
+                stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+                builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return FailedToLoadMyGroupBuys();
+                  }
 
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                        return GroupBuysNotLoaded();
-                      case ConnectionState.waiting:
-                        return GroupbuysLoading();
-                      default:
-                        children = snapshot.data.map((GroupBuy groupBuy) {
-                          return new MyGroupBuyCard(groupBuy);
-                        }).toList();
-                        break;
-                    }
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return GroupBuysNotLoaded();
+                    case ConnectionState.waiting:
+                      return GroupbuysLoading();
+                    default:
+                      children = snapshot.data.map((GroupBuy groupBuy) {
+                        return new GroupBuyCard(groupBuy);
+                      }).toList();
+                      break;
+                  }
 
-                    if (children.isEmpty) {
-                      return OrganisedGroupBuyDefaultScreen();
-                    }
+                  if (children.isEmpty) {
+                    return OrganisedGroupBuyDefaultScreen();
+                  }
 
-                    return GridView.count(
-                        crossAxisCount: 2,
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        childAspectRatio: 6.0/7.0,
-                        children: children
-                    );
-                  },
-                ),
+                  return GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      childAspectRatio: 5.5/7.0,
+                      children: children
+                  );
+                },
+              ),
               FutureBuilder<Stream<List<GroupBuy>>>(
                 future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
                 builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
@@ -125,7 +113,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                               default:
                                 children = snapshot.data.map((
                                     GroupBuy groupBuy) {
-                                  return new MyGroupBuyCard(groupBuy);
+                                  return new GroupBuyCard(groupBuy);
                                 }).toList();
                                 break;
                             }
@@ -138,7 +126,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                                 crossAxisCount: 2,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
-                                childAspectRatio: 6.0 / 7.0,
+                                childAspectRatio: 5.5 / 7.0,
                                 children: children
                             );
                           },

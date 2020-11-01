@@ -6,8 +6,11 @@ import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dar
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
+import 'organised_groupbuys_part.dart';
+
 class ProfileGroupBuys extends StatefulWidget {
   final bool isMe;
+  final String userId;
 
   final Color headerBackgroundColour, textColour;
   final double letterSpacing, topHeightFraction;
@@ -15,6 +18,7 @@ class ProfileGroupBuys extends StatefulWidget {
   ProfileGroupBuys({
     Key key,
     @required this.isMe,
+    this.userId,
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -27,24 +31,47 @@ class ProfileGroupBuys extends StatefulWidget {
 
 class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     with SingleTickerProviderStateMixin {
+  
+  String _userId;
+  Future<UserProfile> _fprofile;
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isMe) {
+      _userId = FirebaseAuth.instance.currentUser.uid; //TODO: test that this condition is only reached when logged in
+    } else {
+      _userId = widget.userId; //TODO: check that this condition is only reached when userId is not null
+    }
+    fetchProfile();
+  }
+
+  Future<void> _getData() async {
+    setState(() {
+      fetchProfile();
+    });
+  }
+
+  void fetchProfile() async {
+    setState(() {
+      _fprofile = ProfileStorage.instance.getUserProfile(_userId);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    if (FirebaseAuth.instance.currentUser == null) {
-      return Container();
-    }
-
-    String userId = FirebaseAuth.instance.currentUser.uid;
-
+    
     return DefaultTabController(
       length: 1,
-      child: NestedScrollView(
-        // allows you to build a list of elements that would be scrolled away till the body reached the top
-        headerSliverBuilder: (context, _) {
-          return [
-            SliverList(
-              delegate: SliverChildListDelegate(
+      child: RefreshIndicator(
+        onRefresh: _getData,
+        child: NestedScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          // allows you to build a list of elements that would be scrolled away till the body reached the top
+          headerSliverBuilder: (context, _) {
+            return [
+              SliverList(
+                delegate: SliverChildListDelegate(
                   <Widget>[
                     Container(
                         decoration: BoxDecoration(
@@ -52,7 +79,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                         ),
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<UserProfile>(
-                            future: ProfileStorage.instance.getUserProfile(userId),
+                            future: _fprofile,
                             builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                               if (snapshot.hasError) {
                                 return FailedToLoadProfile();
@@ -71,11 +98,14 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                         )
                     ),
                   ]
-              ),
-            )
-          ];
-        },
-        body: MyGroupBuys()
+                ),
+              )
+            ];
+          },
+          body: widget.isMe
+              ? MyGroupBuys()
+              : OrganisedGroupBuysOnly(userId: _userId, fprofile: _fprofile,),
+        ),
       ),
     );
   }
