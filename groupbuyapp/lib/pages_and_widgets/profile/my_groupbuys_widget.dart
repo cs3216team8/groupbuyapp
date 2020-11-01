@@ -45,11 +45,13 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
     Size size = MediaQuery.of(context).size;
     return  Scaffold(
         appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60),
+        preferredSize: Size.fromHeight(50),
     child: AppBar(
-    bottom: TabBar(
-      labelStyle: Styles.textStyle,  //For Selected tab
-      unselectedLabelStyle: Styles.textStyle, //For Un-selected Tabs
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      bottom: TabBar(
+      labelStyle: Styles.textStyleSelected,  //For Selected tab
+      unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
 
       onTap: _onItemTapped,
     tabs: [
@@ -134,7 +136,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
                       }
 
                       if (children.isEmpty) {
-                        return PiggyBackedGroupBuyDefaultScreen();
+                        return new PiggyBackedGroupBuyDefaultScreen();
                       }
 
                       return GridView.count(
@@ -152,45 +154,6 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
 
 
     ])
-          // IndexedStack(
-          //   index: this._selectedIndex,
-          //   children: <Widget>[
-          //     StreamBuilder<List<GroupBuy>>(
-          //       stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-          //       builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-          //         List<Widget> children;
-          //         if (snapshot.hasError) {
-          //           print(snapshot.error);
-          //           return FailedToLoadMyGroupBuys();
-          //         }
-          //
-          //         switch (snapshot.connectionState) {
-          //           case ConnectionState.none:
-          //             return GroupBuysNotLoaded();
-          //           case ConnectionState.waiting:
-          //             return GroupbuysLoading();
-          //           default:
-          //             children = snapshot.data.map((GroupBuy groupBuy) {
-          //               return new GroupBuyCard(groupBuy);
-          //             }).toList();
-          //             break;
-          //         }
-          //
-          //         if (children.isEmpty) {
-          //           return OrganisedGroupBuyDefaultScreen();
-          //         }
-          //
-          //         return GridView.count(
-          //             crossAxisCount: 2,
-          //             shrinkWrap: true,
-          //             physics: const ClampingScrollPhysics(),
-          //             childAspectRatio: 5.5/7.0,
-          //             children: children
-          //         );
-          //       },
-          //     ),
-          //   ]
-          // )
     );
   }
 }
@@ -223,7 +186,7 @@ class GroupBuysNotLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("There are no group buys that you have joined."),
+        child: Text("There are no group buys that you have joined.", style: Styles.titleStyle),
       ),
     );
   }
