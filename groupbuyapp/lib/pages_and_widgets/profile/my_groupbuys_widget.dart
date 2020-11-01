@@ -41,47 +41,63 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
     });
   }
 
-  Widget getWidgetAsOrganiser() {
-    return StreamBuilder<List<GroupBuy>>(
-          stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-          builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-            List<Widget> children;
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return FailedToLoadMyGroupBuys();
-            }
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return  Scaffold(
+        appBar: PreferredSize(
+        preferredSize: Size.fromHeight(60),
+    child: AppBar(
+    bottom: TabBar(
+      onTap: _onItemTapped,
+    tabs: [
+    Tab(text: "As Organiser",),
+    Tab(text: "As PiggyBacker",),
+    ],
+    ),
+    )
+    ),
+    body: IndexedStack(
+        index: this._selectedIndex,
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return GroupBuysNotLoaded();
-              case ConnectionState.waiting:
-                return GroupbuysLoading();
-              default:
-                children = snapshot.data.map((GroupBuy groupBuy) {
-                  return new GroupBuyCard(groupBuy);
-                }).toList();
-                break;
-            }
+    children: [
+          StreamBuilder<List<GroupBuy>>(
+            stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+            builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
+              List<Widget> children;
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return FailedToLoadMyGroupBuys();
+              }
 
-            if (children.isEmpty) {
-              return OrganisedGroupBuyDefaultScreen();
-            }
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return GroupBuysNotLoaded();
+                case ConnectionState.waiting:
+                  return GroupbuysLoading();
+                default:
+                  children = snapshot.data.map((GroupBuy groupBuy) {
+                    return new GroupBuyCard(groupBuy);
+                  }).toList();
+                  break;
+              }
 
-            return GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                childAspectRatio: 5.5/7.0,
-                children: children
-            );
-          },
-        );
-  }
+              if (children.isEmpty) {
+                return OrganisedGroupBuyDefaultScreen();
+              }
 
-  Widget getWidgetAsPiggyBacker() {
-    return FutureBuilder<Stream<List<GroupBuy>>>(
-          future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
-          builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
+              return GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  childAspectRatio: 5.5/7.0,
+                  children: children
+              );
+            },
+          ),
+        FutureBuilder<Stream<List<GroupBuy>>>(
+            future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
+            builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
               if (snapshot.hasError){
                 print(snapshot.error);
                 return FailedToLoadMyGroupBuys();
@@ -128,20 +144,12 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
                       );
                     },
                   );
-                  }
               }
-            );
+            }
+        ),
 
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      child: DefaultTabController(
-        length: 6,
-        child: TabBarDemo())
+    ])
           // IndexedStack(
           //   index: this._selectedIndex,
           //   children: <Widget>[
