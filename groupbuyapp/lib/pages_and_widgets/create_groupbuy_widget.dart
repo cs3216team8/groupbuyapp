@@ -49,11 +49,11 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     fetchAddresses();
   }
 
-  Future<void> _getData() async {
-    setState(() {
-      fetchAddresses();
-    });
-  }
+  // Future<void> _getData() async {
+  //   setState(() {
+  //     fetchAddresses();
+  //   });
+  // }
 
   void fetchAddresses() async {
     Future<UserProfile> fprof = ProfileStorage.instance.getUserProfile(FirebaseAuth.instance.currentUser.uid);
@@ -155,10 +155,12 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
             context: context,
             titleElement: Text("Start a jio!", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white))
         ),
-        body: RefreshIndicator(
-        onRefresh: _getData,
-        backgroundColor: Colors.black26,
-        child: SingleChildScrollView(
+        body:
+        // RefreshIndicator(
+        // onRefresh: _getData,
+        // backgroundColor: Colors.black26,
+        // child:
+      SingleChildScrollView(
           child: Container(
             alignment: Alignment.center,
             padding: EdgeInsets.all(20),
@@ -352,7 +354,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
               )
           ),
         )
-    )
+    // )
     )
     );
   }
