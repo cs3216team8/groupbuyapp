@@ -234,7 +234,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
             ),
           ]
         )
-        : hasRequested
+        : widget.groupBuy.isOpen()
+        ? hasRequested
           ? RaisedButton(
             color: Theme.of(context).accentColor,
             elevation: 10,
@@ -276,7 +277,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                   ),
                 ),
               ]
-          ),
+          )
+        : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: RefreshIndicator(
         onRefresh: _getData,
@@ -508,10 +510,16 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                             getRequestPreview(_futureRequests[0])
                                           ],
                                         )
-                                        : Column(
+                                        : widget.groupBuy.isOpen()
+                                        ? Column(
                                           children: <Widget>[
                                             Text("You have yet to join this group buy. Chat or Join now!", style: TextStyle(fontWeight: FontWeight.bold),),
                                           ]
+                                        )
+                                        : Column(
+                                            children: <Widget>[
+                                              Text("You did not join this group buy. Head to explore to join one today!", style: TextStyle(fontWeight: FontWeight.bold),),
+                                            ]
                                         ),
                                       ],
                                     ),
