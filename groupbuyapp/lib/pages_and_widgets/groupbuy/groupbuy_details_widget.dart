@@ -498,13 +498,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                         ? Column(
                                           children: [
                                             Container(
+                                              padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                  'You have requested:',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold
-                                                  )
+                                                  'YOUR REQUESTS',
+                                                  style: Styles.subtitleStyle
                                               ),
                                             ),
                                             getRequestPreview(_futureRequests[0])
