@@ -49,7 +49,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.userId;
+    return FirebaseAuth.instance.currentUser.uid ==
+        widget.organiserProfile.userId;
   }
 
   Future<String> createChatRoom() async {
@@ -68,7 +69,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     return chatRoomId;
   }
 
-  // create a chatroom with the necesssary details, send user to the chatroom
+  // create a chatroom with the necessary details, send user to the chatroom
   void onTapChat(BuildContext context) async {
     print("tapped on chat");
     String chatRoomId = await createChatRoom();
@@ -76,7 +77,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChatScreen(chatRoomId: chatRoomId),
+        builder: (_) => ChatScreen(
+            chatRoomId: chatRoomId, username: widget.organiserProfile.username),
       ),
     );
   }
@@ -134,11 +136,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           onPressed: () {
                             String msg = broadcastMsgController.text;
                             if (msg.isEmpty) {
-                              showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
+                              showFlushbar(context, "Please check again!",
+                                  "Your broadcast message should not be empty!");
                               return;
                             }
                             print("broadcast msg: ${msg}");
-                            ChatStorage().broadcast(msg, widget.groupBuy, widget.organiserProfile);
+                            ChatStorage().broadcast(
+                                msg, widget.groupBuy, widget.organiserProfile);
                             Navigator.pop(context);
                           },
                         ),
@@ -151,7 +155,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           });
     });
   }
-
 
   void showErrorFlushbar(String message) {
     Flushbar(
@@ -229,7 +232,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         _futureRequests = freqs;
       });
     } else {
-      Future<Request> freq = GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
+      Future<Request> freq = GroupBuyStorage.instance
+          .getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
       setState(() {
         _futureRequests = [freq];
       });
@@ -251,84 +255,88 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: backAppBarWithoutTitle(context: context,
-        actions: isOrganiser() ? <Widget>[
-          PopupMenuButton<String>(
-            color: Colors.white,
-            icon: Icon(Icons.more_vert, color: Colors.black,),
-            onSelected: (value) => handleGroupBuyDetailMenu(value, context),
-            itemBuilder: (BuildContext context) {
-              return {'Get items list in email', 'Close group buy now'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ]
-        : [],),
-      floatingActionButton: isOrganiser()
-        ? Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RaisedButton(
-              padding: EdgeInsets.all(10.0),
-              shape: RoundedRectangleBorder(
+        appBar: backAppBarWithoutTitle(
+          context: context,
+          actions: isOrganiser()
+              ? <Widget>[
+                  PopupMenuButton<String>(
+                    color: Colors.white,
+                    icon: Icon(
+                      Icons.more_vert,
+                      color: Colors.black,
+                    ),
+                    onSelected: (value) =>
+                        handleGroupBuyDetailMenu(value, context),
+                    itemBuilder: (BuildContext context) {
+                      return {'Get items list in email', 'Close group buy now'}
+                          .map((String choice) {
+                        return PopupMenuItem<String>(
+                          value: choice,
+                          child: Text(choice),
+                        );
+                      }).toList();
+                    },
+                  ),
+                ]
+              : [],
+        ),
+        floatingActionButton: isOrganiser()
+            ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                RaisedButton(
+                  padding: EdgeInsets.all(10.0),
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                ),
-              color: Theme.of(context).accentColor,
-                elevation: 10,
-                onPressed: () => onTapBroadcast(context),
-                child: Text("Broadcast", style: Styles.subtitleStyle),
-            ),
-          ]
-        )
-        : widget.groupBuy.isOpen()
-          ? hasRequested
-            ? RaisedButton(
-              color: Theme.of(context).accentColor,
-              elevation: 10,
-              onPressed: () => onTapChat(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.chat_bubble),
-                  Text("Chat"),
-                ],
-              ),
-            )
-            : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => onTapChat(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.chat_bubble),
-                      Text("Chat"),
-                    ],
                   ),
-                ),
-                RaisedButton(
                   color: Theme.of(context).accentColor,
-                  onPressed: () => onTapJoin(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.add_business),
-                      Text("Join"),
-                    ],
-                  ),
+                  elevation: 10,
+                  onPressed: () => onTapBroadcast(context),
+                  child: Text("Broadcast", style: Styles.subtitleStyle),
                 ),
-              ]
-            )
-            : null,
+              ])
+            : widget.groupBuy.isOpen()
+                ? hasRequested
+                    ? RaisedButton(
+                        color: Theme.of(context).accentColor,
+                        elevation: 10,
+                        onPressed: () => onTapChat(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.chat_bubble),
+                            Text("Chat"),
+                          ],
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                            RaisedButton(
+                              color: Theme.of(context).accentColor,
+                              onPressed: () => onTapChat(context),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.chat_bubble),
+                                  Text("Chat"),
+                                ],
+                              ),
+                            ),
+                            RaisedButton(
+                              color: Theme.of(context).accentColor,
+                              onPressed: () => onTapJoin(context),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.add_business),
+                                  Text("Join"),
+                                ],
+                              ),
+                            ),
+                          ])
+                : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: RefreshIndicator(
           onRefresh: _getData,
@@ -344,246 +352,293 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                         color: Colors.grey.withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 2,
-                        offset: Offset(1,1), // changes position of shadow
+                        offset: Offset(1, 1), // changes position of shadow
                       )
                     ],
                   ),
                   alignment: Alignment.center,
                   child: Container(
-                      child: Column(
+                      child: Column(children: <Widget>[
+                    Container(
+                        alignment: Alignment.center,
+                        height: 80,
+                        child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.only(bottom: 20),
+                            color: Color(0xFFFFF3E7),
+                            child: widget.groupBuy.storeLogo
+                                    .startsWith('assets/')
+                                ? Image.asset(widget.groupBuy.storeLogo)
+                                : Image(
+                                    image:
+                                        NetworkImage(widget.groupBuy.storeLogo),
+                                  ))),
+                    Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: new BoxDecoration(
+                          color: Color(0xFFFFFFFF),
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            topLeft: Radius.circular(20),
+                          ),
+                          border:
+                              Border.all(color: Color(0xFFFFFFFF), width: 0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              spreadRadius: 2,
+                              blurRadius: 2,
+                              offset:
+                                  Offset(1, 1), // changes position of shadow
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
                           children: <Widget>[
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        left: 20, right: 10, bottom: 5),
+                                    alignment: Alignment.topLeft,
+                                    child: Text(
+                                      'DETAILS',
+                                      style: Styles.subtitleStyle,
+                                    ),
+                                  )
+                                ]),
                             Container(
-                                alignment: Alignment.center,
-                                height: 80,
-                                child: Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.only(bottom: 20),
-                                    color: Color(0xFFFFF3E7),
-                                    child:widget.groupBuy.storeLogo.startsWith('assets/')?
-                                    Image.asset(widget.groupBuy.storeLogo):
-                                    Image(
-                                      image: NetworkImage(widget.groupBuy.storeLogo),
-                                    )
-                                )
-                            ),
-                            Container(
-                                padding: const EdgeInsets.all(20.0),
+                                padding: EdgeInsets.all(
+                                  20,
+                                ),
+                                margin: EdgeInsets.only(left: 10, right: 10),
                                 decoration: new BoxDecoration(
-                                  color: Color(0xFFFFFFFF),
-                                  borderRadius: BorderRadius.only(topRight:  Radius.circular(20), topLeft:  Radius.circular(20),),
-                                  border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+                                  color: Color(0xFFFBECE6),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  border: Border.all(
+                                      color: Color(0xFFFFFFFF), width: 0),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.2),
                                       spreadRadius: 2,
                                       blurRadius: 2,
-                                      offset: Offset(1,1), // changes position of shadow
+                                      offset: Offset(
+                                          1, 1), // changes position of shadow
                                     )
                                   ],
                                 ),
-                                child:Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: <Widget>[
-                                    Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                          Container(
-                                            padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
-                                            alignment: Alignment.topLeft,
-                                            child: Text(
-                                              'DETAILS',
-                                              style: Styles.subtitleStyle,
-                                            ),
-                                          )
-                                        ]
-                                    ),
-                                    Container(
-                                        padding: EdgeInsets.all(20,),
-                                        margin: EdgeInsets.only(left: 10, right: 10),
-                                        decoration: new BoxDecoration(
-                                          color: Color(0xFFFBECE6),
-                                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                          border: Border.all(color: Color(0xFFFFFFFF), width: 0),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.withOpacity(0.2),
-                                              spreadRadius: 2,
-                                              blurRadius: 2,
-                                              offset: Offset(1,1), // changes position of shadow
-                                            )
-                                          ],
+                                child: Column(children: <Widget>[
+                                  GestureDetector(
+                                    onTap: () => segueToPage(
+                                        context,
+                                        ProfileScreen(
+                                          userId:
+                                              widget.organiserProfile.userId,
+                                        )),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 6,
+                                                right: 10,
+                                                left: 3,
+                                                bottom: 6),
+                                            child: Icon(
+                                              Icons.access_time_rounded,
+                                              color: Color(0xFFe87d74),
+                                              size: 24.0,
+                                            )),
+                                        Text(
+                                          "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
+                                          style: Styles.textStyle,
                                         ),
-                                        child: Column (
-                                            children: <Widget>[
-                                              GestureDetector(
-                                                onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.userId,)),
-                                                child: Row(
-                                                  children: <Widget>[
-                                                    Padding(
-                                                        padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
-                                                        child:  Icon(
-                                                          Icons.access_time_rounded,
-                                                          color: Color(0xFFe87d74),
-                                                          size: 24.0,
-                                                        )
-                                                    ),
-                                                    Text(
-                                                      "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser()? 'by ${widget.organiserProfile.username} (You)': 'by ${widget.organiserProfile.username}'}",
-                                                      style: Styles.textStyle,
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(
-                                                // Location
-                                                children: <Widget>[
-                                                  Padding(
-                                                      padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
-                                                      child: Icon(
-                                                        Icons.monetization_on,
-                                                        color: Color(0xFFe87d74),
-                                                        size: 24.0,
-                                                        semanticLabel: 'Deposit',
-                                                      )
-                                                  ),
-                                                  Text('${widget.groupBuy.deposit * 100} % deposit', style: Styles.textStyle),
-                                                ],
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(children: <Widget>[
-                                                Padding(
-                                                    padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
-                                                    child: Icon(
-                                                      Icons.pending,
-                                                      color: Color(0xFFe87d74),
-                                                      size: 24.0,
-                                                      semanticLabel: 'Target',
-                                                    )
-                                                ),
-                                                Text(
-                                                  "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
-                                                  style: Styles.textStyle,
-                                                ),
-
-                                              ]
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(
-                                                // Location
-                                                children: <Widget>[
-                                                  Padding(
-                                                      padding: EdgeInsets.only(top: 6,left: 3, right: 10, bottom: 6),
-                                                      child: Icon(
-                                                        Icons.location_on,
-                                                        color: Color(0xFFe87d74),
-                                                        size: 24.0,
-                                                        semanticLabel: 'Location',
-                                                      )
-                                                  ),
-                                                  Flexible(
-                                                      child: new Text('${widget.groupBuy.address}', style: Styles.textStyle)
-                                                  )
-                                                ],
-                                              ),
-                                              SizedBox(height: 7),
-                                              Row(
-                                                // Location
-                                                children: <Widget>[
-                                                  Padding(
-                                                      padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
-                                                      child: Icon(
-                                                        Icons.description,
-                                                        color: Color(0xFFe87d74),
-                                                        size: 24.0,
-                                                        semanticLabel: 'Description',
-                                                      )
-                                                  ),
-                                                  Flexible(
-                                                      child: new Text('${widget.groupBuy.description}', style: Styles.textStyle)
-                                                  )
-                                                ],
-                                              ),
-                                            ]
-                                        )
+                                      ],
                                     ),
-                                    Container(
-                                      // height: double.infinity,
-                                      child: isOrganiser()
-                                          ? Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          SizedBox(height: 10,),
-                                          Divider(
-                                            color: Theme.of(context).dividerColor,
-                                            height: 5.5,
-                                          ),
-                                          SizedBox(height: 10,),
-                                          Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Container(
-                                                  padding: EdgeInsets.only(left: 20, bottom: 5),
-                                                  alignment: Alignment.topLeft,
-                                                  child: Text(
-                                                    'REQUESTS',
-                                                    style: Styles.subtitleStyle,
-                                                  ),
-                                                )
-                                              ]
-                                          ),
-                                          Column(
-                                            children: _futureRequests.map((freq) => getRequestPreview(freq)).toList(),
-                                          ),
-                                        ],
-                                      )
-                                          : Column(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          SizedBox(height: 10,),
-                                          Divider(
-                                            color: Theme.of(context).dividerColor,
-                                            height: 5.5,
-                                          ),
-                                          SizedBox(height: 10,),
-                                          hasRequested
-                                              ? Column(
-                                            children: [
+                                  ),
+                                  SizedBox(height: 7),
+                                  Row(
+                                    // Location
+                                    children: <Widget>[
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 6,
+                                              left: 3,
+                                              right: 10,
+                                              bottom: 6),
+                                          child: Icon(
+                                            Icons.monetization_on,
+                                            color: Color(0xFFe87d74),
+                                            size: 24.0,
+                                            semanticLabel: 'Deposit',
+                                          )),
+                                      Text(
+                                          '${widget.groupBuy.deposit * 100} % deposit',
+                                          style: Styles.textStyle),
+                                    ],
+                                  ),
+                                  SizedBox(height: 7),
+                                  Row(children: <Widget>[
+                                    Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 6,
+                                            left: 3,
+                                            right: 10,
+                                            bottom: 6),
+                                        child: Icon(
+                                          Icons.pending,
+                                          color: Color(0xFFe87d74),
+                                          size: 24.0,
+                                          semanticLabel: 'Target',
+                                        )),
+                                    Text(
+                                      "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
+                                      style: Styles.textStyle,
+                                    ),
+                                  ]),
+                                  SizedBox(height: 7),
+                                  Row(
+                                    // Location
+                                    children: <Widget>[
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 6,
+                                              left: 3,
+                                              right: 10,
+                                              bottom: 6),
+                                          child: Icon(
+                                            Icons.location_on,
+                                            color: Color(0xFFe87d74),
+                                            size: 24.0,
+                                            semanticLabel: 'Location',
+                                          )),
+                                      Flexible(
+                                          child: new Text(
+                                              '${widget.groupBuy.address}',
+                                              style: Styles.textStyle))
+                                    ],
+                                  ),
+                                  SizedBox(height: 7),
+                                  Row(
+                                    // Location
+                                    children: <Widget>[
+                                      Padding(
+                                          padding: EdgeInsets.only(
+                                              top: 6,
+                                              left: 3,
+                                              right: 10,
+                                              bottom: 6),
+                                          child: Icon(
+                                            Icons.description,
+                                            color: Color(0xFFe87d74),
+                                            size: 24.0,
+                                            semanticLabel: 'Description',
+                                          )),
+                                      Flexible(
+                                          child: new Text(
+                                              '${widget.groupBuy.description}',
+                                              style: Styles.textStyle))
+                                    ],
+                                  ),
+                                ])),
+                            Container(
+                              // height: double.infinity,
+                              child: isOrganiser()
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Divider(
+                                          color: Theme.of(context).dividerColor,
+                                          height: 5.5,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
                                               Container(
-                                                padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
+                                                padding: EdgeInsets.only(
+                                                    left: 20, bottom: 5),
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
-                                                    'YOUR REQUESTS',
-                                                    style: Styles.subtitleStyle
+                                                  'REQUESTS',
+                                                  style: Styles.subtitleStyle,
                                                 ),
-                                              ),
-                                              getRequestPreview(_futureRequests[0])
-                                            ],
-                                          )
-                                              : widget.groupBuy.isOpen()
-                                              ? Column(
-                                              children: <Widget>[
-                                                Text("You have yet to join this group buy. Chat or Join now!", style: TextStyle(fontWeight: FontWeight.bold),),
-                                              ]
-                                          )
-                                              : Column(
-                                              children: <Widget>[
-                                                Text("You did not join this group buy. Head to explore to join one today!", style: TextStyle(fontWeight: FontWeight.bold),),
-                                              ]
-                                          ),
-                                        ],
-                                      ),
+                                              )
+                                            ]),
+                                        Column(
+                                          children: _futureRequests
+                                              .map((freq) =>
+                                                  getRequestPreview(freq))
+                                              .toList(),
+                                        ),
+                                      ],
+                                    )
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Divider(
+                                          color: Theme.of(context).dividerColor,
+                                          height: 5.5,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        hasRequested
+                                            ? Column(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20,
+                                                        right: 10,
+                                                        bottom: 5),
+                                                    alignment:
+                                                        Alignment.topLeft,
+                                                    child: Text('YOUR REQUESTS',
+                                                        style: Styles
+                                                            .subtitleStyle),
+                                                  ),
+                                                  getRequestPreview(
+                                                      _futureRequests[0])
+                                                ],
+                                              )
+                                            : widget.groupBuy.isOpen()
+                                                ? Column(children: <Widget>[
+                                                    Text(
+                                                      "You have yet to join this group buy. Chat or Join now!",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ])
+                                                : Column(children: <Widget>[
+                                                    Text(
+                                                      "You did not join this group buy. Head to explore to join one today!",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ]),
+                                      ],
                                     ),
-                                  ],
-                                )
                             ),
-                          ]
-                      )
-                  )
-              )
-          ),
-        )
-    );
+                          ],
+                        )),
+                  ])))),
+        ));
   }
 }
 
@@ -603,7 +658,8 @@ class FailedToLoadRequests extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+        child: Text(
+            "Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
       ),
     );
   }
