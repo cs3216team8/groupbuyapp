@@ -96,7 +96,7 @@ class _SignUpFormState extends State<SignupForm> {
     return Scaffold(
       appBar: backAppBar(
         context: context,
-        title: "Sign up now!",
+        title: "",
         color: Colors.white,
       ),
       body: Background(
@@ -109,8 +109,8 @@ class _SignUpFormState extends State<SignupForm> {
             children: <Widget>[
               Text(
                 "SIGN UP",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
               SizedBox(height: 10,),
               RoundedInputField(
                 color: Color(0xFFFBE3E1),

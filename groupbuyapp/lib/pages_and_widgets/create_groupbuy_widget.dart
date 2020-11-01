@@ -349,6 +349,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           style: TextStyle(color: Colors.black),
                         )),
                   ),
+
                   RaisedButton(
                     padding: EdgeInsets.all(10.0),
                     shape: RoundedRectangleBorder(
