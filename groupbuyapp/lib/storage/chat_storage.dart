@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:groupbuyapp/models/chat_room.dart';
+import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -15,7 +17,10 @@ class ChatStorage {
         .collection('chatRooms')
         .doc(chatRoomId)
         .collection('messages')
-        .doc(DateTime.now().millisecondsSinceEpoch.toString());
+        .doc(DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString());
 
     FirebaseFirestore.instance.runTransaction((transaction) async {
       await transaction.set(
@@ -38,7 +43,7 @@ class ChatStorage {
       String id = Uuid().v4().toString();
 
       final StorageReference storageRef =
-          FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
+      FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
 
       StorageUploadTask uploadTask = storageRef.putFile(
         result,
@@ -56,7 +61,10 @@ class ChatStorage {
           .collection('chatRooms')
           .doc(chatRoomId)
           .collection('messages')
-          .doc(DateTime.now().millisecondsSinceEpoch.toString());
+          .doc(DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString());
 
       FirebaseFirestore.instance.runTransaction((transaction) async {
         await transaction.set(
@@ -91,11 +99,20 @@ class ChatStorage {
   }
 
   // For broadcast
-  broadcast(String message, String groupBuyId) async {
+  broadcast(String msg, GroupBuy groupBuy, UserProfile organiserProfile) async {
+    print("hallo");
     QuerySnapshot chatRooms = await FirebaseFirestore.instance
         .collection("chatRooms")
-        .where("groupBuyId", isEqualTo: groupBuyId)
+        .where("groupBuyId", isEqualTo: groupBuy.id)
         .get();
-    print(chatRooms.docs.length);
+
+    chatRooms.docs.forEach((element) {
+      String chatRoomId = element.get("chatRoomId");
+      ChatUser chatUser = ChatUser(uid: organiserProfile.id,
+          name: organiserProfile.username,
+          avatar: organiserProfile.profilePicture);
+      ChatMessage message = ChatMessage(text: msg, user: chatUser);
+      onSendMessage(message, chatRoomId);
+    });
   }
 }

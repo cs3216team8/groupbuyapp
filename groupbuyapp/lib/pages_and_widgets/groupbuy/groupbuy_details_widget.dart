@@ -147,7 +147,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                             }
                             // hasSubmittedEmpty = false;
                             print("broadcast msg: ${msg}");
-                            ChatStorage().broadcast(msg, widget.groupBuy.id);
+                            ChatStorage().broadcast(msg, widget.groupBuy, widget.organiserProfile);
                             Navigator.pop(context);
                           },
                         ),
