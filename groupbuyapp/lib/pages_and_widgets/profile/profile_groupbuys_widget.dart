@@ -22,7 +22,7 @@ class ProfileGroupBuys extends StatefulWidget {
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
-    this.topHeightFraction = 0.45,
+    this.topHeightFraction = 0.4,
   }) : super(key: key);
 
   @override
