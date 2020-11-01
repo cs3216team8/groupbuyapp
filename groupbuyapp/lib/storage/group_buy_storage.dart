@@ -150,32 +150,32 @@ class GroupBuyStorage {
     String userId = FirebaseAuth.instance.currentUser.uid;
     String groupBuyId = groupBuy.getId();
 
-    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId);
-    return groupBuyRequests.get().then((QuerySnapshot querySnapshot) {
-      List<Future<Request>> futureRequests = querySnapshot.docs.map((doc) async {
-        QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
-        List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
-        List<Item> items = itemDocs.map((doc) {
-          return new Item(
-            itemLink: doc.data()['itemLink'],
-            totalAmount: doc.data()['totalAmount'].toDouble(),
-            qty: doc.data()['qty'],
-            remarks: doc.data()['remarks'],
-          );
-        }).toList();
-        return new Request(
-        id: doc.id,
-        requestorId: doc.data()['requestorId'],
-        items: items,
-        status: enumFromString(RequestStatus.values, doc.data()['status']),
-        );
-      }).toList();
-      if (futureRequests.length > 0) {
-        return futureRequests[0];
-      } else {
-        return Future<Null>.value(null);
-      }
-    });
+    return groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId)
+        .get().then((QuerySnapshot querySnapshot) {
+          List<Future<Request>> futureRequests = querySnapshot.docs.map((doc) async {
+            QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+            List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+            List<Item> items = itemDocs.map((doc) {
+              return new Item(
+                itemLink: doc.data()['itemLink'],
+                totalAmount: doc.data()['totalAmount'].toDouble(),
+                qty: doc.data()['qty'],
+                remarks: doc.data()['remarks'],
+              );
+            }).toList();
+            return new Request(
+            id: doc.id,
+            requestorId: doc.data()['requestorId'],
+            items: items,
+            status: enumFromString(RequestStatus.values, doc.data()['status']),
+            );
+          }).toList();
+          if (futureRequests.length > 0) {
+            return futureRequests[0];
+          } else {
+            return Future<Null>.value(null);
+          }
+        });
   }
 
   Future<void> addRequest(String groupBuyId, Request request) async {

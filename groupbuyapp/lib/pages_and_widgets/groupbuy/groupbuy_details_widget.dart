@@ -61,8 +61,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
 
   void onTapJoin(BuildContext context) {
-    print("tapped on join"); //TODO
-    segueWithLoginCheck(context, JoinGroupBuyForm());
+    segueWithLoginCheck(context, JoinGroupBuyForm(groupBuyId: widget.groupBuy.id,));
   }
 
   void onTapBroadcast(BuildContext context) {
