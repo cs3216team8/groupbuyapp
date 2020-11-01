@@ -75,7 +75,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                   <Widget>[
                     Container(
 
-                        height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<Profile>(
                             future: _fprofile,
                             builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {

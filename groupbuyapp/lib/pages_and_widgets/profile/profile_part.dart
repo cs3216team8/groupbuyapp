@@ -69,11 +69,15 @@ class ProfilePart extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                     Container(
-                      child: Text(
-                          "${userProfile.name}",
-                          style: Styles.nameStyle
-                      ),
-                    ),
+                      child:Flexible(
+                      flex: 1,
+                      child: new Text(
+                      "${userProfile.name}",
+                      style: Styles.nameStyle,
+                        textAlign:TextAlign.center,
+
+                      ))
+                    )
                 ]),
             SizedBox(height: 3,),
             Row(
