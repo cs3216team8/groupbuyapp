@@ -34,7 +34,10 @@ class _ChatListState extends State<ChatList> {
         title: Text(
           'Chats',
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontFamily: 'Nunito',
+            fontWeight: FontWeight.w500,
+            fontSize: 24,
+            color: Colors.white,
           ),
         ),
         elevation: 0.0,
