@@ -89,4 +89,13 @@ class ChatStorage {
         .collection("users")
         .snapshots();
   }
+
+  // For broadcast
+  broadcast(String message, String groupBuyId) async {
+    QuerySnapshot chatRooms = await FirebaseFirestore.instance
+        .collection("chatRooms")
+        .where("groupBuyId", isEqualTo: groupBuyId)
+        .get();
+    print(chatRooms.docs.length);
+  }
 }
