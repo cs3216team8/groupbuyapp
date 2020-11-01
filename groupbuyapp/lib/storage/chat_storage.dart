@@ -101,6 +101,7 @@ class ChatStorage {
   // For broadcast
   broadcast(String msg, GroupBuy groupBuy, UserProfile organiserProfile) async {
     print("hallo");
+    await createChatRoomForPiggyBackers(groupBuy);
     QuerySnapshot chatRooms = await FirebaseFirestore.instance
         .collection("chatRooms")
         .where("groupBuyId", isEqualTo: groupBuy.id)
@@ -114,5 +115,26 @@ class ChatStorage {
       ChatMessage message = ChatMessage(text: msg, user: chatUser);
       onSendMessage(message, chatRoomId);
     });
+  }
+
+  createChatRoomForPiggyBackers(GroupBuy groupBuy) async {
+    QuerySnapshot usersInGroupBuy = await FirebaseFirestore.instance
+        .collection("users")
+        .where("groupBuyIds", arrayContains: groupBuy.id)
+        .get();
+    usersInGroupBuy.docs.forEach((user) async {
+      String groupBuyId = groupBuy.id;
+      String organiserId = groupBuy.organiserId;
+      String userId = user.id;
+      String chatRoomId = organiserId + "_" + userId;
+      List<String> members = [organiserId, userId];
+      Map<String, dynamic> chatRoom = {
+        "chatRoomId": chatRoomId,
+        "members": members,
+        "groupBuyId": groupBuyId,
+      };
+      await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+    });
+
   }
 }
