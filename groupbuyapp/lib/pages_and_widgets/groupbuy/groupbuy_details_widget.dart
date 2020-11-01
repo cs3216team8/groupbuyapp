@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/chat_room.dart';
 import 'package:groupbuyapp/models/request.dart';
 
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';

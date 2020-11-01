@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:groupbuyapp/models/chat_room.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/user_profile_model.dart';
 import 'package:image_picker/image_picker.dart';
@@ -117,7 +116,7 @@ class ChatStorage {
     });
   }
 
-  createChatRoomForPiggyBackers(GroupBuy groupBuy) async {
+  Future<void> createChatRoomForPiggyBackers(GroupBuy groupBuy) async {
     QuerySnapshot usersInGroupBuy = await FirebaseFirestore.instance
         .collection("users")
         .where("groupBuyIds", arrayContains: groupBuy.id)
