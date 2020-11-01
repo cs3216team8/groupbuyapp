@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
@@ -35,7 +36,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(20),
+      height: double.infinity,
       child: Column(
         children: [
           CupertinoSlidingSegmentedControl(
@@ -63,7 +64,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                       return GroupbuysLoading();
                     default:
                       children = snapshot.data.map((GroupBuy groupBuy) {
-                        return new MyGroupBuyCard(groupBuy);
+                        return new GroupBuyCard(groupBuy);
                       }).toList();
                       break;
                   }
@@ -76,7 +77,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                       crossAxisCount: 2,
                       shrinkWrap: true,
                       physics: const ClampingScrollPhysics(),
-                      childAspectRatio: 6.0/7.0,
+                      childAspectRatio: 5.5/7.0,
                       children: children
                   );
                 },
@@ -112,7 +113,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                               default:
                                 children = snapshot.data.map((
                                     GroupBuy groupBuy) {
-                                  return new MyGroupBuyCard(groupBuy);
+                                  return new GroupBuyCard(groupBuy);
                                 }).toList();
                                 break;
                             }
@@ -125,7 +126,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
                                 crossAxisCount: 2,
                                 shrinkWrap: true,
                                 physics: const ClampingScrollPhysics(),
-                                childAspectRatio: 6.0 / 7.0,
+                                childAspectRatio: 5.5 / 7.0,
                                 children: children
                             );
                           },
