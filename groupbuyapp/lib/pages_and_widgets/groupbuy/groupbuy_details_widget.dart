@@ -144,7 +144,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                               showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
                               return;
                             }
-                            // hasSubmittedEmpty = false;
                             print("broadcast msg: ${msg}");
                             ChatStorage().broadcast(msg, widget.groupBuy, widget.organiserProfile);
                             Navigator.pop(context);
