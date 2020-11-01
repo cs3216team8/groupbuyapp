@@ -30,6 +30,10 @@ class GroupBuy {
       this.address
       );
 
+  bool isPresent() {
+    return endTimestamp.toDate().isAfter(DateTime.now());
+  }
+
 
   static GroupBuy getDummyData() {
     return new GroupBuy(

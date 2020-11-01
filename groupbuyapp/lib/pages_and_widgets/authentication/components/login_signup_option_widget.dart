@@ -18,7 +18,7 @@ class LoginOrSignupOption extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          isLogin ? "Don't have an Account?" : "Already have an account?",
+          isLogin ? "Don't have an Account? " : "Already have an account? ",
           style: TextStyle(color: Theme.of(context).primaryColor),
         ),
         GestureDetector(

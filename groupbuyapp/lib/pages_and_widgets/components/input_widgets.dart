@@ -21,7 +21,7 @@ class RoundedInputField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      color: color,
+      //color: color,
       child: TextFormField(
         validator: validator,
         controller: controller,
@@ -77,7 +77,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
   @override
   Widget build(BuildContext context) {
     return TextFieldContainer(
-      color: widget.color,
+      // color: widget.color,
       child: TextFormField(
         obscureText: !_showPassword,
         validator: widget.validator,

@@ -1,131 +1,200 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
-import 'package:percent_indicator/percent_indicator.dart';
+import 'package:groupbuyapp/utils/time_calculation.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'dart:math';
+
 
 class GroupBuyCard extends StatelessWidget {
   static const TextStyle textStyle =
-      TextStyle(); //fontSize: 15, fontWeight: FontWeight.normal);
+      TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
+  static const TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   final GroupBuy groupBuy;
 
-  // TODO: needs user info of each organiser -- either save in GroupBuy or query
   GroupBuyCard(this.groupBuy);
 
-  void _openDetailedGroupBuy(BuildContext context) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy, isOrganiser: true, hasRequested: false,));
-  }
-
-  String getTimeDifString(Duration timeDiff) {
-    String time;
-    if (timeDiff.inDays == 0) {
-      time = timeDiff.inHours.toString() + " hours";
-    } else {
-      time = timeDiff.inDays.toString() + " days";
-    }
-    return time;
+  void _openDetailedGroupBuy(BuildContext context, UserProfile organiserProfile) {
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy,organiserProfile: organiserProfile, isClosed: false,));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 10,
-      shadowColor: Colors.black12,
-      child: InkWell(
-        splashColor: Theme.of(context).primaryColor.withAlpha(30),
-        onTap: () {_openDetailedGroupBuy(context);},
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 40,
-              child: Image(
-                image: NetworkImage(this.groupBuy.storeLogo),
-              ),
+    return Container(
+        margin: const EdgeInsets.all(3.0),
+        padding: const EdgeInsets.all(1.0),
+        child: Card(
+          color: Color(0x00FFFFFF),
+          elevation: 10,
+          shadowColor: Color(0x00000000),
+          child: FutureBuilder(
+            future: ProfileStorage.instance.getUserProfile(groupBuy.organiserId),
+            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+              if (snapshot.hasError) {
+                return FailedToLoadCard();
+              }
+
+              Card card;
+
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return CardNotLoaded();
+                case ConnectionState.waiting:
+                  return CardLoading();
+                default:
+                  return groupBuyCardInsides(context, snapshot.data);
+              }
+            },
+          ),
+        )
+    );
+  }
+
+  Widget groupBuyCardInsides(BuildContext context, UserProfile profile) {
+    int addressLength = min(20,this.groupBuy.address.length);
+    return InkWell(
+          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          onTap: () {_openDetailedGroupBuy(context, profile);},
+          child: Container(
+            margin: const EdgeInsets.all(1.0),
+            decoration: new BoxDecoration(
+              color: groupBuy.isPresent() ? Color(0xFFFFF3E7) : Colors.black26, //greying out past groupbuys
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(1,1), // changes position of shadow
+                )
+              ],
             ),
-            Expanded(
-                flex: 60,
-                child: Column(
-                  children: [
-                    LinearPercentIndicator(
-                      lineHeight: 8.0,
-                      backgroundColor: Colors.black12,
-                      progressColor: Theme.of(context).buttonColor,
-                      percent: this.groupBuy.getPercentageComplete(),
+            child: Column(
+                children: <Widget>[
+              Expanded(
+                flex: 25,
+                child: Container(
+                  child:this.groupBuy.storeLogo.startsWith('assets/')?
+                    Image.asset(this.groupBuy.storeLogo):
+                    Image(
+                    image: NetworkImage(this.groupBuy.storeLogo),
+                  )
+                )
+              ),
+              Expanded(
+                  flex: 75,
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      color: Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     ),
-                    Row(children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Icon(
-                          Icons.access_time,
-                          size: 30,
+
+                        child: Column(
+                    children: [
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 50, left: 6, bottom: 8, right: 6),
                         ),
-                      ),
-                      Text(
-                        "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
-                        style: textStyle,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(6),
-                        child: Text(
+                        Flexible(
+                            flex: 1,
+                            child: new Text(
+                              "${this.groupBuy.address.substring(0, addressLength)} ..",
+                              style: titleStyle,
+                            )
+                        )
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top: 3),
+                          child: Icon(
+                            Icons.access_time_rounded,
+                            color: Color(0xFFe87d74),
+                            size: 24,
+                          ),
+                        ),
+                        Text(
+                          "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
+                          style: textStyle,
+                        ),
+                        // 7 days, $70/$100
+                      ]),
+                      Row(children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(left: 6, right: 6, bottom: 3, top:3 ),
+                          child: Icon(
+                            Icons.pending_rounded,
+                            color: Color(0xFFe87d74),
+                            size: 24,
+                          ),
+                        ),
+                        Text(
                           "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
                           style: textStyle,
                         ),
-                      ),
-                      // 7 days, $70/$100
-                    ]),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(6),
-                          child: CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Theme.of(context).primaryColor,
+
+                      ]),
+                      Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 6, top: 3,  bottom: 3, right: 6),
                             child: CircleAvatar(
-                              radius: 13,
-                              backgroundImage: // TODO: Image.network(???.getProfilePicture(groupBuy.organiserId)).image
-                              AssetImage('assets/profpicplaceholder.jpg'),
+                              radius: 12,
+                              backgroundColor: Color(0xFFd93b4b),
+                              child: CircleAvatar(
+                                radius: 10,
+                                backgroundImage: NetworkImage(profile.profilePicture),
+                              ),
                             ),
                           ),
-                        ),
-                        Text(
-                          "usertrunc", // TODO: ???.getUsername(groupBuy.organiserId)
-                          style: textStyle,
-                        ),
-                        Spacer(
-                          flex: 1,
-                        ),
-                        Text(
-                          "rating", // TODO: ???.getUserRating(groupBuy.organiserId)
-                          style: textStyle,
-                        ),
-                        Icon(Icons.whatshot), // supposed to be star
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.all(6),
-                          child: Icon(Icons.location_on_outlined),
-                        ),
-                        Expanded(
-                          child: Text(
-                            "${groupBuy.address}",
+                          Text(
+                            profile.username,
                             style: textStyle,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                    )
-                  ],
-                )
+                        ],
+                      ),
+                    ],
+                  )
+                ),
+            )]
             ),
-          ],
-        ),
+          )
+        );
+      }
+    }
+
+class CardLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: const CircularProgressIndicator(),
+      width: 60,
+      height: 60,
+    );
+  }
+}
+
+class FailedToLoadCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+      ),
+    );
+  }
+}
+
+//note this should not appear
+class CardNotLoaded extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("The groupbuy was not loaded. Git blame developers."),
       ),
     );
   }

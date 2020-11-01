@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/chat_message.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class ChatScreen extends StatefulWidget {
   final String currentUser; // placeholder

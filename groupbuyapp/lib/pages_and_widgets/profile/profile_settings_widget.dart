@@ -6,6 +6,7 @@ import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   final UserProfile profile;
@@ -104,12 +105,22 @@ class ProfilePicChanger extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20, top: 20),
-          child: IconButton(
-            icon: Icon(Icons.image_search),
-            onPressed: () {
-              print("TODO: should allow upload/change pic");
-            },
-          ),
+          child: Column(
+            children: [
+              IconButton(
+                icon: Icon(Icons.camera_alt),
+                onPressed: () async {
+                  final photo = await ImagePicker().getImage(source: ImageSource.camera);
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.image_search),
+                onPressed: () async {
+                  final photo = await ImagePicker().getImage(source: ImageSource.gallery);
+                },
+              ),
+            ],
+          )
         ),
       ],
     );

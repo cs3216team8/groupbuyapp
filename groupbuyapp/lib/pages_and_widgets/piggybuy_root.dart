@@ -1,6 +1,6 @@
 // Essentials
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 // Home
@@ -11,6 +11,7 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
+import 'package:groupbuyapp/utils/loginCheck.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {
@@ -20,11 +21,14 @@ class PiggyBuyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp
+    ]);
     return MaterialApp(
       title: _title,
       home: PiggyBuy(),
       theme: ThemeData(
-        primaryColor: Colors.pink,
+        primaryColor: Color(0xFFF98B83),
         accentColor: Color(0xFFF2B1AB),
         cardColor: Color(0xFFFFE1AD),
         backgroundColor: Color(0xFFF4E9E7),
@@ -45,10 +49,8 @@ class PiggyBuy extends StatefulWidget {
   List<Widget> getMainScreens() {
     return <Widget>[
       HomeScreen(),
-      CreateGroupBuyScreen(),
-      ProfileScreen(
-        isMe: true, //true,
-      ),
+      Container(), //CreateGroupBuyScreen(),
+      ProfileScreen(),
     ];
   }
 
@@ -76,8 +78,8 @@ class _PiggyBuyState extends State<PiggyBuy> {
 
   void _onItemTapped(int index, BuildContext context) {
     setState(() {
-      if (index != 0 && FirebaseAuth.instance.currentUser == null) {
-        segueToPage(context, LoginScreen());
+      if (index != 0 && !isUserLoggedIn()) {
+        segueWithLoginCheck(context, LoginScreen());
       } else {
         _selectedIndex = index;
       }
@@ -88,7 +90,9 @@ class _PiggyBuyState extends State<PiggyBuy> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: IndexedStack(
+        child: _selectedIndex == 1
+        ? CreateGroupBuyScreen()
+        : IndexedStack(
           index: _selectedIndex,
           children: widget.getMainScreens(),
         ),
@@ -97,7 +101,7 @@ class _PiggyBuyState extends State<PiggyBuy> {
           type: BottomNavigationBarType.fixed,
           items: widget.navItems,
           currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Color(0xFFF98B83),
           onTap: (int index) {
             _onItemTapped(index, context);
           }),

@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-bool checkLogin() {
-  String userId = FirebaseAuth.instance.currentUser.uid;
+bool isUserLoggedIn() {
+  User currentUser = FirebaseAuth.instance.currentUser;
 
-  if (userId == null) {
+  if (currentUser == null) {
     return false;
   } else {
     return true;

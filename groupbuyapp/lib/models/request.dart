@@ -29,8 +29,42 @@ class Request {
     @required this.requestorId,
     @required this.items,
   }) {
-    // this.id = "" //TODO: need to pass in empty id? how will storage create id
+    this.id = ""; //TODO: need to pass in empty id? how will storage create id
     status = RequestStatus.pending;
+  }
+
+  static RequestStatus requestStatusFromString(String val) {
+    switch (val) {
+      case 'pending':
+        return RequestStatus.pending;
+      case 'completed':
+        return RequestStatus.completed;
+      case 'rejected':
+        return RequestStatus.rejected;
+      case 'accepted':
+        return RequestStatus.accepted;
+      case 'confirmed':
+        return RequestStatus.confirmed;
+      default:
+        throw("${val} is not a supported request type");
+    }
+  }
+
+  static String stringFromRequestStatus(RequestStatus status) {
+    switch (status) {
+      case RequestStatus.rejected:
+        return 'rejected';
+      case RequestStatus.confirmed:
+        return 'confirmed';
+      case RequestStatus.completed:
+        return 'completed';
+      case RequestStatus.pending:
+        return 'pending';
+      case RequestStatus.accepted:
+        return 'accepted';
+      default:
+        throw("nani not supposed to be here");
+    }
   }
 
   List<Item> getItems() {
