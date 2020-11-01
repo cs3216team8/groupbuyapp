@@ -192,6 +192,7 @@ class _SignUpFormState extends State<SignupForm> {
               RoundedButton(
                 color: Theme.of(context).primaryColor,
                 text: "SIGN UP",
+                textStyle: TextStyle(color:Colors.white),
                 onPress: () async {
                   if (_formKey.currentState.validate()) {
                     UserCredential userCredential = await _register();
