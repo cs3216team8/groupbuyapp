@@ -1,15 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/add_item_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
-
-  final String piggybackerUid;
+  final String groupBuyId;
 
   JoinGroupBuyForm({
     Key key,
-    this.piggybackerUid, //TODO
+    @required String this.groupBuyId,
   }) : super(key: key);
 
   @override
@@ -37,26 +38,29 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     });
   }
 
-  void submitJoinRequest() {
-    print("submit join request; hook db"); //TODO
+  void submitJoinRequest(BuildContext context) {
+    print("submit join request");
+    //TODO: validation of ALL items -- add validator
 
-    List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text);
-    List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text));
-    List<String> rmks = itemRemarksControllers.map((ctrlr) => ctrlr.text);
-    List<double> amts = itemTotalAmtControllers.map((ctrlr) => double.parse(ctrlr.text));
+    List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text).toList();
+    List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text)).toList();
+    List<String> rmks = itemRemarksControllers.map((ctrlr) => ctrlr.text).toList();
+    List<double> amts = itemTotalAmtControllers.map((ctrlr) => double.parse(ctrlr.text)).toList();
 
     List<Item> items = [];
     for (int i = 0; i < itemCards.length; i++) {
       items.add(Item(itemLink: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
     }
 
-    Request request = Request.newRequest(requestorId: widget.piggybackerUid, items: items);
+    Request request = Request.newRequest(requestorId: FirebaseAuth.instance.currentUser.uid, items: items);
 
-    //TODO @storage send
+    GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
+
+    Navigator.pop(context);
   }
 
   void onTapChat(BuildContext context) {
-    print("on tap chat with this organiser"); // TODO
+    print("on tap chat with this organiser"); // TODO @teikjun
   }
 
   Widget createInputCard() {
@@ -97,7 +101,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
           children: [
             RaisedButton(
               color: Colors.greenAccent,
-              onPressed: () => submitJoinRequest(),
+              onPressed: () => submitJoinRequest(context),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
