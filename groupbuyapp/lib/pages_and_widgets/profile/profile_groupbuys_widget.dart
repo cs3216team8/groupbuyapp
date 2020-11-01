@@ -6,6 +6,8 @@ import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dar
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
+import 'organised_groupbuys_part.dart';
+
 class ProfileGroupBuys extends StatefulWidget {
   final bool isMe;
   final String userId;
@@ -31,6 +33,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     with SingleTickerProviderStateMixin {
   
   String _userId;
+  Future<UserProfile> _fprofile;
   
   @override
   void initState() {
@@ -40,10 +43,18 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     } else {
       _userId = widget.userId; //TODO: check that this condition is only reached when userId is not null
     }
+    fetchProfile();
   }
 
-  Future<void> _refresh() async {
+  Future<void> _getData() async {
     setState(() {
+      fetchProfile();
+    });
+  }
+
+  void fetchProfile() async {
+    setState(() {
+      _fprofile = ProfileStorage.instance.getUserProfile(_userId);
     });
   }
 
@@ -57,7 +68,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     return DefaultTabController(
       length: 1,
       child: RefreshIndicator(
-        onRefresh: _refresh,
+        onRefresh: _getData,
         child: NestedScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           // allows you to build a list of elements that would be scrolled away till the body reached the top
@@ -72,7 +83,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                         ),
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<UserProfile>(
-                            future: ProfileStorage.instance.getUserProfile(_userId),
+                            future: _fprofile,
                             builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
                               if (snapshot.hasError) {
                                 return FailedToLoadProfile();
@@ -97,16 +108,9 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
           },
           body: widget.isMe
               ? MyGroupBuys()
-              : OrganisedGroupBuysOnly(),
+              : OrganisedGroupBuysOnly(userId: _userId, fprofile: _fprofile,),
         ),
       ),
     );
-  }
-}
-
-class OrganisedGroupBuysOnly extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

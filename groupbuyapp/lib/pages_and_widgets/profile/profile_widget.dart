@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return userId == FirebaseAuth.instance.currentUser.uid;
+    return userId == null; //FirebaseAuth.instance.currentUser.uid;
   }
 
   @override
