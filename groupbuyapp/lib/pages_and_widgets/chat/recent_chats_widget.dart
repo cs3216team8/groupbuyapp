@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/message_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
+import 'package:groupbuyapp/storage/chat_storage.dart';
 
 class RecentChats extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    (new ChatStorage()).getUserChats(userId);
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
@@ -18,7 +23,7 @@ class RecentChats extends StatelessWidget {
               onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ChatScreen("testChatRoom"),
+                  builder: (_) => ChatScreen(chatRoomId: "testChatRoom"),
                 ),
               ),
               child: Container(
