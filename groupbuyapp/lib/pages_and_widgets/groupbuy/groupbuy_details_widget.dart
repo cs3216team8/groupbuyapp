@@ -120,6 +120,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   void onTapCloseGB() {
     print("tapped on close group buy"); //TODO send request
+    widget.groupBuy.status = GroupBuyStatus.closed;
+    GroupBuyStorage.instance.editGroupBuy(widget.groupBuy);
     setState(() {
       widget.isClosed = true;
     });
@@ -201,22 +203,21 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
-        actions: <Widget>[
+        actions: isOrganiser() ? <Widget>[
         PopupMenuButton<String>(
           color: Colors.white,
           icon: Icon(Icons.more_vert, color: Colors.black,),
           onSelected: (value) => handleGroupBuyDetailMenu(value, context),
           itemBuilder: (BuildContext context) {
-            return isOrganiser() ? {'Get items list in email', 'Close group buy now'}.map((String choice) {
+            return {'Get items list in email', 'Close group buy now'}.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
               );
-            }).toList()
-                : null;
+            }).toList();
           },
         ),
-      ],),
+      ] : [],),
       floatingActionButton: isOrganiser()
         ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
