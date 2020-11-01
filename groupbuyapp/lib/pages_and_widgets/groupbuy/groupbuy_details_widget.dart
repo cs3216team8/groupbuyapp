@@ -546,17 +546,17 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                             height: 5.5,
                                           ),
                                           SizedBox(height: 10,),
+                                          Container(
+                                            padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
+                                            alignment: Alignment.topLeft,
+                                            child: Text(
+                                                'YOUR REQUESTS',
+                                                style: Styles.subtitleStyle
+                                            ),
+                                          ),
                                           hasRequested
                                               ? Column(
                                             children: [
-                                              Container(
-                                                padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                    'YOUR REQUESTS',
-                                                    style: Styles.subtitleStyle
-                                                ),
-                                              ),
                                               getRequestPreview(_futureRequests[0])
                                             ],
                                           )
