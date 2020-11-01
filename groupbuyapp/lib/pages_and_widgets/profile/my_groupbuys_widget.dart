@@ -42,7 +42,6 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return  Scaffold(
         appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
