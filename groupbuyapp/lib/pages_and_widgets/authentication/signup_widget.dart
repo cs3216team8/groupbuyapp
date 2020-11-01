@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
@@ -38,7 +38,7 @@ class _SignUpFormState extends State<SignupForm> {
           password: _passwordController.text
       ));
       String userId = userCredential.user.uid;
-      UserProfile userProfile = new UserProfile(
+      Profile userProfile = new Profile(
           userId,
           _fullNameController.text,
           _usernameController.text,

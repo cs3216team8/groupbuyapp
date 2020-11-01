@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
-  final UserProfile profile;
+  final Profile profile;
 
   ProfileSettingsScreen({
     Key key,
@@ -37,8 +37,8 @@ class ProfileSettingsScreen extends StatelessWidget {
           IconButton(
           icon: Icon(Icons.save_outlined, color: Colors.black,),
             onPressed: () {
-              UserProfile newProfile = UserProfile(
-                  profile.id,
+              Profile newProfile = Profile(
+                  profile.userId,
                   nameController.text,
                   usernameController.text,
                   profile.profilePicture,

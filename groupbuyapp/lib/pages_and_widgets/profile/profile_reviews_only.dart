@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
 
 class ProfileReviewsOnly extends StatefulWidget {
-  final Future<UserProfile> Function(String) userProfileStream;
+  final Future<Profile> Function(String) userProfileStream;
   final bool isMe;
   final String userId;
 
@@ -47,9 +47,9 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
                           border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
                       ),
                       height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                      child: FutureBuilder<UserProfile>(
+                      child: FutureBuilder<Profile>(
                           future: widget.userProfileStream(widget.userId),
-                          builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                          builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
                             if (snapshot.hasError) {
                               print(snapshot.error);
                               return FailedToLoadProfile();
@@ -61,7 +61,7 @@ class _ProfileReviewsOnlyState extends State<ProfileReviewsOnly>
                               case ConnectionState.waiting:
                                 return ProfileLoading();
                               default:
-                                UserProfile userProfile = snapshot.data;
+                                Profile userProfile = snapshot.data;
                                 return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
                             }
                           }

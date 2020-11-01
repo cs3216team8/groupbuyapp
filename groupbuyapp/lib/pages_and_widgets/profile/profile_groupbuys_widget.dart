@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
-import 'package:groupbuyapp/storage/user_profile_storage.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 
 import 'organised_groupbuys_part.dart';
 
@@ -33,7 +33,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     with SingleTickerProviderStateMixin {
   
   String _userId;
-  Future<UserProfile> _fprofile;
+  Future<Profile> _fprofile;
   
   @override
   void initState() {
@@ -78,9 +78,9 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                             border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
                         ),
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                        child: FutureBuilder<UserProfile>(
+                        child: FutureBuilder<Profile>(
                             future: _fprofile,
-                            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
                               if (snapshot.hasError) {
                                 return FailedToLoadProfile();
                               }
@@ -91,7 +91,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                                 case ConnectionState.waiting:
                                   return ProfileLoading();
                                 default:
-                                  UserProfile userProfile = snapshot.data;
+                                  Profile userProfile = snapshot.data;
                                   return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
                               }
                             }

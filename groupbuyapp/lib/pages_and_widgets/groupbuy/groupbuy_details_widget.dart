@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
@@ -17,7 +17,7 @@ import 'package:groupbuyapp/utils/time_calculation.dart';
 
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
-  final UserProfile organiserProfile;
+  final Profile organiserProfile;
   bool isClosed;
 
 
@@ -42,7 +42,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.id;
+    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.userId;
   }
   bool hasRequested() {
     return _futureRequests.isNotEmpty;
@@ -375,7 +375,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                       child: Column (
                                           children: <Widget>[
                                             GestureDetector(
-                                              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.id,)),
+                                              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.userId,)),
                                               child: Row(
                                                 children: <Widget>[
                                                   Padding(
