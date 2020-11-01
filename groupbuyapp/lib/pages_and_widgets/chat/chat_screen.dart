@@ -9,8 +9,9 @@ import 'package:groupbuyapp/utils/navigators.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
+  final String username;
 
-  ChatScreen({this.chatRoomId});
+  ChatScreen({this.chatRoomId, this.username});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -48,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
           },
         ),
         title: Text(
-          "Chat",
+          "Chat with ${widget.username}",
           style: TextStyle(
             fontFamily: 'Nunito',
             fontWeight: FontWeight.w500,

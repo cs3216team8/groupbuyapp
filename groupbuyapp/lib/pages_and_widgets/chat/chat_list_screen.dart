@@ -175,6 +175,7 @@ class ChatRoomsTile extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => ChatScreen(
                       chatRoomId: chatRoomId,
+                      username : userName,
                     )));
       },
       child: Container(
