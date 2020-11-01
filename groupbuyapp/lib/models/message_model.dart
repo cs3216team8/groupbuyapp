@@ -1,4 +1,4 @@
-import 'package:groupbuyapp/models/user_model.dart';
+import 'package:groupbuyapp/models/chat_temp_user_model.dart';
 
 class Message {
   final User sender;
