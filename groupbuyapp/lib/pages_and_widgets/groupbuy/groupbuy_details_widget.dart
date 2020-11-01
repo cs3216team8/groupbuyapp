@@ -34,15 +34,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   TextEditingController broadcastMsgController;
 
   List<Future<Request>> _futureRequests = [];
+  bool hasRequested = false;
 
   bool isOrganiser() {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
     return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.userId;
-  }
-  bool hasRequested() {
-    return _futureRequests.isNotEmpty;
   }
 
   void onTapChat(BuildContext context) {
@@ -122,6 +120,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   void onTapCloseGB() {
     print("tapped on close group buy"); //TODO send request
+    widget.groupBuy.status = GroupBuyStatus.closed;
+    GroupBuyStorage.instance.editGroupBuy(widget.groupBuy);
     setState(() {
       widget.isClosed = true;
     });
@@ -172,18 +172,25 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void fetchRequests() async {
-    List<Future<Request>> freqs;
     if (isOrganiser()) {
-      freqs = await GroupBuyStorage.instance
+      List<Future<Request>> freqs = await GroupBuyStorage.instance
           .getAllGroupBuyRequests(widget.groupBuy)
           .single;
+      setState(() {
+        _futureRequests = freqs;
+      });
     } else {
-      freqs = [GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy)];
+      Future<Request> freq = GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
+      setState(() {
+        _futureRequests = [freq];
+      });
+      freq.then((value) {
+        setState(() {
+          hasRequested = value != null;
+        });
+      });
     }
     // assert(isOrganiser || freqs.length <= 1)
-    setState(() {
-      _futureRequests = freqs;
-    });
   }
 
   @override
@@ -196,22 +203,21 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
-        actions: <Widget>[
+        actions: isOrganiser() ? <Widget>[
         PopupMenuButton<String>(
           color: Colors.white,
           icon: Icon(Icons.more_vert, color: Colors.black,),
           onSelected: (value) => handleGroupBuyDetailMenu(value, context),
           itemBuilder: (BuildContext context) {
-            return isOrganiser() ? {'Get items list in email', 'Close group buy now'}.map((String choice) {
+            return {'Get items list in email', 'Close group buy now'}.map((String choice) {
               return PopupMenuItem<String>(
                 value: choice,
                 child: Text(choice),
               );
-            }).toList()
-                : null;
+            }).toList();
           },
         ),
-      ],),
+      ] : [],),
       floatingActionButton: isOrganiser()
         ? Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -228,7 +234,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
             ),
           ]
         )
-        : hasRequested()
+        : hasRequested
           ? RaisedButton(
             color: Theme.of(context).accentColor,
             elevation: 10,
@@ -452,7 +458,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                   Container(
                                     // height: double.infinity,
                                     child: isOrganiser()
-                                        ? Column(
+                                    ? Column(
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: <Widget>[
                                         SizedBox(height: 10,),
@@ -462,24 +468,24 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                         ),
                                         SizedBox(height: 10,),
                                         Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Container(
-                                                padding: EdgeInsets.only(left: 20, bottom: 5),
-                                                alignment: Alignment.topLeft,
-                                                child: Text(
-                                                  'REQUESTS',
-                                                  style: Styles.subtitleStyle,
-                                                ),
-                                              )
-                                            ]
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Container(
+                                              padding: EdgeInsets.only(left: 20, bottom: 5),
+                                              alignment: Alignment.topLeft,
+                                              child: Text(
+                                                'REQUESTS',
+                                                style: Styles.subtitleStyle,
+                                              ),
+                                            )
+                                          ]
                                         ),
                                         Column(
                                           children: _futureRequests.map((freq) => getRequestPreview(freq)).toList(),
                                         ),
                                       ],
                                     )
-                                        : Column(
+                                    : Column(
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: <Widget>[
                                         SizedBox(height: 10,),
@@ -488,26 +494,24 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           height: 5.5,
                                         ),
                                         SizedBox(height: 10,),
-                                        hasRequested()
-                                            ? Column(
+                                        hasRequested
+                                        ? Column(
                                           children: [
                                             Container(
+                                              padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
                                               alignment: Alignment.topLeft,
                                               child: Text(
-                                                  'You have requested:',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight: FontWeight.bold
-                                                  )
+                                                  'YOUR REQUESTS',
+                                                  style: Styles.subtitleStyle
                                               ),
                                             ),
-                                            getRequestPreview(GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy))
+                                            getRequestPreview(_futureRequests[0])
                                           ],
                                         )
-                                            : Column(
-                                            children: <Widget>[
-                                              Text("You have yet to join this group buy. Chat or Join now!", style: TextStyle(fontWeight: FontWeight.bold),),
-                                            ]
+                                        : Column(
+                                          children: <Widget>[
+                                            Text("You have yet to join this group buy. Chat or Join now!", style: TextStyle(fontWeight: FontWeight.bold),),
+                                          ]
                                         ),
                                       ],
                                     ),

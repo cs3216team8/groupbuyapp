@@ -62,7 +62,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
   Widget build(BuildContext context) {
     
     return DefaultTabController(
-      length: 1,
+      length: 2,
       child: RefreshIndicator(
         onRefresh: _getData,
         child: NestedScrollView(
@@ -74,9 +74,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                 delegate: SliverChildListDelegate(
                   <Widget>[
                     Container(
-                        decoration: BoxDecoration(
-                            border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
-                        ),
+
                         height: MediaQuery.of(context).size.height * widget.topHeightFraction,
                         child: FutureBuilder<Profile>(
                             future: _fprofile,

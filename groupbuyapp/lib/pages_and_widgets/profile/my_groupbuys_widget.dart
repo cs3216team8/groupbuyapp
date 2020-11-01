@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_part.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -15,7 +15,7 @@ class MyGroupBuys extends StatefulWidget {
   _MyGroupBuysState createState() => _MyGroupBuysState();
 }
 
-class _MyGroupBuysState extends State<MyGroupBuys> {
+class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStateMixin{
 
   final Map<int, Widget> segments = <int, Widget>{
     0: Container(
@@ -24,6 +24,13 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
     ),
     1: Text("As Piggybuyer")
   };
+  TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+  }
 
   int _selectedIndex = 0;
 
@@ -35,109 +42,118 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: double.infinity,
-      child: Column(
-        children: [
-          CupertinoSlidingSegmentedControl(
-            children: segments,
-            onValueChanged: _onItemTapped,
-            groupValue: _selectedIndex,
+    Size size = MediaQuery.of(context).size;
+    return  Scaffold(
+        appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+    child: AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      bottom: TabBar(
+      labelStyle: Styles.textStyleSelected,  //For Selected tab
+      unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
+
+      onTap: _onItemTapped,
+    tabs: [
+    Tab(text: "As Organiser",),
+    Tab(text: "As PiggyBacker",),
+    ],
+    ),
+    )
+    ),
+    body: IndexedStack(
+        index: this._selectedIndex,
+
+    children: [
+          StreamBuilder<List<GroupBuy>>(
+            stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+            builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
+              List<Widget> children;
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return FailedToLoadMyGroupBuys();
+              }
+
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return GroupBuysNotLoaded();
+                case ConnectionState.waiting:
+                  return GroupbuysLoading();
+                default:
+                  children = snapshot.data.map((GroupBuy groupBuy) {
+                    return new GroupBuyCard(groupBuy);
+                  }).toList();
+                  break;
+              }
+
+              if (children.isEmpty) {
+                return OrganisedGroupBuyDefaultScreen();
+              }
+
+              return GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  childAspectRatio: 5.5/7.0,
+                  children: children
+              );
+            },
           ),
-          SizedBox(height: 20),
-          IndexedStack(
-            index: this._selectedIndex,
-            children: <Widget>[
-              StreamBuilder<List<GroupBuy>>(
-                stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-                builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-                  List<Widget> children;
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
-                    return FailedToLoadMyGroupBuys();
-                  }
+        FutureBuilder<Stream<List<GroupBuy>>>(
+            future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
+            builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
+              if (snapshot.hasError){
+                print(snapshot.error);
+                return FailedToLoadMyGroupBuys();
+              }
 
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return GroupBuysNotLoaded();
-                    case ConnectionState.waiting:
-                      return GroupbuysLoading();
-                    default:
-                      children = snapshot.data.map((GroupBuy groupBuy) {
-                        return new GroupBuyCard(groupBuy);
-                      }).toList();
-                      break;
-                  }
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return GroupBuysNotLoaded();
+                case ConnectionState.waiting:
+                  return GroupbuysLoading();
+                default:
+                  return StreamBuilder<List<GroupBuy>>(
+                    stream: snapshot.data,
+                    builder: (BuildContext context, AsyncSnapshot<List<
+                        GroupBuy>> snapshot) {
+                      List<Widget> children;
+                      if (snapshot.hasError) {
+                        return FailedToLoadMyGroupBuys();
+                      }
 
-                  if (children.isEmpty) {
-                    return OrganisedGroupBuyDefaultScreen();
-                  }
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return GroupBuysNotLoaded();
+                        case ConnectionState.waiting:
+                          return GroupbuysLoading();
+                        default:
+                          children = snapshot.data.map((
+                              GroupBuy groupBuy) {
+                            return new GroupBuyCard(groupBuy);
+                          }).toList();
+                          break;
+                      }
 
-                  return GridView.count(
-                      crossAxisCount: 2,
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      childAspectRatio: 5.5/7.0,
-                      children: children
+                      if (children.isEmpty) {
+                        return new PiggyBackedGroupBuyDefaultScreen();
+                      }
+
+                      return GridView.count(
+                          crossAxisCount: 2,
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          childAspectRatio: 5.5 / 7.0,
+                          children: children
+                      );
+                    },
                   );
-                },
-              ),
-              FutureBuilder<Stream<List<GroupBuy>>>(
-                future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
-                builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
-                    if (snapshot.hasError){
-                      print(snapshot.error);
-                      return FailedToLoadMyGroupBuys();
-                    }
+              }
+            }
+        ),
 
-                    switch (snapshot.connectionState) {
-                      case ConnectionState.none:
-                        return GroupBuysNotLoaded();
-                      case ConnectionState.waiting:
-                        return GroupbuysLoading();
-                      default:
-                        return StreamBuilder<List<GroupBuy>>(
-                          stream: snapshot.data,
-                          builder: (BuildContext context, AsyncSnapshot<List<
-                              GroupBuy>> snapshot) {
-                            List<Widget> children;
-                            if (snapshot.hasError) {
-                              return FailedToLoadMyGroupBuys();
-                            }
 
-                            switch (snapshot.connectionState) {
-                              case ConnectionState.none:
-                                return GroupBuysNotLoaded();
-                              case ConnectionState.waiting:
-                                return GroupbuysLoading();
-                              default:
-                                children = snapshot.data.map((
-                                    GroupBuy groupBuy) {
-                                  return new GroupBuyCard(groupBuy);
-                                }).toList();
-                                break;
-                            }
-
-                            if (children.isEmpty) {
-                              return PiggyBackedGroupBuyDefaultScreen();
-                            }
-
-                            return GridView.count(
-                                crossAxisCount: 2,
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                                childAspectRatio: 5.5 / 7.0,
-                                children: children
-                            );
-                          },
-                        );
-                        }
-                    }
-                  )
-            ]
-          )
-        ]
-      )
+    ])
     );
   }
 }
@@ -170,7 +186,7 @@ class GroupBuysNotLoaded extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("There are no group buys that you have joined."),
+        child: Text("There are no group buys that you have joined.", style: Styles.titleStyle),
       ),
     );
   }

@@ -107,16 +107,6 @@ class GroupBuyStorage {
   //       .catchError((error) => print("Failed to delete buy: $error"));
   // }
 
-  dynamic enumFromString(List values, String comp){
-    dynamic enumValue;
-    values.forEach((item) {
-      if(item.toString() == comp){
-        enumValue =  item;
-      }
-    });
-    return enumValue;
-  }
-
   Future<Request> getRequestWithItems(String groupBuyId, QueryDocumentSnapshot document) async {
     QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
     List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
@@ -132,7 +122,7 @@ class GroupBuyStorage {
       id: document.id,
       requestorId: document.data()['requestorId'],
       items: items,
-      status: enumFromString(RequestStatus.values, document.data()['status']),
+      status: Request.requestStatusFromString(document.data()['status']),
     );
   }
 
@@ -167,11 +157,12 @@ class GroupBuyStorage {
                 remarks: doc.data()['remarks'],
               );
             }).toList();
+
             return new Request(
             id: doc.id,
             requestorId: doc.data()['requestorId'],
             items: items,
-            status: enumFromString(RequestStatus.values, doc.data()['status']),
+            status: Request.requestStatusFromString(doc.data()['status']),
             );
           }).toList();
           if (futureRequests.length > 0) {
@@ -191,7 +182,7 @@ class GroupBuyStorage {
     batch.set(requestDoc, {
       'id': request.id,
       'requestorId': request.requestorId,
-      'status': Request.stringFromRequestStatus(RequestStatus.confirmed),
+      'status': Request.stringFromRequestStatus(request.status),
     });
 
     request.items.forEach((item) {

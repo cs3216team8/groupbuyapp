@@ -1,21 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/utils/styles.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
       children: <Widget>[
         SizedBox(height: 20.0,),
-        Text(
+        Container(
+          child: SvgPicture.asset(
+            'assets/undraw_empty_xct9.svg',
+          height: 200,
+
+        ),
+          padding: EdgeInsets.all(10),
+        ),
+
+      Text(
           "You haven't piggybacked any group buys!",
-          style: TextStyle(
-              fontSize:  30,
-              fontWeight: FontWeight.bold
-          ),
+          style: Styles.emptyStyle,
           textAlign: TextAlign.center,
         ),
         RaisedButton(
@@ -27,6 +36,7 @@ class PiggyBackedGroupBuyDefaultScreen extends StatelessWidget {
             )
         ),
       ],
+    )
     );
   }
 }
