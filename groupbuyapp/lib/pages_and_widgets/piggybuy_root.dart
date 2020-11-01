@@ -1,4 +1,5 @@
 // Essentials
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
@@ -11,7 +12,7 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
-import 'package:groupbuyapp/utils/loginCheck.dart';
+import 'package:groupbuyapp/utils/auth/auth_check.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class PiggyBuyApp extends StatelessWidget {

@@ -1,28 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
-  final UserProfile organiserProfile;
+  final Profile organiserProfile;
   bool isClosed;
 
-  static const TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-  static const TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
-
-  //TODO storage like as listings widget
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
@@ -36,8 +32,6 @@ class GroupBuyInfo extends StatefulWidget {
 
 class _GroupBuyInfoState extends State<GroupBuyInfo> {
   TextEditingController broadcastMsgController;
-  TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-  TextStyle titleStyle = TextStyle(fontSize: 21, fontWeight: FontWeight.bold, fontFamily: 'WorkSans'); //fontSize: 15, fontWeight: FontWeight.normal);
 
   List<Future<Request>> _futureRequests = [];
 
@@ -45,7 +39,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.id;
+    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.userId;
   }
   bool hasRequested() {
     return _futureRequests.isNotEmpty;
@@ -105,7 +99,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           onPressed: () {
                             String msg = broadcastMsgController.text;
                             if (msg.isEmpty) {
-                              showErrorFlushbar("Your broadcast message should not be empty!");
+                              showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
                               return;
                             }
                             // hasSubmittedEmpty = false;
@@ -124,20 +118,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           }
       );
     });
-  }
-
-  void showErrorFlushbar(String message) {
-    Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        flushbarStyle: FlushbarStyle.FLOATING,
-        margin: EdgeInsets.only(top: 60, left: 8, right: 8),
-        duration: Duration(seconds: 3),
-        animationDuration: Duration(seconds: 1),
-        borderRadius: 8,
-        backgroundColor: Color(0xFFF2B1AB),
-        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-        title: "Please check again!",
-        message: message).show(context);
   }
 
   void onTapCloseGB() {
@@ -214,8 +194,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
-    TextStyle subtitleStyle = TextStyle(fontFamily: 'Grotesk', fontSize: 15.5, color: Color(0xFF800020), fontWeight: FontWeight.w500,); //fontSize: 15, fontWeight: FontWeight.normal);
     return Scaffold(
       appBar: backAppBarWithoutTitle(context: context,
         actions: <Widget>[
@@ -246,7 +224,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               color: Theme.of(context).accentColor,
                 elevation: 10,
                 onPressed: () => onTapBroadcast(context),
-                child: Text("Broadcast", style: subtitleStyle),
+                child: Text("Broadcast", style: Styles.subtitleStyle),
             ),
           ]
         )
@@ -356,7 +334,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           alignment: Alignment.topLeft,
                                           child: Text(
                                             'DETAILS',
-                                            style: subtitleStyle,
+                                            style: Styles.subtitleStyle,
                                           ),
                                         )
                                       ]
@@ -380,7 +358,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                       child: Column (
                                           children: <Widget>[
                                             GestureDetector(
-                                              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.id,)),
+                                              onTap: () => segueToPage(context, ProfileScreen(userId: widget.organiserProfile.userId,)),
                                               child: Row(
                                                 children: <Widget>[
                                                   Padding(
@@ -393,7 +371,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                   ),
                                                   Text(
                                                     "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser()? 'by ${widget.organiserProfile.username} (You)': 'by ${widget.organiserProfile.username}'}",
-                                                    style: textStyle,
+                                                    style: Styles.textStyle,
                                                   ),
                                                 ],
                                               ),
@@ -411,7 +389,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                       semanticLabel: 'Deposit',
                                                     )
                                                 ),
-                                                Text('${widget.groupBuy.deposit * 100} % deposit', style: textStyle),
+                                                Text('${widget.groupBuy.deposit * 100} % deposit', style: Styles.textStyle),
                                               ],
                                             ),
                                             SizedBox(height: 7),
@@ -427,7 +405,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                               ),
                                               Text(
                                                 "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
-                                                style: textStyle,
+                                                style: Styles.textStyle,
                                               ),
 
                                             ]
@@ -446,7 +424,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                     )
                                                 ),
                                                 Flexible(
-                                                    child: new Text('${widget.groupBuy.address}', style: textStyle)
+                                                    child: new Text('${widget.groupBuy.address}', style: Styles.textStyle)
                                                 )
                                               ],
                                             ),
@@ -464,7 +442,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                     )
                                                 ),
                                                 Flexible(
-                                                    child: new Text('${widget.groupBuy.description}', style: textStyle)
+                                                    child: new Text('${widget.groupBuy.description}', style: Styles.textStyle)
                                                 )
                                               ],
                                             ),
@@ -491,7 +469,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                 alignment: Alignment.topLeft,
                                                 child: Text(
                                                   'REQUESTS',
-                                                  style: subtitleStyle,
+                                                  style: Styles.subtitleStyle,
                                                 ),
                                               )
                                             ]

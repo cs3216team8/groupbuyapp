@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/models/user_profile_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
@@ -12,7 +12,7 @@ import 'my_groupbuys_widget.dart';
 
 class OrganisedGroupBuysOnly extends StatelessWidget {
   final String userId;
-  Future<UserProfile> fprofile;
+  Future<Profile> fprofile;
 
   OrganisedGroupBuysOnly({
     Key key,
@@ -27,7 +27,7 @@ class OrganisedGroupBuysOnly extends StatelessWidget {
         Container(
           child: FutureBuilder(
             future: fprofile,
-            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
               if (snapshot.hasError) {
                 return Text("Unable to load group buys.");
               }
@@ -38,7 +38,7 @@ class OrganisedGroupBuysOnly extends StatelessWidget {
                 case ConnectionState.waiting:
                   return ProfileLoading();
                 default:
-                  UserProfile userProfile = snapshot.data;
+                  Profile userProfile = snapshot.data;
                   return Text("${userProfile.username}'s group buys");
               }
             },

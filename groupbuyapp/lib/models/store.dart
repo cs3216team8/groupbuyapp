@@ -1,4 +1,4 @@
-import 'PredefinedStores.dart';
+import 'predefinedStores.dart';
 
 class Store {
   final String storeWebsite;
