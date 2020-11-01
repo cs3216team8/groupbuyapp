@@ -39,4 +39,25 @@ class Styles {
     fontWeight: FontWeight.w500,
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle minorStyle = TextStyle(
+    fontFamily: 'Grotesk',
+    fontSize: 16,
+    color: Colors.grey,
+    fontWeight: FontWeight.w500,
+  ); //fontSize: 15, fontWeight: FontWeight.normal);
+
+  static const TextStyle nameStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 23,
+      fontWeight: FontWeight.w700,
+      color: Colors.black
+  ); //fontSize: 15, fontWeight: FontWeight.normal);
+
+  static const TextStyle usernameStyle = TextStyle(
+      fontFamily: 'WorkSans',
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Color(0xFF800020),
+  ); //fontSize: 15, fontWeight: FontWeight.normal);
+
 }
