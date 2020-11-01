@@ -21,7 +21,7 @@ class CreateGroupBuyScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _CreateGroupBuyState();
+  _CreateGroupBuyState createState() => _CreateGroupBuyState();
 }
 
 class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {

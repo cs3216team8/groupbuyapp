@@ -49,7 +49,7 @@ class PiggyBuy extends StatefulWidget {
   List<Widget> getMainScreens() {
     return <Widget>[
       HomeScreen(),
-      CreateGroupBuyScreen(),
+      Container(), //CreateGroupBuyScreen(),
       ProfileScreen(),
     ];
   }
@@ -90,7 +90,9 @@ class _PiggyBuyState extends State<PiggyBuy> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: IndexedStack(
+        child: _selectedIndex == 1
+        ? CreateGroupBuyScreen()
+        : IndexedStack(
           index: _selectedIndex,
           children: widget.getMainScreens(),
         ),
