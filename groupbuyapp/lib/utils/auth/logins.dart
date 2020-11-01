@@ -127,7 +127,7 @@ class Logins {
         break;
 
       case AuthorizationStatus.cancelled:
-        throw Exception("You have cancelled Sign-in with Apple.")
+        throw Exception("You have cancelled Sign-in with Apple.");
         break;
 
       case AuthorizationStatus.error:
