@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 
 class RequestCard extends StatelessWidget {
   final GroupBuy groupBuy;
@@ -21,7 +23,7 @@ class RequestCard extends StatelessWidget {
   }
 
   void onTapConfirm(BuildContext context) async {
-    print("tapped on join"); //TODO
+    print("tapped on confirm"); //TODO @kx
     await GroupBuyStorage.instance.confirmRequest(this.groupBuy.id, this.request);
   }
 
@@ -158,31 +160,50 @@ class RequestCard extends StatelessWidget {
           onTap: () => openDetailedRequest(context),
           child: Column(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
-                    child: CircleAvatar(
-                      radius: 15,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: CircleAvatar(
-                        radius: 13,
-                        backgroundImage: // TODO: Image.network(???.getProfilePicture(request.uid)).image
-                        AssetImage('assets/profpicplaceholder.jpg'),
+              FutureBuilder(
+                future: ProfileStorage.instance.getUserProfile(request.requestorId),
+                builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                  if (snapshot.hasError) {
+                    return Text("Failed to load request.");
+                  }
+
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return Text("Git blame developers.");
+                    case ConnectionState.waiting:
+                      return Center(child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator(),),); //TODO for refactoring
+                    default:
+                      break;
+                  }
+
+                  Profile profile = snapshot.data;
+
+                  return Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: CircleAvatar(
+                            radius: 13,
+                            backgroundImage: NetworkImage(profile.profilePicture),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Text(
-                    this.request.requestorId, // TODO: ???.getUsername(request.uid)
-                    style: textStyle,
-                  ),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  FlatButton(
-                    child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status)),),
-                  ), // supposed to be star
-                ],
+                      Text(
+                        profile.username,
+                        style: textStyle,
+                      ),
+                      Spacer(
+                        flex: 1,
+                      ),
+                      FlatButton(
+                        child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status)),),
+                      ), // supposed to be star
+                    ],
+                  );
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
