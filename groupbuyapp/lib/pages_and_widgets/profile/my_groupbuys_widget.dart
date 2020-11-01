@@ -10,20 +10,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class MyGroupBuys extends StatefulWidget {
 
-  final Map<int, Widget> segments = <int, Widget>{
-    0: Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-        child: Text("As Organiser")
-    ),
-    1: Text("As Piggybuyer")
-  };
-
-
   @override
   _MyGroupBuysState createState() => _MyGroupBuysState();
 }
 
 class _MyGroupBuysState extends State<MyGroupBuys> {
+
+  final Map<int, Widget> segments = <int, Widget>{
+    0: Container(
+        padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+        child: Text("As Organiser")
+    ),
+    1: Text("As Piggybuyer")
+  };
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int val) {
@@ -32,19 +32,6 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
     });
   }
 
-
-  // final List<Widget> screens = <Widget>[
-  //   Container(
-  //       child:
-  //   ),
-  //   Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         MyGroupBuyCard(GroupBuy.getDummyData())
-  //       ]
-  //   ),
-  // ];
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,7 +39,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> {
       child: Column(
         children: [
           CupertinoSlidingSegmentedControl(
-            children: widget.segments,
+            children: segments,
             onValueChanged: _onItemTapped,
             groupValue: _selectedIndex,
           ),

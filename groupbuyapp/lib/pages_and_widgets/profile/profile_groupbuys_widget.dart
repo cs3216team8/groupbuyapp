@@ -8,6 +8,7 @@ import 'package:groupbuyapp/storage/user_profile_storage.dart';
 
 class ProfileGroupBuys extends StatefulWidget {
   final bool isMe;
+  final String userId;
 
   final Color headerBackgroundColour, textColour;
   final double letterSpacing, topHeightFraction;
@@ -15,6 +16,7 @@ class ProfileGroupBuys extends StatefulWidget {
   ProfileGroupBuys({
     Key key,
     @required this.isMe,
+    this.userId,
     this.headerBackgroundColour = Colors.white,
     this.textColour = Colors.black54,
     this.letterSpacing = 1.5,
@@ -27,6 +29,23 @@ class ProfileGroupBuys extends StatefulWidget {
 
 class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     with SingleTickerProviderStateMixin {
+  
+  String _userId;
+  
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isMe) {
+      _userId = FirebaseAuth.instance.currentUser.uid; //TODO: test that this condition is only reached when logged in
+    } else {
+      _userId = widget.userId; //TODO: check that this condition is only reached when userId is not null
+    }
+  }
+
+  Future<void> _refresh() async {
+    setState(() {
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,59 +53,60 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     if (FirebaseAuth.instance.currentUser == null) {
       return Container();
     }
-
-    String userId = FirebaseAuth.instance.currentUser.uid;
-
-    Future<void> _getData() async {
-      setState(() {
-
-      });
-    }
-
+    
     return DefaultTabController(
       length: 1,
       child: RefreshIndicator(
-        onRefresh: _getData,
+        onRefresh: _refresh,
         child: NestedScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           // allows you to build a list of elements that would be scrolled away till the body reached the top
-            headerSliverBuilder: (context, _) {
-              return [
-                SliverList(
-                  delegate: SliverChildListDelegate(
-                      <Widget>[
-                        Container(
-                            decoration: BoxDecoration(
-                                border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
-                            ),
-                            height: MediaQuery.of(context).size.height * widget.topHeightFraction,
-                            child: FutureBuilder<UserProfile>(
-                                future: ProfileStorage.instance.getUserProfile(userId),
-                                builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
-                                  if (snapshot.hasError) {
-                                    return FailedToLoadProfile();
-                                  }
-
-                                  switch (snapshot.connectionState) {
-                                    case ConnectionState.none:
-                                      return ProfileNotLoaded();
-                                    case ConnectionState.waiting:
-                                      return ProfileLoading();
-                                    default:
-                                      UserProfile userProfile = snapshot.data;
-                                      return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
-                                  }
-                                }
-                            )
+          headerSliverBuilder: (context, _) {
+            return [
+              SliverList(
+                delegate: SliverChildListDelegate(
+                  <Widget>[
+                    Container(
+                        decoration: BoxDecoration(
+                            border: Border(bottom: BorderSide(width: 0.5, color: Theme.of(context).dividerColor))
                         ),
-                      ]
-                  ),
-                )
-              ];
-            },
-            body: MyGroupBuys()
+                        height: MediaQuery.of(context).size.height * widget.topHeightFraction,
+                        child: FutureBuilder<UserProfile>(
+                            future: ProfileStorage.instance.getUserProfile(_userId),
+                            builder: (BuildContext context, AsyncSnapshot<UserProfile> snapshot) {
+                              if (snapshot.hasError) {
+                                return FailedToLoadProfile();
+                              }
+
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                  return ProfileNotLoaded();
+                                case ConnectionState.waiting:
+                                  return ProfileLoading();
+                                default:
+                                  UserProfile userProfile = snapshot.data;
+                                  return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
+                              }
+                            }
+                        )
+                    ),
+                  ]
+                ),
+              )
+            ];
+          },
+          body: widget.isMe
+              ? MyGroupBuys()
+              : OrganisedGroupBuysOnly(),
         ),
       ),
     );
+  }
+}
+
+class OrganisedGroupBuysOnly extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

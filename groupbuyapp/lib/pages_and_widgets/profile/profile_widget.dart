@@ -8,14 +8,14 @@ class ProfileScreen extends StatelessWidget {
 
   ProfileScreen({
     Key key,
-    this.userId, //TODO add uid loading for other profiles @KX
+    this.userId,
   }) : super(key: key);
 
   bool isMe() {
-    if (FirebaseAuth.instance.currentUser.uid == null) {
+    if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return true;
+    return userId == FirebaseAuth.instance.currentUser.uid;
   }
 
   @override
@@ -31,7 +31,8 @@ class ProfileScreen extends StatelessWidget {
         )
       ),
       body: ProfileGroupBuys(
-          isMe: isMe(),
+        isMe: isMe(),
+        userId: userId,
       )
     );
   }
