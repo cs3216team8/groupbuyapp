@@ -198,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   RoundedInputField(
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
-                    hintText: "Your Username or Email",
+                    hintText: "Your Email",
                     controller: _emailController,
                     validator: (String value) {
                       if (value.isEmpty) {
