@@ -9,6 +9,7 @@ import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
@@ -109,8 +110,7 @@ class ProfileSettingsScreen extends StatelessWidget {
             // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
             // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
             // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
-            InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
-            SizedBox(height: 20),
+            // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
             Expanded(
               child: AddressListModifier(
                 addresses: profile.addresses,
@@ -278,16 +278,16 @@ class _AddressListModifierState extends State<AddressListModifier> {
               children: <Widget>[
                 SizedBox(height: 10,),
                 Container(
-                  decoration: BoxDecoration(
-                    border: Border(bottom: BorderSide(width: 1, color: Colors.black26))
-                  ),
+                  // decoration: BoxDecoration(
+                  //   border: Border(bottom: BorderSide(width: 1, color: Colors.black26))
+                  // ),
                   child: Text(
-                    "List of addresses",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    "ADDRESSES",
+                    style: Styles.subtitleStyle,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0),
                   child:
                     Container(height: 8,),
                   // Container(
@@ -400,19 +400,28 @@ class _AddressListModifierState extends State<AddressListModifier> {
               builder: (BuildContext context) => _logoutConfirmation(context),
             );
             },
-          child: InkWell(
+          child: Container(
+            color: Color(0xFFCDCDCD),
+            child:
+            InkWell(
+
             splashColor: Theme.of(context).primaryColor.withAlpha(30),
             child: Container(
+
+              width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.all(20),
                 child: Text(
                     'Logout',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
+
                         fontWeight: FontWeight.bold,
                         color: Colors.red,
                         fontSize: 16
                     )
                 )
             ),
+          )
           ),
         )
       ],
