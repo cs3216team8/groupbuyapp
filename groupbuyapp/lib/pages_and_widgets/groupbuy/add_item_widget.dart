@@ -23,7 +23,7 @@ class AddItemCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                flex: 6,
+                flex: 8,
                 child: MyTextField(
                   controller: urlController,
                   labelText: 'Paste your item link here',
@@ -31,7 +31,7 @@ class AddItemCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: MyTextField(
                   controller: qtyController,
                   keyboardType: TextInputType.number,
@@ -44,7 +44,7 @@ class AddItemCard extends StatelessWidget {
           Row(
             children: <Widget>[
               Expanded(
-                flex: 5,
+                flex: 8,
                 child: MyTextField(
                   controller: remarksController,
                   //expands: true,
@@ -53,7 +53,7 @@ class AddItemCard extends StatelessWidget {
                 ),
               ),
               Expanded(
-                flex: 1,
+                flex: 2,
                 child: MyTextField(
                   controller: totalAmtController,
                   keyboardType: TextInputType.number,
@@ -64,7 +64,7 @@ class AddItemCard extends StatelessWidget {
             ],
           ),
         ]
-      ),
+      )
     );
   }
 }
@@ -87,7 +87,7 @@ class MyTextField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 3),
       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      //width: ,
+      //: ,
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
