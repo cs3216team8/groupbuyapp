@@ -210,21 +210,29 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   void fetchRequests() async {
     if (isOrganiser()) {
       List<Future<Request>> freqs = await GroupBuyStorage.instance
-          .getAllGroupBuyRequests(widget.groupBuy);
+          .getAllGroupBuyRequests(widget.groupBuy).first;
       setState(() {
         _futureRequests = freqs;
       });
     } else {
-      Future<Request> freq = GroupBuyStorage.instance
-          .getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
+      Future<Request> freq = await GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy).first;
       setState(() {
         _futureRequests = [freq];
       });
-      freq.then((value) {
+      if (freq == null) {
         setState(() {
-          hasRequested = value != null;
+          hasRequested = false;
         });
-      });
+      } else {
+        setState(() {
+          hasRequested = true;
+        });
+      }
+      // freq.then((value) {
+      //   setState(() {
+      //     hasRequested = value != null;
+      //   });
+      // });
     }
     // assert(isOrganiser || freqs.length <= 1)
   }
