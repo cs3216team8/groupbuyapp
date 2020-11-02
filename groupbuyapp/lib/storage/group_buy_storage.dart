@@ -127,15 +127,29 @@ class GroupBuyStorage {
   }
 
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
-  Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
-    String groupBuyId = groupBuy.getId();
-    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests');
-    return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
+  Future<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
+    CollectionReference groupBuyRequestsCollection = groupBuys.doc(groupBuy.id).collection('requests');
+    return groupBuyRequestsCollection.get().then((snapshot) {
+      List<Future<Request>> futureRequests = snapshot.docs.map((document) async {
+        QuerySnapshot groupBuyRequestItems = await groupBuyRequestsCollection.doc(document.id).collection('items').get();
+        List<Item> items = groupBuyRequestItems.docs.map((itemDocument) {
+          return Item(
+              itemLink: itemDocument.data()['itemLink'],
+              totalAmount: itemDocument.data()['totalAmount'].toDouble(),
+              qty: itemDocument.data()['qty'],
+              remarks: itemDocument.data()['remarks']
+          );
+        }).toList();
 
-      return querySnapshot.docs.map((document) async {
-        Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
-        return itemsOfRequest;
+        return Request(
+            id: document.id,
+            requestorId: document.data()['requestorId'],
+            items: items,
+            status: Request.requestStatusFromString(document.data()['status'])
+        );
       }).toList();
+
+      return futureRequests;
     });
   }
 

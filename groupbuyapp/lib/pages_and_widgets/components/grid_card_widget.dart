@@ -18,7 +18,7 @@ class GroupBuyCard extends StatelessWidget {
   GroupBuyCard(this.groupBuy);
 
   void _openDetailedGroupBuy(BuildContext context, Profile organiserProfile) {
-    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy,organiserProfile: organiserProfile, isClosed: false,));
+    segueToPage(context, GroupBuyInfo(groupBuy: this.groupBuy,organiserProfile: organiserProfile,));
   }
 
   @override

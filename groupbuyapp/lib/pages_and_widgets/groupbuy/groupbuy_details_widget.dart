@@ -24,15 +24,11 @@ import 'package:groupbuyapp/utils/time_calculation.dart';
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
   final Profile organiserProfile;
-  bool isClosed;
-
-  //TODO storage like as listings widget
 
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
-    @required this.organiserProfile,
-    this.isClosed = false, //TODO
+    @required this.organiserProfile
   }) : super(key: key);
 
   @override
@@ -44,6 +40,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   List<Future<Request>> _futureRequests = [];
   bool hasRequested = false;
+
+  Set<String> _menuOptions = {};
 
   bool isOrganiser() {
     if (FirebaseAuth.instance.currentUser == null) {
@@ -156,27 +154,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     });
   }
 
-  void showErrorFlushbar(String message) {
-    Flushbar(
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            margin: EdgeInsets.only(top: 60, left: 8, right: 8),
-            duration: Duration(seconds: 3),
-            animationDuration: Duration(seconds: 1),
-            borderRadius: 8,
-            backgroundColor: Color(0xFFF2B1AB),
-            dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-            title: "Please check again!",
-            message: message)
-        .show(context);
-  }
-
   void onTapCloseGB() {
     print("tapped on close group buy"); //TODO send request
     widget.groupBuy.status = GroupBuyStatus.closed;
     GroupBuyStorage.instance.editGroupBuy(widget.groupBuy);
     setState(() {
-      widget.isClosed = true;
+      _onRefresh();
     });
   }
 
@@ -185,6 +168,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         future: futureRequest,
         builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
           if (snapshot.hasError) {
+            print(snapshot.error.toString());
             return FailedToLoadRequests();
           }
 
@@ -206,19 +190,19 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void handleGroupBuyDetailMenu(String value, BuildContext context) {
+    print(value);
     if (isOrganiser()) {
       if (value == "Get items list in email") {
         onTapSendEmail(context);
-      } else {
-        RaisedButton(
-            color: Theme.of(context).accentColor,
-            onPressed: widget.isClosed ? null : () => onTapCloseGB());
+      } else if (value == "Close group buy now"){
+        onTapCloseGB();
       }
     }
   }
 
-  Future<void> _getData() async {
+  Future<void> _onRefresh() async {
     setState(() {
+      _menuOptions = widget.groupBuy.isOpen() ? {'Get items list in email', 'Close group buy now'} : {'Get items list in email'};
       fetchRequests();
     });
   }
@@ -226,8 +210,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   void fetchRequests() async {
     if (isOrganiser()) {
       List<Future<Request>> freqs = await GroupBuyStorage.instance
-          .getAllGroupBuyRequests(widget.groupBuy)
-          .single;
+          .getAllGroupBuyRequests(widget.groupBuy);
       setState(() {
         _futureRequests = freqs;
       });
@@ -249,6 +232,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   void initState() {
     super.initState();
+    _menuOptions = widget.groupBuy.isOpen() ? {'Get items list in email', 'Close group buy now'} : {'Get items list in email'};
     fetchRequests();
   }
 
@@ -262,7 +246,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               icon: Icon(Icons.more_vert, color: Colors.black,),
               onSelected: (value) => handleGroupBuyDetailMenu(value, context),
               itemBuilder: (BuildContext context) {
-                return {'Get items list in email', 'Close group buy now'}.map((String choice) {
+                return _menuOptions.map((String choice) {
                   return PopupMenuItem<String>(
                     value: choice,
                     child: Text(choice),
@@ -357,7 +341,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
             : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: RefreshIndicator(
-          onRefresh: _getData,
+          onRefresh: _onRefresh,
           child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Container(
