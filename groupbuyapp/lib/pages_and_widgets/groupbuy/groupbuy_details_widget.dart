@@ -82,7 +82,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void onTapSendEmail(BuildContext context) {
-    print("tapped on chat"); //TODO
+    print("tapped on send email"); //TODO
   }
 
   void onTapJoin(BuildContext context) {
@@ -214,6 +214,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       setState(() {
         _futureRequests = freqs;
       });
+
     } else {
       Future<Request> freq = await GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy).first;
       setState(() {

@@ -59,9 +59,6 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     Navigator.pop(context);
   }
 
-  void onTapChat(BuildContext context) {
-    print("on tap chat with this organiser"); // TODO @teikjun
-  }
 
   Widget createInputCard() {
     TextEditingController urlController = TextEditingController();
@@ -74,13 +71,14 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     itemTotalAmtControllers.add(amtController);
 
     return AddItemCard(
-      key: UniqueKey(),
-      urlController: urlController,
-      qtyController: qtyController,
-      remarksController: rmksController,
-      totalAmtController: amtController,
-    );
-  }
+          key: UniqueKey(),
+          urlController: urlController,
+          qtyController: qtyController,
+          remarksController: rmksController,
+          totalAmtController: amtController,
+        );
+    }
+
 
   void _deleteInputCard(int index) {
     setState(() {
@@ -94,7 +92,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     return Scaffold(
       appBar: backAppBar(
           context: context,
-          title: "Join",
+          title: "Join Group Buy",
       ),
       floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -111,16 +109,11 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                 ],
               ),
             ),
-            RaisedButton(
-              color: Theme.of(context).accentColor,
-              onPressed: () => onTapChat(context),
-              child: Icon(Icons.chat_bubble),
-            ),
           ]
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 20, bottom: 80, left: 10, right: 10),
+          margin: EdgeInsets.only(top: 20, bottom: 80, left: 0, right: 0),
           // padding: EdgeInsets.all(20),
           alignment: Alignment.center,
           child: Column(
