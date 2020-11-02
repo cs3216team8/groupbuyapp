@@ -127,15 +127,29 @@ class GroupBuyStorage {
   }
 
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
-  Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
-    String groupBuyId = groupBuy.getId();
-    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests');
-    return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
+  Future<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
+    CollectionReference groupBuyRequestsCollection = groupBuys.doc(groupBuy.id).collection('requests');
+    return groupBuyRequestsCollection.get().then((snapshot) {
+      List<Future<Request>> futureRequests = snapshot.docs.map((document) async {
+        QuerySnapshot groupBuyRequestItems = await groupBuyRequestsCollection.doc(document.id).collection('items').get();
+        List<Item> items = groupBuyRequestItems.docs.map((itemDocument) {
+          return Item(
+              itemLink: itemDocument.data()['itemLink'],
+              totalAmount: itemDocument.data()['totalAmount'].toDouble(),
+              qty: itemDocument.data()['qty'],
+              remarks: itemDocument.data()['remarks']
+          );
+        }).toList();
 
-      return querySnapshot.docs.map((document) async {
-        Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
-        return itemsOfRequest;
+        return Request(
+            id: document.id,
+            requestorId: document.data()['requestorId'],
+            items: items,
+            status: Request.requestStatusFromString(document.data()['status'])
+        );
       }).toList();
+
+      return futureRequests;
     });
   }
 
@@ -198,68 +212,12 @@ class GroupBuyStorage {
     batch.commit();
   }
 
-  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
-  Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {
-    String groupBuyId = groupBuy.getId();
-    CollectionReference groupBuyRequestItems = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId()).collection('items');
-    return groupBuyRequestItems.snapshots().map((QuerySnapshot querySnapshot) {
-      return querySnapshot.docs.map((doc) {
-        return new Item(
-          itemLink: doc.data()['itemLink'],
-          totalAmount: doc.data()['totalAmount'].toDouble(),
-          qty: doc.data()['qty'],
-          remarks: doc.data()['remarks'],
-        );
-      }).toList();
-    });
-  }
-
   Future<void> confirmRequest(String groupBuyId, Request request) {
     DocumentReference groupBuyRequest = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId());
     return groupBuyRequest.update({'status': 'confirmed'})
         .then((value) => print("Request edited"))
         .catchError((error) => print("Failed to edit group buy: $error"));
   }
-
-  // Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
-  //   try {
-  //     DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
-  //     GroupBuy groupBuy = new GroupBuy(
-  //         groupBuyId,
-  //         document.data()['storeName'],
-  //         document.data()['storeWebsite'],
-  //         document.data()['storeLogo'],
-  //         document.data()['currentAmount'].toDouble(),
-  //         document.data()['targetAmount'].toDouble(),
-  //         document.data()['endTimestamp'],
-  //         document.data()['organiserId'],
-  //         document.data()['deposit'],
-  //         document.data()['description'],
-  //         document.data()['address']
-  //     );
-  //     if (document.exists) {
-  //       Query filteredBuys = (document.data()['organiserId'] == userId) ?
-  //         groupBuys.doc(groupBuyId).collection('buys') :
-  //         groupBuys.doc(groupBuyId).collection('buys').where('buyerId', isEqualTo:userId);
-  //       List<Buy> buys = await filteredBuys.get()
-  //           .then((QuerySnapshot querySnapshot) {
-  //         return querySnapshot.docs.map((doc) {
-  //           return Buy(
-  //             doc.id,
-  //             doc.data()['buyerId'],
-  //             doc.data()['itemLink'],
-  //             doc.data()['amount'],
-  //             doc.data()['quantity'],
-  //             doc.data()['comment'],
-  //           );
-  //         }).toList();
-  //       });
-  //       groupBuy.setBuys(buys);
-  //     }
-  //   } catch(error) {
-  //     print("Failed to retrieve group buy detail: $error");
-  //   }
-  // }
 
   Stream<List<GroupBuy>> getGroupBuysOrganisedBy(String userId) {
     return groupBuys.where('organiserId', isEqualTo: userId).snapshots().map((snapshot) {

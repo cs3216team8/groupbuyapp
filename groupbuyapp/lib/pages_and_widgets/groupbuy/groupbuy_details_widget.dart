@@ -24,15 +24,11 @@ import 'package:groupbuyapp/utils/time_calculation.dart';
 class GroupBuyInfo extends StatefulWidget {
   final GroupBuy groupBuy;
   final Profile organiserProfile;
-  bool isClosed;
-
-  //TODO storage like as listings widget
 
   GroupBuyInfo({
     Key key,
     @required this.groupBuy,
-    @required this.organiserProfile,
-    this.isClosed = false, //TODO
+    @required this.organiserProfile
   }) : super(key: key);
 
   @override
@@ -45,11 +41,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   List<Future<Request>> _futureRequests = [];
   bool hasRequested = false;
 
+  Set<String> _menuOptions = {};
+
   bool isOrganiser() {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return FirebaseAuth.instance.currentUser.uid == widget.organiserProfile.userId;
+    return FirebaseAuth.instance.currentUser.uid ==
+        widget.organiserProfile.userId;
   }
 
   Future<String> createChatRoom() async {
@@ -68,7 +67,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     return chatRoomId;
   }
 
-  // create a chatroom with the necesssary details, send user to the chatroom
+  // create a chatroom with the necessary details, send user to the chatroom
   void onTapChat(BuildContext context) async {
     print("tapped on chat");
     String chatRoomId = await createChatRoom();
@@ -76,7 +75,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChatScreen(chatRoomId: chatRoomId),
+        builder: (_) => ChatScreen(
+            chatRoomId: chatRoomId, username: widget.organiserProfile.username),
       ),
     );
   }
@@ -134,11 +134,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                           onPressed: () {
                             String msg = broadcastMsgController.text;
                             if (msg.isEmpty) {
-                              showFlushbar(context, "Please check again!", "Your broadcast message should not be empty!");
+                              showFlushbar(context, "Please check again!",
+                                  "Your broadcast message should not be empty!");
                               return;
                             }
                             print("broadcast msg: ${msg}");
-                            ChatStorage().broadcast(msg, widget.groupBuy, widget.organiserProfile);
+                            ChatStorage().broadcast(
+                                msg, widget.groupBuy, widget.organiserProfile);
                             Navigator.pop(context);
                           },
                         ),
@@ -152,28 +154,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     });
   }
 
-
-  void showErrorFlushbar(String message) {
-    Flushbar(
-            flushbarPosition: FlushbarPosition.TOP,
-            flushbarStyle: FlushbarStyle.FLOATING,
-            margin: EdgeInsets.only(top: 60, left: 8, right: 8),
-            duration: Duration(seconds: 3),
-            animationDuration: Duration(seconds: 1),
-            borderRadius: 8,
-            backgroundColor: Color(0xFFF2B1AB),
-            dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-            title: "Please check again!",
-            message: message)
-        .show(context);
-  }
-
   void onTapCloseGB() {
     print("tapped on close group buy"); //TODO send request
     widget.groupBuy.status = GroupBuyStatus.closed;
     GroupBuyStorage.instance.editGroupBuy(widget.groupBuy);
     setState(() {
-      widget.isClosed = true;
+      _onRefresh();
     });
   }
 
@@ -182,6 +168,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         future: futureRequest,
         builder: (BuildContext context, AsyncSnapshot<Request> snapshot) {
           if (snapshot.hasError) {
+            print(snapshot.error.toString());
             return FailedToLoadRequests();
           }
 
@@ -203,19 +190,19 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void handleGroupBuyDetailMenu(String value, BuildContext context) {
+    print(value);
     if (isOrganiser()) {
       if (value == "Get items list in email") {
         onTapSendEmail(context);
-      } else {
-        RaisedButton(
-            color: Theme.of(context).accentColor,
-            onPressed: widget.isClosed ? null : () => onTapCloseGB());
+      } else if (value == "Close group buy now"){
+        onTapCloseGB();
       }
     }
   }
 
-  Future<void> _getData() async {
+  Future<void> _onRefresh() async {
     setState(() {
+      _menuOptions = widget.groupBuy.isOpen() ? {'Get items list in email', 'Close group buy now'} : {'Get items list in email'};
       fetchRequests();
     });
   }
@@ -223,14 +210,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   void fetchRequests() async {
     if (isOrganiser()) {
       List<Future<Request>> freqs = await GroupBuyStorage.instance
-          .getAllGroupBuyRequests(widget.groupBuy)
-          .single;
+          .getAllGroupBuyRequests(widget.groupBuy);
       setState(() {
         _futureRequests = freqs;
       });
 
     } else {
-      Future<Request> freq = GroupBuyStorage.instance.getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
+      Future<Request> freq = GroupBuyStorage.instance
+          .getGroupBuyRequestsFromCurrentUser(widget.groupBuy);
       setState(() {
         _futureRequests = [freq];
       });
@@ -246,115 +233,116 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   @override
   void initState() {
     super.initState();
+    _menuOptions = widget.groupBuy.isOpen() ? {'Get items list in email', 'Close group buy now'} : {'Get items list in email'};
     fetchRequests();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: backAppBarWithoutTitle(context: context,
-        actions: isOrganiser() ? <Widget>[
-          PopupMenuButton<String>(
-            color: Colors.white,
-            icon: Icon(Icons.more_vert, color: Colors.black,),
-            onSelected: (value) => handleGroupBuyDetailMenu(value, context),
-            itemBuilder: (BuildContext context) {
-              return {'Get items list in email', 'Close group buy now'}.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(choice),
-                );
-              }).toList();
-            },
-          ),
-        ]
-        : [],),
-      floatingActionButton: isOrganiser()
-        ? Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-
-            RaisedButton(
-              elevation: 15,
-              padding: EdgeInsets.all(14.0),
-              shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                ),
-              color: Theme.of(context).primaryColor,
-                onPressed: () => onTapBroadcast(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.chat_bubble, color: Colors.white),
-                  Text(" BROADCAST", style: Styles.popupButtonStyle),
-                ],
-              ),
+        appBar: backAppBarWithoutTitle(context: context,
+          actions: isOrganiser() ? <Widget>[
+            PopupMenuButton<String>(
+              color: Colors.white,
+              icon: Icon(Icons.more_vert, color: Colors.black,),
+              onSelected: (value) => handleGroupBuyDetailMenu(value, context),
+              itemBuilder: (BuildContext context) {
+                return _menuOptions.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: Text(choice),
+                  );
+                }).toList();
+              },
             ),
           ]
-        )
-        : widget.groupBuy.isOpen()
-          ? hasRequested
-            ? RaisedButton(
-              padding: EdgeInsets.all(15.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        color: Theme.of(context).primaryColor,
-              elevation: 15,
-              onPressed: () => onTapChat(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.chat_bubble, color: Colors.white),
-                  Text(" CHAT", style: Styles.popupButtonStyle),
-                ],
+              : [],),
+        floatingActionButton: isOrganiser()
+            ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+
+              RaisedButton(
+                elevation: 15,
+                padding: EdgeInsets.all(14.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () => onTapBroadcast(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.chat_bubble, color: Colors.white),
+                    Text(" BROADCAST", style: Styles.popupButtonStyle),
+                  ],
+                ),
               ),
-            )
+            ]
+        )
+            : widget.groupBuy.isOpen()
+            ? hasRequested
+            ? RaisedButton(
+          padding: EdgeInsets.all(15.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          color: Theme.of(context).primaryColor,
+          elevation: 15,
+          onPressed: () => onTapChat(context),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.chat_bubble, color: Colors.white),
+              Text(" CHAT", style: Styles.popupButtonStyle),
+            ],
+          ),
+        )
             : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                RaisedButton(
-                  elevation: 15,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () => onTapChat(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.chat_bubble, color: Colors.white),
-                      Text(" CHAT", style: Styles.popupButtonStyle),
-                    ],
-                  ),
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RaisedButton(
+                elevation: 15,
+                padding: EdgeInsets.all(15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
                 ),
-                RaisedButton(
-                  elevation: 15,
-                  padding: EdgeInsets.all(15.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  onPressed: () => onTapJoin(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.add_business, color: Colors.white),
-                      Text(" JOIN", style: Styles.popupButtonStyle),
-                    ],
-                  ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () => onTapChat(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.chat_bubble, color: Colors.white),
+                    Text(" CHAT", style: Styles.popupButtonStyle),
+                  ],
                 ),
-              ]
-            )
+              ),
+              RaisedButton(
+                elevation: 15,
+                padding: EdgeInsets.all(15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () => onTapJoin(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.add_business, color: Colors.white),
+                    Text(" JOIN", style: Styles.popupButtonStyle),
+                  ],
+                ),
+              ),
+            ]
+        )
             : null,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: RefreshIndicator(
-          onRefresh: _getData,
+          onRefresh: _onRefresh,
           child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Container(
@@ -619,7 +607,8 @@ class FailedToLoadRequests extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: FlatButton(
-        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+        child: Text(
+            "Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
       ),
     );
   }
