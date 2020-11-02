@@ -16,6 +16,12 @@ class _ChatListState extends State<ChatList> {
 
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      segueWithLoginCheck(
+          context,
+          ChatList(),
+      );
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
@@ -101,8 +107,6 @@ class _ChatListState extends State<ChatList> {
                             .toString()
                             .replaceAll("_", "")
                             .replaceAll(currentUserId, "");
-                        // print(usersSnapshot.data[senderId]);
-                        // FirebaseFirestore.instance.collection("users").where("id", isEqualTo: senderId).get();
 
                         dynamic userInfo = usersSnapshot.data.documents
                             .where((x) {
@@ -171,11 +175,13 @@ class ChatRoomsTile extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => ChatScreen(
                       chatRoomId: chatRoomId,
+                      username : userName,
                     )));
       },
       child: Container(
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+        margin: EdgeInsets.symmetric(vertical: 2),
         child: Row(
           children: [
             Container(
@@ -184,7 +190,7 @@ class ChatRoomsTile extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Colors.pink, borderRadius: BorderRadius.circular(30)),
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 4),
+                padding: EdgeInsets.symmetric(vertical: 5),
                 child: Text(userName.substring(0, 1).toUpperCase(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
