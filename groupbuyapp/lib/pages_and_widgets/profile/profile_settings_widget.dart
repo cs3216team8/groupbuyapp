@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -63,9 +64,51 @@ class ProfileSettingsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             ProfilePicChanger(pictureUrl: profile.profilePicture),
-            InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
-            InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
-            InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
+            RoundedInputField(
+              color: Color(0xFFFBE3E1),
+              iconColor: Theme.of(context).primaryColor,
+              hintText: "New Name",
+              controller: nameController,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter your new name';
+                }
+                return null;
+              },
+            ),
+            RoundedInputField(
+              color: Color(0xFFFBE3E1),
+              iconColor: Theme.of(context).primaryColor,
+              hintText: "New Username",
+              controller: usernameController,
+              validator: (String value) {
+                if (value.isEmpty) {
+                  return 'Please enter your new username';
+                }
+                return null;
+              },
+            ),
+            RoundedInputField(
+              color: Color(0xFFFBE3E1),
+              icon: Icons.phone,
+              iconColor: Theme.of(context).primaryColor,
+              hintText: "New Phone Number",
+              controller: phoneNumberController,
+              validator: (String value) {
+                return null;
+              },
+            ),
+            RoundedInputField(
+              color: Color(0xFFFBE3E1),
+              enabled: false,
+              icon: Icons.email,
+              iconColor: Theme.of(context).primaryColor,
+              hintText: "Your Email",
+              controller: emailController,
+            ),
+            // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
+            // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+            // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
             InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
             SizedBox(height: 20),
             Expanded(
