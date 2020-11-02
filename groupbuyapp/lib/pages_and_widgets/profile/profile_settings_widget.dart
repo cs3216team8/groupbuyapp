@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -110,14 +112,19 @@ class ProfilePicChanger extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.camera_alt),
                 onPressed: () async {
-                  final photo = await ImagePicker().getImage(source: ImageSource.camera);
+                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
+                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
+                  print(photoUrl);
+                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
                 },
               ),
               IconButton(
                 icon: Icon(Icons.image_search),
                 onPressed: () async {
-                  final photo = await ImagePicker().getImage(source: ImageSource.gallery);
-                },
+                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
+                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
+                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
+                  },
               ),
             ],
           )

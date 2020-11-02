@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 
@@ -10,6 +13,7 @@ class ProfileStorage {
 
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
+  StorageReference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
 
   Future<Profile> getUserProfile(String userId) async {
 
@@ -40,6 +44,11 @@ class ProfileStorage {
 
   Future<void> createOrUpdateUserProfile(Profile userProfile) async {
     String userId = userProfile.userId;
+
+    if (userId != FirebaseAuth.instance.currentUser.uid) {
+      throw Exception("Trying to update a user that is not you!");
+    }
+
     return usersRef.doc(userId).set({
       'name': userProfile.name,
       'username': userProfile.username,
@@ -56,6 +65,21 @@ class ProfileStorage {
     });
   }
 
+  Future<String> uploadProfilePhoto(File photo) async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    StorageUploadTask uploadTask = profilePhotoRef.child(userId).putFile(photo);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    return await taskSnapshot.ref.getDownloadURL();
+  }
+
+  Future<void> updateProfilePhotoUrl(String photoUrl) async {
+    String userId = FirebaseAuth.instance.currentUser.uid;
+
+    return await usersRef.doc(userId).update({
+      'profilePicture': photoUrl,
+    });
+  }
+
   Future<void> addReview(Review review, String userId) async {
     DocumentSnapshot document = await usersRef
         .doc(userId)
@@ -64,7 +88,7 @@ class ProfileStorage {
     double currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
-    return usersRef.doc(userId).set({
+    return usersRef.doc(userId).update({
       'rating': newRating,
       'reviewCount': currentReviewCount + 1,
     });
