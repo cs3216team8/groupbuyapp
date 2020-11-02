@@ -47,7 +47,7 @@ class RoundedInputField extends StatelessWidget {
             ),
             focusedBorder: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: const BorderSide(color: Colors.red, width: 1.0),
+              borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
             ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
@@ -115,7 +115,7 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
           ),
           focusedBorder: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(25.0),
-            borderSide: const BorderSide(color: Colors.red, width: 1.0),
+            borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
           ),
           border: new OutlineInputBorder(
             borderRadius: new BorderRadius.circular(25.0),
