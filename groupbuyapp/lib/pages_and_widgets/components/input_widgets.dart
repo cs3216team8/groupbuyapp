@@ -1,10 +1,16 @@
 import "package:flutter/material.dart";
 
+class AlwaysDisabledFocusNode extends FocusNode {
+  @override
+  bool get hasFocus => false;
+}
+
 class RoundedInputField extends StatelessWidget {
   final FormFieldValidator<String> validator;
   final IconData icon;
   final TextEditingController controller;
   final String hintText;
+  final bool enabled;
 
   final Color iconColor, color;
 
@@ -13,6 +19,7 @@ class RoundedInputField extends StatelessWidget {
     this.controller,
     this.validator,
     this.hintText,
+    this.enabled = true,
     this.icon = Icons.person,
     this.iconColor = Colors.white,
     this.color = Colors.white,
@@ -23,6 +30,9 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       //color: color,
       child: TextFormField(
+        enabled: enabled,
+        enableInteractiveSelection: enabled, // will disable paste operation
+        focusNode: !enabled? new AlwaysDisabledFocusNode(): null,
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
@@ -37,7 +47,7 @@ class RoundedInputField extends StatelessWidget {
             ),
             focusedBorder: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
-              borderSide: const BorderSide(color: Color(0x00000000), width: 1.0),
+              borderSide: const BorderSide(color: Colors.red, width: 1.0),
             ),
             border: new OutlineInputBorder(
               borderRadius: new BorderRadius.circular(25.0),
