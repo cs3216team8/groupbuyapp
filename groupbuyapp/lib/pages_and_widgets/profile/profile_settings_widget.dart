@@ -64,7 +64,36 @@ class ProfileSettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ProfilePicChanger(pictureUrl: profile.profilePicture),
+            Container(
+                constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
+                decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
+                child:
+                Stack(
+                    alignment: Alignment.topCenter,
+                    overflow: Overflow.visible,
+                    children: [
+                      Positioned(
+                          bottom: -50,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: CircleAvatar(
+                              radius: 47,
+                              backgroundImage: Image.network(profile.profilePicture).image,
+                            ),
+                          )
+                      )
+                    ]
+                )
+            ),
+            SizedBox(height: 60,),
+            Container(
+              child: Text(
+                  "${profile.email}",
+                  style:Styles.usernameStyle
+              ),
+            ),
+
             RoundedInputField(
               color: Color(0xFFFBE3E1),
               iconColor: Theme.of(context).primaryColor,
@@ -98,14 +127,6 @@ class ProfileSettingsScreen extends StatelessWidget {
               validator: (String value) {
                 return null;
               },
-            ),
-            RoundedInputField(
-              color: Color(0xFFFBE3E1),
-              enabled: false,
-              icon: Icons.email,
-              iconColor: Theme.of(context).primaryColor,
-              hintText: "Your Email",
-              controller: emailController,
             ),
             // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
             // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
@@ -274,108 +295,100 @@ class _AddressListModifierState extends State<AddressListModifier> {
       children: <Widget>[
         Stack(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                SizedBox(height: 10,),
-                Container(
-                  // decoration: BoxDecoration(
-                  //   border: Border(bottom: BorderSide(width: 1, color: Colors.black26))
-                  // ),
-                  child: Text(
-                    "ADDRESSES",
-                    style: Styles.subtitleStyle,
+            Container(
+              width: MediaQuery.of(context).size.width *0.8,
+              padding: EdgeInsets.all(20),
+
+              alignment: Alignment.center,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 10, bottom: 10),
+                    child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child:
-                    Container(height: 8,),
-                  // Container(
-                  //   padding: const EdgeInsets.all(10),
-                  //   height: 70,
-                  //   alignment: Alignment(0, 0),
-                  //   color: Colors.orange,
-                  //   child: Text(
-                  //     "To remove an item, swipe the tile to the right or tap the trash icon.",
-                  //     style: TextStyle(color: Colors.white),
-                  //   ),
-                  // ),
-                ),
-              ],
-            ),
-            Positioned(
-              right: 20.0,
-              child: FloatingActionButton(
-                child: new Icon(Icons.add),
-                onPressed: () {
-                  setState(() {
-                    addAddressController = TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Stack(
-                            overflow: Overflow.visible,
-                            children: <Widget>[
-                              Positioned(
-                                right: -40.0,
-                                top: -40.0,
-                                child: InkResponse(
-                                  onTap: () {
-                                    addAddressController = null;
-                                    Navigator.of(context).pop();
-                                  },
-                                  child: CircleAvatar(
-                                    child: Icon(Icons.close),
-                                    backgroundColor: Colors.red,
+                  Container(
+
+                    width: 30,
+                        height: 30,
+                        child: FloatingActionButton(
+                        child: new Icon(Icons.add, color: Colors.white,),
+                        onPressed: () {
+                          setState(() {
+                            addAddressController = TextEditingController();
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  content: Stack(
+                                    overflow: Overflow.visible,
+                                    children: <Widget>[
+                                      Positioned(
+                                        right: -40.0,
+                                        top: -40.0,
+                                        child: InkResponse(
+                                          onTap: () {
+                                            addAddressController = null;
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: CircleAvatar(
+                                            child: Icon(Icons.close),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        ),
+                                      ),
+                                      Form(
+                                        key: _formKey,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.all(8.0),
+                                              child: TextFormField(
+                                                controller: addAddressController,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: RaisedButton(
+                                                child: Text("Add Address", style: TextStyle(color: Colors.white)),
+                                                onPressed: () {
+                                                  if (_formKey.currentState.validate()) {
+                                                    _formKey.currentState.save();
+                                                    _addAddress(context, addAddressController.text);
+                                                  }
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              ),
-                              Form(
-                                key: _formKey,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: TextFormField(
-                                        controller: addAddressController,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: RaisedButton(
-                                        child: Text("Add"),
-                                        onPressed: () {
-                                          if (_formKey.currentState.validate()) {
-                                            _formKey.currentState.save();
-                                            _addAddress(context, addAddressController.text);
-                                          }
-                                        },
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    );
-                  });
-                },
-                backgroundColor: Colors.amber,
+                                );
+                              }
+                            );
+                          });
+                        },
+                        backgroundColor: Color(0xFFF98B83),
+                      ),
+                    )
+
+
+                  ]),
+                    )],
               ),
-            ),
-          ],
-        ),
+
+
         // TODO: @kx add undo delete option here & make address editable & fab: allow adding of addresses -- add to top so dunnid scroll
         Expanded(
           child: ListView.builder(
             itemCount: widget.addresses.length,
             itemBuilder: (context, index) {
               final address = widget.addresses[index];
-              return Dismissible(
+              return Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Dismissible(
                 key: Key(address),
                 direction: DismissDirection.startToEnd,
                 background: Container(color: Colors.black26,),
@@ -389,6 +402,7 @@ class _AddressListModifierState extends State<AddressListModifier> {
                 onDismissed: (direction) {
                   _deleteAddress(index);
                 },
+              )
               );
             },
           ), //TODO @kx,
