@@ -132,6 +132,9 @@ class _SignUpFormState extends State<SignupForm> {
                   if (value.isEmpty) {
                     return 'Please enter your username';
                   }
+                  if (value.length > 12) {
+                    return 'Username can not be longer than 12 characters';
+                  }
                   return null;
                 },
                 hintText: "Username",
