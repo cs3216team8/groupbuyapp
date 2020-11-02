@@ -43,27 +43,27 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        appBar: PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-    child: AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      bottom: TabBar(
-      labelStyle: Styles.textStyleSelected,  //For Selected tab
-      unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          bottom: TabBar(
+            labelStyle: Styles.textStyleSelected,  //For Selected tab
+            unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
 
-      onTap: _onItemTapped,
-    tabs: [
-    Tab(text: "As Organiser",),
-    Tab(text: "As PiggyBacker",),
-    ],
-    ),
-    )
-    ),
-    body: IndexedStack(
+            onTap: _onItemTapped,
+            tabs: [
+              Tab(text: "As Organiser",),
+              Tab(text: "As PiggyBacker",),
+            ],
+          ),
+        )
+      ),
+      body: IndexedStack(
         index: this._selectedIndex,
 
-    children: [
+        children: [
           StreamBuilder<List<GroupBuy>>(
             stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
             builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
@@ -98,7 +98,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
               );
             },
           ),
-        FutureBuilder<Stream<List<GroupBuy>>>(
+          FutureBuilder<Stream<List<GroupBuy>>>(
             future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
             builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
               if (snapshot.hasError){
@@ -114,8 +114,7 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
                 default:
                   return StreamBuilder<List<GroupBuy>>(
                     stream: snapshot.data,
-                    builder: (BuildContext context, AsyncSnapshot<List<
-                        GroupBuy>> snapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
                       List<Widget> children;
                       if (snapshot.hasError) {
                         return FailedToLoadMyGroupBuys();
@@ -149,10 +148,9 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
                   );
               }
             }
-        ),
-
-
-    ])
+          ),
+        ]
+      )
     );
   }
 }
