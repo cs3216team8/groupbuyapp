@@ -7,10 +7,12 @@ import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
+  final double screenWidth;
 
   JoinGroupBuyForm({
     Key key,
     @required String this.groupBuyId,
+    @required double this.screenWidth
   }) : super(key: key);
 
   @override
@@ -76,6 +78,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
           qtyController: qtyController,
           remarksController: rmksController,
           totalAmtController: amtController,
+          screenWidth: widget.screenWidth,
         );
     }
 
@@ -139,11 +142,18 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                           _deleteInputCard(index);
                         },
                         background: Container(color: Colors.black26),
-                        child: ListTile(
+                        child:
+                        ListTile(
+                          dense: true,
                           title: itemCard,
-                          trailing: IconButton(
+                          contentPadding: EdgeInsets.all(0),
+                          trailing: Container(
+                            alignment: Alignment.center,
+                            width: 30,
+                            child: IconButton(
                             icon: Icon(Icons.delete_rounded),
                             onPressed: () => _deleteInputCard(index),
+                          )
                           ),
                         ),
                       );

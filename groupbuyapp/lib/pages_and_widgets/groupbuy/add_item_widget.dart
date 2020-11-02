@@ -5,6 +5,7 @@ class AddItemCard extends StatelessWidget {
   final TextEditingController qtyController;
   final TextEditingController remarksController;
   final TextEditingController totalAmtController;
+  final double screenWidth;
 
   AddItemCard({
     @required Key key,
@@ -12,11 +13,14 @@ class AddItemCard extends StatelessWidget {
     this.qtyController,
     this.remarksController,
     this.totalAmtController,
+    this.screenWidth
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    print(this.screenWidth);
+    return Container(
+        child: Card(
       color: Colors.white,
       child: Column(
         children: [
@@ -65,7 +69,7 @@ class AddItemCard extends StatelessWidget {
           ),
         ]
       )
-    );
+    ));
   }
 }
 

@@ -90,6 +90,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         context,
         JoinGroupBuyForm(
           groupBuyId: widget.groupBuy.id,
+          screenWidth: MediaQuery.of(context).size.width
         ));
   }
 
