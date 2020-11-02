@@ -62,7 +62,7 @@ class ProfileSettingsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            ProfilePicChanger(pic: profile.profilePicture),
+            ProfilePicChanger(pictureUrl: profile.profilePicture),
             InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
             InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
             InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
@@ -80,13 +80,26 @@ class ProfileSettingsScreen extends StatelessWidget {
   }
 }
 
-class ProfilePicChanger extends StatelessWidget {
-  String pic;
+class ProfilePicChanger extends StatefulWidget {
+  final String pictureUrl;
 
   ProfilePicChanger({
     Key key,
-    this.pic,
+    this.pictureUrl,
   }) : super(key: key);
+
+  @override
+  _ProfilePicChangerState createState() => _ProfilePicChangerState();
+
+}
+
+class _ProfilePicChangerState extends State<ProfilePicChanger> {
+
+  String pictureUrl;
+
+  void initState() {
+    pictureUrl = widget.pictureUrl;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +114,7 @@ class ProfilePicChanger extends StatelessWidget {
             backgroundColor: Theme.of(context).accentColor,
             child: CircleAvatar(
               radius: 55,
-              backgroundImage: Image.network(pic).image,
+              backgroundImage: Image.network(pictureUrl).image,
             ),
           ),
         ),
@@ -114,8 +127,10 @@ class ProfilePicChanger extends StatelessWidget {
                 onPressed: () async {
                   PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
                   String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
-                  print(photoUrl);
                   await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
+                  setState( () {
+                    pictureUrl = photoUrl;
+                  });
                 },
               ),
               IconButton(
@@ -124,6 +139,9 @@ class ProfilePicChanger extends StatelessWidget {
                   PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
                   String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
                   await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
+                  setState( () {
+                    pictureUrl = photoUrl;
+                  });
                   },
               ),
             ],
