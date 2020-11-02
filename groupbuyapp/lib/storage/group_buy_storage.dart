@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
@@ -10,8 +11,8 @@ class GroupBuyStorage {
   GroupBuyStorage._privateConstructor();
   static final GroupBuyStorage instance = GroupBuyStorage._privateConstructor();
 
-  CollectionReference groupBuys = FirebaseFirestore.instance.collection(
-      'groupBuys');
+  CollectionReference groupBuys = FirebaseFirestore.instance.collection('groupBuys');
+  CollectionReference requestsRoot = FirebaseFirestore.instance.collection('requests');
 
   Future<void> addGroupBuy(GroupBuy groupBuy) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -107,47 +108,64 @@ class GroupBuyStorage {
   //       .catchError((error) => print("Failed to delete buy: $error"));
   // }
 
-  Future<Request> getRequestWithItems(String groupBuyId, QueryDocumentSnapshot document) async {
-    QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(document.id).collection('items').get();
-    List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
-    List<Item> items = itemDocs.map((doc) {
-      return new Item(
-        itemLink: doc.data()['itemLink'],
-        totalAmount: doc.data()['totalAmount'].toDouble(),
-        qty: doc.data()['qty'],
-        remarks: doc.data()['remarks'],
-      );
-    }).toList();
-    return new Request(
-      id: document.id,
-      requestorId: document.data()['requestorId'],
-      items: items,
-      status: Request.requestStatusFromString(document.data()['status']),
-    );
-  }
-
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
   Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
-    String groupBuyId = groupBuy.getId();
-    CollectionReference groupBuyRequests = groupBuys.doc(groupBuyId).collection('requests');
-    return groupBuyRequests.snapshots().map((QuerySnapshot querySnapshot) {
+    return requestsRoot.where('groupBuyId', isEqualTo: groupBuy.id).snapshots().map((snapshot) {
+      return snapshot.docs.map((requestDoc) async {
+        QuerySnapshot groupBuyRequestItems = await requestsRoot.doc(requestDoc.id).collection('items').get();
+        List<Item> items = groupBuyRequestItems.docs.map((itemDocument) {
+          return Item(
+              itemLink: itemDocument.data()['itemLink'],
+              totalAmount: itemDocument.data()['totalAmount'].toDouble(),
+              qty: itemDocument.data()['qty'],
+              remarks: itemDocument.data()['remarks']
+          );
+        }).toList();
 
-      return querySnapshot.docs.map((document) async {
-        Request itemsOfRequest = await getRequestWithItems(groupBuyId, document);
-        return itemsOfRequest;
+        return Request(
+            id: requestDoc.id,
+            requestorId: requestDoc.data()['requestorId'],
+            items: items,
+            status: Request.requestStatusFromString(requestDoc.data()['status'])
+        );
       }).toList();
     });
+
+    // CollectionReference groupBuyRequestsCollection = groupBuys.doc(groupBuy.id).collection('requests');
+    // return groupBuyRequestsCollection.get().then((snapshot) {
+    //   List<Future<Request>> futureRequests = snapshot.docs.map((document) async {
+    //     QuerySnapshot groupBuyRequestItems = await groupBuyRequestsCollection.doc(document.id).collection('items').get();
+    //     List<Item> items = groupBuyRequestItems.docs.map((itemDocument) {
+    //       return Item(
+    //           itemLink: itemDocument.data()['itemLink'],
+    //           totalAmount: itemDocument.data()['totalAmount'].toDouble(),
+    //           qty: itemDocument.data()['qty'],
+    //           remarks: itemDocument.data()['remarks']
+    //       );
+    //     }).toList();
+    //
+    //     return Request(
+    //         id: document.id,
+    //         requestorId: document.data()['requestorId'],
+    //         items: items,
+    //         status: Request.requestStatusFromString(document.data()['status'])
+    //     );
+    //   }).toList();
+    //
+    //   return futureRequests;
+    // });
   }
 
   /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
-  Future<Request> getGroupBuyRequestsFromCurrentUser(GroupBuy groupBuy) {
+  Stream<Future<Request>> getGroupBuyRequestsFromCurrentUser(GroupBuy groupBuy) {
     String userId = FirebaseAuth.instance.currentUser.uid;
-    String groupBuyId = groupBuy.getId();
 
-    return groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId)
-        .get().then((QuerySnapshot querySnapshot) {
-          List<Future<Request>> futureRequests = querySnapshot.docs.map((doc) async {
-            QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+    return requestsRoot
+        .where('groupBuyId', isEqualTo: groupBuy.id)
+        .where('requestorId', isEqualTo: userId)
+        .snapshots().map((querySnapshot) {
+          List<Future<Request>> futureRequests = querySnapshot.docs.map((requestDoc) async {
+            QuerySnapshot groupBuyRequestItems = await requestsRoot.doc(requestDoc.id).collection('items').get();
             List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
             List<Item> items = itemDocs.map((doc) {
               return new Item(
@@ -159,29 +177,59 @@ class GroupBuyStorage {
             }).toList();
 
             return new Request(
-            id: doc.id,
-            requestorId: doc.data()['requestorId'],
-            items: items,
-            status: Request.requestStatusFromString(doc.data()['status']),
+              id: requestDoc.id,
+              requestorId: requestDoc.data()['requestorId'],
+              items: items,
+              status: Request.requestStatusFromString(requestDoc.data()['status']),
             );
           }).toList();
           if (futureRequests.length > 0) {
+            print(futureRequests[0] == null);
             return futureRequests[0];
           } else {
             return Future<Null>.value(null);
           }
         });
+
+    // return groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId)
+    //     .get().then((QuerySnapshot querySnapshot) {
+    //       List<Future<Request>> futureRequests = querySnapshot.docs.map((doc) async {
+    //         QuerySnapshot groupBuyRequestItems = await groupBuys.doc(groupBuyId).collection('requests').doc(doc.id).collection('items').get();
+    //         List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+    //         List<Item> items = itemDocs.map((doc) {
+    //           return new Item(
+    //             itemLink: doc.data()['itemLink'],
+    //             totalAmount: doc.data()['totalAmount'].toDouble(),
+    //             qty: doc.data()['qty'],
+    //             remarks: doc.data()['remarks'],
+    //           );
+    //         }).toList();
+    //
+    //         return new Request(
+    //         id: doc.id,
+    //         requestorId: doc.data()['requestorId'],
+    //         items: items,
+    //         status: Request.requestStatusFromString(doc.data()['status']),
+    //         );
+    //       }).toList();
+    //       if (futureRequests.length > 0) {
+    //         return futureRequests[0];
+    //       } else {
+    //         return Future<Null>.value(null);
+    //       }
+    //     });
   }
 
   Future<void> addRequest(String groupBuyId, Request request) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
-    request.id = groupBuys.doc(groupBuyId).collection('requests').doc().id;
-    DocumentReference requestDoc = groupBuys.doc(groupBuyId).collection('requests').doc(request.id);
+    request.id = requestsRoot.doc().id;
+    DocumentReference requestDoc = requestsRoot.doc(request.id);
 
     batch.set(requestDoc, {
       'id': request.id,
       'requestorId': request.requestorId,
+      'groupBuyId': groupBuyId,
       'status': Request.stringFromRequestStatus(request.status),
     });
 
@@ -198,68 +246,12 @@ class GroupBuyStorage {
     batch.commit();
   }
 
-  /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
-  Stream<List<Item>> getItemsOfRequest(GroupBuy groupBuy, Request request) {
-    String groupBuyId = groupBuy.getId();
-    CollectionReference groupBuyRequestItems = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId()).collection('items');
-    return groupBuyRequestItems.snapshots().map((QuerySnapshot querySnapshot) {
-      return querySnapshot.docs.map((doc) {
-        return new Item(
-          itemLink: doc.data()['itemLink'],
-          totalAmount: doc.data()['totalAmount'].toDouble(),
-          qty: doc.data()['qty'],
-          remarks: doc.data()['remarks'],
-        );
-      }).toList();
-    });
-  }
-
   Future<void> confirmRequest(String groupBuyId, Request request) {
-    DocumentReference groupBuyRequest = groupBuys.doc(groupBuyId).collection('requests').doc(request.getId());
+    DocumentReference groupBuyRequest = requestsRoot.doc(request.getId());
     return groupBuyRequest.update({'status': 'confirmed'})
         .then((value) => print("Request edited"))
         .catchError((error) => print("Failed to edit group buy: $error"));
   }
-
-  // Future<void> getGroupBuyDetail(String groupBuyId, String userId) async{
-  //   try {
-  //     DocumentSnapshot document = await groupBuys.doc(groupBuyId).get();
-  //     GroupBuy groupBuy = new GroupBuy(
-  //         groupBuyId,
-  //         document.data()['storeName'],
-  //         document.data()['storeWebsite'],
-  //         document.data()['storeLogo'],
-  //         document.data()['currentAmount'].toDouble(),
-  //         document.data()['targetAmount'].toDouble(),
-  //         document.data()['endTimestamp'],
-  //         document.data()['organiserId'],
-  //         document.data()['deposit'],
-  //         document.data()['description'],
-  //         document.data()['address']
-  //     );
-  //     if (document.exists) {
-  //       Query filteredBuys = (document.data()['organiserId'] == userId) ?
-  //         groupBuys.doc(groupBuyId).collection('buys') :
-  //         groupBuys.doc(groupBuyId).collection('buys').where('buyerId', isEqualTo:userId);
-  //       List<Buy> buys = await filteredBuys.get()
-  //           .then((QuerySnapshot querySnapshot) {
-  //         return querySnapshot.docs.map((doc) {
-  //           return Buy(
-  //             doc.id,
-  //             doc.data()['buyerId'],
-  //             doc.data()['itemLink'],
-  //             doc.data()['amount'],
-  //             doc.data()['quantity'],
-  //             doc.data()['comment'],
-  //           );
-  //         }).toList();
-  //       });
-  //       groupBuy.setBuys(buys);
-  //     }
-  //   } catch(error) {
-  //     print("Failed to retrieve group buy detail: $error");
-  //   }
-  // }
 
   Stream<List<GroupBuy>> getGroupBuysOrganisedBy(String userId) {
     return groupBuys.where('organiserId', isEqualTo: userId).snapshots().map((snapshot) {
@@ -283,44 +275,30 @@ class GroupBuyStorage {
     });
   }
 
-  Future<Stream<List<GroupBuy>>> getGroupBuysPiggyBackedOnBy(String userId) async {
-    DocumentSnapshot currentUser = await FirebaseFirestore.instance.collection(
-        'users')
-        .doc(userId)
-        .get();
-    List<String> groupBuyIdsPiggyBackedOn = new List<String>.from(
-        currentUser.data()['groupBuyIds']);
-    if (groupBuyIdsPiggyBackedOn.length > 0) {
-      return groupBuys.where('id', arrayContainsAny: groupBuyIdsPiggyBackedOn)
-          .snapshots()
-          .map((snapshot) {
-        return snapshot.docs.map((document) {
-          return GroupBuy(
-              document.id,
-              document.data()['storeName'],
-              document.data()['storeWebsite'],
-              document.data()['storeLogo'],
-              document.data()['currentAmount'].toDouble(),
-              document.data()['targetAmount'].toDouble(),
-              document.data()['endTimestamp'],
-              document.data()['organiserId'],
-              document.data()['deposit'],
-              document.data()['description'],
-              document.data()['address'],
+  Stream<List<Future<GroupBuy>>> getGroupBuysPiggyBackedOnBy(String userId) {
+    // look through requests and await list of groupbuyids
+    return requestsRoot.where('requestorId', isEqualTo: userId).snapshots().map((snapshot) {
+        return snapshot.docs.map((requestDoc) async {
+          String groupBuyId = requestDoc.data()['groupBuyId'];
+          DocumentSnapshot groupBuySnapshot = await groupBuys.doc(groupBuyId).get();
+          Map<String, dynamic> gbData = groupBuySnapshot.data();
 
-              GroupBuy.groupBuyStatusFromString(document.data()['status']),
+          return GroupBuy(
+            groupBuyId,
+            gbData['storeName'],
+            gbData['storeWebsite'],
+            gbData['storeLogo'],
+            gbData['currentAmount'].toDouble(),
+            gbData['targetAmount'].toDouble(),
+            gbData['endTimestamp'],
+            gbData['organiserId'],
+            gbData['deposit'],
+            gbData['description'],
+            gbData['address'],
+            GroupBuy.groupBuyStatusFromString(gbData['status']),
           );
         }).toList();
-      });
-    } else {
-      var completer = new Completer<Stream<List<GroupBuy>>>();
-
-      // At some time you need to complete the future:
-      List<GroupBuy> empty = List<GroupBuy>();
-      StreamController<List<GroupBuy>> controller = StreamController<List<GroupBuy>>();
-      controller.add(empty);
-      completer.complete(controller.stream);
-      return completer.future;
-    }
+    });
   }
+
 }

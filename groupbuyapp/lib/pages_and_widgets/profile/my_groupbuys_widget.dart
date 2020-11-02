@@ -43,27 +43,27 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-        appBar: PreferredSize(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(50),
-    child: AppBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      bottom: TabBar(
-      labelStyle: Styles.textStyleSelected,  //For Selected tab
-      unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
+        child: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          bottom: TabBar(
+            labelStyle: Styles.textStyleSelected,  //For Selected tab
+            unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
 
-      onTap: _onItemTapped,
-    tabs: [
-    Tab(text: "As Organiser",),
-    Tab(text: "As PiggyBacker",),
-    ],
-    ),
-    )
-    ),
-    body: IndexedStack(
+            onTap: _onItemTapped,
+            tabs: [
+              Tab(text: "As Organiser",),
+              Tab(text: "As PiggyBacker",),
+            ],
+          ),
+        )
+      ),
+      body: IndexedStack(
         index: this._selectedIndex,
 
-    children: [
+        children: [
           StreamBuilder<List<GroupBuy>>(
             stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
             builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
@@ -98,9 +98,9 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
               );
             },
           ),
-        FutureBuilder<Stream<List<GroupBuy>>>(
-            future: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
-            builder: (BuildContext context, AsyncSnapshot<Stream<List<GroupBuy>>> snapshot) {
+          StreamBuilder<List<Future<GroupBuy>>>(
+            stream: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
+            builder: (BuildContext context, AsyncSnapshot<List<Future<GroupBuy>>> snapshot) {
               if (snapshot.hasError){
                 print(snapshot.error);
                 return FailedToLoadMyGroupBuys();
@@ -112,47 +112,40 @@ class _MyGroupBuysState extends State<MyGroupBuys> with SingleTickerProviderStat
                 case ConnectionState.waiting:
                   return GroupbuysLoading();
                 default:
-                  return StreamBuilder<List<GroupBuy>>(
-                    stream: snapshot.data,
-                    builder: (BuildContext context, AsyncSnapshot<List<
-                        GroupBuy>> snapshot) {
-                      List<Widget> children;
-                      if (snapshot.hasError) {
-                        return FailedToLoadMyGroupBuys();
-                      }
-
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                          return GroupBuysNotLoaded();
-                        case ConnectionState.waiting:
-                          return GroupbuysLoading();
-                        default:
-                          children = snapshot.data.map((
-                              GroupBuy groupBuy) {
-                            return new GroupBuyCard(groupBuy);
-                          }).toList();
-                          break;
-                      }
-
-                      if (children.isEmpty) {
-                        return new PiggyBackedGroupBuyDefaultScreen();
-                      }
-
-                      return GridView.count(
-                          crossAxisCount: 2,
-                          shrinkWrap: true,
-                          physics: const ClampingScrollPhysics(),
-                          childAspectRatio: 5.5 / 7.0,
-                          children: children
-                      );
-                    },
-                  );
+                  break;
               }
+
+              List<Widget> children = snapshot.data.map((fgb) {
+                return FutureBuilder(
+                  future: fgb,
+                  builder: (BuildContext context, AsyncSnapshot<GroupBuy> snapshot) {
+                    if (snapshot.hasError) {
+                      print(snapshot.error.toString());
+                      return FailedToLoadMyGroupBuys();
+                    }
+
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return GroupBuysNotLoaded();
+                      case ConnectionState.waiting:
+                        return GroupbuysLoading();
+                      default:
+                        return new GroupBuyCard(snapshot.data);
+                    }
+                  },
+                );
+              }).toList();
+              return GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  childAspectRatio: 5.5 / 7.0,
+                  children: children
+              );
             }
-        ),
-
-
-    ])
+          ),
+        ]
+      )
     );
   }
 }
