@@ -199,7 +199,7 @@ class RequestCard extends StatelessWidget {
                         flex: 1,
                       ),
                       FlatButton(
-                        child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status)),),
+                        child: Text(request.getStatus().toUpperCase(), style: TextStyle(color: getStatusColor(request.status)),),
                       ), // supposed to be star
                     ],
                   );
@@ -216,10 +216,6 @@ class RequestCard extends StatelessWidget {
                     margin: EdgeInsets.only(right: 10, bottom: 10),
                     child: Text("\$${request.getTotalAmount()}", style: textStyle,),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(right: 10, bottom: 10),
-                    child: Text(request.getStatus(), style: TextStyle(color: getStatusColor(request.status), fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5)),
-                  )
                 ],
               )
             ],
