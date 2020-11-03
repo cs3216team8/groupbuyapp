@@ -7,12 +7,10 @@ import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
-  final double screenWidth;
 
   JoinGroupBuyForm({
     Key key,
     @required String this.groupBuyId,
-    @required double this.screenWidth
   }) : super(key: key);
 
   @override
@@ -73,14 +71,13 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     itemTotalAmtControllers.add(amtController);
 
     return AddItemCard(
-          key: UniqueKey(),
-          urlController: urlController,
-          qtyController: qtyController,
-          remarksController: rmksController,
-          totalAmtController: amtController,
-          screenWidth: widget.screenWidth,
-        );
-    }
+      key: UniqueKey(),
+      urlController: urlController,
+      qtyController: qtyController,
+      remarksController: rmksController,
+      totalAmtController: amtController,
+    );
+  }
 
 
   void _deleteInputCard(int index) {
@@ -94,8 +91,8 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: backAppBar(
-          context: context,
-          title: "Join Group Buy",
+        context: context,
+        title: "Join Group Buy",
       ),
       floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -116,19 +113,19 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.only(top: 20, bottom: 80, left: 0, right: 0),
-          // padding: EdgeInsets.all(20),
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Text(
-                  'Items',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
-              ),
-              SizedBox(height: 20,),
+            margin: EdgeInsets.only(top: 20, bottom: 80, left: 0, right: 0),
+            // padding: EdgeInsets.all(20),
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text(
+                    'Items',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                ),
+                SizedBox(height: 20,),
 
-              Container(
+                Container(
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
@@ -142,46 +139,41 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                           _deleteInputCard(index);
                         },
                         background: Container(color: Colors.black26),
-                        child:
-                        Row(
-                            children: [
-                          itemCard,
-                          Container(
-                            alignment: Alignment.center,
-                            width: 30,
-                            child: IconButton(
+                        child: ListTile(
+                          contentPadding: EdgeInsets.all(0),
+                          title: itemCard,
+                          trailing: IconButton(
                             icon: Icon(Icons.delete_rounded),
                             onPressed: () => _deleteInputCard(index),
-                          )
                           ),
-                        ]),
+                        ),
                       );
                     },
                   ),
-              ),
+                ),
 
-              OutlineButton(
-                  child: Text('+ Add more items',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  onPressed: addItemInput
-              ),
-              Row(
-                  children: [
-                    Expanded(flex: 70, child: Text('Total: ')),
-                    Expanded(flex: 30, child: Text('\$57.90'))
-                  ]
-              ),
-              Row(
-                  children: [
-                    Expanded(flex: 70, child: Text('Deposit Amount:')),
-                    Expanded(flex: 30, child: Text('\$28.95'))
-                  ]
-              ),
-            ],
-          )
+                OutlineButton(
+                    child: Text('+ Add more items',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    onPressed: addItemInput
+                ),
+                Row(
+                    children: [
+                      Expanded(flex: 70, child: Text('Total: ')),
+                      Expanded(flex: 30, child: Text('\$57.90'))
+                    ]
+                ),
+                Row(
+                    children: [
+                      Expanded(flex: 70, child: Text('Deposit Amount:')),
+                      Expanded(flex: 30, child: Text('\$28.95'))
+                    ]
+                ),
+              ],
+            )
         ),
       ),
     );
