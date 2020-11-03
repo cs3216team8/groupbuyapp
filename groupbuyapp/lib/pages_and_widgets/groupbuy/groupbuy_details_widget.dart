@@ -90,7 +90,6 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
         context,
         JoinGroupBuyForm(
           groupBuyId: widget.groupBuy.id,
-          screenWidth: MediaQuery.of(context).size.width
         ));
   }
 
@@ -408,7 +407,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Container(
-                                            padding: EdgeInsets.only(left: 20, right: 10, bottom: 5),
+                                            padding: EdgeInsets.only(left: 20, right: 20, bottom: 5),
                                             alignment: Alignment.topLeft,
                                             child: Text(
                                               'DETAILS',

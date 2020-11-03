@@ -5,7 +5,6 @@ class AddItemCard extends StatelessWidget {
   final TextEditingController qtyController;
   final TextEditingController remarksController;
   final TextEditingController totalAmtController;
-  final double screenWidth;
 
   AddItemCard({
     @required Key key,
@@ -13,63 +12,60 @@ class AddItemCard extends StatelessWidget {
     this.qtyController,
     this.remarksController,
     this.totalAmtController,
-    this.screenWidth
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(this.screenWidth);
-    return Container(
-        child: Card(
-      color: Colors.white,
-      child: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 8,
-                child: MyTextField(
-                  controller: urlController,
-                  labelText: 'Paste your item link here',
-                  hintText: 'Product link',
-                ),
+    return Card(
+        color: Colors.white,
+        child: Column(
+            children: [
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 8,
+                    child: MyTextField(
+                      controller: urlController,
+                      labelText: 'Paste your item link here',
+                      hintText: 'Product link',
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: MyTextField(
+                        controller: qtyController,
+                        keyboardType: TextInputType.number,
+                        labelText: 'Enter your quantity here',
+                        hintText: 'Qty'
+                    ),
+                  )
+                ],
               ),
-              Expanded(
-                flex: 2,
-                child: MyTextField(
-                  controller: qtyController,
-                  keyboardType: TextInputType.number,
-                  labelText: 'Enter your quantity here',
-                  hintText: 'Qty'
-                ),
-              )
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 8,
-                child: MyTextField(
-                  controller: remarksController,
-                  //expands: true,
-                  labelText: 'Enter any comments or options to indicate to the buyer',
-                  hintText: 'Remarks/options/comments'
-                ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 8,
+                    child: MyTextField(
+                        controller: remarksController,
+                        //expands: true,
+                        labelText: 'Enter any comments or options to indicate to the buyer',
+                        hintText: 'Remarks/options/comments'
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: MyTextField(
+                        controller: totalAmtController,
+                        keyboardType: TextInputType.number,
+                        labelText: 'Enter the product price here',
+                        hintText: 'Total amt,'
+                    ),
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 2,
-                child: MyTextField(
-                  controller: totalAmtController,
-                  keyboardType: TextInputType.number,
-                  labelText: 'Enter the product price here',
-                  hintText: 'Total amt,'
-                ),
-              ),
-            ],
-          ),
-        ]
-      )
-    ));
+            ]
+        )
+    );
   }
 }
 
