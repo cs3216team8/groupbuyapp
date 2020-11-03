@@ -39,6 +39,8 @@ class _RequestCardState extends State<RequestCard> {
   void onTapEdit(BuildContext context) {
     print("on tap edit");
     //TODO: @kx after @agnes completes join request form
+    //show the edittable details and eventually inside  we have
+    // GroupBuyStorage.instance.editRequest(widget.groupBuy.id, widget.request);
   }
 
   Widget _showDetailedRequest(BuildContext context) {

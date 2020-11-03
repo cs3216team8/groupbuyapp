@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:collection';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,29 +82,6 @@ class GroupBuyStorage {
       }).toList();
     });
   }
-
-  // Future<void> editBuy(Buy buy) {
-  //   String buyId = buy.id;
-  //   String groupBuyId = buy.groupBuyId;
-  //   return groupBuys.doc(groupBuyId).set({
-  //     'id': buyId,
-  //     'buyerId': buy.buyerId,
-  //     'itemLink': buy.itemLink,
-  //     'amount': buy.amount,
-  //     'quantity': buy.quantity,
-  //     'comment': buy.comment,
-  //   })
-  //       .then((value) => print("By edited"))
-  //       .catchError((error) => print("Failed to edit buy: $error"));
-  // }
-  //
-  // Future<void> deleteBuy(Buy buy) {
-  //   String buyId = buy.id;
-  //   String groupBuyId = buy.groupBuyId;
-  //   return groupBuys.doc(groupBuyId).collection('buys').doc(buyId).delete()
-  //       .then((value) => print("By deleted"))
-  //       .catchError((error) => print("Failed to delete buy: $error"));
-  // }
 
   /// Get group buy details and all buys under this group buy, this is called if the user is the organiser
   Stream<List<Future<Request>>> getAllGroupBuyRequests(GroupBuy groupBuy) {
@@ -244,6 +219,36 @@ class GroupBuyStorage {
     });
 
     batch.commit();
+  }
+
+  Future<void> editRequest(String groupBuyId, Request request) {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+    DocumentReference requestDoc = requestsRoot.doc(request.id);
+
+    requestDoc.collection('items').get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        batch.delete(ds.reference);
+      };
+
+      batch.set(requestDoc, {
+        'id': request.id,
+        'requestorId': request.requestorId,
+        'groupBuyId': groupBuyId,
+        'status': Request.stringFromRequestStatus(request.status),
+      });
+
+      request.items.forEach((item) {
+        String itemId = requestDoc.collection('items').doc().id;
+        batch.set(requestDoc.collection('items').doc(itemId), {
+          'itemLink': item.itemLink,
+          'qty': item.qty,
+          'remarks': item.remarks,
+          'totalAmount': item.totalAmount,
+        });
+      });
+
+      batch.commit();
+    });
   }
 
   Future<void> confirmRequest(String groupBuyId, Request request) {
