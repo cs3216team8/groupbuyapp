@@ -36,6 +36,11 @@ class _RequestCardState extends State<RequestCard> {
     });
   }
 
+  void onTapEdit(BuildContext context) {
+    print("on tap edit");
+    //TODO: @kx after @agnes completes join request form
+  }
+
   Widget _showDetailedRequest(BuildContext context) {
     return new AlertDialog(
       content: Column(
@@ -107,6 +112,10 @@ class _RequestCardState extends State<RequestCard> {
                       Text("Chat"),
                     ],
                   ),
+                ),
+                RaisedButton(
+                  child: Text("Edit"),
+                  onPressed: widget.request.isEditable() ? () => onTapEdit(context) : null,
                 ),
               ]
           ),
