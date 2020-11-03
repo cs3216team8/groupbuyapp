@@ -33,7 +33,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _depositController = TextEditingController();
   final TextEditingController _descrController = TextEditingController();
 
-  DateTime endDate = DateTime.now().add(Duration(days: 3));
+  DateTime endDateTime = DateTime.now().add(Duration(days: 3));
 
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
   String chosenSite;
@@ -90,7 +90,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     String logo = 'assets/' + getLogoAssetName(chosenSite);
 
-    GroupBuy groupBuy = GroupBuy.newOpenBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
+    GroupBuy groupBuy = GroupBuy.newOpenBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDateTime), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
     await GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
@@ -338,14 +338,24 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           borderRadius: BorderRadius.circular(25.0),
                         ),
                         onPressed: () {
-                          DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
-                            print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                          }, onConfirm: (date) {
-                            print('confirm $date');
-                          }, currentTime: DateTime.now());
+                          DatePicker.showDateTimePicker(
+                              context,
+                              showTitleActions: true,
+                              onChanged: (date) {
+                                print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                              },
+                              onConfirm: (date) {
+                                print('confirm $date');
+                                setState(() {
+                                  endDateTime = date;
+                                });
+                              },
+                              currentTime: endDateTime);
                         },
                         child: Text(
-                          'Pick a deadline!',
+                          endDateTime == null
+                              ? 'Pick a deadline!'
+                              : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')}, ${endDateTime.hour.toString()}:${endDateTime.minute.toString()}",
                           style: TextStyle(color: Colors.black),
                         )),
                   ),
