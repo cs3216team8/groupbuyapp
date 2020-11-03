@@ -158,38 +158,45 @@ class GroupBuyStorage {
 
   /// Show only buys which is created by this user, if the user is the piggybacker, there is supposed to be only 1
   Stream<Future<Request>> getGroupBuyRequestsFromCurrentUser(GroupBuy groupBuy) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Stream.value(Future<Null>.value(null));
+    }
     String userId = FirebaseAuth.instance.currentUser.uid;
 
     return requestsRoot
         .where('groupBuyId', isEqualTo: groupBuy.id)
         .where('requestorId', isEqualTo: userId)
         .snapshots().map((querySnapshot) {
-          List<Future<Request>> futureRequests = querySnapshot.docs.map((requestDoc) async {
-            QuerySnapshot groupBuyRequestItems = await requestsRoot.doc(requestDoc.id).collection('items').get();
-            List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
-            List<Item> items = itemDocs.map((doc) {
-              return new Item(
-                itemLink: doc.data()['itemLink'],
-                totalAmount: doc.data()['totalAmount'].toDouble(),
-                qty: doc.data()['qty'],
-                remarks: doc.data()['remarks'],
-              );
-            }).toList();
+      List<Future<Request>> futureRequests = querySnapshot.docs.map((
+          requestDoc) async {
+        QuerySnapshot groupBuyRequestItems = await requestsRoot.doc(
+            requestDoc.id).collection('items').get();
+        List<QueryDocumentSnapshot> itemDocs = groupBuyRequestItems.docs;
+        List<Item> items = itemDocs.map((doc) {
+          return new Item(
+            itemLink: doc.data()['itemLink'],
+            totalAmount: doc.data()['totalAmount'].toDouble(),
+            qty: doc.data()['qty'],
+            remarks: doc.data()['remarks'],
+          );
+        }).toList();
 
-            return new Request(
-              id: requestDoc.id,
-              requestorId: requestDoc.data()['requestorId'],
-              items: items,
-              status: Request.requestStatusFromString(requestDoc.data()['status']),
-            );
-          }).toList();
-          if (futureRequests.length > 0) {
-            print(futureRequests[0] == null);
-            return futureRequests[0];
-          } else {
-            return Future<Null>.value(null);
-          }
-        });
+        return new Request(
+          id: requestDoc.id,
+          requestorId: requestDoc.data()['requestorId'],
+          items: items,
+          status: Request.requestStatusFromString(
+              requestDoc.data()['status']),
+        );
+      }).toList();
+      if (futureRequests.length > 0) {
+        print(futureRequests[0] == null);
+        return futureRequests[0];
+      } else {
+        return Future<Null>.value(null);
+      }
+    });
+  }
 
     // return groupBuys.doc(groupBuyId).collection('requests').where('requestorId', isEqualTo:userId)
     //     .get().then((QuerySnapshot querySnapshot) {
@@ -218,7 +225,6 @@ class GroupBuyStorage {
     //         return Future<Null>.value(null);
     //       }
     //     });
-  }
 
   Future<void> addRequest(String groupBuyId, Request request) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
