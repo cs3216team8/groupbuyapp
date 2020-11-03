@@ -17,7 +17,7 @@ class ItemDisplay extends StatelessWidget {
     return Container(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: Card(
-                color: Colors.pink,
+                color: Colors.white,
                 elevation: 10,
                 shadowColor: Colors.black12,
                 child: Container(

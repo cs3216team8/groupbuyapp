@@ -18,10 +18,6 @@ class RequestCard extends StatelessWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
-  void onTapChat(BuildContext context) {
-    print("tapped on chat"); //TODO
-  }
-
   void onTapConfirm(BuildContext context) async {
     print("tapped on confirm"); //TODO @kx
     await GroupBuyStorage.instance.confirmRequest(this.groupBuy.id, this.request);
@@ -59,19 +55,7 @@ class RequestCard extends StatelessWidget {
           isOrganiser? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => onTapChat(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.chat_bubble),
-                      Text("Chat"),
-                    ],
-                  ),
-                ),
-                RaisedButton(
+                 RaisedButton(
                   color: Theme.of(context).accentColor,
                   onPressed: () => onTapConfirm(context),
                   child: Row(
@@ -79,7 +63,7 @@ class RequestCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.add_business),
-                      Text("Confirm"),
+                      Text("APPROVE"),
                     ],
                   ),
                 ),
