@@ -6,7 +6,7 @@ import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_w
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 
-class RequestCard extends StatelessWidget {
+class RequestCard extends StatefulWidget {
   final GroupBuy groupBuy;
   final Request request;
   final bool isOrganiser;
@@ -18,9 +18,24 @@ class RequestCard extends StatelessWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
+
+  @override
+  _RequestCardState createState() => _RequestCardState();
+}
+
+class _RequestCardState extends State<RequestCard> {
+
   void onTapConfirm(BuildContext context) async {
-    print("tapped on confirm"); //TODO @kx
-    await GroupBuyStorage.instance.confirmRequest(this.groupBuy.id, this.request);
+    await GroupBuyStorage.instance.confirmRequest(widget.groupBuy.id, widget.request);
+    Navigator.pop(context);
+    setState(() {
+      widget.request.status = RequestStatus.confirmed;
+    });
+  }
+
+  void onTapEdit(BuildContext context) {
+    print("on tap edit");
+    //TODO: @kx after @agnes completes join request form
   }
 
   Widget _showDetailedRequest(BuildContext context) {
@@ -50,9 +65,9 @@ class RequestCard extends StatelessWidget {
             ],
           ),
           Column(
-            children: request.getItems().map((item) => ItemDisplay(item: item)).toList(),
+            children: widget.request.getItems().map((item) => ItemDisplay(item: item)).toList(),
           ),
-          isOrganiser? Row(
+          widget.isOrganiser? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                  RaisedButton(
@@ -82,6 +97,10 @@ class RequestCard extends StatelessWidget {
                       Text("Chat"),
                     ],
                   ),
+                ),
+                RaisedButton(
+                  child: Text("Edit"),
+                  onPressed: widget.request.isEditable() ? () => onTapEdit(context) : null,
                 ),
               ]
           ),
@@ -118,12 +137,12 @@ class RequestCard extends StatelessWidget {
   Widget build(BuildContext context) {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
     return Container(
-        padding: EdgeInsets.only(left: 10, right: 10),
-    child: Card(
-      color: Colors.white,
-      elevation: 10,
-      shadowColor: Colors.black12,
-      child: Container(
+      padding: EdgeInsets.only(left: 10, right: 10),
+      child: Card(
+        color: Colors.white,
+        elevation: 10,
+        shadowColor: Colors.black12,
+        child: Container(
           padding: EdgeInsets.only(left:10, right: 20, top: 6, bottom: 6),
           decoration: new BoxDecoration(
             color: Color(0xFFFBECE6),
@@ -138,75 +157,75 @@ class RequestCard extends StatelessWidget {
               )
             ],
           ),
-      alignment: Alignment.center,
-      child: InkWell(
-          splashColor: Theme.of(context).primaryColor.withAlpha(30),
-          onTap: () => openDetailedRequest(context),
-          child: Column(
-            children: <Widget>[
-              FutureBuilder(
-                future: ProfileStorage.instance.getUserProfile(request.requestorId),
-                builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text("Failed to load request.");
-                  }
+          alignment: Alignment.center,
+          child: InkWell(
+            splashColor: Theme.of(context).primaryColor.withAlpha(30),
+            onTap: () => openDetailedRequest(context),
+            child: Column(
+              children: <Widget>[
+                FutureBuilder(
+                  future: ProfileStorage.instance.getUserProfile(widget.request.requestorId),
+                  builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("Failed to load request.");
+                    }
 
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return Text("Git blame developers.");
-                    case ConnectionState.waiting:
-                      return Center(child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator(),),); //TODO for refactoring
-                    default:
-                      break;
-                  }
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.none:
+                        return Text("Git blame developers.");
+                      case ConnectionState.waiting:
+                        return Center(child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator(),),); //TODO for refactoring
+                      default:
+                        break;
+                    }
 
-                  Profile profile = snapshot.data;
+                    Profile profile = snapshot.data;
 
-                  return Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
-                        child: CircleAvatar(
-                          radius: 15,
-                          backgroundColor: Theme.of(context).primaryColor,
+                    return Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 6, right: 10, left: 3, bottom: 6),
                           child: CircleAvatar(
-                            radius: 13,
-                            backgroundImage: NetworkImage(profile.profilePicture),
+                            radius: 15,
+                            backgroundColor: Theme.of(context).primaryColor,
+                            child: CircleAvatar(
+                              radius: 13,
+                              backgroundImage: NetworkImage(profile.profilePicture),
+                            ),
                           ),
                         ),
-                      ),
-                      Text(
-                        profile.username,
-                        style: textStyle,
-                      ),
-                      Spacer(
-                        flex: 1,
-                      ),
-                      FlatButton(
-                        child: Text(request.getStatus().toUpperCase(), style: TextStyle(color: getStatusColor(request.status)),),
-                      ), // supposed to be star
-                    ],
-                  );
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 10, bottom: 10),
-                    child: Text("${request.items.length} items", style: textStyle,),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 10, bottom: 10),
-                    child: Text("\$${request.getTotalAmount()}", style: textStyle,),
-                  ),
-                ],
-              )
-            ],
-          ),
+                        Text(
+                          profile.username,
+                          style: textStyle,
+                        ),
+                        Spacer(
+                          flex: 1,
+                        ),
+                        FlatButton(
+                          child: Text(widget.request.getStatus().toUpperCase(), style: TextStyle(color: getStatusColor(widget.request.status)),),
+                        ), // supposed to be star
+                      ],
+                    );
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(left: 10, bottom: 10),
+                      child: Text("${widget.request.items.length} items", style: textStyle,),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(right: 10, bottom: 10),
+                      child: Text("\$${widget.request.getTotalAmount()}", style: textStyle,),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          )
         )
       )
-    )
     );
   }
 }

@@ -33,6 +33,10 @@ class Request {
     status = RequestStatus.pending;
   }
 
+  bool isEditable() {
+    return status == RequestStatus.pending;
+  }
+
   static RequestStatus requestStatusFromString(String val) {
     switch (val) {
       case 'pending':
