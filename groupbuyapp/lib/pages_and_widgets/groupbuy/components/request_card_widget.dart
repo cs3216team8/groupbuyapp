@@ -18,15 +18,12 @@ class RequestCard extends StatefulWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
+
   @override
   _RequestCardState createState() => _RequestCardState();
 }
 
 class _RequestCardState extends State<RequestCard> {
-
-  void onTapChat(BuildContext context) {
-    print("tapped on chat"); //TODO follow @teikjun's implementatino
-  }
 
   void onTapConfirm(BuildContext context) async {
     await GroupBuyStorage.instance.confirmRequest(widget.groupBuy.id, widget.request);
@@ -75,19 +72,7 @@ class _RequestCardState extends State<RequestCard> {
           widget.isOrganiser? Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => onTapChat(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.chat_bubble),
-                      Text("Chat"),
-                    ],
-                  ),
-                ),
-                RaisedButton(
+                 RaisedButton(
                   color: Theme.of(context).accentColor,
                   onPressed: () => onTapConfirm(context),
                   child: Row(
@@ -95,7 +80,7 @@ class _RequestCardState extends State<RequestCard> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(Icons.add_business),
-                      Text("Confirm"),
+                      Text("APPROVE"),
                     ],
                   ),
                 ),

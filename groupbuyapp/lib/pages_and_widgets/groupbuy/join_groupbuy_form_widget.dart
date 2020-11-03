@@ -143,11 +143,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                         },
                         background: Container(color: Colors.black26),
                         child:
-                        ListTile(
-                          dense: true,
-                          title: itemCard,
-                          contentPadding: EdgeInsets.all(0),
-                          trailing: Container(
+                        Row(
+                            children: [
+                          itemCard,
+                          Container(
                             alignment: Alignment.center,
                             width: 30,
                             child: IconButton(
@@ -155,7 +154,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                             onPressed: () => _deleteInputCard(index),
                           )
                           ),
-                        ),
+                        ]),
                       );
                     },
                   ),
