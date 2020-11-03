@@ -227,11 +227,13 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
                 style: Styles.subtitleStyle,
               ),
             ),
-            Column(
-              children: widget.request.getItems().map((item) =>
-                  ItemDisplay(item: item)).toList(),
-            ),
-
+            Container(
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Column(
+                  children: widget.request.getItems().map((item) =>
+                      ItemDisplay(item: item)).toList(),
+                ),
+            )
           ],
         )
     )

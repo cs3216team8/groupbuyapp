@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -35,35 +36,82 @@ class ItemDisplay extends StatelessWidget {
                       ],
                     ),
                     child: Column(
-                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
 
                       children: <Widget>[
                         Row(
-                          mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // Location
                           children: <Widget>[
-                            new InkWell(
-                              child: Text(
-                                  'Item Link'
-                              ),
-                              onTap: () => launch(this.item.itemLink),
+                            Row(
+                                children: [
+                                Padding(
+                                padding: EdgeInsets.only(top: 6, left: 3, right: 3, bottom: 6),
+                                child: InkWell(
+                                  child: Column(
+                                    children: [
+                                      Icon(
+                                        Icons.open_in_new,
+                                        color: Color(0xFFe87d74),
+                                        size: 24.0,
+                                        semanticLabel: 'Items',
+                                      )
+                                      // ), Text(
+                                      //     'Item'
+                                      // ),
+                                    ],
+                                  ),
+                                  onTap: () => launch(this.item.itemLink),
+                                ),
+                                ),
+                                  Container(height: 40, child: VerticalDivider(color: Color(0xFFe87d74))),
+                                Container(
+                                padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                            Text(sprintf('%spcs', [this.item.qty]), style: Styles.textStyle, textAlign: TextAlign.left,),
+                                            SizedBox(height: 7),
+                                            Text(this.item.remarks, style: Styles.textStyle),
+
+                                      ]
+                                      ),
+
+
+                                  ]
+                                ))]
                             ),
-                            Text(sprintf('%spcs', [this.item.qty])),
-                            Text((this.item.totalAmount * this.item.qty).toString()),// supposed to be star
+                            Text((this.item.totalAmount * this.item.qty).toString(), style: Styles.textStyle, textAlign: TextAlign.right),
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              child: Text(this.item.remarks),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                )
-            )
-        );
+]
+                        // Row(
+                        //   mainAxisSize: MainAxisSize.max,
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     new InkWell(
+                        //       child: Text(
+                        //           'Item Link'
+                        //       ),
+                        //       onTap: () => launch(this.item.itemLink),
+                        //     ),
+                        //     Text(sprintf('%spcs', [this.item.qty])),
+                        //     Text((this.item.totalAmount * this.item.qty).toString()),// supposed to be star
+                        //   ],
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     Container(
+                        //       child: Text(this.item.remarks),
+                        //     )
+                        //   ],
+                        // ),
+                ))));
+
   }
 }
