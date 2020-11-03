@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
@@ -24,63 +25,75 @@ class OrganisedGroupBuysOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          child: FutureBuilder(
-            future: fprofile,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-              if (snapshot.hasError) {
-                return Text("Unable to load group buys.");
-              }
+    return Scaffold(
+        // appBar: PreferredSize(
+        //   preferredSize: Size.fromHeight(50),
+        //
+        //   child: AppBar(
+        //
+        //     elevation: 0,
+        //     backgroundColor: Colors.transparent,
+        //     bottom: PreferredSizeW(
+        //
+        //     // bottom: TabBar(
+        //     // labelStyle: Styles.textStyleSelected,  //For Selected tab
+        //     //
+        //     // tabs: [
+        //     // Tab(text: "As Organiser",),
+        //     // ],
+        //   ),
+        //   )
+        // ),
 
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return Text("Git blame developers.");
-                case ConnectionState.waiting:
-                  return ProfileLoading();
-                default:
-                  Profile userProfile = snapshot.data;
-                  return Text("${userProfile.username}'s group buys");
-              }
-            },
+        body:
+        SingleChildScrollView(
+
+        child: Column(
+        children: [
+          Container(
+            alignment: Alignment.center,
+
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(border: Border(bottom:BorderSide(color: Color(0xFFe87d74)))),
+            height: 50,
+            child: Text('As Organiser', style: Styles.textStyleSelected,)
           ),
-        ),
-        StreamBuilder<List<GroupBuy>>(
-          stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-          builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-            List<Widget> children;
-            if (snapshot.hasError) {
-              print(snapshot.error);
-              return FailedToLoadMyGroupBuys();
-            }
+          StreamBuilder<List<GroupBuy>>(
+              stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
+              builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
+                List<Widget> children;
+                if (snapshot.hasError) {
+                  print(snapshot.error);
+                  return FailedToLoadMyGroupBuys();
+                }
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return GroupBuysNotLoaded();
-              case ConnectionState.waiting:
-                return GroupbuysLoading();
-              default:
-                children = snapshot.data.map((GroupBuy groupBuy) {
-                  return new MyGroupBuyCard(groupBuy);
-                }).toList();
-                break;
-            }
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return GroupBuysNotLoaded();
+                  case ConnectionState.waiting:
+                    return GroupbuysLoading();
+                  default:
+                    children = snapshot.data.map((GroupBuy groupBuy) {
+                      return new GroupBuyCard(groupBuy);
+                    }).toList();
+                    break;
+                }
 
-            if (children.isEmpty) {
-              return OrganisedGroupBuyDefaultScreen();
-            }
+                if (children.isEmpty) {
+                  return OrganisedGroupBuyDefaultScreen();
+                }
 
-            return GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                childAspectRatio: 6.0/7.0,
-                children: children
-            );
-          },
-        ),
-      ],
+                return GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    childAspectRatio: 5.5/7.0,
+                    children: children
+                );
+              },
+            ),
+    ])
+    )
     );
   }
 }
