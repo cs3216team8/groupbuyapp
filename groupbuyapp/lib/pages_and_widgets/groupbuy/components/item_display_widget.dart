@@ -15,16 +15,15 @@ class ItemDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
             child: Card(
                 color: Colors.white,
                 elevation: 10,
                 shadowColor: Colors.black12,
                 child: Container(
-                    padding: EdgeInsets.only(left:10, right: 20, top: 6, bottom: 6),
+                    padding: EdgeInsets.only(left:10, right: 10, top: 0, bottom: 6),
                     decoration: new BoxDecoration(
                       color: Color(0xFFFBECE6),
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
                       border: Border.all(color: Color(0xFFFFFFFF), width: 0),
                       boxShadow: [
                         BoxShadow(
@@ -35,10 +34,13 @@ class ItemDisplay extends StatelessWidget {
                         )
                       ],
                     ),
-                    alignment: Alignment.center,
                     child: Column(
+                      mainAxisSize: MainAxisSize.max,
+
                       children: <Widget>[
                         Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             new InkWell(
                               child: Text(
@@ -46,12 +48,8 @@ class ItemDisplay extends StatelessWidget {
                               ),
                               onTap: () => launch(this.item.itemLink),
                             ),
-                            Spacer(
-                              flex: 1,
-                            ),
-                            FlatButton(
-                              child: Text(sprintf('Qty: %s', [this.item.qty])),
-                            ), // supposed to be star
+                            Text(sprintf('%spcs', [this.item.qty])),
+                            Text((this.item.totalAmount * this.item.qty).toString()),// supposed to be star
                           ],
                         ),
                         Row(
@@ -62,15 +60,6 @@ class ItemDisplay extends StatelessWidget {
                             )
                           ],
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Text((this.item.totalAmount * this.item.qty).toString(), textAlign: TextAlign.right,),
-                            )
-                          ],
-                        )
                       ],
                     ),
                 )
