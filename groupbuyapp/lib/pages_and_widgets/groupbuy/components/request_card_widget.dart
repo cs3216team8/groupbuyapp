@@ -89,18 +89,6 @@ class _RequestCardState extends State<RequestCard> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  onPressed: () => onTapChat(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.chat_bubble),
-                      Text("Chat"),
-                    ],
-                  ),
-                ),
-                RaisedButton(
                   child: Text("Edit"),
                   onPressed: widget.request.isEditable() ? () => onTapEdit(context) : null,
                 ),
