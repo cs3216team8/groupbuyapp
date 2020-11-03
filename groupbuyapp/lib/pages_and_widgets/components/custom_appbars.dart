@@ -6,6 +6,7 @@ PreferredSize backAppBar({
   @required BuildContext context,
   @required String title,
   List<Widget> actions,
+  TextStyle textStyle,
   double elevation = 0,
   Color color=const Color(0xFFFFFFFF),
   Color textColor=Colors.black,
@@ -22,7 +23,7 @@ PreferredSize backAppBar({
         },
       ),
       title: Container(
-        child: Text(title, style: TextStyle(color: textColor,),),
+        child: Text(title, style: (textStyle!=null)? textStyle: TextStyle(color: textColor,),),
       ),
       backgroundColor: color,
       actions: actions,
