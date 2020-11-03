@@ -53,41 +53,60 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RaisedButton(
-                color: Theme
-                    .of(context)
-                    .accentColor,
-                onPressed: () => onTapChat(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.chat_bubble),
-                    Text("CHAT"),
-                  ],
+                elevation: 15,
+                padding: EdgeInsets.all(15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
                 ),
-              ),
-              RaisedButton(
-                color: Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).primaryColor,
                 onPressed: () => onTapConfirm(context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.add_business),
-                    Text("APPROVE"),
+                    Icon(Icons.approval, color: Colors.white),
+                    Text(" APPROVE", style: Styles.popupButtonStyle),
                   ],
                 ),
               ),
+              RaisedButton(
+                elevation: 15,
+                padding: EdgeInsets.all(15.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(10.0), bottomRight: Radius.circular(10.0)),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: () => onTapChat(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.chat_bubble, color: Colors.white),
+                    Text(" CHAT", style: Styles.popupButtonStyle),
+                  ],
+                ),
+              ),
+
             ]
         ) : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RaisedButton(
-                child: Text("EDIT"),
-                onPressed: widget.request.isEditable() ? () =>
-                    onTapEdit(context) : null,
+                elevation: 15,
+                padding: EdgeInsets.all(14.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                color: Theme.of(context).primaryColor,
+                onPressed: widget.request.isEditable() ? () => onTapEdit(context) : null,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.edit, color: Colors.white),
+                    Text(" EDIT", style: Styles.popupButtonStyle),
+                  ],
+                ),
               ),
             ]
         ),

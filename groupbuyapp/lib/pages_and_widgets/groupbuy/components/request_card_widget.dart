@@ -54,6 +54,7 @@ class _RequestCardState extends State<RequestCard> {
               )
             ],
           ),
+
           alignment: Alignment.center,
           child: InkWell(
             splashColor: Theme.of(context).primaryColor.withAlpha(30),
