@@ -24,6 +24,7 @@ class ProfileBuilder {
     @required String name,
     @required String username,
     @required String email,
+    @required String authType,
     String phoneNumber,
     String profilePicture }) {
 
@@ -34,6 +35,7 @@ class ProfileBuilder {
       profilePicture == null ? "" : profilePicture,
       phoneNumber == null ? "" : phoneNumber,
       email,
+      authType,
       [],
       [],
       0,
