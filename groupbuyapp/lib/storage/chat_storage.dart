@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
@@ -114,17 +117,7 @@ class ChatStorage {
         .where("groupBuyIds", arrayContains: groupBuy.id)
         .get();
     usersInGroupBuy.docs.forEach((user) async {
-      String groupBuyId = groupBuy.id;
-      String organiserId = groupBuy.organiserId;
-      String userId = user.id;
-      String chatRoomId = organiserId + "_" + userId;
-      List<String> members = [organiserId, userId];
-      Map<String, dynamic> chatRoom = {
-        "chatRoomId": chatRoomId,
-        "members": members,
-        "groupBuyId": groupBuyId,
-      };
-      await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+      createChatRoom(groupBuy, user.id);
     });
   }
 
@@ -144,5 +137,20 @@ class ChatStorage {
     };
     await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
     return chatRoomId;
+  }
+
+  void createAndOpenChatRoom(
+    BuildContext context, GroupBuy groupBuy, String requestorId, bool isToOrganiser) async {
+    String receiverId = isToOrganiser ? groupBuy.organiserId : requestorId;
+    Profile receiverProfile =
+        await ProfileStorage.instance.getUserProfile(receiverId);
+    String chatRoomId = await createChatRoom(groupBuy, requestorId);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatScreen(
+            chatRoomId: chatRoomId, username: receiverProfile.username),
+      ),
+    );
   }
 }
