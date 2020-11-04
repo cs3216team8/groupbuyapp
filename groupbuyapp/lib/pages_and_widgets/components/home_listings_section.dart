@@ -55,14 +55,18 @@ class _ListingsSectionState extends State<ListingsSection>
             }
 
             List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
-            List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
 
+            // List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
+            List<GroupBuy> closedPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
+            List<GroupBuy> openPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
             return GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 childAspectRatio: 5.5/7.0,
-                children: presentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList() + pastGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
+                children: openPresentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
+                    + closedPresentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
+                    + pastGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
             );
           },
         )
