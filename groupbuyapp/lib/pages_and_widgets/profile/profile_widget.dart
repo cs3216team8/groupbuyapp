@@ -15,7 +15,7 @@ class ProfileScreen extends StatelessWidget {
     if (FirebaseAuth.instance.currentUser == null) {
       return false;
     }
-    return userId == FirebaseAuth.instance.currentUser.uid;
+    return userId ==  null || userId == FirebaseAuth.instance.currentUser.uid;
   }
 
   @override
@@ -23,12 +23,22 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: backAppBar(
+      appBar: isMe()
+        ? regularAppBar(
+          context: context,
+          color: Color(0xFFF98B83),
+          iconColor: Colors.white,
+          titleElement: Text(
+            isMe() ? "Your Profile" : "View Profile",
+            style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white),
+          )
+        )
+        : backAppBar(
         context: context,
         color: Color(0xFFF98B83),
         iconColor: Colors.white,
         title: isMe() ? "Your Profile" : "View Profile",
-          textStyle: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white)
+        textStyle: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.w500, fontSize: 24, color: Colors.white),
       ),
       body: ProfileGroupBuys(
         isMe: isMe(),

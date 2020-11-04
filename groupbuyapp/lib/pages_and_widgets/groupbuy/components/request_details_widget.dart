@@ -4,10 +4,10 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
+import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 class RequestDetailsScreen extends StatefulWidget {
@@ -36,8 +36,10 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
     });
   }
 
-  void onTapChat(BuildContext context) {
-    print("tapped on chat"); //TODO
+  // chat with the requestor
+  Future<void> onTapChat(BuildContext context) async {
+    String requestorId = widget.request.requestorId;
+    ChatStorage().createAndOpenChatRoom(context, widget.groupBuy, requestorId, false);
   }
 
   void onTapEdit(BuildContext context) {
