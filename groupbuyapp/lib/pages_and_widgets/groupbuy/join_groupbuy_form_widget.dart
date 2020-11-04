@@ -132,10 +132,13 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
               child: Column(
               children: [
                 SizedBox(height:5),
-                Text(
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
                     'ITEMS',
                     style: Styles.subtitleStyle,
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.right,
+                )
                 ),
                 SizedBox(height:5),
                 Container(
