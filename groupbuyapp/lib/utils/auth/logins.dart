@@ -39,12 +39,13 @@ class Logins {
       bool isExistingUser = await ProfileStorage.instance.checkIfProfileExists(FirebaseAuth.instance.currentUser.uid);
       if (!isExistingUser) {
         final profile = ProfileBuilder.buildNewUserProfile(
-            userId: userCredential.user.uid,
-            name: userCredential.user.displayName,
-            username: ProfileBuilder.createUsernameFromName(userCredential.user.displayName),
-            email: userCredential.user.email,
-            phoneNumber: userCredential.user.phoneNumber,
-            profilePicture: userCredential.additionalUserInfo.profile['picture']
+          userId: userCredential.user.uid,
+          name: userCredential.user.displayName,
+          username: ProfileBuilder.createUsernameFromName(userCredential.user.displayName),
+          email: userCredential.user.email,
+          phoneNumber: userCredential.user.phoneNumber,
+          profilePicture: userCredential.additionalUserInfo.profile['picture'],
+          authType: "google"
         );
         await ProfileStorage.instance.createOrUpdateUserProfile(profile);
       }
@@ -72,7 +73,8 @@ class Logins {
               username: ProfileBuilder.createUsernameFromName(userCredential.user.displayName),
               email: userCredential.user.email,
               phoneNumber: userCredential.user.phoneNumber,
-              profilePicture: userCredential.additionalUserInfo.profile['picture']['data']['url']
+              profilePicture: userCredential.additionalUserInfo.profile['picture']['data']['url'],
+            authType: "facebook",
           );
           await ProfileStorage.instance.createOrUpdateUserProfile(profile);
         }
@@ -108,10 +110,11 @@ class Logins {
 
         if (!isExistingUser) {
           final profile = ProfileBuilder.buildNewUserProfile(
-              userId: userCredential.user.uid,
-              name: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
-              username: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
-              email: userCredential.user.email,
+            userId: userCredential.user.uid,
+            name: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
+            username: ProfileBuilder.createUsernameFromEmail(userCredential.user.email),
+            email: userCredential.user.email,
+            authType: "apple"
           );
           await ProfileStorage.instance.createOrUpdateUserProfile(profile);
         }
@@ -127,5 +130,19 @@ class Logins {
         break;
     }
   }
+  
+  static Future<String> getUniqueUsername(String name) async {
+    String username = ProfileBuilder.createUsernameFromName(name);
+    
+    while(true) {
+      if (await ProfileStorage.instance.checkIfUsernameIsTaken(username)) {
+        username = ProfileBuilder.generateUsernameWithRandomSuffix(username);
+        continue;
+      } else {
+        return username;
+      }
+    }
+  }
+
 
 }

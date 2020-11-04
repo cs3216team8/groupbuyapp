@@ -9,3 +9,11 @@ bool isUserLoggedIn() {
     return true;
   }
 }
+
+bool isUserEmailVerified() {
+  if (FirebaseAuth.instance.currentUser == null) {
+    throw Exception("Error: Not logged in.");
+  }
+
+  return FirebaseAuth.instance.currentUser.emailVerified;
+}

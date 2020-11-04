@@ -32,6 +32,13 @@ class _SignUpFormState extends State<SignupForm> {
   String phoneNumberErrorMessage = '';
 
   Future<UserCredential> _register() async {
+    bool usernameIsTaken = await ProfileStorage.instance.checkIfUsernameIsTaken(_usernameController.text);
+
+    if (usernameIsTaken) {
+      showErrorFlushbar("This username has been taken. Plesae pick another one.");
+      return null;
+    }
+
     try {
       UserCredential userCredential = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
@@ -45,6 +52,7 @@ class _SignUpFormState extends State<SignupForm> {
           "",
           _phoneNumberController.text,
           _emailController.text,
+          "native",
           [],
           [],
           null,

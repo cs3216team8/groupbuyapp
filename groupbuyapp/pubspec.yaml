@@ -46,7 +46,6 @@ dependencies:
 
   percent_indicator: "^2.1.7+2"
   flutter_rating_bar: "^3.0.1+1"
-  carousel_slider: "^2.3.1"
 
   flutter_svg: "^0.19.1"
 
@@ -57,6 +56,16 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.8.0"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path_android: assets/icon/xxxhdpi.png
+  image_path_ios: assets/icon/ios.png
+  adaptive_icon_background: assets/icon/ic_background.png
+  adaptive_icon_foreground: assets/icon/ic_foreground.png
+  adaptive_icon_padding: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
