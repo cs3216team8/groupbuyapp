@@ -11,15 +11,47 @@ import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:groupbuyapp/utils/auth/auth_check.dart';
 
-class ProfileSettingsScreen extends StatelessWidget {
+class ProfileSettingsScreen extends StatefulWidget {
   final Profile profile;
 
   ProfileSettingsScreen({
     Key key,
     @required this.profile,
   }) : super(key: key);
+
+  @override
+  _ProfileSettingsScreenState createState() => _ProfileSettingsScreenState();
+}
+
+class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
+  TextEditingController nameController, usernameController, phoneNumberController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController(text: widget.profile.name);
+    usernameController = TextEditingController(text: widget.profile.username);
+    phoneNumberController = TextEditingController(text: widget.profile.phoneNumber);
+  }
+
+  void _onSaveProfile(BuildContext context) {
+    Profile newProfile = Profile(
+        widget.profile.userId,
+        nameController.text,
+        usernameController.text,
+        widget.profile.profilePicture,
+        phoneNumberController.text,
+        widget.profile.email,
+        widget.profile.authType,
+        widget.profile.addresses,
+        widget.profile.groupBuyIds,
+        widget.profile.rating,
+        widget.profile.reviewCount
+      );
+      ProfileStorage.instance.createOrUpdateUserProfile(newProfile);
+      Navigator.pop(context);
+    }
 
   Widget _logoutConfirmation(BuildContext context) {
     return new AlertDialog(
@@ -65,11 +97,6 @@ class ProfileSettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController nameController = TextEditingController(text: profile.name);
-    TextEditingController usernameController = TextEditingController(text: profile.username);
-    TextEditingController phoneNumberController = TextEditingController(text: profile.phoneNumber);
-    // TextEditingController emailController = TextEditingController(text: profile.email);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile', style: TextStyle(color: Colors.black),),
@@ -81,25 +108,12 @@ class ProfileSettingsScreen extends StatelessWidget {
           },
         ),
         actions: [
-          IconButton(
-          icon: Icon(Icons.save_outlined, color: Colors.black,),
-            onPressed: () {
-              Profile newProfile = Profile(
-                  profile.userId,
-                  nameController.text,
-                  usernameController.text,
-                  profile.profilePicture,
-                  phoneNumberController.text,
-                  profile.email,
-                  profile.authType,
-                  profile.addresses,
-                  profile.groupBuyIds,
-                  profile.rating,
-                  profile.reviewCount
-              );
-              ProfileStorage.instance.createOrUpdateUserProfile(newProfile);
-              Navigator.pop(context);
-            },
+          FlatButton(
+            child: Text(
+              "SAVE",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).primaryColor, fontSize: 16, fontFamily: 'Nunita'), //TODO check font family correct or not
+            ),
+            onPressed: () => _onSaveProfile(context),
           )
         ]
       ),
@@ -154,7 +168,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                               backgroundColor: Theme.of(context).primaryColor,
                               child: CircleAvatar(
                                 radius: 47,
-                                backgroundImage: Image.network(profile.profilePicture).image,
+                                backgroundImage: Image.network(widget.profile.profilePicture).image,
                               ),
                             )
                         )
@@ -164,7 +178,7 @@ class ProfileSettingsScreen extends StatelessWidget {
               SizedBox(height: 60,),
               Container(
                 child: Text(
-                    "${profile.email}",
+                    "${widget.profile.email}",
                     style:Styles.usernameStyle
                 ),
               ),
@@ -209,7 +223,7 @@ class ProfileSettingsScreen extends StatelessWidget {
               // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
               Expanded(
                 child: AddressListModifier(
-                  addresses: profile.addresses,
+                  addresses: widget.profile.addresses,
                 ),
               )
             ],
