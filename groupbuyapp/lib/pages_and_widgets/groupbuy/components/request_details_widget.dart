@@ -9,7 +9,6 @@ import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 class RequestDetailsScreen extends StatefulWidget {
@@ -37,23 +36,6 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
       widget.request.status = RequestStatus.confirmed;
     });
   }
-
-  // void onTapChat(BuildContext context) async {
-  //   String organiserId = groupBuy.organiserId;
-  //   print(organiserId);
-  //   Profile organiserProfile = await ProfileStorage.instance.getUserProfile(organiserId);
-  //
-  //   String chatRoomId = await ChatStorage().createChatRoom(groupBuy);
-  //   // send user to chatroom
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (_) => ChatScreen(
-  //           chatRoomId: chatRoomId, username: organiserProfile.username),
-  //     ),
-  //   );
-  //   // GroupBuyInfo({groupBuy: this.groupBuy, organiserProfile: organiserProfile}});
-  // }
 
   Future<void> onTapChat(BuildContext context) async {
     String requestorId = widget.request.requestorId;

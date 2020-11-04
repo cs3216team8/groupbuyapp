@@ -19,7 +19,6 @@ class RequestCard extends StatefulWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
-
   @override
   _RequestCardState createState() => _RequestCardState();
 }
