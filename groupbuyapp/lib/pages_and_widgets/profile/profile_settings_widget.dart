@@ -11,6 +11,7 @@ import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:groupbuyapp/utils/auth/auth_check.dart';
 
 class ProfileSettingsScreen extends StatelessWidget {
   final Profile profile;
@@ -48,6 +49,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.profilePicture,
                   phoneNumberController.text,
                   profile.email,
+                  profile.authType,
                   profile.addresses,
                   profile.groupBuyIds,
                   profile.rating,
@@ -167,6 +169,7 @@ class _ProfilePicChangerState extends State<ProfilePicChanger> {
 
   @override
   Widget build(BuildContext context) {
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[

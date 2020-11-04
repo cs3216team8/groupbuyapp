@@ -51,7 +51,7 @@ class PiggyBuy extends StatefulWidget {
     return <Widget>[
       HomeScreen(),
       Container(), //CreateGroupBuyScreen(),
-      ProfileScreen(),
+      ProfileScreen(isFromHome: true,),
     ];
   }
 
