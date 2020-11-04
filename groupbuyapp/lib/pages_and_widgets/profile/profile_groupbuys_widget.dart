@@ -83,12 +83,23 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
       Tab(text: "As Organiser",),
     ];
   }
+
+  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+  }
+
   List<Widget> getTabScreens(String uid) {
     return <Widget>[
       StreamBuilder<List<GroupBuy>>(
         stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(uid),
         builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
           List<Widget> children;
+
+          List<GroupBuy> groupBuys = snapshot.data.toList();
+          List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
+          // List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
+          List<GroupBuy> closedPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
+          List<GroupBuy> openPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
@@ -100,9 +111,9 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             case ConnectionState.waiting:
               return GroupbuysLoading();
             default:
-              children = snapshot.data.map((GroupBuy groupBuy) {
-                return new GroupBuyCard(groupBuy);
-              }).toList();
+              children = getGroupBuyCardList(openPresentGroupBuys)
+                  + getGroupBuyCardList(closedPresentGroupBuys)
+                  + getGroupBuyCardList(pastGroupBuys);
               break;
           }
 
