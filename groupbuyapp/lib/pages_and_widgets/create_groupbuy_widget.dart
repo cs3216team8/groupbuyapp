@@ -33,7 +33,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   final TextEditingController _depositController = TextEditingController();
   final TextEditingController _descrController = TextEditingController();
 
-  DateTime endDate = DateTime.now().add(Duration(days: 3));
+  DateTime endDateTime = DateTime.now().add(Duration(days: 3));
+  final DateTime earliestPossibleDateTime = DateTime.now().add(Duration(hours: 10)); //TODO [not impt] change the arbitrary number
 
   final List<String> supportedSites = ['amazon.sg', 'ezbuy.sg', 'Others'];
   String chosenSite;
@@ -67,6 +68,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   }
 
   void createGroupBuy(BuildContext context) async {
+    if (endDateTime.isBefore(earliestPossibleDateTime)) {
+      showFlushbar(context, "Invalid input!", "The end time should not be in the past.");
+      return;
+    }
 
     if (chosenAddress == null) {
       showFlushbar(context, "Invalid input", "Address cannot be empty!");
@@ -90,7 +95,15 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
     String logo = 'assets/' + getLogoAssetName(chosenSite);
 
-    GroupBuy groupBuy = GroupBuy.newOpenBuy("", storeName, storeName, logo, double.parse(_currentAmtController.text), double.parse(_targetAmtController.text), Timestamp.fromDate(endDate), FirebaseAuth.instance.currentUser.uid, double.parse(_depositController.text), _descrController.text, addr);
+    GroupBuy groupBuy = GroupBuy.newOpenBuy("", 
+        storeName, storeName, logo, 
+        double.parse(_currentAmtController.text), 
+        double.parse(_targetAmtController.text), 
+        Timestamp.fromDate(endDateTime), 
+        FirebaseAuth.instance.currentUser.uid, 
+        double.parse(_depositController.text) / 100, // store as fraction instead of %
+        _descrController.text, addr
+    );
     await GroupBuyStorage.instance.addGroupBuy(groupBuy);
 
     if (widget.needsBackButton) {
@@ -120,11 +133,29 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   }
 
 
-  bool isNumeric(String s) {
+  bool isNonNegativeNumeric(String s) {
     if(s == null) {
       return false;
     }
     return double.parse(s, (e) => null) != null;
+  }
+
+  bool isNonNegativeInteger(String s) {
+    if (s == null) {
+      return false;
+    }
+    return int.parse(s) != null;
+  }
+
+  bool isCurrencyNumberFormat(String s) {
+    if (!isNonNegativeNumeric(s)) {
+      return false;
+    }
+    double val = double.parse(s) * 100;
+    if (val < 0) {
+      return false;
+    }
+    return val.truncateToDouble() == val;
   }
 
   InputDecoration getInputDecoration(IconData iconData) {
@@ -227,12 +258,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
                     hintText: "Target Amount",
+                    keyboardType: TextInputType.number,
                     controller: _targetAmtController,
                     validator: (String value) {
                       if (value.isEmpty) {
                         return 'Please enter target amount';
                       }
-                      if (!isNumeric(value)) {
+                      if (!isCurrencyNumberFormat(value)) {
                         return 'Please enter a valid target amount';
                       }
                       return null;
@@ -245,12 +277,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
                     hintText: "Current Amount",
+                    keyboardType: TextInputType.number,
                     controller: _currentAmtController,
                     validator: (String value) {
                       if (value.isEmpty) {
                         return 'Please enter current amount';
                       }
-                      if (!isNumeric(value)) {
+                      if (!isCurrencyNumberFormat(value)) {
                         return 'Please enter a valid current amount';
                       }
                       return null;
@@ -260,13 +293,14 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     icon: Icons.monetization_on_rounded,
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
-                    hintText: "Deposit percentage",
+                    keyboardType: TextInputType.number,
+                    hintText: "Deposit % (max: 100%)",
                     controller: _depositController,
                     validator: (String value) {
                     if (value.isEmpty) {
                       return 'Please enter the deposit percentage';
                     }
-                    if (!isNumeric(value)) {
+                    if (!isNonNegativeNumeric(value) || double.parse(value) > 100) {
                       return 'Please enter a valid deposit percentage';
                     }
                       return null;
@@ -338,14 +372,24 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           borderRadius: BorderRadius.circular(25.0),
                         ),
                         onPressed: () {
-                          DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
-                            print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                          }, onConfirm: (date) {
-                            print('confirm $date');
-                          }, currentTime: DateTime.now());
+                          DatePicker.showDateTimePicker(
+                              context,
+                              showTitleActions: true,
+                              onChanged: (date) {
+                                print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                              },
+                              onConfirm: (date) {
+                                print('confirm $date');
+                                setState(() {
+                                  endDateTime = date;
+                                });
+                              },
+                              currentTime: endDateTime);
                         },
                         child: Text(
-                          'Pick a deadline!',
+                          endDateTime == null
+                              ? 'Pick a deadline!'
+                              : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')}, ${endDateTime.hour.toString()}:${endDateTime.minute.toString()}",
                           style: TextStyle(color: Colors.black),
                         )),
                   ),

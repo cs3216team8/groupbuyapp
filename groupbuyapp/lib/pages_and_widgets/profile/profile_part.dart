@@ -20,16 +20,18 @@ class ProfilePart extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
         child:  GestureDetector(
-      onTap: () {
-        segueToPage(context, ProfileSettingsScreen(profile: userProfile));
-        },
-      child: Container(
-        padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
-      child: new Text("EDIT PROFILE",
-          textAlign: TextAlign.center,
-          style: Styles.minorStyle
-      )))
+          onTap: () {
+            segueToPage(context, ProfileSettingsScreen(profile: userProfile));
+            },
+          child: Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+            child: new Text("EDIT PROFILE",
+                textAlign: TextAlign.center,
+                style: Styles.minorStyle
+            )
+          )
+        )
     );
   }
 
@@ -38,7 +40,6 @@ class ProfilePart extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       child:
-        // TODO: stylistic background
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
