@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
-
-import 'dart:math' as math;
 
 import 'organised_groupbuys_part.dart';
 
@@ -191,14 +190,14 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
   SliverPersistentHeader persistentHeader() {
     return SliverPersistentHeader(
       pinned: true,
-      delegate: _SliverAppBarDelegate(
+      delegate: SliverAppBarDelegate(
         minHeight: 60.0,
         maxHeight: 60.0,
         child: PreferredSize(
             preferredSize: Size.fromHeight(50),
             child: AppBar(
               elevation: 0,
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFAFAFA),
               bottom: TabBar(
                 labelStyle: Styles.textStyleSelected,  //For Selected tab
                 unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
@@ -263,37 +262,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     );
   }
 }
-
-
-class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
-  _SliverAppBarDelegate({
-    @required this.minHeight,
-    @required this.maxHeight,
-    @required this.child,
-  });
-  final double minHeight;
-  final double maxHeight;
-  final Widget child;
-  @override
-  double get minExtent => minHeight;
-  @override
-  double get maxExtent => math.max(maxHeight, minHeight);
-  @override
-  Widget build(
-      BuildContext context,
-      double shrinkOffset,
-      bool overlapsContent)
-  {
-    return new SizedBox.expand(child: child);
-  }
-  @override
-  bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
-    return maxHeight != oldDelegate.maxHeight ||
-        minHeight != oldDelegate.minHeight ||
-        child != oldDelegate.child;
-  }
-}
-
 
 class GroupbuysLoading extends StatelessWidget {
   @override
