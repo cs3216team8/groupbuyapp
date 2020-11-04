@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -19,7 +18,7 @@ class ProfilePart extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       alignment: Alignment.center,
-        child:  GestureDetector(
+        child: GestureDetector(
           onTap: () {
             segueToPage(context, ProfileSettingsScreen(profile: userProfile));
             },

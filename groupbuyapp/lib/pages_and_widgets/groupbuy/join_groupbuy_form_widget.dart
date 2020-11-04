@@ -94,6 +94,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
         context: context,
         title: "Join Group Buy",
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
