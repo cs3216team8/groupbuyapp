@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
@@ -30,11 +31,14 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void initState() {
     super.initState();
     itemCards.add(createInputCard());
+    itemCards.add(createInputCard());
   }
 
   void addItemInput() {
     setState(() {
       itemCards.add(createInputCard());
+      itemCards.add(createInputCard());
+
     });
   }
 
@@ -98,34 +102,45 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RaisedButton(
+              elevation: 15,
+              padding: EdgeInsets.all(14.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               color: Colors.greenAccent,
               onPressed: () => submitJoinRequest(context),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.assignment_turned_in_outlined),
-                  Text("Confirm"),
+                  Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
+                  Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
                 ],
               ),
             ),
           ]
       ),
       body: SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.only(top: 20, bottom: 80, left: 0, right: 0),
-            // padding: EdgeInsets.all(20),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+        child: Stack(
+          children: [
+            Container(height: MediaQuery.of(context).size.height),
+            Container(
+            child: Container(
+              padding: EdgeInsets.all(
+                20,
+              ),
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Column(
               children: [
+                SizedBox(height:5),
                 Text(
-                    'Items',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                    'ITEMS',
+                    style: Styles.subtitleStyle,
+                    textAlign: TextAlign.left,
                 ),
-                SizedBox(height: 20,),
-
+                SizedBox(height:5),
                 Container(
+                  alignment: Alignment.center,
+
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
@@ -138,14 +153,9 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                         onDismissed: (direction) {
                           _deleteInputCard(index);
                         },
-                        background: Container(color: Colors.black26),
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0),
                           title: itemCard,
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete_rounded),
-                            onPressed: () => _deleteInputCard(index),
-                          ),
                         ),
                       );
                     },
@@ -175,7 +185,8 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
               ],
             )
         ),
-      ),
+                )]
+        )),
     );
   }
 }
