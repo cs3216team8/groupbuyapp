@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/my_groupbuys_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -11,6 +10,7 @@ import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 import 'dart:math' as math;
+
 import 'organised_groupbuys_part.dart';
 
 class ProfileGroupBuys extends StatefulWidget {
@@ -258,10 +258,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                   ]
                 )
             )
-
-            // widget.isMe
-            //   ? MyGroupBuys()
-            //   : OrganisedGroupBuysOnly(userId: _userId, fprofile: _fprofile,),
           ],
         ),
     );
@@ -297,3 +293,39 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
         child != oldDelegate.child;
   }
 }
+
+
+class GroupbuysLoading extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: const CircularProgressIndicator(),
+      width: 60,
+      height: 60,
+    );
+  }
+}
+
+class FailedToLoadMyGroupBuys extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("Oh no! Seems like there is something wrong with the connnection! Please pull to refresh or try again later."),
+      ),
+    );
+  }
+}
+
+//TODO note this condition.
+class GroupBuysNotLoaded extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: FlatButton(
+        child: Text("There are no group buys that you have joined.", style: Styles.titleStyle),
+      ),
+    );
+  }
+}
+
