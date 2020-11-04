@@ -96,27 +96,6 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
         context: context,
         title: "Join Group Buy",
       ),
-      // floatingActionButton: Row(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       RaisedButton(
-      //         elevation: 15,
-      //         padding: EdgeInsets.all(14.0),
-      //         shape: RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.circular(10.0),
-      //         ),
-      //         color: Colors.greenAccent,
-      //         onPressed: () => submitJoinRequest(context),
-      //         child: Row(
-      //           mainAxisSize: MainAxisSize.min,
-      //           children: [
-      //             Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
-      //             Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
-      //           ],
-      //         ),
-      //       ),
-      //     ]
-      // ),
       body: SingleChildScrollView(
         child: Stack(
           children: [

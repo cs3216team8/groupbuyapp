@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -129,6 +130,11 @@ class _ChatListState extends State<ChatList> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              SvgPicture.asset(
+                                'assets/undraw_Mailbox_re_dvds.svg',
+                                height: 180,
+                              ),
+                              SizedBox(height: 20.0),
                               Text(
                                 "It's quiet in here...",
                                 style: TextStyle(
