@@ -5,17 +5,19 @@ import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.d
 
 class ProfileScreen extends StatelessWidget {
   final String userId;
+  final bool isFromHome;
 
   ProfileScreen({
     Key key,
-    this.userId,
+    this.userId, // if viewing to edit own profile, should be null
+    this.isFromHome = false,
   }) : super(key: key);
 
   bool isMe() {
-    if (FirebaseAuth.instance.currentUser == null) {
-      return false;
+    if (isFromHome) {
+      return true;
     }
-    return userId ==  null || userId == FirebaseAuth.instance.currentUser.uid;
+    return userId == null;
   }
 
   @override

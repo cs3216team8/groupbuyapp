@@ -5,10 +5,13 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/components/login_si
 import 'package:groupbuyapp/pages_and_widgets/authentication/signup_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/components/social_icon_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/utils/auth/logins.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/themes.dart';
+import '../piggybuy_root.dart';
 import 'components/login_background.dart';
 
 class LoginPage extends StatelessWidget {

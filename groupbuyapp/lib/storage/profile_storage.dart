@@ -27,12 +27,22 @@ class ProfileStorage {
         document.data()['profilePicture'],
         document.data()['phoneNumber'],
         document.data()['email'],
+        document.data()['authType'],
         List.from(document.data()['addresses']),
         List.from(document.data()['groupBuyIds']),
         document.data()['rating'],
         document.data()['reviewCount']
     );
     return userProfile;
+  }
+
+  Future<bool> checkIfUsernameIsTaken(String username) async {
+    QuerySnapshot query = await usersRef.where('username', isEqualTo: username).get();
+    if (query.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<bool> checkIfProfileExists(String userId) async {
@@ -55,6 +65,7 @@ class ProfileStorage {
       'profilePicture': userProfile.profilePicture,
       'phoneNumber': userProfile.phoneNumber,
       'email': userProfile.email,
+      'authType': userProfile.authType,
       'addresses': userProfile.addresses,
       'groupBuyIds': userProfile.groupBuyIds,
       'rating': userProfile.rating,
