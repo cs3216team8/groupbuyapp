@@ -577,6 +577,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                   getRequestPreview(freq))
                                               .toList(),
                                         ),
+                                        _futureRequests.length > 0 
+                                          ? SizedBox(height:  300 - _futureRequests.length * 80.0 > 0 ? 300 - _futureRequests.length * 80.0 : 0,)
+                                          : Column(
+                                          children: [
+                                            FlatButton(child: Text("You have no requests at the moment.")),
+                                            SizedBox(height: 300,),
+                                          ],
+                                        ),
                                       ],
                                     )
                                   : Column(
@@ -609,7 +617,10 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                               )
                                             : widget.groupBuy.isOpen()
                                                 ? RequestAsPiggyBackerDefaultScreen()
-                                                : RequestAsPiggyBackerButClosedDefaultScreen()
+                                                : RequestAsPiggyBackerButClosedDefaultScreen(),
+                                        hasRequested
+                                          ? SizedBox(height: 180,)
+                                          : SizedBox(height: 52.5),
                                       ],
                                     ),
                             ),
