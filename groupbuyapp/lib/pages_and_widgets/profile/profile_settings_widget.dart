@@ -21,12 +21,54 @@ class ProfileSettingsScreen extends StatelessWidget {
     @required this.profile,
   }) : super(key: key);
 
+  Widget _logoutConfirmation(BuildContext context) {
+    return new AlertDialog(
+      content: Text(
+        'Are you sure you want to logout?',
+        style: TextStyle(
+            fontSize: 18
+        ),
+      ),
+      actions: <Widget>[
+        new FlatButton(
+          onPressed: () async {
+            Navigator.of(context).pop();
+          },
+          textColor: Theme.of(context).primaryColor,
+          child: const Text(
+            'No',
+            style: TextStyle(
+                fontSize: 16
+            ),
+          ),
+        ),
+        new FlatButton(
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await GoogleSignIn().signOut();
+              await FacebookLogin().logOut();
+              Navigator.pop(context);
+              segueWithoutBack(context, PiggyBuyApp());
+            },
+            textColor: Theme.of(context).primaryColor,
+            child: Text(
+              'Yes',
+              style: TextStyle(
+                  fontSize: 16
+              ),
+            )
+        ),
+
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     TextEditingController nameController = TextEditingController(text: profile.name);
     TextEditingController usernameController = TextEditingController(text: profile.username);
     TextEditingController phoneNumberController = TextEditingController(text: profile.phoneNumber);
-    TextEditingController emailController = TextEditingController(text: profile.email);
+    // TextEditingController emailController = TextEditingController(text: profile.email);
 
     return Scaffold(
       appBar: AppBar(
@@ -61,85 +103,117 @@ class ProfileSettingsScreen extends StatelessWidget {
           )
         ]
       ),
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
-                decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
-                child:
-                Stack(
-                    alignment: Alignment.topCenter,
-                    overflow: Overflow.visible,
-                    children: [
-                      Positioned(
-                          bottom: -50,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: CircleAvatar(
-                              radius: 47,
-                              backgroundImage: Image.network(profile.profilePicture).image,
-                            ),
-                          )
-                      )
-                    ]
-                )
-            ),
-            SizedBox(height: 60,),
-            Container(
-              child: Text(
-                  "${profile.email}",
-                  style:Styles.usernameStyle
-              ),
-            ),
-
-            RoundedInputField(
-              color: Color(0xFFFBE3E1),
-              iconColor: Theme.of(context).primaryColor,
-              hintText: "New Name",
-              controller: nameController,
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter your new name';
-                }
-                return null;
-              },
-            ),
-            RoundedInputField(
-              color: Color(0xFFFBE3E1),
-              iconColor: Theme.of(context).primaryColor,
-              hintText: "New Username",
-              controller: usernameController,
-              validator: (String value) {
-                if (value.isEmpty) {
-                  return 'Please enter your new username';
-                }
-                return null;
-              },
-            ),
-            RoundedInputField(
-              color: Color(0xFFFBE3E1),
-              icon: Icons.phone,
-              iconColor: Theme.of(context).primaryColor,
-              hintText: "New Phone Number",
-              controller: phoneNumberController,
-              validator: (String value) {
-                return null;
-              },
-            ),
-            // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
-            // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
-            // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
-            // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
-            Expanded(
-              child: AddressListModifier(
-                addresses: profile.addresses,
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => _logoutConfirmation(context),
+          );
+        },
+        child: Container(
+          color: Color(0xFFCDCDCD),
+          child:
+            InkWell(
+              splashColor: Theme.of(context).primaryColor.withAlpha(30),
+              child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    'Logout',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                      fontSize: 16
+                    )
+                  )
               ),
             )
-          ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                  constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
+                  decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
+                  child:
+                  Stack(
+                      alignment: Alignment.topCenter,
+                      overflow: Overflow.visible,
+                      children: [
+                        Positioned(
+                            bottom: -50,
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: CircleAvatar(
+                                radius: 47,
+                                backgroundImage: Image.network(profile.profilePicture).image,
+                              ),
+                            )
+                        )
+                      ]
+                  )
+              ),
+              SizedBox(height: 60,),
+              Container(
+                child: Text(
+                    "${profile.email}",
+                    style:Styles.usernameStyle
+                ),
+              ),
+
+              RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
+                hintText: "New Name",
+                controller: nameController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter your new name';
+                  }
+                  return null;
+                },
+              ),
+              RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                iconColor: Theme.of(context).primaryColor,
+                hintText: "New Username",
+                controller: usernameController,
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    return 'Please enter your new username';
+                  }
+                  return null;
+                },
+              ),
+              RoundedInputField(
+                color: Color(0xFFFBE3E1),
+                icon: Icons.phone,
+                iconColor: Theme.of(context).primaryColor,
+                hintText: "New Phone Number",
+                controller: phoneNumberController,
+                validator: (String value) {
+                  return null;
+                },
+              ),
+              // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
+              // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+              // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
+              // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
+              Expanded(
+                child: AddressListModifier(
+                  addresses: profile.addresses,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -250,48 +324,6 @@ class _AddressListModifierState extends State<AddressListModifier> {
     });
   }
 
-  Widget _logoutConfirmation(BuildContext context) {
-    return new AlertDialog(
-      content: Text(
-        'Are you sure you want to logout?',
-        style: TextStyle(
-          fontSize: 18
-        ),
-      ),
-      actions: <Widget>[
-        new FlatButton(
-          onPressed: () async {
-            Navigator.of(context).pop();
-          },
-          textColor: Theme.of(context).primaryColor,
-          child: const Text(
-            'No',
-            style: TextStyle(
-            fontSize: 16
-            ),
-          ),
-        ),
-        new FlatButton(
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-            await GoogleSignIn().signOut();
-            await FacebookLogin().logOut();
-            Navigator.pop(context);
-            segueWithoutBack(context, PiggyBuyApp());
-          },
-          textColor: Theme.of(context).primaryColor,
-          child: Text(
-            'Yes',
-            style: TextStyle(
-                fontSize: 16
-            ),
-          )
-        ),
-
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -386,61 +418,31 @@ class _AddressListModifierState extends State<AddressListModifier> {
         // TODO: @kx add undo delete option here & make address editable & fab: allow adding of addresses -- add to top so dunnid scroll
         Expanded(
           child: ListView.builder(
+            physics: ClampingScrollPhysics(),
             itemCount: widget.addresses.length,
             itemBuilder: (context, index) {
               final address = widget.addresses[index];
               return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Dismissible(
-                key: Key(address),
-                direction: DismissDirection.startToEnd,
-                background: Container(color: Colors.black26,),
-                child: ListTile(
-                  title: Text(address),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete_rounded),
-                    onPressed: () => _deleteAddress(index),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Dismissible(
+                  key: Key(address),
+                  direction: DismissDirection.startToEnd,
+                  background: Container(color: Colors.black26,),
+                  child: ListTile(
+                    title: Text(address),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete_rounded),
+                      onPressed: () => _deleteAddress(index),
+                    ),
                   ),
-                ),
-                onDismissed: (direction) {
-                  _deleteAddress(index);
-                },
-              )
+                  onDismissed: (direction) {
+                    _deleteAddress(index);
+                  },
+                )
               );
             },
-          ), //TODO @kx,
-        ),
-        GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => _logoutConfirmation(context),
-            );
-            },
-          child: Container(
-            color: Color(0xFFCDCDCD),
-            child:
-            InkWell(
-
-            splashColor: Theme.of(context).primaryColor.withAlpha(30),
-            child: Container(
-
-              width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(20),
-                child: Text(
-                    'Logout',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red,
-                        fontSize: 16
-                    )
-                )
-            ),
-          )
           ),
-        )
+        ),
       ],
     );
   }

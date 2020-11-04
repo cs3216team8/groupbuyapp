@@ -61,7 +61,9 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0), bottomLeft: Radius.circular(10.0)),
                 ),
                 color: Theme.of(context).primaryColor,
-                onPressed: () => onTapConfirm(context),
+                onPressed: widget.request.isEditable() && widget.groupBuy.isOpen()
+                    ? () => onTapConfirm(context)
+                    : null,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
