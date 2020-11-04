@@ -26,8 +26,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/components/request_details_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/components/request_details_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/groupbuy_details_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/groupbuy/groupbuy_details_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/greg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/james.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/john.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/olivia.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/sam.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/sophia.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/assets/temp_chat_assets/steven.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/storage/chat_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/storage/chat_storage.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
