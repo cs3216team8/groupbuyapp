@@ -121,6 +121,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: backAppBar(
+        context: context,
         elevation: 0,
         title: 'My Profile',
         color: Color(0xFFFFF3E7),
