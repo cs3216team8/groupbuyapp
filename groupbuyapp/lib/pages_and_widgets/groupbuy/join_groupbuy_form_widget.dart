@@ -31,12 +31,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void initState() {
     super.initState();
     itemCards.add(createInputCard());
-    itemCards.add(createInputCard());
   }
 
   void addItemInput() {
     setState(() {
-      itemCards.add(createInputCard());
       itemCards.add(createInputCard());
 
     });
