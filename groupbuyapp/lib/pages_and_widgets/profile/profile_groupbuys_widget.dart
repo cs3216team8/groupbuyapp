@@ -83,12 +83,20 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
       Tab(text: "As Organiser",),
     ];
   }
+
+  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+  }
+
   List<Widget> getTabScreens(String uid) {
     return <Widget>[
       StreamBuilder<List<GroupBuy>>(
         stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(uid),
         builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
           List<Widget> children;
+
+          List<GroupBuy> groupBuys = snapshot.data.toList();
+
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
@@ -100,9 +108,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             case ConnectionState.waiting:
               return GroupbuysLoading();
             default:
-              children = snapshot.data.map((GroupBuy groupBuy) {
-                return new GroupBuyCard(groupBuy);
-              }).toList();
+              children = GroupBuyStorage.instance.getSortedCardList(groupBuys);
               break;
           }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class ListingsSection extends StatefulWidget {
   Stream<List<GroupBuy>> Function() createGroupBuyStream;
@@ -54,23 +55,12 @@ class _ListingsSectionState extends State<ListingsSection>
               return widget.createDefaultScreen();
             }
 
-
-            List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
-              return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
-            }
-
-            List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
-            // List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
-            List<GroupBuy> closedPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
-            List<GroupBuy> openPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
             return GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 childAspectRatio: 5.5/7.0,
-                children: getGroupBuyCardList(openPresentGroupBuys)
-                    + getGroupBuyCardList(closedPresentGroupBuys)
-                    + getGroupBuyCardList(pastGroupBuys)
+                children: GroupBuyStorage.instance.getSortedCardList(groupBuys)
             );
           },
         )
