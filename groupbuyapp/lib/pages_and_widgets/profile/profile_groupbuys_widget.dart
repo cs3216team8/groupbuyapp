@@ -152,7 +152,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                     case ConnectionState.waiting:
                       return GroupbuysLoading();
                     default:
-                      print("AASDASD");
                       return new GroupBuyCard(snapshot.data);
                   }
                 },
