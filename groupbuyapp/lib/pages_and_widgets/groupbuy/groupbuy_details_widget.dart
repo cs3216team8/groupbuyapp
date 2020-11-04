@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 
-import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
@@ -50,7 +49,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   // chat with the organiser
   void onTapChat(BuildContext context) async {
     String requestorId = FirebaseAuth.instance.currentUser.uid;
-    ChatStorage().createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
+    ChatStorage()
+        .createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
   }
 
   void onTapSendEmail(BuildContext context) {
@@ -59,10 +59,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   void onTapJoin(BuildContext context) {
     segueWithLoginCheck(
-        context,
-        JoinGroupBuyForm(
-          groupBuyId: widget.groupBuy.id,
-        ));
+      context,
+      JoinGroupBuyForm(
+        groupBuyId: widget.groupBuy.id,
+      ),
+    );
   }
 
   void onTapBroadcast(BuildContext context) {

@@ -71,7 +71,6 @@ class ChatStorage {
   }
 
   // For chat list
-
   getUserChats(String myId) async {
     print("hi");
     return await FirebaseFirestore.instance
@@ -122,8 +121,7 @@ class ChatStorage {
   }
 
   // for segue to chat
-  // note: just pass in requestorId as FirebaseAuth.instance.currentUser.uid if the
-  // requestor is making the chatroom
+  
   Future<String> createChatRoom(GroupBuy groupBuy, String requestorId) async {
     String groupBuyId = groupBuy.id;
     String organiserId = groupBuy.organiserId;
