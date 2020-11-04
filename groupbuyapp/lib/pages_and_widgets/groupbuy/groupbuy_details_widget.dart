@@ -452,7 +452,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           Flexible(
                                             child:
                                             Text(
-                                              "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
+                                              "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
                                               style: Styles.textStyle,
                                           )
                                         ),

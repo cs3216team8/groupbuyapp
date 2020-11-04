@@ -3,6 +3,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'dart:math';
@@ -127,26 +128,30 @@ class GroupBuyCard extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))} left",
+                          "${getTimeDifString(groupBuy.getTimeEnd().difference(DateTime.now()))}",
                           style: textStyle,
                         ),
                         // 7 days, $70/$100
                       ]),
-                      Row(children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 6, right: 6, bottom: 3, top: 3),
-                          child: Icon(
-                            Icons.pending_rounded,
-                            color: Color(0xFFe87d74),
-                            size: 24,
+                      Row(
+                        // Location
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  left: 6, top: 3, bottom: 3, right: 6),
+                              child: Icon(
+                                Icons.monetization_on,
+                                color: Color(0xFFe87d74),
+                                size: 24.0,
+                                semanticLabel: 'Deposit',
+                              )),
+                          Flexible(
+                              child: Text(
+                                  '${this.groupBuy.deposit * 100} % deposit',
+                                  style: Styles.textStyle)
                           ),
-                        ),
-                        Text(
-                          "\$${groupBuy.getCurrentAmount()}/\$${groupBuy.getTargetAmount()}",
-                          style: textStyle,
-                        ),
-                      ]),
+                        ],
+                      ),
                       Row(
                         children: <Widget>[
                           Padding(
