@@ -112,7 +112,7 @@ class GroupBuyCard extends StatelessWidget {
                         Flexible(
                             flex: 1,
                             child: new Text(
-                              "${this.groupBuy.address.substring(0, addressLength)} ..",
+                              "${this.groupBuy.address.substring(0, addressLength)}..",
                               style: titleStyle,
                             ))
                       ]),

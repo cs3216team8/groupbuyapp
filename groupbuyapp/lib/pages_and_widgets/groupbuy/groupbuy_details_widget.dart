@@ -7,6 +7,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
@@ -448,9 +449,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                               color: Color(0xFFe87d74),
                                               size: 24.0,
                                             )),
-                                        Text(
-                                          "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
-                                          style: Styles.textStyle,
+                                          Flexible(
+                                            child:
+                                            Text(
+                                              "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} left ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
+                                              style: Styles.textStyle,
+                                          )
                                         ),
                                       ],
                                     ),
@@ -471,9 +475,11 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                             size: 24.0,
                                             semanticLabel: 'Deposit',
                                           )),
-                                      Text(
+                                      Flexible(
+                                        child: Text(
                                           '${widget.groupBuy.deposit * 100} % deposit',
-                                          style: Styles.textStyle),
+                                          style: Styles.textStyle)
+                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 7),
@@ -490,9 +496,12 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           size: 24.0,
                                           semanticLabel: 'Target',
                                         )),
-                                    Text(
+                                    Flexible(
+
+                                      child: Text(
                                       "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
                                       style: Styles.textStyle,
+                                      )
                                     ),
                                   ]),
                                   SizedBox(height: 7),
@@ -579,12 +588,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                         ),
                                         _futureRequests.length > 0 
                                           ? SizedBox(height:  300 - _futureRequests.length * 80.0 > 0 ? 300 - _futureRequests.length * 80.0 : 0,)
-                                          : Column(
-                                          children: [
-                                            FlatButton(child: Text("You have no requests at the moment.")),
-                                            SizedBox(height: 300,),
-                                          ],
-                                        ),
+                                          : RequestAsOrganiserDefaultScreen(),
                                       ],
                                     )
                                   : Column(
