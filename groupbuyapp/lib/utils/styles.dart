@@ -7,6 +7,15 @@ class Styles {
       fontWeight: FontWeight.w300
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle otherUsernameStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 15.5,
+      fontWeight: FontWeight.w700,
+      decoration: TextDecoration.underline,
+
+  ); //fontSize: 15, fontWeight: FontWeight.normal);
+
+
 
   static const TextStyle textStyleUnselected = TextStyle(
       fontFamily: 'Inter',

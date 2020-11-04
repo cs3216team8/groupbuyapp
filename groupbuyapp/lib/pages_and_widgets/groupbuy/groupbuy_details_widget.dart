@@ -449,13 +449,22 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                               color: Color(0xFFe87d74),
                                               size: 24.0,
                                             )),
-                                          Flexible(
-                                            child:
-                                            Text(
-                                              "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} ${isOrganiser() ? 'by ${widget.organiserProfile.username} (You)' : 'by ${widget.organiserProfile.username}'}",
-                                              style: Styles.textStyle,
-                                          )
-                                        ),
+                                        Flexible(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text: "${getTimeDifString(widget.groupBuy.getTimeEnd().difference(DateTime.now()))} by ",
+                                                  style: Styles.textStyle,
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text: "${isOrganiser() ? '${widget.organiserProfile.username} (You)' : '${widget.organiserProfile.username}'}",
+                                                        style: Styles.otherUsernameStyle,
+                                                    )
+                                                    // can add more TextSpans here...
+                                                  ],
+                                                ),
+                                              )
+
+                                            ),
                                       ],
                                     ),
                                   ),
