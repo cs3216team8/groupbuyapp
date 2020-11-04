@@ -637,7 +637,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                 : RequestAsPiggyBackerButClosedDefaultScreen(),
                                         hasRequested
                                           ? SizedBox(height: MediaQuery.of(context).size.height * 0.3,)
-                                          : SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+                                          : SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                                       ],
                                     ),
                             ),
