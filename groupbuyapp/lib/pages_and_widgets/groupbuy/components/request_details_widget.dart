@@ -37,21 +37,10 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
     });
   }
 
+  // chat with the requestor
   Future<void> onTapChat(BuildContext context) async {
     String requestorId = widget.request.requestorId;
-    Profile requestorProfile = await ProfileStorage.instance.getUserProfile(requestorId);
-
-    String chatRoomId = await ChatStorage().createChatRoom(widget.groupBuy, requestorId);
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ChatScreen(
-          chatRoomId: chatRoomId, username: requestorProfile.username,
-        )
-      )
-    );
-
+    ChatStorage().createAndOpenChatRoom(context, widget.groupBuy, requestorId, false);
   }
 
   void onTapEdit(BuildContext context) {

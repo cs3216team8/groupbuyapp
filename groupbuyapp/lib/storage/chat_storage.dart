@@ -10,7 +10,6 @@ import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 
 class ChatStorage {
   // for chat screen
@@ -141,15 +140,16 @@ class ChatStorage {
   }
 
   void createAndOpenChatRoom(
-      BuildContext context, GroupBuy groupBuy, String requestorId) async {
-    Profile organiserProfile =
-        await ProfileStorage.instance.getUserProfile(groupBuy.organiserId);
+    BuildContext context, GroupBuy groupBuy, String requestorId, bool isToOrganiser) async {
+    String receiverId = isToOrganiser ? groupBuy.organiserId : requestorId;
+    Profile receiverProfile =
+        await ProfileStorage.instance.getUserProfile(receiverId);
     String chatRoomId = await createChatRoom(groupBuy, requestorId);
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (_) => ChatScreen(
-            chatRoomId: chatRoomId, username: organiserProfile.username),
+            chatRoomId: chatRoomId, username: receiverProfile.username),
       ),
     );
   }

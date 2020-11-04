@@ -49,8 +49,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   // create a chatroom with the necessary details, send user to the chatroom
   void onTapChat(BuildContext context) async {
-    String userId = FirebaseAuth.instance.currentUser.uid;
-    ChatStorage().createAndOpenChatRoom(context, widget.groupBuy, userId);
+    String requestorId = FirebaseAuth.instance.currentUser.uid;
+    ChatStorage().createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
   }
 
   void onTapSendEmail(BuildContext context) {
