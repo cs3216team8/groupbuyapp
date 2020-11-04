@@ -198,7 +198,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             preferredSize: Size.fromHeight(50),
             child: AppBar(
               elevation: 0,
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFAFAFA),
               bottom: TabBar(
                 labelStyle: Styles.textStyleSelected,  //For Selected tab
                 unselectedLabelStyle: Styles.textStyleUnselected, //For Un-selected Tabs
