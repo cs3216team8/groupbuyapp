@@ -48,6 +48,13 @@ class Styles {
     fontWeight: FontWeight.w500,
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle moneyStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 15.5,
+    color: Colors.black,
+    fontWeight: FontWeight.w500,
+  );
+
   static const TextStyle minorStyle = TextStyle(
     fontFamily: 'Grotesk',
     fontSize: 16,

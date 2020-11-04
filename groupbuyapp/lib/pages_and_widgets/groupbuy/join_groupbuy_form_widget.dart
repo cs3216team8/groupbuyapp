@@ -98,27 +98,27 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
         context: context,
         title: "Join Group Buy",
       ),
-      floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RaisedButton(
-              elevation: 15,
-              padding: EdgeInsets.all(14.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              color: Colors.greenAccent,
-              onPressed: () => submitJoinRequest(context),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
-                  Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
-                ],
-              ),
-            ),
-          ]
-      ),
+      // floatingActionButton: Row(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: [
+      //       RaisedButton(
+      //         elevation: 15,
+      //         padding: EdgeInsets.all(14.0),
+      //         shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(10.0),
+      //         ),
+      //         color: Colors.greenAccent,
+      //         onPressed: () => submitJoinRequest(context),
+      //         child: Row(
+      //           mainAxisSize: MainAxisSize.min,
+      //           children: [
+      //             Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
+      //             Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
+      //           ],
+      //         ),
+      //       ),
+      //     ]
+      // ),
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -132,23 +132,44 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
               child: Column(
               children: [
                 SizedBox(height:5),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'ITEMS',
-                    style: Styles.subtitleStyle,
-                    textAlign: TextAlign.right,
-                )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:
+                    [
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                'ITEMS',
+                                style: Styles.subtitleStyle,
+                                textAlign: TextAlign.left,
+                            )
+                            ),
+                            SizedBox(height: 3),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '*SWIPE RIGHT TO DELETE ITEMS',
+                                style: Styles.smallNoticeStyle,
+                                textAlign: TextAlign.right,
+                              )
+                            ),
+                            ]
+                      ),
+                      Container(
+                      width: 30,
+                      height: 30,
+                      child: FloatingActionButton(
+                        backgroundColor: Color(0xFFF98B83),
+                      child: new Icon(Icons.add, color: Colors.white,),
+                      onPressed: addItemInput
+                      )
+                      )
+                    ]
                 ),
-                SizedBox(height: 3),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      '*SWIPE RIGHT TO DELETE ITEMS',
-                      style: Styles.smallNoticeStyle,
-                      textAlign: TextAlign.right,
-                    )
-                ),
+
                 SizedBox(height:5),
                 Container(
                   alignment: Alignment.center,
@@ -173,7 +194,6 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     },
                   ),
                 ),
-
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -201,23 +221,82 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     ]
                 ),
                 SizedBox(height: 10),
-                Row(
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'SUMMARY',
+                      style: Styles.subtitleStyle,
+                      textAlign: TextAlign.right,
+                    )
+                ),
+                SizedBox(height: 3),
+                Container(
+                  padding: EdgeInsets.all(
+                    20,
+                  ),
+                  decoration: new BoxDecoration(
+                    color: Color(0xFFFBECE6),
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0)),
+                    border: Border.all(
+                        color: Color(0xFFFFFFFF), width: 0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(
+                            1, 1), // changes position of shadow
+                      )
+                    ],
+                  ),
+                  child: Column(children: <Widget>[
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(flex: 70, child: Text('Total: ')),
-                      Expanded(flex: 30, child: Text('\$57.90'))
+                       Text('TOTAL', style: Styles.moneyStyle), Text('\$57.90',style: Styles.moneyStyle)
                     ]
                 ),
+                SizedBox(height: 7),
                 Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(flex: 70, child: Text('Deposit Amount:')),
-                      Expanded(flex: 30, child: Text('\$28.95'))
+                      Text('DEPOSIT', style: Styles.moneyStyle),
+                      Text('\$28.95', style: Styles.moneyStyle)
                     ]
                 ),
               ],
             )
         ),
-                )]
-        )),
+                SizedBox(height: 20),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RaisedButton(
+                        elevation: 15,
+                        padding: EdgeInsets.all(14.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        color: Colors.greenAccent,
+                        onPressed: () => submitJoinRequest(context),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
+                            Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
+                          ],
+                        ),
+                      ),
+                    ]
+                ),
+          ]
+        )
+      ),
+    )
+    ])
+    )
     );
   }
 }
