@@ -158,15 +158,15 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                             ),
                             ]
                       ),
-                      Container(
-                      width: 30,
-                      height: 30,
-                      child: FloatingActionButton(
-                        backgroundColor: Color(0xFFF98B83),
-                      child: new Icon(Icons.add, color: Colors.white,),
-                      onPressed: addItemInput
-                      )
-                      )
+                      // Container(
+                      // width: 30,
+                      // height: 30,
+                      // child: FloatingActionButton(
+                      //   backgroundColor: Color(0xFFF98B83),
+                      // child: new Icon(Icons.add, color: Colors.white,),
+                      // onPressed: addItemInput
+                      // )
+                      // )
                     ]
                 ),
 
