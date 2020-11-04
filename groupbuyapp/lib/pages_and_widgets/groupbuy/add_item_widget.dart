@@ -16,9 +16,24 @@ class AddItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        color: Colors.white,
-        child: Column(
+    return Container(
+            padding: EdgeInsets.only(left:5, right: 5, top: 6, bottom: 6),
+            margin: EdgeInsets.only(bottom: 10),
+            decoration: new BoxDecoration(
+              color: Color(0xFFFBECE6),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 2,
+                  blurRadius: 2,
+                  offset: Offset(1,1), // changes position of shadow
+                )
+              ],
+            ),
+            alignment: Alignment.center,
+            child:Column(
             children: [
               Row(
                 children: <Widget>[
@@ -26,19 +41,11 @@ class AddItemCard extends StatelessWidget {
                     flex: 8,
                     child: MyTextField(
                       controller: urlController,
-                      labelText: 'Paste your item link here',
-                      hintText: 'Product link',
+                      labelText: 'Item Link',
+                      hintText: 'Item link',
+                      icon: Icons.web,
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: MyTextField(
-                        controller: qtyController,
-                        keyboardType: TextInputType.number,
-                        labelText: 'Enter your quantity here',
-                        hintText: 'Qty'
-                    ),
-                  )
                 ],
               ),
               Row(
@@ -48,21 +55,37 @@ class AddItemCard extends StatelessWidget {
                     child: MyTextField(
                         controller: remarksController,
                         //expands: true,
-                        labelText: 'Enter any comments or options to indicate to the buyer',
-                        hintText: 'Remarks/options/comments'
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: MyTextField(
-                        controller: totalAmtController,
-                        keyboardType: TextInputType.number,
-                        labelText: 'Enter the product price here',
-                        hintText: 'Total amt,'
+                        labelText: 'Remarks',
+                        hintText: 'Remarks/options/comments',
+                        icon: Icons.description
                     ),
                   ),
                 ],
               ),
+              Row(children: [
+                Expanded(
+                  flex: 2,
+                  child: MyTextField(
+                      controller: qtyController,
+                      keyboardType: TextInputType.number,
+                      labelText: 'Quantity',
+                      hintText: 'Quantity',
+                      icon: Icons.check_box_outline_blank
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: MyTextField(
+                      controller: totalAmtController,
+                      keyboardType: TextInputType.number,
+                      labelText: 'Price (total)',
+                      hintText: 'Total Price,',
+                      icon: Icons.monetization_on
+                  ),
+                ),
+
+              ]),
+
             ]
         )
     );
@@ -73,6 +96,7 @@ class MyTextField extends StatelessWidget {
   TextEditingController controller;
   String hintText, labelText;
   TextInputType keyboardType;
+  IconData icon;
 
   MyTextField({
     Key key,
@@ -80,6 +104,7 @@ class MyTextField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.keyboardType,
+    this.icon
   }) : super(key: key);
 
   @override
@@ -92,12 +117,13 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
           isDense: true,
           hintText: hintText,
           labelText: labelText,
           border: new OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(5.0),
-            borderSide: const BorderSide(color: Colors.black54, width: 1.0),
+            borderRadius: new BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: Color(0xFFF98B83), width: 1.0),
           ),
         ),
       ),

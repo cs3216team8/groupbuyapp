@@ -16,12 +16,15 @@ class ItemDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-            child: Card(
+        padding: EdgeInsets.only(left: 10, right: 10),
+        margin: EdgeInsets.only(bottom: 5),
+
+        child: Card(
                 color: Colors.white,
                 elevation: 10,
                 shadowColor: Colors.black12,
                 child: Container(
-                    padding: EdgeInsets.only(left:10, right: 10, top: 0, bottom: 6),
+                    padding: EdgeInsets.only(left:10, right: 10, top: 3, bottom: 3),
                     decoration: new BoxDecoration(
                       color: Color(0xFFFBECE6),
                       borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -85,7 +88,7 @@ class ItemDisplay extends StatelessWidget {
                                   ]
                                 ))]
                             ),
-                            Text((this.item.totalAmount * this.item.qty).toString(), style: Styles.textStyle, textAlign: TextAlign.right),
+                            Text("\$${(this.item.totalAmount * this.item.qty).toString()}", style: Styles.textStyle, textAlign: TextAlign.right),
                           ],
                         ),
 ]

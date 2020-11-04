@@ -30,6 +30,7 @@ class _RequestCardState extends State<RequestCard> {
     TextStyle textStyle = TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w300, fontSize: 15.5); //fontSize: 15, fontWeight: FontWeight.normal);
     return Container(
       padding: EdgeInsets.only(left: 10, right: 10),
+      margin: EdgeInsets.only(bottom: 5),
       child: Card(
         color: Colors.white,
         elevation: 10,
