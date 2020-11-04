@@ -83,6 +83,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     ];
   }
   List<Widget> getTabScreens(String uid) {
+    print(uid);
     return <Widget>[
       StreamBuilder<List<GroupBuy>>(
         stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(uid),
@@ -151,6 +152,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
                     case ConnectionState.waiting:
                       return GroupbuysLoading();
                     default:
+                      print("AASDASD");
                       return new GroupBuyCard(snapshot.data);
                   }
                 },

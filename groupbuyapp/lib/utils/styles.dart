@@ -53,7 +53,14 @@ class Styles {
     fontSize: 16,
     color: Colors.grey,
     fontWeight: FontWeight.w500,
-  ); //fontSize: 15, fontWeight: FontWeight.normal);
+  );
+
+  static const TextStyle smallNoticeStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 11,
+    color: Colors.grey,
+    fontWeight: FontWeight.w300,
+  );
 
   static const TextStyle nameStyle = TextStyle(
       fontFamily: 'Inter',

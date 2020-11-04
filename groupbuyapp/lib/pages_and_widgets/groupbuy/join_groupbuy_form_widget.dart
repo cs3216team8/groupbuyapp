@@ -140,6 +140,15 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     textAlign: TextAlign.right,
                 )
                 ),
+                SizedBox(height: 3),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '*SWIPE RIGHT TO DELETE ITEMS',
+                      style: Styles.smallNoticeStyle,
+                      textAlign: TextAlign.right,
+                    )
+                ),
                 SizedBox(height:5),
                 Container(
                   alignment: Alignment.center,
@@ -165,14 +174,33 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                   ),
                 ),
 
-                OutlineButton(
-                    child: Text('+ Add more items',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    onPressed: addItemInput
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:
+                  [
+                    Container(
+                    alignment: Alignment.center,
+                    child:  GestureDetector(
+                        onTap: addItemInput,
+                        child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                                children: [
+                                  Icon(Icons.add, color: Color(0xFFF98B83)),
+                                  new Text("ADD ITEM",
+                                textAlign: TextAlign.center,
+                                style: Styles.minorStyle)
+                                ]
+                            )
+                        )
+                    )
+                  )
+                    ]
                 ),
+                SizedBox(height: 10),
                 Row(
                     children: [
                       Expanded(flex: 70, child: Text('Total: ')),
