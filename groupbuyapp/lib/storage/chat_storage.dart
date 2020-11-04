@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
@@ -134,6 +135,20 @@ class ChatStorage {
       };
       await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
     });
+  }
 
+  Future<String> createChatRoom(GroupBuy groupBuy) async {
+    String groupBuyId = groupBuy.id;
+    String organiserId = groupBuy.organiserId;
+    String userId = FirebaseAuth.instance.currentUser.uid;
+    String chatRoomId = organiserId + "_" + userId;
+    List<String> members = [organiserId, userId];
+    Map<String, dynamic> chatRoom = {
+      "chatRoomId": chatRoomId,
+      "members": members,
+      "groupBuyId": groupBuyId,
+    };
+    await (new ChatStorage()).addChatRoom(chatRoom, chatRoomId);
+    return chatRoomId;
   }
 }
