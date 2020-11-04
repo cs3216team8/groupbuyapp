@@ -49,6 +49,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   profile.profilePicture,
                   phoneNumberController.text,
                   profile.email,
+                  profile.authType,
                   profile.addresses,
                   profile.groupBuyIds,
                   profile.rating,

@@ -27,6 +27,7 @@ class ProfileStorage {
         document.data()['profilePicture'],
         document.data()['phoneNumber'],
         document.data()['email'],
+        document.data()['authType'],
         List.from(document.data()['addresses']),
         List.from(document.data()['groupBuyIds']),
         document.data()['rating'],
@@ -55,6 +56,7 @@ class ProfileStorage {
       'profilePicture': userProfile.profilePicture,
       'phoneNumber': userProfile.phoneNumber,
       'email': userProfile.email,
+      'authType': userProfile.authType
       'addresses': userProfile.addresses,
       'groupBuyIds': userProfile.groupBuyIds,
       'rating': userProfile.rating,
