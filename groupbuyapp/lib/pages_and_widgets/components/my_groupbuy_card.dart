@@ -17,7 +17,7 @@ class MyGroupBuyCard extends StatelessWidget {
         elevation: 10,
         shadowColor: Colors.black12,
         child: InkWell(
-          splashColor: Theme.of(context).primaryColor.withAlpha(30),
+          splashColor: Theme.of(context).primaryColor,
           onTap: _openDetailedGroupBuy,
             child: Container(
               padding: EdgeInsets.all(20),
