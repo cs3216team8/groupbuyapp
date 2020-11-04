@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
@@ -119,15 +120,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Profile', style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black,),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+      appBar: backAppBar(
+        elevation: 0,
+        title: 'My Profile',
+        color: Color(0xFFFFF3E7),
         actions: [
           FlatButton(
             child: Text(
@@ -224,26 +220,16 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         );
                       },
                       child: Container(
-                          color: Color(0xFFCDCDCD),
-                          child:
-                          InkWell(
-                            splashColor: Theme.of(context).primaryColor.withAlpha(30),
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                    'Logout',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red,
-                                        fontSize: 16
-                                    )
-                                )
-                            ),
+                              margin: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                              child: new Text("LOGOUT",
+                                  textAlign: TextAlign.center,
+                                  style: Styles.minorStyle
+                              )
                           )
+
                       ),
-                    )
                   ],
                 ),
               ],
@@ -254,10 +240,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             delegate: SliverAppBarDelegate(
               minHeight: 60.0,
               maxHeight: 100.0,
-              child: AppBar(
-                elevation: 0,
-                backgroundColor: Color(0xFFFAFAFA),
-                title: Container(
+              child: Container(
+                color: Color(0xFFFAFAFA),
+                child: Container(
                     margin: EdgeInsets.only(left: 10, bottom: 10),
                     child: Stack(
                       children: <Widget>[
@@ -270,7 +255,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
-                                    margin: EdgeInsets.only(left: 10, bottom: 10),
                                     child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
                                 ),
                                 Container(
