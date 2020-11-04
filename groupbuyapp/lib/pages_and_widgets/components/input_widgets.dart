@@ -13,6 +13,7 @@ class RoundedInputField extends StatelessWidget {
   final bool enabled;
 
   final Color iconColor, color;
+  final TextInputType keyboardType;
 
   const RoundedInputField({
     Key key,
@@ -23,6 +24,7 @@ class RoundedInputField extends StatelessWidget {
     this.icon = Icons.person,
     this.iconColor = Colors.white,
     this.color = Colors.white,
+    this.keyboardType,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class RoundedInputField extends StatelessWidget {
         enabled: enabled,
         enableInteractiveSelection: enabled, // will disable paste operation
         focusNode: !enabled? new AlwaysDisabledFocusNode(): null,
+        keyboardType: keyboardType,
         validator: validator,
         controller: controller,
         decoration: InputDecoration(
