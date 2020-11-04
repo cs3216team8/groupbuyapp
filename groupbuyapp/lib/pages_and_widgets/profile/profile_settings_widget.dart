@@ -243,87 +243,79 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               maxHeight: 100.0,
               child: Container(
                 color: Color(0xFFFAFAFA),
-                child: Container(
-                    margin: EdgeInsets.only(left: 10, bottom: 10),
-                    child: Stack(
+                padding: EdgeInsets.all(20),
+                child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width *0.8,
-                          padding: EdgeInsets.all(20),
-
-                          alignment: Alignment.center,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                    child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
-                                ),
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  child: FloatingActionButton(
-                                    child: new Icon(Icons.add, color: Colors.white,),
-                                    onPressed: () {
-                                      setState(() {
-                                        addAddressController = TextEditingController();
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Stack(
-                                                  overflow: Overflow.visible,
-                                                  children: <Widget>[
-                                                    Positioned(
-                                                      right: -40.0,
-                                                      top: -40.0,
-                                                      child: InkResponse(
-                                                        onTap: () {
-                                                          addAddressController = null;
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: CircleAvatar(
-                                                          child: Icon(Icons.close),
-                                                          backgroundColor: Colors.red,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Form(
-                                                      key: _formKey,
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.all(8.0),
-                                                            child: TextFormField(
-                                                              controller: addAddressController,
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(8.0),
-                                                            child: RaisedButton(
-                                                              child: Text("Add Address", style: TextStyle(color: Colors.white)),
-                                                              onPressed: () {
-                                                                if (_formKey.currentState.validate()) {
-                                                                  _formKey.currentState.save();
-                                                                  _addAddress(context, addAddressController.text);
-                                                                }
-                                                              },
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
+                            child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
+                        ),
+                        SizedBox(width: 60,),
+                        Container(
+                          width: 30,
+                          height: 30,
+                          child: FloatingActionButton(
+                            child: new Icon(Icons.add, color: Colors.white,),
+                            onPressed: () {
+                              setState(() {
+                                addAddressController = TextEditingController();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: Stack(
+                                          overflow: Overflow.visible,
+                                          children: <Widget>[
+                                            Positioned(
+                                              right: -40.0,
+                                              top: -40.0,
+                                              child: InkResponse(
+                                                onTap: () {
+                                                  addAddressController = null;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: CircleAvatar(
+                                                  child: Icon(Icons.close),
+                                                  backgroundColor: Colors.red,
                                                 ),
-                                              );
-                                            }
-                                        );
-                                      });
-                                    },
-                                    backgroundColor: Color(0xFFF98B83),
-                                  ),
-                                )
-                              ]
+                                              ),
+                                            ),
+                                            Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding: EdgeInsets.all(8.0),
+                                                    child: TextFormField(
+                                                      controller: addAddressController,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: RaisedButton(
+                                                      child: Text("Add Address", style: TextStyle(color: Colors.white)),
+                                                      onPressed: () {
+                                                        if (_formKey.currentState.validate()) {
+                                                          _formKey.currentState.save();
+                                                          _addAddress(context, addAddressController.text);
+                                                        }
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                );
+                              });
+                            },
+                            backgroundColor: Color(0xFFF98B83),
                           ),
                         )
                       ],
@@ -337,20 +329,15 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                 (BuildContext context, int index) {
                   final address = addresses[index];
                   return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                    alignment: Alignment.center,
+                      padding: EdgeInsets.all(20),
                       child: Dismissible(
                         key: Key(address),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(address),
-                            IconButton(
-                              icon: Icon(Icons.delete_rounded),
-                              onPressed: () => _deleteAddress(index),
-                            ),
-                          ],
+                        child:  SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8 * 0.8,
+                          child: Text(address),
                         ),
                         onDismissed: (direction) {
                           _deleteAddress(index);
