@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
-import 'package:groupbuyapp/utils/navigators.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
