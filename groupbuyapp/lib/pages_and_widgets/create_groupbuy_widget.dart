@@ -389,9 +389,11 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                         child: Text(
                           endDateTime == null
                               ? 'Pick a deadline!'
-                              : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')}, ${endDateTime.hour.toString()}:${endDateTime.minute.toString()}",
-                          style: TextStyle(color: Colors.black),
-                        )),
+                              : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')} ${endDateTime.hour.toString().padLeft(2,'0')}:${endDateTime.minute.toString().padLeft(2,'0')}",
+                          style: Theme.of(context).inputDecorationTheme.labelStyle,
+
+                        )
+                    ),
                   ),
                   RoundedButton(
                       color: Theme.of(context).primaryColor,
