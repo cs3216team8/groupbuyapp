@@ -138,113 +138,117 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           )
         ]
       ),
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => _logoutConfirmation(context),
-          );
-        },
-        child: Container(
-          color: Color(0xFFCDCDCD),
-          child:
-            InkWell(
-              splashColor: Theme.of(context).primaryColor.withAlpha(30),
-              child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    'Logout',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                      fontSize: 16
-                    )
-                  )
-              ),
-            )
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       resizeToAvoidBottomInset: false,
       body: CustomScrollView(
         slivers: <Widget>[
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                  Container(
-                      constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
-                      decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
-                      child:
-                      Stack(
-                          alignment: Alignment.topCenter,
-                          overflow: Overflow.visible,
-                          children: [
-                            Positioned(
-                                bottom: -50,
-                                child: CircleAvatar(
-                                  radius: 50,
-                                  backgroundColor: Theme.of(context).primaryColor,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                        constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
+                        decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
+                        child:
+                        Stack(
+                            alignment: Alignment.topCenter,
+                            overflow: Overflow.visible,
+                            children: [
+                              Positioned(
+                                  bottom: -50,
                                   child: CircleAvatar(
-                                    radius: 47,
-                                    backgroundImage: Image.network(widget.profile.profilePicture).image,
-                                  ),
-                                )
-                            )
-                          ]
-                      )
-                  ),
-                  SizedBox(height: 60,),
-                  Center(
-                    child: Text(
-                        "${widget.profile.email}",
-                        style:Styles.usernameStyle
+                                    radius: 50,
+                                    backgroundColor: Theme.of(context).primaryColor,
+                                    child: CircleAvatar(
+                                      radius: 47,
+                                      backgroundImage: Image.network(widget.profile.profilePicture).image,
+                                    ),
+                                  )
+                              )
+                            ]
+                        )
                     ),
-                  ),
+                    SizedBox(height: 60,),
+                    Center(
+                      child: Text(
+                          "${widget.profile.email}",
+                          style:Styles.usernameStyle
+                      ),
+                    ),
 
-                  RoundedInputField(
-                    color: Color(0xFFFBE3E1),
-                    iconColor: Theme.of(context).primaryColor,
-                    hintText: "New Name",
-                    controller: nameController,
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your new name';
-                      }
-                      return null;
-                    },
-                  ),
-                  RoundedInputField(
-                    color: Color(0xFFFBE3E1),
-                    iconColor: Theme.of(context).primaryColor,
-                    hintText: "New Username",
-                    controller: usernameController,
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return 'Please enter your new username';
-                      }
-                      return null;
-                    },
-                  ),
-                  RoundedInputField(
-                    color: Color(0xFFFBE3E1),
-                    icon: Icons.phone,
-                    iconColor: Theme.of(context).primaryColor,
-                    hintText: "New Phone Number",
-                    controller: phoneNumberController,
-                    validator: (String value) {
-                      return null;
-                    },
-                  ),
-                  // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
-                  // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
-                  // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
-                  // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
+                    RoundedInputField(
+                      color: Color(0xFFFBE3E1),
+                      iconColor: Theme.of(context).primaryColor,
+                      hintText: "New Name",
+                      controller: nameController,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Please enter your new name';
+                        }
+                        return null;
+                      },
+                    ),
+                    RoundedInputField(
+                      color: Color(0xFFFBE3E1),
+                      iconColor: Theme.of(context).primaryColor,
+                      hintText: "New Username",
+                      controller: usernameController,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Please enter your new username';
+                        }
+                        return null;
+                      },
+                    ),
+                    RoundedInputField(
+                      color: Color(0xFFFBE3E1),
+                      icon: Icons.phone,
+                      iconColor: Theme.of(context).primaryColor,
+                      hintText: "New Phone Number",
+                      controller: phoneNumberController,
+                      validator: (String value) {
+                        return null;
+                      },
+                    ),
+                    // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
+                    // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
+                    // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
+                    // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
 
-                ],
-              ),
+                    GestureDetector(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => _logoutConfirmation(context),
+                        );
+                      },
+                      child: Container(
+                          color: Color(0xFFCDCDCD),
+                          child:
+                          InkWell(
+                            splashColor: Theme.of(context).primaryColor.withAlpha(30),
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.all(20),
+                                child: Text(
+                                    'Logout',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                        fontSize: 16
+                                    )
+                                )
+                            ),
+                          )
+                      ),
+                    )
+                  ],
+                ),
+              ],
             ),
+          ),
           SliverPersistentHeader(
             pinned: true,
             delegate: SliverAppBarDelegate(
@@ -353,12 +357,15 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         key: Key(address),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
-                        child: ListTile(
-                          title: Text(address),
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete_rounded),
-                            onPressed: () => _deleteAddress(index),
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(address),
+                            IconButton(
+                              icon: Icon(Icons.delete_rounded),
+                              onPressed: () => _deleteAddress(index),
+                            ),
+                          ],
                         ),
                         onDismissed: (direction) {
                           _deleteAddress(index);
@@ -372,7 +379,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                SizedBox(height: 100,),
+                SizedBox(height: 20,),
               ]
             ),
           )
