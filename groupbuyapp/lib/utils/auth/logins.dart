@@ -130,6 +130,19 @@ class Logins {
         break;
     }
   }
+  
+  static Future<String> getUniqueUsername(String name) async {
+    String username = ProfileBuilder.createUsernameFromName(name);
+    
+    while(true) {
+      if (await ProfileStorage.instance.checkIfUsernameIsTaken(username)) {
+        username = ProfileBuilder.generateUsernameWithRandomSuffix(username);
+        continue;
+      } else {
+        return username;
+      }
+    }
+  }
 
 
 }

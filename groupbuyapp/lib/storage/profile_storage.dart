@@ -36,6 +36,15 @@ class ProfileStorage {
     return userProfile;
   }
 
+  Future<bool> checkIfUsernameIsTaken(String username) async {
+    QuerySnapshot query = await usersRef.where('username', isEqualTo: username).get();
+    if (query.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool> checkIfProfileExists(String userId) async {
     DocumentReference docRef = usersRef.doc(userId);
     DocumentSnapshot doc = await docRef.get();
@@ -56,7 +65,7 @@ class ProfileStorage {
       'profilePicture': userProfile.profilePicture,
       'phoneNumber': userProfile.phoneNumber,
       'email': userProfile.email,
-      'authType': userProfile.authType
+      'authType': userProfile.authType,
       'addresses': userProfile.addresses,
       'groupBuyIds': userProfile.groupBuyIds,
       'rating': userProfile.rating,
