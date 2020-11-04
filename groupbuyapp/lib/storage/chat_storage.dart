@@ -121,7 +121,7 @@ class ChatStorage {
   }
 
   // for segue to chat
-  
+
   Future<String> createChatRoom(GroupBuy groupBuy, String requestorId) async {
     String groupBuyId = groupBuy.id;
     String organiserId = groupBuy.organiserId;
