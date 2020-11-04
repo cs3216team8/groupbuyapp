@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/organised_groupbuys_part.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';

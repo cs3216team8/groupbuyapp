@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/my_groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
@@ -44,56 +42,56 @@ class OrganisedGroupBuysOnly extends StatelessWidget {
         //   ),
         //   )
         // ),
-
         body:
         SingleChildScrollView(
 
-        child: Column(
-        children: [
-          Container(
-            alignment: Alignment.center,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.center,
 
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(border: Border(bottom:BorderSide(color: Color(0xFFe87d74)))),
-            height: 50,
-            child: Text('As Organiser', style: Styles.textStyleSelected,)
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(border: Border(bottom:BorderSide(color: Color(0xFFe87d74)))),
+                height: 50,
+                child: Text('As Organiser', style: Styles.textStyleSelected,)
+              ),
+              StreamBuilder<List<GroupBuy>>(
+                stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(userId),
+                builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
+                  List<Widget> children;
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return FailedToLoadMyGroupBuys();
+                  }
+
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.none:
+                      return GroupBuysNotLoaded();
+                    case ConnectionState.waiting:
+                      return GroupbuysLoading();
+                    default:
+                      children = snapshot.data.map((GroupBuy groupBuy) {
+                        return new GroupBuyCard(groupBuy);
+                      }).toList();
+                      break;
+                  }
+
+                  if (children.isEmpty) {
+                    return OrganisedGroupBuyDefaultScreen();
+                  }
+
+                  return GridView.count(
+                      crossAxisCount: 2,
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      childAspectRatio: 5.5/7.0,
+                      children: children
+                  );
+                },
+              ),
+            ],
           ),
-          StreamBuilder<List<GroupBuy>>(
-              stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(FirebaseAuth.instance.currentUser.uid),
-              builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-                List<Widget> children;
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return FailedToLoadMyGroupBuys();
-                }
-
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return GroupBuysNotLoaded();
-                  case ConnectionState.waiting:
-                    return GroupbuysLoading();
-                  default:
-                    children = snapshot.data.map((GroupBuy groupBuy) {
-                      return new GroupBuyCard(groupBuy);
-                    }).toList();
-                    break;
-                }
-
-                if (children.isEmpty) {
-                  return OrganisedGroupBuyDefaultScreen();
-                }
-
-                return GridView.count(
-                    crossAxisCount: 2,
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    childAspectRatio: 5.5/7.0,
-                    children: children
-                );
-              },
-            ),
-    ])
-    )
+      ),
     );
   }
 }
