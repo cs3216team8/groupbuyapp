@@ -11,6 +11,7 @@ import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_defa
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
+import 'package:groupbuyapp/storage/email_storage.dart';
 
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
@@ -55,7 +56,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   }
 
   void onTapSendEmail(BuildContext context) {
-    print("tapped on send email"); //TODO
+    EmailStorage.instance.createNewEmail(widget.groupBuy);
   }
 
   void onTapJoin(BuildContext context) {

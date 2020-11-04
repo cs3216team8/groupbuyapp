@@ -33,6 +33,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController addAddressController;
   List<String> deleted = []; // TODO: undoable history
+  String profilePicUrl = "";
 
   void _deleteAddress(int index) {
     setState(() {
@@ -51,7 +52,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   @override
   void initState() {
     super.initState();
+
     addresses = widget.profile.addresses;
+    profilePicUrl = widget.profile.profilePicture;
+
     nameController = TextEditingController(text: widget.profile.name);
     usernameController = TextEditingController(text: widget.profile.username);
     phoneNumberController = TextEditingController(text: widget.profile.phoneNumber);
@@ -117,6 +121,46 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     );
   }
 
+  Widget _changeProfilePicturePopup() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+      PopupMenuItem(
+          value: 1,
+          child: Row(
+              children: [
+                Icon(Icons.camera_alt),
+                Text('  Camera'),
+              ]
+          )
+      ),
+      PopupMenuItem(
+          value: 2,
+          child: Row(
+              children: [
+                Icon(Icons.insert_photo),
+                Text('  Gallery'),
+              ]
+          )
+      ),
+    ],
+    onSelected: (value) async {
+      PickedFile photo;
+
+      if (value == 1) {
+        photo = await ImagePicker().getImage(source: ImageSource.camera);
+      } else {
+        photo = await ImagePicker().getImage(source: ImageSource.gallery);
+      }
+
+      String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
+      await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
+      setState( () {
+        profilePicUrl = photoUrl;
+      });
+    },
+    icon: Icon(Icons.insert_photo),
+    color: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,11 +203,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                     backgroundColor: Theme.of(context).primaryColor,
                                     child: CircleAvatar(
                                       radius: 47,
-                                      backgroundImage: Image.network(widget.profile.profilePicture).image,
+                                      backgroundImage: Image.network(profilePicUrl).image,
+                                      child: _changeProfilePicturePopup(),
+                                      )
                                     ),
                                   )
-                              )
-                            ]
+                              ]
                         )
                     ),
                     SizedBox(height: 60,),
@@ -366,130 +411,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               [
                 SizedBox(height: 20,),
               ]
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class ProfilePicChanger extends StatefulWidget {
-  final String pictureUrl;
-
-  ProfilePicChanger({
-    Key key,
-    this.pictureUrl,
-  }) : super(key: key);
-
-  @override
-  _ProfilePicChangerState createState() => _ProfilePicChangerState();
-
-}
-
-class _ProfilePicChangerState extends State<ProfilePicChanger> {
-
-  String pictureUrl;
-
-  void initState() {
-    pictureUrl = widget.pictureUrl;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(width: 60,),
-        Padding(
-          padding: EdgeInsets.only(top: 20.0),
-          child: CircleAvatar(
-            radius: 60,
-            backgroundColor: Theme.of(context).accentColor,
-            child: CircleAvatar(
-              radius: 55,
-              backgroundImage: Image.network(pictureUrl).image,
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, top: 20),
-          child: Column(
-            children: [
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: () async {
-                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
-                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
-                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
-                  setState( () {
-                    pictureUrl = photoUrl;
-                  });
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.image_search),
-                onPressed: () async {
-                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
-                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
-                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
-                  setState( () {
-                    pictureUrl = photoUrl;
-                  });
-                  },
-              ),
-            ],
-          )
-        ),
-      ],
-    );
-  }
-}
-
-
-class InputHorizontal extends StatefulWidget {
-  final String itemText;
-  final TextEditingController controller;
-  final bool enabled;
-
-  InputHorizontal({
-    Key key,
-    this.itemText,
-    this.controller,
-    this.enabled,
-  }) : super(key: key);
-
-  @override
-  _InputHorizontalState createState () => _InputHorizontalState();
-
-}
-
-class _InputHorizontalState extends State<InputHorizontal> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                widget.itemText,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: TextField(
-              decoration: InputDecoration(),
-              controller: widget.controller,
-              enabled: widget.enabled,
             ),
           )
         ],
