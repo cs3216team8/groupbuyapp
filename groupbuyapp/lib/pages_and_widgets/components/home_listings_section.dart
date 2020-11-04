@@ -54,8 +54,12 @@ class _ListingsSectionState extends State<ListingsSection>
               return widget.createDefaultScreen();
             }
 
-            List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
 
+            List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+              return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+            }
+
+            List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
             // List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
             List<GroupBuy> closedPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
             List<GroupBuy> openPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
@@ -64,9 +68,9 @@ class _ListingsSectionState extends State<ListingsSection>
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),
                 childAspectRatio: 5.5/7.0,
-                children: openPresentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
-                    + closedPresentGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
-                    + pastGroupBuys.map((groupBuy) => GroupBuyCard(groupBuy)).toList()
+                children: getGroupBuyCardList(openPresentGroupBuys)
+                    + getGroupBuyCardList(closedPresentGroupBuys)
+                    + getGroupBuyCardList(pastGroupBuys)
             );
           },
         )
