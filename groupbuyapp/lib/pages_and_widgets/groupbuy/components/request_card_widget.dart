@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_details_widget.dart';
-import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -21,14 +19,11 @@ class RequestCard extends StatefulWidget {
     @required this.isOrganiser,
   }) : super(key: key);
 
-
   @override
   _RequestCardState createState() => _RequestCardState();
 }
 
 class _RequestCardState extends State<RequestCard> {
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +123,6 @@ class _RequestCardState extends State<RequestCard> {
   }
 }
 
-
 class ItemsLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -151,7 +145,7 @@ class FailedToLoadItems extends StatelessWidget {
   }
 }
 
-//TODO note this should not appear.
+// note this should not appear.
 class ItemsNotLoaded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
