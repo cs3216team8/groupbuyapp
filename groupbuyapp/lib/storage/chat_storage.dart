@@ -137,10 +137,12 @@ class ChatStorage {
     });
   }
 
-  Future<String> createChatRoom(GroupBuy groupBuy) async {
+  // note: can pass in requestorId as FirebaseAuth.instance.currentUser.uid if the
+  // requestor is making the chatroom
+  Future<String> createChatRoom(GroupBuy groupBuy, String requestorId) async {
     String groupBuyId = groupBuy.id;
     String organiserId = groupBuy.organiserId;
-    String userId = FirebaseAuth.instance.currentUser.uid;
+    String userId = requestorId;
     String chatRoomId = organiserId + "_" + userId;
     List<String> members = [organiserId, userId];
     Map<String, dynamic> chatRoom = {
