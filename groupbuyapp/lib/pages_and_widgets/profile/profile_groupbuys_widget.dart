@@ -96,10 +96,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
           List<Widget> children;
 
           List<GroupBuy> groupBuys = snapshot.data.toList();
-          List<GroupBuy> pastGroupBuys = groupBuys.where((gb) => !gb.isPresent()).toList();
-          // List<GroupBuy> presentGroupBuys = groupBuys.where((gb) => gb.isPresent()).toList();
-          List<GroupBuy> closedPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
-          List<GroupBuy> openPresentGroupBuys = groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
+
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
@@ -111,9 +108,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             case ConnectionState.waiting:
               return GroupbuysLoading();
             default:
-              children = getGroupBuyCardList(openPresentGroupBuys)
-                  + getGroupBuyCardList(closedPresentGroupBuys)
-                  + getGroupBuyCardList(pastGroupBuys);
+              children = GroupBuyStorage.instance.getSortedCardList(groupBuys);
               break;
           }
 

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 
 class GroupBuyStorage {
   GroupBuyStorage._privateConstructor();
@@ -299,5 +300,21 @@ class GroupBuyStorage {
         );
       }).toList();
     });
+  }
+
+  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+  }
+
+  List<GroupBuyCard> getSortedCardList(List<GroupBuy> groupBuys) {
+    List<GroupBuy> pastGroupBuys =
+        groupBuys.where((gb) => !gb.isPresent()).toList();
+    List<GroupBuy> closedPresentGroupBuys =
+        groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
+    List<GroupBuy> openPresentGroupBuys =
+        groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
+    return getGroupBuyCardList(openPresentGroupBuys) +
+        getGroupBuyCardList(closedPresentGroupBuys) +
+        getGroupBuyCardList(pastGroupBuys);
   }
 }
