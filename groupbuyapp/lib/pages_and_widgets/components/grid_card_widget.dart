@@ -64,7 +64,8 @@ class GroupBuyCard extends StatelessWidget {
   }
 
   Widget groupBuyCardInsides(BuildContext context, Profile profile) {
-    int addressLength = min(20, this.groupBuy.address.length);
+    int shortenedAddressLength = min(20, this.groupBuy.address.length);
+    int shortenedUsernameLength = min(8, profile.username.length);
     return InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
         onTap: () {
@@ -113,7 +114,7 @@ class GroupBuyCard extends StatelessWidget {
                         Flexible(
                             flex: 1,
                             child: new Text(
-                              "${this.groupBuy.address.substring(0, addressLength)}..",
+                              "${this.groupBuy.address.substring(0, shortenedAddressLength)}..",
                               style: titleStyle,
                             ))
                       ]),
@@ -147,7 +148,7 @@ class GroupBuyCard extends StatelessWidget {
                               )),
                           Flexible(
                               child: Text(
-                                  '${this.groupBuy.deposit * 100} % deposit',
+                                  '${this.groupBuy.deposit * 100}% deposit',
                                   style: Styles.textStyle)
                           ),
                         ],
@@ -168,7 +169,7 @@ class GroupBuyCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            profile.username,
+                            "${profile.username.substring(0, shortenedUsernameLength)}..",
                             style: textStyle,
                           ),
                         ],
