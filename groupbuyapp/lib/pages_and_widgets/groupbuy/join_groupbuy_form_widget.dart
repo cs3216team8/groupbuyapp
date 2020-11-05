@@ -9,11 +9,13 @@ import 'package:groupbuyapp/utils/styles.dart';
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
   final double deposit;
+  final Function() onSuccessSubmit;
 
   JoinGroupBuyForm({
     Key key,
     @required this.groupBuyId,
     @required this.deposit,
+    this.onSuccessSubmit
   }) : super(key: key);
 
   @override
@@ -45,12 +47,9 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
 
   void submitJoinRequest(BuildContext context) {
     print("submit join request");
-    //TODO: validation of ALL items -- add validator
     if (!_formKey.currentState.validate()) {
-      print("failed");
       return;
     }
-    print("can");
 
     List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text).toList();
     List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text)).toList();
@@ -67,6 +66,9 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
 
     Navigator.pop(context);
+    if (widget.onSuccessSubmit != null) {
+      widget.onSuccessSubmit();
+    }
   }
   
   double getTotal() {
