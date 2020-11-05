@@ -216,7 +216,7 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
                                 semanticLabel: 'Items',
                               )
                           ),
-                          Text("${widget.request.items.length} items", style: Styles.textStyle,),
+                          Text("${widget.request.items.length} item(s)", style: Styles.textStyle,),
                         ],
                       ),
                       SizedBox(height: 7),

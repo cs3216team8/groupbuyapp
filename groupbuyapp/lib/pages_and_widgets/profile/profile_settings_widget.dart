@@ -297,12 +297,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Column(
-                        children: [Container(
+                        Container(
                             child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
                         ),
-
-                        ]),
                         SizedBox(width: 60,),
                         Container(
                           padding: EdgeInsets.all(0),
