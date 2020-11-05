@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -82,12 +83,21 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
       Tab(text: "As Organiser",),
     ];
   }
+
+  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+  }
+
   List<Widget> getTabScreens(String uid) {
+    print(uid);
     return <Widget>[
       StreamBuilder<List<GroupBuy>>(
         stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(uid),
         builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
           List<Widget> children;
+
+          List<GroupBuy> groupBuys = snapshot.data.toList();
+
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
@@ -99,9 +109,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             case ConnectionState.waiting:
               return GroupbuysLoading();
             default:
-              children = snapshot.data.map((GroupBuy groupBuy) {
-                return new GroupBuyCard(groupBuy);
-              }).toList();
+              children = GroupBuyStorage.instance.getSortedCardList(groupBuys);
               break;
           }
 
@@ -122,6 +130,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
         ? StreamBuilder<List<Future<GroupBuy>>>(
           stream: GroupBuyStorage.instance.getGroupBuysPiggyBackedOnBy(FirebaseAuth.instance.currentUser.uid),
           builder: (BuildContext context, AsyncSnapshot<List<Future<GroupBuy>>> snapshot) {
+            List<Widget> children;
             if (snapshot.hasError){
               print(snapshot.error);
               return FailedToLoadMyGroupBuys();
@@ -133,30 +142,35 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
               case ConnectionState.waiting:
                 return GroupbuysLoading();
               default:
+                children = snapshot.data.map((fgb) {
+                  return FutureBuilder(
+                    future: fgb,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<GroupBuy> snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error.toString());
+                        return FailedToLoadMyGroupBuys();
+                      }
+
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                          return GroupBuysNotLoaded();
+                        case ConnectionState.waiting:
+                          return GroupbuysLoading();
+                        default:
+                          return new GroupBuyCard(snapshot.data);
+                      }
+                    },
+                  );
+                }).toList();
                 break;
             }
 
-            List<Widget> children = snapshot.data.map((fgb) {
-              return FutureBuilder(
-                future: fgb,
-                builder: (BuildContext context, AsyncSnapshot<GroupBuy> snapshot) {
-                  if (snapshot.hasError) {
-                    print(snapshot.error.toString());
-                    return FailedToLoadMyGroupBuys();
-                  }
+            if (children.isEmpty) {
+            return PiggyBackedGroupBuyDefaultScreen();
+            }
 
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.none:
-                      return GroupBuysNotLoaded();
-                    case ConnectionState.waiting:
-                      return GroupbuysLoading();
-                    default:
-                      return new GroupBuyCard(snapshot.data);
-                  }
-                },
-              );
-            }).toList();
-            return GridView.count(
+              return GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const ClampingScrollPhysics(),

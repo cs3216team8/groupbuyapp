@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
@@ -32,6 +33,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController addAddressController;
   List<String> deleted = []; // TODO: undoable history
+  String profilePicUrl = "";
 
   void _deleteAddress(int index) {
     setState(() {
@@ -50,7 +52,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   @override
   void initState() {
     super.initState();
+
     addresses = widget.profile.addresses;
+    profilePicUrl = widget.profile.profilePicture;
+
     nameController = TextEditingController(text: widget.profile.name);
     usernameController = TextEditingController(text: widget.profile.username);
     phoneNumberController = TextEditingController(text: widget.profile.phoneNumber);
@@ -116,18 +121,54 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     );
   }
 
+  Widget _changeProfilePicturePopup() => PopupMenuButton<int>(
+    itemBuilder: (context) => [
+      PopupMenuItem(
+          value: 1,
+          child: Row(
+              children: [
+                Icon(Icons.camera_alt),
+                Text('  Camera'),
+              ]
+          )
+      ),
+      PopupMenuItem(
+          value: 2,
+          child: Row(
+              children: [
+                Icon(Icons.insert_photo),
+                Text('  Gallery'),
+              ]
+          )
+      ),
+    ],
+    onSelected: (value) async {
+      PickedFile photo;
+
+      if (value == 1) {
+        photo = await ImagePicker().getImage(source: ImageSource.camera);
+      } else {
+        photo = await ImagePicker().getImage(source: ImageSource.gallery);
+      }
+
+      String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
+      await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
+      setState( () {
+        profilePicUrl = photoUrl;
+      });
+    },
+    icon: Icon(Icons.insert_photo),
+    color: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Profile', style: TextStyle(color: Colors.black),),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black,),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+      appBar: backAppBar(
+        context: context,
+        elevation: 0,
+        title: 'My Profile',
+        color: Color(0xFFFFF3E7),
         actions: [
           FlatButton(
             child: Text(
@@ -162,11 +203,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                     backgroundColor: Theme.of(context).primaryColor,
                                     child: CircleAvatar(
                                       radius: 47,
-                                      backgroundImage: Image.network(widget.profile.profilePicture).image,
+                                      backgroundImage: Image.network(profilePicUrl).image,
+                                      child: _changeProfilePicturePopup(),
+                                      )
                                     ),
                                   )
-                              )
-                            ]
+                              ]
                         )
                     ),
                     SizedBox(height: 60,),
@@ -224,26 +266,16 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         );
                       },
                       child: Container(
-                          color: Color(0xFFCDCDCD),
-                          child:
-                          InkWell(
-                            splashColor: Theme.of(context).primaryColor.withAlpha(30),
-                            child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: EdgeInsets.all(20),
-                                child: Text(
-                                    'Logout',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.red,
-                                        fontSize: 16
-                                    )
-                                )
-                            ),
+                              margin: EdgeInsets.only(top: 5),
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                              child: new Text("LOGOUT",
+                                  textAlign: TextAlign.center,
+                                  style: Styles.minorStyle
+                              )
                           )
+
                       ),
-                    )
                   ],
                 ),
               ],
@@ -254,91 +286,82 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             delegate: SliverAppBarDelegate(
               minHeight: 60.0,
               maxHeight: 100.0,
-              child: AppBar(
-                elevation: 0,
-                backgroundColor: Color(0xFFFAFAFA),
-                title: Container(
-                    margin: EdgeInsets.only(left: 10, bottom: 10),
-                    child: Stack(
+              child: Container(
+                color: Color(0xFFFAFAFA),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Container(
-                          width: MediaQuery.of(context).size.width *0.8,
-                          padding: EdgeInsets.all(20),
-
-                          alignment: Alignment.center,
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                    margin: EdgeInsets.only(left: 10, bottom: 10),
-                                    child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
-                                ),
-                                Container(
-                                  width: 30,
-                                  height: 30,
-                                  child: FloatingActionButton(
-                                    child: new Icon(Icons.add, color: Colors.white,),
-                                    onPressed: () {
-                                      setState(() {
-                                        addAddressController = TextEditingController();
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Stack(
-                                                  overflow: Overflow.visible,
-                                                  children: <Widget>[
-                                                    Positioned(
-                                                      right: -40.0,
-                                                      top: -40.0,
-                                                      child: InkResponse(
-                                                        onTap: () {
-                                                          addAddressController = null;
-                                                          Navigator.of(context).pop();
-                                                        },
-                                                        child: CircleAvatar(
-                                                          child: Icon(Icons.close),
-                                                          backgroundColor: Colors.red,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Form(
-                                                      key: _formKey,
-                                                      child: Column(
-                                                        mainAxisSize: MainAxisSize.min,
-                                                        children: <Widget>[
-                                                          Padding(
-                                                            padding: EdgeInsets.all(8.0),
-                                                            child: TextFormField(
-                                                              controller: addAddressController,
-                                                            ),
-                                                          ),
-                                                          Padding(
-                                                            padding: const EdgeInsets.all(8.0),
-                                                            child: RaisedButton(
-                                                              child: Text("Add Address", style: TextStyle(color: Colors.white)),
-                                                              onPressed: () {
-                                                                if (_formKey.currentState.validate()) {
-                                                                  _formKey.currentState.save();
-                                                                  _addAddress(context, addAddressController.text);
-                                                                }
-                                                              },
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
+                            child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
+                        ),
+                        SizedBox(width: 60,),
+                        Container(
+                          padding: EdgeInsets.all(0),
+                          width: 30,
+                          height: 30,
+                          child: FloatingActionButton(
+                            child: new Icon(Icons.add, color: Colors.white,),
+                            onPressed: () {
+                              setState(() {
+                                addAddressController = TextEditingController();
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: Stack(
+                                          overflow: Overflow.visible,
+                                          children: <Widget>[
+                                            Positioned(
+                                              right: -40.0,
+                                              top: -40.0,
+                                              child: InkResponse(
+                                                onTap: () {
+                                                  addAddressController = null;
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: CircleAvatar(
+                                                  child: Icon(Icons.close),
+                                                  backgroundColor: Colors.red,
                                                 ),
-                                              );
-                                            }
-                                        );
-                                      });
-                                    },
-                                    backgroundColor: Color(0xFFF98B83),
-                                  ),
-                                )
-                              ]
+                                              ),
+                                            ),
+                                            Form(
+                                              key: _formKey,
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  Padding(
+                                                    padding: EdgeInsets.all(8.0),
+                                                    child: TextFormField(
+                                                      controller: addAddressController,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets.all(8.0),
+                                                    child: RaisedButton(
+                                                      child: Text("Add Address", style: TextStyle(color: Colors.white)),
+                                                      onPressed: () {
+                                                        if (_formKey.currentState.validate()) {
+                                                          _formKey.currentState.save();
+                                                          _addAddress(context, addAddressController.text);
+                                                        }
+                                                      },
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                );
+                              });
+                            },
+                            backgroundColor: Color(0xFFF98B83),
                           ),
                         )
                       ],
@@ -351,27 +374,38 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   final address = addresses[index];
-                  return Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                  return Column(
+                      children: [Container(
+                    alignment: Alignment.center,
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
                         key: Key(address),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child:  SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8 * 0.8,
+                          child: Row(
                           children: [
+                            Icon(Icons.location_city, color: Color(0xFFF98B83)),
+                            SizedBox(width: 10,),
                             Text(address),
-                            IconButton(
-                              icon: Icon(Icons.delete_rounded),
-                              onPressed: () => _deleteAddress(index),
-                            ),
-                          ],
-                        ),
+                          ]
+                        )),
                         onDismissed: (direction) {
                           _deleteAddress(index);
                         },
                       )
-                  );
+                  ),
+                        index != addresses.length-1? Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8 * 0.8,
+
+                          child: Divider(thickness: 0.5, color: Colors.grey)
+                        )
+                  ): Container()
+
+                      ]);
                 },
               childCount: addresses.length
             ),
@@ -381,130 +415,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               [
                 SizedBox(height: 20,),
               ]
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class ProfilePicChanger extends StatefulWidget {
-  final String pictureUrl;
-
-  ProfilePicChanger({
-    Key key,
-    this.pictureUrl,
-  }) : super(key: key);
-
-  @override
-  _ProfilePicChangerState createState() => _ProfilePicChangerState();
-
-}
-
-class _ProfilePicChangerState extends State<ProfilePicChanger> {
-
-  String pictureUrl;
-
-  void initState() {
-    pictureUrl = widget.pictureUrl;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(width: 60,),
-        Padding(
-          padding: EdgeInsets.only(top: 20.0),
-          child: CircleAvatar(
-            radius: 60,
-            backgroundColor: Theme.of(context).accentColor,
-            child: CircleAvatar(
-              radius: 55,
-              backgroundImage: Image.network(pictureUrl).image,
-            ),
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.only(left: 20, top: 20),
-          child: Column(
-            children: [
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: () async {
-                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
-                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
-                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
-                  setState( () {
-                    pictureUrl = photoUrl;
-                  });
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.image_search),
-                onPressed: () async {
-                  PickedFile photo = await ImagePicker().getImage(source: ImageSource.camera);
-                  String photoUrl = await ProfileStorage.instance.uploadProfilePhoto(File(photo.path));
-                  await ProfileStorage.instance.updateProfilePhotoUrl(photoUrl);
-                  setState( () {
-                    pictureUrl = photoUrl;
-                  });
-                  },
-              ),
-            ],
-          )
-        ),
-      ],
-    );
-  }
-}
-
-
-class InputHorizontal extends StatefulWidget {
-  final String itemText;
-  final TextEditingController controller;
-  final bool enabled;
-
-  InputHorizontal({
-    Key key,
-    this.itemText,
-    this.controller,
-    this.enabled,
-  }) : super(key: key);
-
-  @override
-  _InputHorizontalState createState () => _InputHorizontalState();
-
-}
-
-class _InputHorizontalState extends State<InputHorizontal> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 2),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Expanded(
-            flex: 3,
-            child: Padding(
-              padding: EdgeInsets.only(top: 20),
-              child: Text(
-                widget.itemText,
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 7,
-            child: TextField(
-              decoration: InputDecoration(),
-              controller: widget.controller,
-              enabled: widget.enabled,
             ),
           )
         ],
