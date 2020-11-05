@@ -8,10 +8,16 @@ import 'package:groupbuyapp/utils/styles.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
+  final double deposit;
+  final Function() onSuccessSubmit;
+  final Request request;
 
   JoinGroupBuyForm({
     Key key,
-    @required String this.groupBuyId,
+    @required this.groupBuyId,
+    @required this.deposit,
+    this.onSuccessSubmit,
+    this.request,
   }) : super(key: key);
 
   @override
@@ -23,14 +29,24 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   List<TextEditingController> itemQtyControllers = [];
   List<TextEditingController> itemRemarksControllers = [];
   List<TextEditingController> itemTotalAmtControllers = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Widget> itemCards = [];
   List<Widget> deleted = []; //TODO undo redo also
+  
+  bool isUpdate() {
+    return widget.request != null;
+  }
 
   @override
   void initState() {
     super.initState();
-    itemCards.add(createInputCard());
+    if (widget.request == null) {
+      itemCards.add(createInputCard());
+    } else {
+      // load request
+      itemCards.addAll(widget.request.items.map((item) => createInputCard(item: item)));
+    }
   }
 
   void addItemInput() {
@@ -40,9 +56,11 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     });
   }
 
-  void submitJoinRequest(BuildContext context) {
+  void submitJoinOrEditRequest(BuildContext context) {
     print("submit join request");
-    //TODO: validation of ALL items -- add validator
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
 
     List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text).toList();
     List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text)).toList();
@@ -54,19 +72,32 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       items.add(Item(itemLink: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
     }
 
-    Request request = Request.newRequest(requestorId: FirebaseAuth.instance.currentUser.uid, items: items);
-
-    GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
+    if (isUpdate()) {
+      widget.request.items = items;
+      GroupBuyStorage.instance.editRequest(widget.groupBuyId, widget.request);
+    } else {
+      Request request = Request.newRequest(requestorId: FirebaseAuth.instance.currentUser.uid, items: items);
+      GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
+    }
 
     Navigator.pop(context);
+    if (widget.onSuccessSubmit != null) {
+      widget.onSuccessSubmit();
+    }
+  }
+  
+  double getTotal() {
+    List<double> amts = itemTotalAmtControllers.map((ctrlr) => double.parse(ctrlr.text, (val) => 0)).toList();
+    
+    return amts.reduce((value, element) => value + element);
   }
 
 
-  Widget createInputCard() {
-    TextEditingController urlController = TextEditingController();
-    TextEditingController qtyController = TextEditingController();
-    TextEditingController rmksController = TextEditingController();
-    TextEditingController amtController = TextEditingController();
+  Widget createInputCard({Item item,}) {
+    TextEditingController urlController = TextEditingController(text: item != null ? item.itemLink : null);
+    TextEditingController qtyController = TextEditingController(text: item != null ? item.qty.toString() : null);
+    TextEditingController rmksController = TextEditingController(text: item != null ? item.remarks : null);
+    TextEditingController amtController = TextEditingController(text: item != null ? item.totalAmount.toString() : null);
     itemUrlControllers.add(urlController);
     itemQtyControllers.add(qtyController);
     itemRemarksControllers.add(rmksController);
@@ -78,6 +109,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       qtyController: qtyController,
       remarksController: rmksController,
       totalAmtController: amtController,
+      item: item,
     );
   }
 
@@ -151,25 +183,28 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                 Container(
                   alignment: Alignment.center,
 
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: itemCards.length,
-                    itemBuilder: (context, index) {
-                      Widget itemCard = itemCards[index];
-                      return Dismissible(
-                        key: itemCard.key,
-                        direction: DismissDirection.startToEnd,
-                        onDismissed: (direction) {
-                          _deleteInputCard(index);
-                        },
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          title: itemCard,
-                        ),
-                      );
-                    },
-                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: itemCards.length,
+                      itemBuilder: (context, index) {
+                        Widget itemCard = itemCards[index];
+                        return Dismissible(
+                          key: itemCard.key,
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) {
+                            _deleteInputCard(index);
+                          },
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            title: itemCard,
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +267,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Text('TOTAL', style: Styles.moneyStyle), Text('\$57.90',style: Styles.moneyStyle)
+                       Text('TOTAL', style: Styles.moneyStyle), Text('\$${getTotal().toStringAsFixed(2)}',style: Styles.moneyStyle)
                     ]
                 ),
                 SizedBox(height: 7),
@@ -240,7 +275,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('DEPOSIT', style: Styles.moneyStyle),
-                      Text('\$28.95', style: Styles.moneyStyle)
+                      Text('\$${(getTotal() * widget.deposit).toStringAsFixed(2)}', style: Styles.moneyStyle)
                     ]
                 ),
               ],
@@ -257,7 +292,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         color: Colors.greenAccent,
-                        onPressed: () => submitJoinRequest(context),
+                        onPressed: () => submitJoinOrEditRequest(context),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/utils/validators.dart';
 
-class AddItemCard extends StatelessWidget {
+class AddItemCard extends StatefulWidget {
   final TextEditingController urlController;
   final TextEditingController qtyController;
   final TextEditingController remarksController;
   final TextEditingController totalAmtController;
+  final Item item;
 
   AddItemCard({
     @required Key key,
@@ -12,7 +15,14 @@ class AddItemCard extends StatelessWidget {
     this.qtyController,
     this.remarksController,
     this.totalAmtController,
+    this.item,
   }) : super(key: key);
+
+  @override
+  _AddItemCardState createState() => _AddItemCardState();
+}
+
+class _AddItemCardState extends State<AddItemCard> {
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +50,17 @@ class AddItemCard extends StatelessWidget {
                   Expanded(
                     flex: 8,
                     child: MyTextField(
-                      controller: urlController,
+                      controller: widget.urlController,
                       labelText: 'Item Link',
                       hintText: 'Item link',
                       icon: Icons.web,
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return 'Please enter the URL to your item.';
+                        }
+                        //TODO: check correct link
+                        return null;
+                      },
                     ),
                   ),
                 ],
@@ -53,11 +70,14 @@ class AddItemCard extends StatelessWidget {
                   Expanded(
                     flex: 8,
                     child: MyTextField(
-                        controller: remarksController,
+                        controller: widget.remarksController,
                         //expands: true,
                         labelText: 'Remarks',
                         hintText: 'Remarks/options/comments',
-                        icon: Icons.description
+                        icon: Icons.description,
+                        validator: (String value) {
+                          return null;
+                        }
                     ),
                   ),
                 ],
@@ -66,21 +86,38 @@ class AddItemCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: MyTextField(
-                      controller: qtyController,
+                      controller: widget.qtyController,
                       keyboardType: TextInputType.number,
                       labelText: 'Quantity',
                       hintText: 'Quantity',
-                      icon: Icons.check_box_outline_blank
+                      icon: Icons.check_box_outline_blank,
+                      validator: (String value) {
+                        if (!isNonNegativeInteger(value)) {
+                          return 'Please enter a valid quantity!';
+                        }
+                        return null;
+                      }
                   ),
                 ),
                 Expanded(
                   flex: 2,
                   child: MyTextField(
-                      controller: totalAmtController,
+                      controller: widget.totalAmtController,
                       keyboardType: TextInputType.number,
                       labelText: 'Price (total)',
                       hintText: 'Total Price,',
-                      icon: Icons.monetization_on
+                      icon: Icons.monetization_on,
+                      validator: (String value) {
+                        if (!isCurrencyNumberFormat(value)) {
+                          return 'Please enter a valid amount!';
+                        }
+                        return null;
+                      },
+                    onChanged: (String val) {
+                        setState(() {
+
+                        });
+                    },
                   ),
                 ),
 
@@ -97,6 +134,8 @@ class MyTextField extends StatelessWidget {
   String hintText, labelText;
   TextInputType keyboardType;
   IconData icon;
+  FormFieldValidator<String> validator;
+  Function(String) onChanged;
 
   MyTextField({
     Key key,
@@ -104,7 +143,9 @@ class MyTextField extends StatelessWidget {
     this.hintText,
     this.labelText,
     this.keyboardType,
-    this.icon
+    this.icon,
+    this.validator,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -116,6 +157,8 @@ class MyTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,
+        validator: validator,
+        onChanged: onChanged,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
           isDense: true,
