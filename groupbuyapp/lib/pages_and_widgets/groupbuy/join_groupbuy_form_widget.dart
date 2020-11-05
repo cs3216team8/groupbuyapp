@@ -10,12 +10,14 @@ class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
   final double deposit;
   final Function() onSuccessSubmit;
+  final Request request;
 
   JoinGroupBuyForm({
     Key key,
     @required this.groupBuyId,
     @required this.deposit,
-    this.onSuccessSubmit
+    this.onSuccessSubmit,
+    this.request,
   }) : super(key: key);
 
   @override
@@ -31,11 +33,20 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
 
   List<Widget> itemCards = [];
   List<Widget> deleted = []; //TODO undo redo also
+  
+  bool isUpdate() {
+    return widget.request != null;
+  }
 
   @override
   void initState() {
     super.initState();
-    itemCards.add(createInputCard());
+    if (widget.request == null) {
+      itemCards.add(createInputCard());
+    } else {
+      // load request
+      itemCards.addAll(widget.request.items.map((item) => createInputCard(item: item)));
+    }
   }
 
   void addItemInput() {
@@ -45,7 +56,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     });
   }
 
-  void submitJoinRequest(BuildContext context) {
+  void submitJoinOrEditRequest(BuildContext context) {
     print("submit join request");
     if (!_formKey.currentState.validate()) {
       return;
@@ -61,9 +72,13 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       items.add(Item(itemLink: urls[i], totalAmount: amts[i], qty: qtys[i], remarks: rmks[i]));
     }
 
-    Request request = Request.newRequest(requestorId: FirebaseAuth.instance.currentUser.uid, items: items);
-
-    GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
+    if (isUpdate()) {
+      widget.request.items = items;
+      GroupBuyStorage.instance.editRequest(widget.groupBuyId, widget.request);
+    } else {
+      Request request = Request.newRequest(requestorId: FirebaseAuth.instance.currentUser.uid, items: items);
+      GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
+    }
 
     Navigator.pop(context);
     if (widget.onSuccessSubmit != null) {
@@ -78,11 +93,11 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   }
 
 
-  Widget createInputCard() {
-    TextEditingController urlController = TextEditingController();
-    TextEditingController qtyController = TextEditingController();
-    TextEditingController rmksController = TextEditingController();
-    TextEditingController amtController = TextEditingController();
+  Widget createInputCard({Item item,}) {
+    TextEditingController urlController = TextEditingController(text: item != null ? item.itemLink : null);
+    TextEditingController qtyController = TextEditingController(text: item != null ? item.qty.toString() : null);
+    TextEditingController rmksController = TextEditingController(text: item != null ? item.remarks : null);
+    TextEditingController amtController = TextEditingController(text: item != null ? item.totalAmount.toString() : null);
     itemUrlControllers.add(urlController);
     itemQtyControllers.add(qtyController);
     itemRemarksControllers.add(rmksController);
@@ -94,6 +109,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       qtyController: qtyController,
       remarksController: rmksController,
       totalAmtController: amtController,
+      item: item,
     );
   }
 
@@ -276,7 +292,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         color: Colors.greenAccent,
-                        onPressed: () => submitJoinRequest(context),
+                        onPressed: () => submitJoinOrEditRequest(context),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

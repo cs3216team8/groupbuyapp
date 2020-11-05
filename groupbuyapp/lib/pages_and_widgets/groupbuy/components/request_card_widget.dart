@@ -11,12 +11,14 @@ class RequestCard extends StatefulWidget {
   final GroupBuy groupBuy;
   final Request request;
   final bool isOrganiser;
+  final Function() onSuccessSubmit;
 
   RequestCard({
     Key key,
     @required this.groupBuy,
     @required this.request,
     @required this.isOrganiser,
+    this.onSuccessSubmit,
   }) : super(key: key);
 
   @override
@@ -54,7 +56,19 @@ class _RequestCardState extends State<RequestCard> {
           alignment: Alignment.center,
           child: InkWell(
             splashColor: Theme.of(context).primaryColor.withAlpha(30),
-            onTap: () => segueToPage(context, RequestDetailsScreen(request: widget.request, groupBuy: widget.groupBuy, isOrganiser: widget.isOrganiser)),
+            onTap: () => segueToPage(
+                context,
+                RequestDetailsScreen(
+                    request: widget.request,
+                    groupBuy: widget.groupBuy,
+                    isOrganiser: widget.isOrganiser,
+                    onSuccessSubmit: () {
+                        setState(() {
+                          //request changed in request details screen
+                        });
+                    },
+                )
+            ),
             child: Column(
               children: <Widget>[
                 FutureBuilder(

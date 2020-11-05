@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/utils/validators.dart';
 
 class AddItemCard extends StatefulWidget {
@@ -6,6 +7,7 @@ class AddItemCard extends StatefulWidget {
   final TextEditingController qtyController;
   final TextEditingController remarksController;
   final TextEditingController totalAmtController;
+  final Item item;
 
   AddItemCard({
     @required Key key,
@@ -13,6 +15,7 @@ class AddItemCard extends StatefulWidget {
     this.qtyController,
     this.remarksController,
     this.totalAmtController,
+    this.item,
   }) : super(key: key);
 
   @override
@@ -142,7 +145,7 @@ class MyTextField extends StatelessWidget {
     this.keyboardType,
     this.icon,
     this.validator,
-    this.onChanged
+    this.onChanged,
   }) : super(key: key);
 
   @override
