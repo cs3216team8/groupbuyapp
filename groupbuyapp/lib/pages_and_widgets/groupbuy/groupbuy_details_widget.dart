@@ -64,6 +64,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
       context,
       JoinGroupBuyForm(
         groupBuyId: widget.groupBuy.id,
+        deposit: widget.groupBuy.deposit,
+        onSuccessSubmit: () {
+          setState(() {
+            hasRequested = true;
+            fetchRequests();
+          });
+        },
       ),
     );
   }

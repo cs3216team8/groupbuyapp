@@ -4,22 +4,26 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 class RequestDetailsScreen extends StatefulWidget {
   final GroupBuy groupBuy;
   final Request request;
   final bool isOrganiser;
+  final Function() onSuccessSubmit;
 
   RequestDetailsScreen({
     Key key,
     @required this.groupBuy,
     @required this.request,
     @required this.isOrganiser,
+    this.onSuccessSubmit,
   }) : super(key: key);
 
   @override
@@ -44,6 +48,22 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
 
   void onTapEdit(BuildContext context) {
     print("on tap edit");
+    segueWithLoginCheck(
+      context,
+      JoinGroupBuyForm(
+          groupBuyId: widget.groupBuy.id,
+          deposit: widget.groupBuy.deposit,
+          request: widget.request,
+          onSuccessSubmit: () {
+              setState(() {
+                //request changed in request details screen
+              });
+              if (widget.onSuccessSubmit != null) {
+                widget.onSuccessSubmit();
+              }
+          },
+      )
+    );
     //TODO: @kx after @agnes completes join request form
   }
 

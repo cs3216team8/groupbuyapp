@@ -62,6 +62,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   }
 
   void _onSaveProfile(BuildContext context) {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
     Profile newProfile = Profile(
         widget.profile.userId,
         nameController.text,
@@ -309,6 +312,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             child: new Icon(Icons.add, color: Colors.white,),
                             onPressed: () {
                               setState(() {
+                                GlobalKey<FormState> addrFormKey = GlobalKey<FormState>();
                                 addAddressController = TextEditingController();
                                 showDialog(
                                     context: context,
@@ -332,13 +336,19 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               ),
                                             ),
                                             Form(
-                                              key: _formKey,
+                                              key: addrFormKey,
                                               child: Column(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: <Widget>[
                                                   Padding(
                                                     padding: EdgeInsets.all(8.0),
                                                     child: TextFormField(
+                                                      validator: (value) {
+                                                        if (value.isEmpty) {
+                                                          return 'Address cannot be empty!';
+                                                        }
+                                                        return null;
+                                                      },
                                                       controller: addAddressController,
                                                     ),
                                                   ),
@@ -347,8 +357,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                     child: RaisedButton(
                                                       child: Text("Add Address", style: TextStyle(color: Colors.white)),
                                                       onPressed: () {
-                                                        if (_formKey.currentState.validate()) {
-                                                          _formKey.currentState.save();
+                                                        if (addrFormKey.currentState.validate()) {
+                                                          addrFormKey.currentState.save();
                                                           _addAddress(context, addAddressController.text);
                                                         }
                                                       },

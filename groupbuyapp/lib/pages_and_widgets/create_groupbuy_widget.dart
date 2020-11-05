@@ -9,6 +9,7 @@ import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/utils/validators.dart';
 import 'components/custom_appbars.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -130,32 +131,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       default:
         return 'placeholder-image.png';
     }
-  }
-
-
-  bool isNonNegativeNumeric(String s) {
-    if(s == null) {
-      return false;
-    }
-    return double.parse(s, (e) => null) != null;
-  }
-
-  bool isNonNegativeInteger(String s) {
-    if (s == null) {
-      return false;
-    }
-    return int.parse(s) != null;
-  }
-
-  bool isCurrencyNumberFormat(String s) {
-    if (!isNonNegativeNumeric(s)) {
-      return false;
-    }
-    double val = double.parse(s) * 100;
-    if (val < 0) {
-      return false;
-    }
-    return val.truncateToDouble() == val;
   }
 
   InputDecoration getInputDecoration(IconData iconData) {
