@@ -190,6 +190,7 @@ class _SignUpFormState extends State<SignupForm> {
               ),
               RoundedInputField(
                 color: Color(0xFFFBE3E1),
+                icon: Icons.phone,
                 iconColor: Theme.of(context).primaryColor,
                 controller: _phoneNumberController,
                 validator: (String value) {
