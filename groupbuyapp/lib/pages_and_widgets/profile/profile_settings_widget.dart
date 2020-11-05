@@ -388,7 +388,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           children: [
                             Icon(Icons.location_city, color: Color(0xFFF98B83)),
                             SizedBox(width: 10,),
-                            Text(address),
+                            Flexible(
+                                child: Text(address),
+                            )
                           ]
                         )),
                         onDismissed: (direction) {
