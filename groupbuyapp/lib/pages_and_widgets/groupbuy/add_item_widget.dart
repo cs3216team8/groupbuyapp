@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/utils/validators.dart';
 
-class AddItemCard extends StatelessWidget {
+class AddItemCard extends StatefulWidget {
   final TextEditingController urlController;
   final TextEditingController qtyController;
   final TextEditingController remarksController;
@@ -14,6 +14,12 @@ class AddItemCard extends StatelessWidget {
     this.remarksController,
     this.totalAmtController,
   }) : super(key: key);
+
+  @override
+  _AddItemCardState createState() => _AddItemCardState();
+}
+
+class _AddItemCardState extends State<AddItemCard> {
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,7 @@ class AddItemCard extends StatelessWidget {
                   Expanded(
                     flex: 8,
                     child: MyTextField(
-                      controller: urlController,
+                      controller: widget.urlController,
                       labelText: 'Item Link',
                       hintText: 'Item link',
                       icon: Icons.web,
@@ -61,7 +67,7 @@ class AddItemCard extends StatelessWidget {
                   Expanded(
                     flex: 8,
                     child: MyTextField(
-                        controller: remarksController,
+                        controller: widget.remarksController,
                         //expands: true,
                         labelText: 'Remarks',
                         hintText: 'Remarks/options/comments',
@@ -77,7 +83,7 @@ class AddItemCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: MyTextField(
-                      controller: qtyController,
+                      controller: widget.qtyController,
                       keyboardType: TextInputType.number,
                       labelText: 'Quantity',
                       hintText: 'Quantity',
@@ -93,7 +99,7 @@ class AddItemCard extends StatelessWidget {
                 Expanded(
                   flex: 2,
                   child: MyTextField(
-                      controller: totalAmtController,
+                      controller: widget.totalAmtController,
                       keyboardType: TextInputType.number,
                       labelText: 'Price (total)',
                       hintText: 'Total Price,',
@@ -103,7 +109,12 @@ class AddItemCard extends StatelessWidget {
                           return 'Please enter a valid amount!';
                         }
                         return null;
-                      }
+                      },
+                    onChanged: (String val) {
+                        setState(() {
+
+                        });
+                    },
                   ),
                 ),
 
@@ -121,6 +132,7 @@ class MyTextField extends StatelessWidget {
   TextInputType keyboardType;
   IconData icon;
   FormFieldValidator<String> validator;
+  Function(String) onChanged;
 
   MyTextField({
     Key key,
@@ -130,6 +142,7 @@ class MyTextField extends StatelessWidget {
     this.keyboardType,
     this.icon,
     this.validator,
+    this.onChanged
   }) : super(key: key);
 
   @override
@@ -142,6 +155,7 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         validator: validator,
+        onChanged: onChanged,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Theme.of(context).primaryColor),
           isDense: true,

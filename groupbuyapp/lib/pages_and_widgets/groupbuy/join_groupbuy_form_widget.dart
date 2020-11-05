@@ -8,10 +8,12 @@ import 'package:groupbuyapp/utils/styles.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
+  final double deposit;
 
   JoinGroupBuyForm({
     Key key,
-    @required String this.groupBuyId,
+    @required this.groupBuyId,
+    @required this.deposit,
   }) : super(key: key);
 
   @override
@@ -23,6 +25,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   List<TextEditingController> itemQtyControllers = [];
   List<TextEditingController> itemRemarksControllers = [];
   List<TextEditingController> itemTotalAmtControllers = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   List<Widget> itemCards = [];
   List<Widget> deleted = []; //TODO undo redo also
@@ -43,6 +46,11 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void submitJoinRequest(BuildContext context) {
     print("submit join request");
     //TODO: validation of ALL items -- add validator
+    if (!_formKey.currentState.validate()) {
+      print("failed");
+      return;
+    }
+    print("can");
 
     List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text).toList();
     List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text)).toList();
@@ -59,6 +67,12 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
     GroupBuyStorage.instance.addRequest(widget.groupBuyId, request);
 
     Navigator.pop(context);
+  }
+  
+  double getTotal() {
+    List<double> amts = itemTotalAmtControllers.map((ctrlr) => double.parse(ctrlr.text, (val) => 0)).toList();
+    
+    return amts.reduce((value, element) => value + element);
   }
 
 
@@ -151,25 +165,28 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                 Container(
                   alignment: Alignment.center,
 
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    itemCount: itemCards.length,
-                    itemBuilder: (context, index) {
-                      Widget itemCard = itemCards[index];
-                      return Dismissible(
-                        key: itemCard.key,
-                        direction: DismissDirection.startToEnd,
-                        onDismissed: (direction) {
-                          _deleteInputCard(index);
-                        },
-                        child: ListTile(
-                          contentPadding: EdgeInsets.all(0),
-                          title: itemCard,
-                        ),
-                      );
-                    },
-                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: itemCards.length,
+                      itemBuilder: (context, index) {
+                        Widget itemCard = itemCards[index];
+                        return Dismissible(
+                          key: itemCard.key,
+                          direction: DismissDirection.startToEnd,
+                          onDismissed: (direction) {
+                            _deleteInputCard(index);
+                          },
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(0),
+                            title: itemCard,
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -232,7 +249,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                       Text('TOTAL', style: Styles.moneyStyle), Text('\$57.90',style: Styles.moneyStyle)
+                       Text('TOTAL', style: Styles.moneyStyle), Text('\$${getTotal().toStringAsFixed(2)}',style: Styles.moneyStyle)
                     ]
                 ),
                 SizedBox(height: 7),
@@ -240,7 +257,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('DEPOSIT', style: Styles.moneyStyle),
-                      Text('\$28.95', style: Styles.moneyStyle)
+                      Text('\$${(getTotal() * widget.deposit).toStringAsFixed(2)}', style: Styles.moneyStyle)
                     ]
                 ),
               ],
