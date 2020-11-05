@@ -218,8 +218,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           style:Styles.usernameStyle
                       ),
                     ),
-
-                    RoundedInputField(
+                    Form(
+                        key: _formKey,
+                        child: Column(
+                    children : [
+                      RoundedInputField(
                       color: Color(0xFFFBE3E1),
                       iconColor: Theme.of(context).primaryColor,
                       hintText: "New Name",
@@ -240,6 +243,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         if (value.isEmpty) {
                           return 'Please enter your new username';
                         }
+                        if (value.length > 12) {
+                          print("ARE YOU");
+                          return 'Username can not be longer than 12 characters';
+                        }
                         return null;
                       },
                     ),
@@ -253,11 +260,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         return null;
                       },
                     ),
-                    // InputHorizontal(itemText: "Name", controller: nameController, enabled: true),
-                    // InputHorizontal(itemText: "Username", controller: usernameController, enabled: true),
-                    // InputHorizontal(itemText: "Phone Number", controller: phoneNumberController, enabled: true),
-                    // InputHorizontal(itemText: "Email", controller: emailController, enabled: false),
-
+                    ])),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -294,9 +297,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
+                        Column(
+                        children: [Container(
                             child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
                         ),
+
+                        ]),
                         SizedBox(width: 60,),
                         Container(
                           padding: EdgeInsets.all(0),
