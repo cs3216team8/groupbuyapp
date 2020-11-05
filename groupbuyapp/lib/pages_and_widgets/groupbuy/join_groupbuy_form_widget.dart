@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
   final String groupBuyId;
@@ -35,6 +36,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void addItemInput() {
     setState(() {
       itemCards.add(createInputCard());
+
     });
   }
 
@@ -94,39 +96,61 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
         context: context,
         title: "Join Group Buy",
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RaisedButton(
-              color: Colors.greenAccent,
-              onPressed: () => submitJoinRequest(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.assignment_turned_in_outlined),
-                  Text("Confirm"),
-                ],
-              ),
-            ),
-          ]
-      ),
       body: SingleChildScrollView(
-        child: Container(
-            margin: EdgeInsets.only(top: 20, bottom: 80, left: 0, right: 0),
-            // padding: EdgeInsets.all(20),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
+        child: Stack(
+          children: [
+            Container(height: MediaQuery.of(context).size.height),
+            Container(
+            child: Container(
+              padding: EdgeInsets.all(
+                20,
+              ),
+              margin: EdgeInsets.only(left: 10, right: 10),
+              child: Column(
               children: [
-                Text(
-                    'Items',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                SizedBox(height:5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:
+                    [
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                'ITEMS',
+                                style: Styles.subtitleStyle,
+                                textAlign: TextAlign.left,
+                            )
+                            ),
+                            SizedBox(height: 3),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '*SWIPE RIGHT TO DELETE ITEMS',
+                                style: Styles.smallNoticeStyle,
+                                textAlign: TextAlign.right,
+                              )
+                            ),
+                            ]
+                      ),
+                      // Container(
+                      // width: 30,
+                      // height: 30,
+                      // child: FloatingActionButton(
+                      //   backgroundColor: Color(0xFFF98B83),
+                      // child: new Icon(Icons.add, color: Colors.white,),
+                      // onPressed: addItemInput
+                      // )
+                      // )
+                    ]
                 ),
-                SizedBox(height: 20,),
 
+                SizedBox(height:5),
                 Container(
+                  alignment: Alignment.center,
+
                   child: ListView.builder(
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
@@ -139,44 +163,117 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                         onDismissed: (direction) {
                           _deleteInputCard(index);
                         },
-                        background: Container(color: Colors.black26),
                         child: ListTile(
                           contentPadding: EdgeInsets.all(0),
                           title: itemCard,
-                          trailing: IconButton(
-                            icon: Icon(Icons.delete_rounded),
-                            onPressed: () => _deleteInputCard(index),
-                          ),
                         ),
                       );
                     },
                   ),
                 ),
-
-                OutlineButton(
-                    child: Text('+ Add more items',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        )),
-                    onPressed: addItemInput
-                ),
                 Row(
-                    children: [
-                      Expanded(flex: 70, child: Text('Total: ')),
-                      Expanded(flex: 30, child: Text('\$57.90'))
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children:
+                  [
+                    Container(
+                    alignment: Alignment.center,
+                    child:  GestureDetector(
+                        onTap: addItemInput,
+                        child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                            child: Row(
+                                children: [
+                                  Icon(Icons.add, color: Color(0xFFF98B83)),
+                                  new Text("ADD ITEM",
+                                textAlign: TextAlign.center,
+                                style: Styles.minorStyle)
+                                ]
+                            )
+                        )
+                    )
+                  )
                     ]
                 ),
-                Row(
+                SizedBox(height: 10),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'SUMMARY',
+                      style: Styles.subtitleStyle,
+                      textAlign: TextAlign.right,
+                    )
+                ),
+                SizedBox(height: 3),
+                Container(
+                  padding: EdgeInsets.all(
+                    20,
+                  ),
+                  decoration: new BoxDecoration(
+                    color: Color(0xFFFBECE6),
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0)),
+                    border: Border.all(
+                        color: Color(0xFFFFFFFF), width: 0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 2,
+                        offset: Offset(
+                            1, 1), // changes position of shadow
+                      )
+                    ],
+                  ),
+                  child: Column(children: <Widget>[
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Expanded(flex: 70, child: Text('Deposit Amount:')),
-                      Expanded(flex: 30, child: Text('\$28.95'))
+                       Text('TOTAL', style: Styles.moneyStyle), Text('\$57.90',style: Styles.moneyStyle)
+                    ]
+                ),
+                SizedBox(height: 7),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('DEPOSIT', style: Styles.moneyStyle),
+                      Text('\$28.95', style: Styles.moneyStyle)
                     ]
                 ),
               ],
             )
         ),
+                SizedBox(height: 20),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RaisedButton(
+                        elevation: 15,
+                        padding: EdgeInsets.all(14.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        color: Colors.greenAccent,
+                        onPressed: () => submitJoinRequest(context),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
+                            Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
+                          ],
+                        ),
+                      ),
+                    ]
+                ),
+          ]
+        )
       ),
+    )
+    ])
+    )
     );
   }
 }

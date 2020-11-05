@@ -288,7 +288,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               maxHeight: 100.0,
               child: Container(
                 color: Color(0xFFFAFAFA),
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: Center(
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -299,6 +299,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ),
                         SizedBox(width: 60,),
                         Container(
+                          padding: EdgeInsets.all(0),
                           width: 30,
                           height: 30,
                           child: FloatingActionButton(
@@ -373,22 +374,38 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
                   final address = addresses[index];
-                  return Container(
+                  return Column(
+                      children: [Container(
                     alignment: Alignment.center,
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
                         key: Key(address),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
                         child:  SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8 * 0.8,
-                          child: Text(address),
-                        ),
+                          child: Row(
+                          children: [
+                            Icon(Icons.location_city, color: Color(0xFFF98B83)),
+                            SizedBox(width: 10,),
+                            Text(address),
+                          ]
+                        )),
                         onDismissed: (direction) {
                           _deleteAddress(index);
                         },
                       )
-                  );
+                  ),
+                        index != addresses.length-1? Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.8 * 0.8,
+
+                          child: Divider(thickness: 0.5, color: Colors.grey)
+                        )
+                  ): Container()
+
+                      ]);
                 },
               childCount: addresses.length
             ),

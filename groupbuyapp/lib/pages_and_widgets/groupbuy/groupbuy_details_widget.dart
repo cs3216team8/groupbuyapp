@@ -254,7 +254,9 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
               : [],
         ),
         floatingActionButton: isOrganiser()
-            ? Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 RaisedButton(
                   elevation: 15,
                   padding: EdgeInsets.all(14.0),
@@ -272,7 +274,8 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                     ],
                   ),
                 ),
-              ])
+              ]
+            )
             : widget.groupBuy.isOpen()
                 ? hasRequested
                     ? RaisedButton(
@@ -634,7 +637,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                                 : RequestAsPiggyBackerButClosedDefaultScreen(),
                                         hasRequested
                                           ? SizedBox(height: MediaQuery.of(context).size.height * 0.3,)
-                                          : SizedBox(height: MediaQuery.of(context).size.height * 0.08),
+                                          : SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                                       ],
                                     ),
                             ),
