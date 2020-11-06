@@ -118,6 +118,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void _deleteInputCard(int index) {
     setState(() {
       Widget itemCard = itemCards.removeAt(index);
+      itemUrlControllers.removeAt(index);
+      itemQtyControllers.removeAt(index);
+      itemRemarksControllers.removeAt(index);
+      itemTotalAmtControllers.removeAt(index);
       deleted.add(itemCard);
     });
   }
