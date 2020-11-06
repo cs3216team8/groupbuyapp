@@ -64,7 +64,6 @@ class _RequestDetailsState extends State<RequestDetailsScreen> {
           },
       )
     );
-    //TODO: @kx after @agnes completes join request form
   }
 
   @override

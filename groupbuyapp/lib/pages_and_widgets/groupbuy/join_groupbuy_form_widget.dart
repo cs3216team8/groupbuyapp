@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
@@ -117,6 +118,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void _deleteInputCard(int index) {
     setState(() {
       Widget itemCard = itemCards.removeAt(index);
+      itemUrlControllers.removeAt(index);
+      itemQtyControllers.removeAt(index);
+      itemRemarksControllers.removeAt(index);
+      itemTotalAmtControllers.removeAt(index);
       deleted.add(itemCard);
     });
   }
@@ -128,187 +133,207 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
         context: context,
         title: "Join Group Buy",
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(height: MediaQuery.of(context).size.height),
-            Container(
-            child: Container(
-              padding: EdgeInsets.all(
-                20,
-              ),
-              margin: EdgeInsets.only(left: 10, right: 10),
-              child: Column(
-              children: [
-                SizedBox(height:5),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:
-                    [
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                'ITEMS',
-                                style: Styles.subtitleStyle,
-                                textAlign: TextAlign.left,
-                            )
-                            ),
-                            SizedBox(height: 3),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                '*SWIPE RIGHT TO DELETE ITEMS',
-                                style: Styles.smallNoticeStyle,
-                                textAlign: TextAlign.right,
-                              )
-                            ),
-                            ]
-                      ),
-                      // Container(
-                      // width: 30,
-                      // height: 30,
-                      // child: FloatingActionButton(
-                      //   backgroundColor: Color(0xFFF98B83),
-                      // child: new Icon(Icons.add, color: Colors.white,),
-                      // onPressed: addItemInput
-                      // )
-                      // )
-                    ]
-                ),
-
-                SizedBox(height:5),
-                Container(
-                  alignment: Alignment.center,
-
-                  child: Form(
-                    key: _formKey,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: itemCards.length,
-                      itemBuilder: (context, index) {
-                        Widget itemCard = itemCards[index];
-                        return Dismissible(
-                          key: itemCard.key,
-                          direction: DismissDirection.startToEnd,
-                          onDismissed: (direction) {
-                            _deleteInputCard(index);
-                          },
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(0),
-                            title: itemCard,
+      body: Stack(
+        children: [
+          Container(height: MediaQuery.of(context).size.height),
+          CustomScrollView(
+            slivers: <Widget>[
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: SliverAppBarDelegate(
+                    minHeight: 60.0,
+                    maxHeight: 80.0,
+                    child: Container(
+                      color: Color(0xFFFAFAFA),
+                      padding: EdgeInsets.only(left: 20, right: 20, top: 20),
+                      margin: EdgeInsets.only(left: 10, right: 10),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height:5),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            'ITEMS',
+                                            style: Styles.subtitleStyle,
+                                            textAlign: TextAlign.left,
+                                          )
+                                      ),
+                                      SizedBox(height: 3),
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '*SWIPE RIGHT TO DELETE ITEMS',
+                                            style: Styles.smallNoticeStyle,
+                                            textAlign: TextAlign.right,
+                                          )
+                                      ),
+                                    ]
+                                ),
+                                Container(
+                                    width: 30,
+                                    height: 30,
+                                    child: FloatingActionButton(
+                                        backgroundColor: Color(0xFFF98B83),
+                                        child: new Icon(Icons.add, color: Colors.white,),
+                                        onPressed: addItemInput
+                                    )
+                                )
+                              ]
                           ),
-                        );
-                      },
-                    ),
-                  )
+                          SizedBox(height:5),
+                        ],
+                      ),
+                    )
                 ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children:
+              ),
+
+              SliverList(
+                delegate: SliverChildListDelegate(
                   [
                     Container(
-                    alignment: Alignment.center,
-                    child:  GestureDetector(
-                        onTap: addItemInput,
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                                children: [
-                                  Icon(Icons.add, color: Color(0xFFF98B83)),
-                                  new Text("ADD ITEM",
-                                textAlign: TextAlign.center,
-                                style: Styles.minorStyle)
-                                ]
-                            )
-                        )
-                    )
-                  )
-                    ]
-                ),
-                SizedBox(height: 10),
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'SUMMARY',
-                      style: Styles.subtitleStyle,
-                      textAlign: TextAlign.right,
-                    )
-                ),
-                SizedBox(height: 3),
-                Container(
-                  padding: EdgeInsets.all(
-                    20,
-                  ),
-                  decoration: new BoxDecoration(
-                    color: Color(0xFFFBECE6),
-                    borderRadius:
-                    BorderRadius.all(Radius.circular(10.0)),
-                    border: Border.all(
-                        color: Color(0xFFFFFFFF), width: 0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 2,
-                        offset: Offset(
-                            1, 1), // changes position of shadow
-                      )
-                    ],
-                  ),
-                  child: Column(children: <Widget>[
+                        padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                        margin: EdgeInsets.only(left: 10, right: 10),
+                        child: Column(
+                            children: [
+                              Container(
+                                  alignment: Alignment.center,
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                       Text('TOTAL', style: Styles.moneyStyle), Text('\$${getTotal().toStringAsFixed(2)}',style: Styles.moneyStyle)
-                    ]
+                                  child: Form(
+                                    key: _formKey,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const ClampingScrollPhysics(),
+                                      itemCount: itemCards.length,
+                                      itemBuilder: (context, index) {
+                                        Widget itemCard = itemCards[index];
+                                        return Dismissible(
+                                          key: itemCard.key,
+                                          direction: DismissDirection.startToEnd,
+                                          onDismissed: (direction) {
+                                            _deleteInputCard(index);
+                                          },
+                                          child: ListTile(
+                                            contentPadding: EdgeInsets.all(0),
+                                            title: itemCard,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  )
+                              ),
+                              // Row(
+                              //     mainAxisAlignment: MainAxisAlignment.center,
+                              //     crossAxisAlignment: CrossAxisAlignment.center,
+                              //     children:
+                              //     [
+                              //       Container(
+                              //           alignment: Alignment.center,
+                              //           child:  GestureDetector(
+                              //               onTap: addItemInput,
+                              //               child: Container(
+                              //                   alignment: Alignment.center,
+                              //                   padding: EdgeInsets.all(8),
+                              //                   decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                              //                   child: Row(
+                              //                       children: [
+                              //                         Icon(Icons.add, color: Color(0xFFF98B83)),
+                              //                         new Text("ADD ITEM",
+                              //                             textAlign: TextAlign.center,
+                              //                             style: Styles.minorStyle)
+                              //                       ]
+                              //                   )
+                              //               )
+                              //           )
+                              //       )
+                              //     ]
+                              // ),
+                              SizedBox(height: 10),
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'SUMMARY',
+                                    style: Styles.subtitleStyle,
+                                    textAlign: TextAlign.right,
+                                  )
+                              ),
+                              SizedBox(height: 3),
+                              Container(
+                                  padding: EdgeInsets.all(
+                                    20,
+                                  ),
+                                  decoration: new BoxDecoration(
+                                    color: Color(0xFFFBECE6),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0)),
+                                    border: Border.all(
+                                        color: Color(0xFFFFFFFF), width: 0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 2,
+                                        offset: Offset(
+                                            1, 1), // changes position of shadow
+                                      )
+                                    ],
+                                  ),
+                                  child: Column(children: <Widget>[
+
+                                    Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('TOTAL', style: Styles.moneyStyle), Text('\$${getTotal().toStringAsFixed(2)}',style: Styles.moneyStyle)
+                                        ]
+                                    ),
+                                    SizedBox(height: 7),
+                                    Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text('DEPOSIT', style: Styles.moneyStyle),
+                                          Text('\$${(getTotal() * widget.deposit).toStringAsFixed(2)}', style: Styles.moneyStyle)
+                                        ]
+                                    ),
+                                  ],
+                                  )
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RaisedButton(
+                                      elevation: 15,
+                                      padding: EdgeInsets.all(14.0),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      color: Colors.greenAccent,
+                                      onPressed: () => submitJoinOrEditRequest(context),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
+                                          Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
+                                        ],
+                                      ),
+                                    ),
+                                  ]
+                              ),
+                            ]
+                        )
+                    ),
+                  ]
                 ),
-                SizedBox(height: 7),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('DEPOSIT', style: Styles.moneyStyle),
-                      Text('\$${(getTotal() * widget.deposit).toStringAsFixed(2)}', style: Styles.moneyStyle)
-                    ]
-                ),
-              ],
-            )
-        ),
-                SizedBox(height: 20),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      RaisedButton(
-                        elevation: 15,
-                        padding: EdgeInsets.all(14.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        color: Colors.greenAccent,
-                        onPressed: () => submitJoinOrEditRequest(context),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.assignment_turned_in_outlined, color: Colors.white),
-                            Text(" JOIN", style: Styles.popupButtonStyle, textAlign: TextAlign.left,),
-                          ],
-                        ),
-                      ),
-                    ]
-                ),
-          ]
-        )
-      ),
-    )
-    ])
-    )
+              ),
+            ],
+          ),
+        ]
+      )
     );
   }
 }

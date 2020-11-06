@@ -192,78 +192,80 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                        constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
-                        decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
-                        child:
-                        Stack(
-                            alignment: Alignment.topCenter,
-                            overflow: Overflow.visible,
-                            children: [
-                              Positioned(
-                                  bottom: -50,
-                                  child: CircleAvatar(
-                                    radius: 50,
-                                    backgroundColor: Theme.of(context).primaryColor,
-                                    child: CircleAvatar(
-                                      radius: 47,
-                                      backgroundImage: Image.network(profilePicUrl).image,
-                                      child: _changeProfilePicturePopup(),
-                                      )
-                                    ),
+                      constraints: BoxConstraints.loose(Size.fromHeight(53.9/ 140.23 *MediaQuery. of(context).size.width)),
+                      decoration: BoxDecoration(image: DecorationImage(image: ExactAssetImage('assets/banner-profile.png', ))),
+                      child:
+                      Stack(
+                        alignment: Alignment.topCenter,
+                        overflow: Overflow.visible,
+                        children: [
+                          Positioned(
+                              bottom: -50,
+                              child: CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Theme.of(context).primaryColor,
+                                child: CircleAvatar(
+                                  radius: 47,
+                                  backgroundImage: Image.network(profilePicUrl).image,
+                                  child: _changeProfilePicturePopup(),
                                   )
-                              ]
-                        )
+                                ),
+                              )
+                        ]
+                      )
                     ),
                     SizedBox(height: 60,),
                     Center(
                       child: Text(
-                          "${widget.profile.email}",
-                          style:Styles.usernameStyle
+                        "${widget.profile.email}",
+                        style:Styles.usernameStyle
                       ),
                     ),
                     Form(
-                        key: _formKey,
-                        child: Column(
-                    children : [
-                      RoundedInputField(
-                      color: Color(0xFFFBE3E1),
-                      iconColor: Theme.of(context).primaryColor,
-                      hintText: "New Name",
-                      controller: nameController,
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return 'Please enter your new name';
-                        }
-                        return null;
-                      },
+                      key: _formKey,
+                      child: Column(
+                        children : [
+                          RoundedInputField(
+                          color: Color(0xFFFBE3E1),
+                          iconColor: Theme.of(context).primaryColor,
+                          hintText: "New Name",
+                          controller: nameController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Please enter your new name';
+                            }
+                            return null;
+                          },
+                        ),
+                          RoundedInputField(
+                            color: Color(0xFFFBE3E1),
+                            iconColor: Theme.of(context).primaryColor,
+                            hintText: "New Username",
+                            controller: usernameController,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your new username';
+                              }
+                              if (value.length > 12) {
+                                print("ARE YOU");
+                                return 'Username can not be longer than 12 characters';
+                              }
+                              return null;
+                            },
+                          ),
+                          RoundedInputField(
+                            color: Color(0xFFFBE3E1),
+                            icon: Icons.phone,
+                            iconColor: Theme.of(context).primaryColor,
+                            hintText: "New Phone Number",
+                            controller: phoneNumberController,
+                            validator: (String value) {
+                              return null;
+                            },
+                          ),
+                        ]
+                      )
                     ),
-                    RoundedInputField(
-                      color: Color(0xFFFBE3E1),
-                      iconColor: Theme.of(context).primaryColor,
-                      hintText: "New Username",
-                      controller: usernameController,
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return 'Please enter your new username';
-                        }
-                        if (value.length > 12) {
-                          print("ARE YOU");
-                          return 'Username can not be longer than 12 characters';
-                        }
-                        return null;
-                      },
-                    ),
-                    RoundedInputField(
-                      color: Color(0xFFFBE3E1),
-                      icon: Icons.phone,
-                      iconColor: Theme.of(context).primaryColor,
-                      hintText: "New Phone Number",
-                      controller: phoneNumberController,
-                      validator: (String value) {
-                        return null;
-                      },
-                    ),
-                    ])),
                     GestureDetector(
                       onTap: () {
                         showDialog(
@@ -272,16 +274,15 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         );
                       },
                       child: Container(
-                              margin: EdgeInsets.only(top: 5),
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
-                              child: new Text("LOGOUT",
-                                  textAlign: TextAlign.center,
-                                  style: Styles.minorStyle
-                              )
-                          )
-
-                      ),
+                        margin: EdgeInsets.only(top: 5),
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                        child: new Text("LOGOUT",
+                            textAlign: TextAlign.center,
+                            style: Styles.minorStyle
+                        )
+                      )
+                    ),
                   ],
                 ),
               ],
@@ -291,17 +292,24 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             pinned: true,
             delegate: SliverAppBarDelegate(
               minHeight: 60.0,
-              maxHeight: 100.0,
+              maxHeight: 70.0,
               child: Container(
                 color: Color(0xFFFAFAFA),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Center(
-                    child: Row(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Column(
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Container(
-                            child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
+
+                        Column(
+                          children: [
+                            Container(
+                              child: Text("LIST OF ADDRESSES", style: Styles.subtitleStyle,)
+                            ),
+                          ]
                         ),
                         SizedBox(width: 60,),
                         Container(
@@ -379,6 +387,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         )
                       ],
                     ),
+                  ]
                 ),
               )
             ),
@@ -388,8 +397,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                 (BuildContext context, int index) {
                   final address = addresses[index];
                   return Column(
-                      children: [Container(
-                    alignment: Alignment.center,
+                    children: [Container(
+                      alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
                         key: Key(address),
@@ -398,14 +407,15 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         child:  SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8 * 0.8,
                           child: Row(
-                          children: [
-                            Icon(Icons.location_city, color: Color(0xFFF98B83)),
-                            SizedBox(width: 10,),
-                            Flexible(
-                                child: Text(address),
-                            )
-                          ]
-                        )),
+                            children: [
+                              Icon(Icons.location_city, color: Color(0xFFF98B83)),
+                              SizedBox(width: 10,),
+                              Flexible(
+                                  child: Text(address),
+                              )
+                            ]
+                          )
+                        ),
                         onDismissed: (direction) {
                           _deleteAddress(index);
                         },
