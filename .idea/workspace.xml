@@ -26,9 +26,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/groupbuyapp/assets/undraw_Mailbox_re_dvds.svg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_list_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_list_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
