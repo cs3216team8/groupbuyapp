@@ -26,7 +26,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,11 +167,11 @@
     <state width="1236" height="189" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1604499946636" />
     <state width="1491" height="249" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1604469867272" />
     <state width="1123" height="208" key="GridCell.Tab.0.right/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603191236431" />
-    <state x="284" y="0" key="SettingsEditor" timestamp="1604473759570">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="361" y="37" key="SettingsEditor" timestamp="1604772229257">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="284" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1604473759570" />
-    <state x="361" y="37" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1603900179065" />
+    <state x="361" y="37" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1604772229257" />
     <state x="310" y="109" key="SettingsEditor/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603187124959" />
     <state x="157" y="123" key="Vcs.Push.Dialog.v2" timestamp="1604481041959">
       <screen x="0" y="0" width="1280" height="680" />
@@ -178,22 +179,22 @@
     <state x="157" y="123" key="Vcs.Push.Dialog.v2/0.0.1280.680@0.0.1280.680" timestamp="1604481041959" />
     <state x="188" y="149" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1604233747294" />
     <state x="188" y="149" key="Vcs.Push.Dialog.v2/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603185645165" />
-    <state x="250" y="0" width="632" height="680" key="find.popup" timestamp="1604498855631">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="300" y="0" width="708" height="824" key="find.popup" timestamp="1604772220036">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="250" y="0" width="632" height="680" key="find.popup/0.0.1280.680@0.0.1280.680" timestamp="1604498855631" />
-    <state x="300" y="0" width="588" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1604469441908" />
+    <state x="300" y="0" width="708" height="824" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1604772220036" />
     <state x="300" y="0" width="588" height="824" key="find.popup/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603183807150" />
     <state x="252" y="191" key="run.anything.popup" timestamp="1604256649264">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="252" y="191" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1604256649264" />
     <state x="252" y="191" key="run.anything.popup/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603185298270" />
-    <state x="359" y="120" width="672" height="560" key="search.everywhere.popup" timestamp="1604473756230">
-      <screen x="0" y="0" width="1280" height="680" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1604772225710">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="359" y="120" width="672" height="560" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1604473756230" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1604470078471" />
+    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1604772225710" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603187086976" />
   </component>
   <component name="XDebuggerManager">
