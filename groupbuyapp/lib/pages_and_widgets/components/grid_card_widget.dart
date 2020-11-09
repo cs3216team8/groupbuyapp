@@ -113,8 +113,8 @@ class GroupBuyCard extends StatelessWidget {
                         ),
                         Flexible(
                             flex: 1,
-                            child: new Text(
-                              "${this.groupBuy.address.substring(0, shortenedAddressLength)}..",
+                            child:  new Text(
+                              shortenedAddressLength < this.groupBuy.address.length? "${this.groupBuy.address.substring(0, shortenedAddressLength)}.." : this.groupBuy.address,
                               style: titleStyle,
                             ))
                       ]),
@@ -168,10 +168,12 @@ class GroupBuyCard extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Text(
+                          shortenedUsernameLength < profile.username.length? Text(
                             "${profile.username.substring(0, shortenedUsernameLength)}..",
                             style: textStyle,
-                          ),
+                          ): Text("${profile.username.substring(0, shortenedUsernameLength)}",
+                          style: textStyle,
+                          )
                         ],
                       ),
                     ],
