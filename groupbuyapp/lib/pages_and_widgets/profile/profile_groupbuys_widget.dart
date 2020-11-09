@@ -96,8 +96,12 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
         builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
           List<Widget> children;
 
-          List<GroupBuy> groupBuys = snapshot.data.toList();
+          List<GroupBuy> groupBuys;
 
+          if (snapshot.data != null) {
+            groupBuys = snapshot.data.toList();
+          }
+          
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
