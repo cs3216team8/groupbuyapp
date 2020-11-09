@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class ChatList extends StatefulWidget {
   @override
@@ -209,10 +210,8 @@ class ChatRoomsTile extends StatelessWidget {
             ),
             Text(userName,
                 textAlign: TextAlign.start,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400))
+                style: Styles.textStyle,
+            )
           ],
         ),
       ),
