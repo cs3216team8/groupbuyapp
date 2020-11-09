@@ -15,10 +15,17 @@ class Styles {
 
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
-  static const TextStyle chatStyle = TextStyle(
+  static const TextStyle chatMessageStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15,
-      fontWeight: FontWeight.w400
+      fontWeight: FontWeight.w500
+  );
+
+  static const TextStyle chatTimeStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 11,
+      color: Colors.blueGrey,
+      fontWeight: FontWeight.w500
   );
 
 

@@ -93,9 +93,16 @@ class _ChatScreenState extends State<ChatScreen> {
               messageTextBuilder : (String string, [ChatMessage]) {
                 return Text(
                     string,
-                    style: Styles.textStyle,
+                    style: Styles.chatMessageStyle,
                 );
               },
+              messageTimeBuilder: (String string, [ChatMessage]) {
+                return Text(
+                  string,
+                  style: Styles.chatTimeStyle,
+                );
+              },
+              inputTextStyle: Styles.chatMessageStyle,
               messageDecorationBuilder: (ChatMessage msg, bool isUser) {
                 return BoxDecoration(
                   color: isUser ? Color(0xFFFFF3E7) : Color(0xFFFBECE6),
