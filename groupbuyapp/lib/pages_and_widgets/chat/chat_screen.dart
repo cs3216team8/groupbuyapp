@@ -91,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
               dateFormat: DateFormat('MMM dd'),
               messageDecorationBuilder: (ChatMessage msg, bool isUser) {
                 return BoxDecoration(
-                  color: isUser ? Color(0xFFE75480) : Color(0xFFEEEEEE),
+                  color: isUser ? Color(0xFFE75480) : Color(0xFFFBECE6),
                   // example
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 );
