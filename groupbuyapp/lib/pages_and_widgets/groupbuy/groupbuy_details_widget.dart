@@ -52,12 +52,13 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   // chat with the organiser
   void onTapChat(BuildContext context) async {
-    if (isUserLoggedIn()) {
+    if (!isUserLoggedIn()) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    } else {
+      String requestorId = FirebaseAuth.instance.currentUser.uid;
+      ChatStorage()
+          .createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
     }
-    String requestorId = FirebaseAuth.instance.currentUser.uid;
-    ChatStorage()
-        .createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
   }
 
   void onTapSendEmail(BuildContext context) {
