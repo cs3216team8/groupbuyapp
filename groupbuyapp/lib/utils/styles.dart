@@ -15,8 +15,6 @@ class Styles {
 
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
-
-
   static const TextStyle textStyleUnselected = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15.5,
