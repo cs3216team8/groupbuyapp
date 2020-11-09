@@ -185,16 +185,31 @@ class ChatRoomsTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        color: Colors.white,
+        decoration: new BoxDecoration(
+          color: Color(0xFFFBECE6),
+          borderRadius:
+          BorderRadius.all(Radius.circular(20.0)),
+          border: Border.all(
+              color: Color(0xFFFFFFFF), width: 0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 1,
+              offset: Offset(
+                  1, 1), // changes position of shadow
+            )
+          ],
+        ),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-        margin: EdgeInsets.symmetric(vertical: 2),
+        margin: EdgeInsets.symmetric(horizontal: 13, vertical: 7),
         child: Row(
           children: [
             Container(
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                  color: Colors.pink, borderRadius: BorderRadius.circular(30)),
+                  color: Color(0xFFF98B83), borderRadius: BorderRadius.circular(30)),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Text(userName.substring(0, 1).toUpperCase(),
