@@ -15,6 +15,11 @@ class Styles {
 
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle chatStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 15,
+      fontWeight: FontWeight.w400
+  );
 
 
   static const TextStyle textStyleUnselected = TextStyle(

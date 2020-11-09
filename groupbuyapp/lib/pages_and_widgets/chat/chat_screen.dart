@@ -3,6 +3,7 @@ import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
@@ -89,9 +90,15 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
               timeFormat: DateFormat('HH:mm'),
               dateFormat: DateFormat('MMM dd'),
+              messageTextBuilder : (String string, [ChatMessage]) {
+                return Text(
+                    string,
+                    style: Styles.textStyle,
+                );
+              },
               messageDecorationBuilder: (ChatMessage msg, bool isUser) {
                 return BoxDecoration(
-                  color: isUser ? Color(0xFFE75480) : Color(0xFFFBECE6),
+                  color: isUser ? Color(0xFFFFF3E7) : Color(0xFFFBECE6),
                   // example
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                 );
