@@ -292,7 +292,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             pinned: true,
             delegate: SliverAppBarDelegate(
               minHeight: 60.0,
-              maxHeight: 70.0,
+              maxHeight: 83.0,
               child: Container(
                 color: Color(0xFFFAFAFA),
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -387,6 +387,22 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         )
                       ],
                     ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+
+                        Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '*SWIPE RIGHT TO DELETE ADDRESS',
+                              style: Styles.smallNoticeStyle,
+                              textAlign: TextAlign.left,
+                            )
+                        ),
+                        SizedBox(width: 45,),
+                      ],
+                    ),
                   ]
                 ),
               )
@@ -397,7 +413,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                 (BuildContext context, int index) {
                   final address = addresses[index];
                   return Column(
-                    children: [Container(
+                    children: [
+                      Container(
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
