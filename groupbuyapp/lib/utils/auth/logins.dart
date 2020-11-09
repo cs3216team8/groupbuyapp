@@ -51,6 +51,8 @@ class Logins {
       }
 
       return userCredential;
+    } else {
+      return null;
     }
   }
 
@@ -83,11 +85,14 @@ class Logins {
         break;
 
       case FacebookLoginStatus.cancelledByUser:
-        break;
+        return null;
 
       case FacebookLoginStatus.error:
         throw Exception("There was an error logging in with Facebook");
         break;
+
+      default:
+        return null;
     }
   }
 

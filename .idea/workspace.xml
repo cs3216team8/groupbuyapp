@@ -27,7 +27,18 @@
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_list_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_list_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/android/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/android/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/android/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/login_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/authentication/login_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/home_listings_section.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/home_listings_section.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/create_groupbuy_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/create_groupbuy_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/piggybuy_root.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/piggybuy_root.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/storage/group_buy_storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/storage/group_buy_storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/utils/auth/logins.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/utils/auth/logins.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/utils/styles.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/utils/styles.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +217,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="Dart">
           <url>file://$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/components/home_listings_section.dart</url>
-          <line>78</line>
+          <line>77</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>

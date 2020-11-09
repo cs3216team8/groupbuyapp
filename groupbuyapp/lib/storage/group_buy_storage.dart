@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/request.dart';
@@ -217,7 +216,6 @@ class GroupBuyStorage {
       for (DocumentSnapshot ds in snapshot.docs) {
         batch.delete(ds.reference);
       }
-      ;
 
       batch.set(requestDoc, {
         'id': request.id,

@@ -27,8 +27,7 @@ class Styles {
       color: Colors.grey,
       fontWeight: FontWeight.w500
   );
-
-
+  
   static const TextStyle textStyleUnselected = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15.5,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/grid_card_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 
 class ListingsSection extends StatefulWidget {
