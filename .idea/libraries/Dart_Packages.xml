@@ -191,6 +191,13 @@
             </list>
           </value>
         </entry>
+        <entry key="firebase_messaging">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-5.1.8/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="firebase_storage">
           <value>
             <list>
@@ -683,6 +690,7 @@
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-2.0.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-0.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database-4.1.1/lib" />
+      <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging-5.1.8/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-4.0.1/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flushbar-1.10.4/lib" />
       <root url="file://$PROJECT_DIR$/../../../../src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_datetime_picker-1.4.0/lib" />

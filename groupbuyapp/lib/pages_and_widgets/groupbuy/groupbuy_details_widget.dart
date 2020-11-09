@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
@@ -12,6 +13,7 @@ import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
 import 'package:groupbuyapp/storage/email_storage.dart';
+import 'package:groupbuyapp/utils/auth/auth_check.dart';
 
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
@@ -50,6 +52,9 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
 
   // chat with the organiser
   void onTapChat(BuildContext context) async {
+    if (isUserLoggedIn()) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
+    }
     String requestorId = FirebaseAuth.instance.currentUser.uid;
     ChatStorage()
         .createAndOpenChatRoom(context, widget.groupBuy, requestorId, true);
