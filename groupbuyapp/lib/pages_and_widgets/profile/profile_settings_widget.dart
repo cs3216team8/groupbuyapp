@@ -303,6 +303,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+
                         Column(
                           children: [
                             Container(
