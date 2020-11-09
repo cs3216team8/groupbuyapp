@@ -182,7 +182,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
           )
         ]
       ),
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false, // THIS IS THE LINE CAUSING IT NOT TO AUTOSCROLL
       body: CustomScrollView(
         slivers: <Widget>[
           SliverList(
