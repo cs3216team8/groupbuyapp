@@ -24,7 +24,7 @@ class Styles {
   static const TextStyle chatTimeStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 11,
-      color: Colors.blueGrey,
+      color: Colors.grey,
       fontWeight: FontWeight.w500
   );
 
