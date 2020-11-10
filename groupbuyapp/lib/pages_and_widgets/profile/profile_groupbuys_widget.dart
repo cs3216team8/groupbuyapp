@@ -101,7 +101,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
           if (snapshot.data != null) {
             groupBuys = snapshot.data.toList();
           }
-          
+
           if (snapshot.hasError) {
             print(snapshot.error);
             return FailedToLoadMyGroupBuys();
