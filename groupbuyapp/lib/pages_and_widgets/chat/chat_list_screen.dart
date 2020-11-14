@@ -213,17 +213,10 @@ class ChatRoomsTile extends StatelessWidget {
                   color: Color(0xFFF98B83),
                   borderRadius: BorderRadius.circular(30)),
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 5),
                 child: CircleAvatar(
-                  radius: 47,
+                  radius: 50,
                   backgroundImage: Image.network(profilePicUrl).image,
                   )
-                // Text(userName.substring(0, 1).toUpperCase(),
-                //     textAlign: TextAlign.center,
-                //     style: TextStyle(
-                //         color: Colors.white,
-                //         fontSize: 16,
-                //         fontWeight: FontWeight.w400)),
               ),
             ),
             SizedBox(
