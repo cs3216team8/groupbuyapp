@@ -24,7 +24,9 @@ class _ChatListState extends State<ChatList> {
       );
     }
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme
+          .of(context)
+          .primaryColor,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
@@ -100,69 +102,69 @@ class _ChatListState extends State<ChatList> {
             builder: (context, snapshot) {
               return snapshot.hasData && snapshot.data.documents.length > 0
                   ? ListView.builder(
-                      itemCount: snapshot.data.documents.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        String senderId = snapshot.data.documents[index]
-                            .data()['chatRoomId']
-                            .toString()
-                            .replaceAll("_", "")
-                            .replaceAll(currentUserId, "");
+                  itemCount: snapshot.data.documents.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    String senderId = snapshot.data.documents[index]
+                        .data()['chatRoomId']
+                        .toString()
+                        .replaceAll("_", "")
+                        .replaceAll(currentUserId, "");
 
-                        dynamic userInfo = usersSnapshot.data.documents
-                            .where((x) {
-                              return x.documentID == senderId;
-                            })
-                            .toList()[0]
-                            .data();
-                        String username = userInfo["username"];
-                        String profilePic = userInfo["profilePicture"];
-                        return ChatRoomsTile(
-                          userName: username,
-                          chatRoomId: snapshot.data.documents[index]
-                              .data()["chatRoomId"],
-                          profilePicUrl: profilePic,
-                        );
-                      })
-                  : Container(
-                      padding: EdgeInsets.symmetric(vertical: 60),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/undraw_Mailbox_re_dvds.svg',
-                                height: 180,
-                              ),
-                              SizedBox(height: 20.0),
-                              Text(
-                                "It's quiet in here...",
-                                style: TextStyle(
-                                    color: Colors.blueGrey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Text(
-                                "Start a chat with an organizer",
-                                style: TextStyle(
-                                    color: Colors.blueGrey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                              Text(
-                                "on the GroupBuy details page",
-                                style: TextStyle(
-                                    color: Colors.blueGrey,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                    dynamic userInfo = usersSnapshot.data.documents
+                        .where((x) {
+                      return x.documentID == senderId;
+                    })
+                        .toList()[0]
+                        .data();
+                    String username = userInfo["username"];
+                    String profilePic = userInfo["profilePicture"];
+                    return ChatRoomsTile(
+                      userName: username,
+                      chatRoomId: snapshot.data.documents[index]
+                          .data()["chatRoomId"],
+                      profilePicUrl: profilePic,
                     );
+                  })
+                  : Container(
+                padding: EdgeInsets.symmetric(vertical: 60),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/undraw_Mailbox_re_dvds.svg',
+                          height: 180,
+                        ),
+                        SizedBox(height: 20.0),
+                        Text(
+                          "It's quiet in here...",
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          "Start a chat with an organizer",
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          "on the GroupBuy details page",
+                          style: TextStyle(
+                              color: Colors.blueGrey,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
             },
           );
         });
@@ -183,7 +185,8 @@ class ChatRoomsTile extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChatScreen(
+                builder: (context) =>
+                    ChatScreen(
                       chatRoomId: chatRoomId,
                       username: userName,
                     )));
@@ -213,9 +216,11 @@ class ChatRoomsTile extends StatelessWidget {
                   color: Color(0xFFF98B83),
                   borderRadius: BorderRadius.circular(30)),
               child: Container(
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: Image.network(profilePicUrl).image,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundImage: Image
+                        .network(profilePicUrl)
+                        .image,
                   )
               ),
             ),
