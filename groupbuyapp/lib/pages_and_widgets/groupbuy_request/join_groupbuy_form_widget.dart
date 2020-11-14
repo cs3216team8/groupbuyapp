@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
@@ -61,6 +62,10 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   void submitJoinOrEditRequest(BuildContext context) {
     print("submit join request");
     if (!_formKey.currentState.validate()) {
+      return;
+    }
+    if (itemUrlControllers.isEmpty) {
+      showFlushbar(context, "Error!", "You can only join a group buy with items in your request!");
       return;
     }
 
