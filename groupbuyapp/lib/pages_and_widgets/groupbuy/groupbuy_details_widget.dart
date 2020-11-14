@@ -239,6 +239,39 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     fetchRequests();
   }
 
+  Widget storeUrlDisplay() {
+    return widget.groupBuy.storeWebsite!= null?
+    Column(
+
+      children: [
+        SizedBox(height: 7),
+        Row(
+        // Location
+        children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(
+          top: 6,
+          left: 3,
+          right: 10,
+          bottom: 6),
+          child: Icon(
+          Icons.public,
+          color: Color(0xFFe87d74),
+          size: 24.0,
+          semanticLabel: 'Deposit',
+          )
+        ),
+        Flexible(
+          child: Text(
+          '${widget.groupBuy.storeWebsite}',
+          style: Styles.textStyle)
+        ),
+        ],
+        ),
+      ]
+    ): Container();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -485,6 +518,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                       ],
                                     ),
                                   ),
+                                  storeUrlDisplay(),
                                   SizedBox(height: 7),
                                   Row(
                                     // Location
