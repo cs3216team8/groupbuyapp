@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
@@ -100,7 +101,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     height: MediaQuery.of(context).size.height * 0.3,
                     width: MediaQuery.of(context).size.width * 0.7,
                     fit: BoxFit.contain,
-
+                    placeholder: kTransparentImage,
                     image: chatMessage.image,
                   ),
                 );
