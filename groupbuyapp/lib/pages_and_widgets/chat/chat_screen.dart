@@ -93,6 +93,18 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
               timeFormat: DateFormat('HH:mm'),
               dateFormat: DateFormat('MMM dd'),
+              messageImageBuilder: (String string, [ChatMessage chatMessage]) {
+                return Padding(
+                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                  child: FadeInImage.memoryNetwork(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width * 0.7,
+                    fit: BoxFit.contain,
+
+                    image: chatMessage.image,
+                  ),
+                );
+              },
               messageTextBuilder: (String string, [ChatMessage]) {
                 return Text(
                   string,

@@ -26,7 +26,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_settings_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/profile/profile_settings_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/pages_and_widgets/chat/chat_screen.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +58,7 @@
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../src/flutter/bin/cache/dart-sdk" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -129,6 +132,10 @@
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="371" y="87" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1280.680@0.0.1280.680" timestamp="1604481716949" />
+    <state x="515" y="267" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1605384352949">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="515" y="267" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1536.824@0.0.1536.824" timestamp="1605384352949" />
     <state x="93" y="93" width="1350" height="638" key="AVDManager" timestamp="1603179728343">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -142,29 +149,29 @@
     </state>
     <state x="548" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1603963214332" />
     <state x="548" y="167" key="FileChooserDialogImpl/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603186373952" />
-    <state width="1491" height="242" key="GridCell.Tab.0.bottom" timestamp="1605349425496">
+    <state width="1491" height="383" key="GridCell.Tab.0.bottom" timestamp="1605385310726">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1236" height="189" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1604499946636" />
-    <state width="1491" height="242" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605349425496" />
+    <state width="1491" height="383" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1605385310726" />
     <state width="1123" height="208" key="GridCell.Tab.0.bottom/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603191236431" />
-    <state width="1491" height="242" key="GridCell.Tab.0.center" timestamp="1605349425495">
+    <state width="1491" height="383" key="GridCell.Tab.0.center" timestamp="1605385310725">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1236" height="189" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1604499946636" />
-    <state width="1491" height="242" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605349425495" />
+    <state width="1491" height="383" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1605385310725" />
     <state width="1123" height="208" key="GridCell.Tab.0.center/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603191236431" />
-    <state width="1491" height="242" key="GridCell.Tab.0.left" timestamp="1605349425495">
+    <state width="1491" height="383" key="GridCell.Tab.0.left" timestamp="1605385310725">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1236" height="189" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1604499946636" />
-    <state width="1491" height="242" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605349425495" />
+    <state width="1491" height="383" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1605385310725" />
     <state width="1123" height="208" key="GridCell.Tab.0.left/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603191236431" />
-    <state width="1491" height="242" key="GridCell.Tab.0.right" timestamp="1605349425495">
+    <state width="1491" height="383" key="GridCell.Tab.0.right" timestamp="1605385310726">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1236" height="189" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1604499946636" />
-    <state width="1491" height="242" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605349425495" />
+    <state width="1491" height="383" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1605385310726" />
     <state width="1123" height="208" key="GridCell.Tab.0.right/1920.89.1280.687/0.0.1536.824@0.0.1536.824" timestamp="1603191236431" />
     <state x="361" y="37" key="SettingsEditor" timestamp="1604772229257">
       <screen x="0" y="0" width="1536" height="824" />
