@@ -327,10 +327,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                             controller: _addressController,
                             validator: (String value) {
                               if (value.isEmpty) {
-                                return 'Please enter product website';
-                              }
-                              if (Uri.parse(value).isAbsolute) {
-                                return 'Please enter a valid product website';
+                                return 'Please enter your address';
                               }
                               return null;
                             },
