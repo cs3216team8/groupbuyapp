@@ -12,6 +12,7 @@ import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   final Profile profile;
@@ -147,8 +148,33 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       PickedFile photo;
 
       if (value == 1) {
+        var status = await Permission.camera.status;
+
+        if (status.isUndetermined || status.isDenied) {
+          Map<Permission, PermissionStatus> statuses = await [
+            Permission.camera,
+          ].request();
+
+          if (statuses[Permission.camera] == null) {
+            return;
+          }
+        } else if (status.isPermanentlyDenied) {
+          openAppSettings();
+        }
         photo = await ImagePicker().getImage(source: ImageSource.camera);
       } else {
+        var status = await Permission.photos.status;
+        if (status.isUndetermined || status.isPermanentlyDenied) {
+          Map<Permission, PermissionStatus> statuses = await [
+            Permission.camera,
+          ].request();
+
+          if (statuses[Permission.photos] == null) {
+            return;
+          }
+        } else if (status.isPermanentlyDenied) {
+          openAppSettings();
+        }
         photo = await ImagePicker().getImage(source: ImageSource.gallery);
       }
 
@@ -161,6 +187,16 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     icon: Icon(Icons.insert_photo),
     color: Colors.white,
   );
+
+  String phoneNumberValidator(String value) {
+    Pattern pattern = r'^[0-9+\s]*$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Please enter a valid phone number';
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -257,9 +293,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             iconColor: Theme.of(context).primaryColor,
                             hintText: "New Phone Number",
                             controller: phoneNumberController,
-                            validator: (String value) {
-                              return null;
-                            },
+                            validator: phoneNumberValidator,
                           ),
                         ]
                       )

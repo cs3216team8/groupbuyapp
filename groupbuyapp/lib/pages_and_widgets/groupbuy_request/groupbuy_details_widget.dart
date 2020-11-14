@@ -589,7 +589,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                   ),
                                   SizedBox(height: 7),
                                   Row(
-                                    // Location
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Padding(
                                           padding: EdgeInsets.only(
@@ -604,9 +604,14 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                             semanticLabel: 'Description',
                                           )),
                                       Flexible(
-                                          child: new Text(
-                                              '${widget.groupBuy.description}',
-                                              style: Styles.textStyle))
+                                          child: Padding(
+                                            padding: EdgeInsets.only(top: 6),
+                                            child: Text(
+                                                '${widget.groupBuy.description}',
+                                                style: Styles.textStyle
+                                            ),
+                                          ),
+                                      )
                                     ],
                                   ),
                                 ])),

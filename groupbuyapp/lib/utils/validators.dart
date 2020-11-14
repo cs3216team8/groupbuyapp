@@ -1,12 +1,12 @@
 bool isNonNegativeNumeric(String s) {
-  if(s == null) {
+  if(s == null || s.isEmpty) {
     return false;
   }
   return double.parse(s, (e) => null) != null;
 }
 
 bool isNonNegativeInteger(String s) {
-  if (s == null) {
+  if (s == null || s.isEmpty) {
     return false;
   }
   return int.parse(s) != null;
