@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:public_suffix/public_suffix_io.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
@@ -65,6 +66,10 @@ class GroupBuyCard extends StatelessWidget {
   }
 
   String getShortenedStoreWebsite(String originalStoreName) {
+    String suffixListString = 'load the list into this string';
+    SuffixRules.initFromString(suffixListString);
+
+    // Parse a URL.
     PublicSuffix parsedUrl =
     PublicSuffix.fromString(originalStoreName);
     return (parsedUrl.suffix); // github.io
