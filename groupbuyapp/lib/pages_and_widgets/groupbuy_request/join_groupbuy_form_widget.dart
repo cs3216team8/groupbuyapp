@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/add_item_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 

@@ -3,7 +3,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:public_suffix/public_suffix_io.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/groupbuy_details_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';

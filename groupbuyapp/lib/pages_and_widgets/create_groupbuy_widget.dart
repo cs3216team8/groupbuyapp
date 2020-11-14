@@ -3,12 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/error_flushbar.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/validators.dart';
-import 'components/custom_appbars.dart';
+import 'shared_components/custom_appbars.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 class CreateGroupBuyScreen extends StatefulWidget {

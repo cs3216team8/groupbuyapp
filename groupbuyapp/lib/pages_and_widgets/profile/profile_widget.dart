@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_groupbuys_widget.dart';
 
 class ProfileScreen extends StatelessWidget {

@@ -5,18 +5,18 @@ import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_card_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_organiser_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/request_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/join_groupbuy_form_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/request_as_organiser_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/error_flushbar.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/error_flushbar.dart';
 import 'package:groupbuyapp/storage/email_storage.dart';
-import 'package:groupbuyapp/utils/auth/auth_check.dart';
+import 'package:groupbuyapp/logic/authentication/auth_check.dart';
 
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/request_as_piggybacker_default.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/utils/styles.dart';

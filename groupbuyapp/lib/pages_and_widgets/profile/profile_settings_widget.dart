@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/input_widgets.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/sliver_utils.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -108,8 +109,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
               await FirebaseAuth.instance.signOut();
               await GoogleSignIn().signOut();
               await FacebookLogin().logOut();
-              Navigator.pop(context);
-              segueWithoutBack(context, PiggyBuyApp());
+              Phoenix.rebirth(context);
             },
             textColor: Theme.of(context).primaryColor,
             child: Text(

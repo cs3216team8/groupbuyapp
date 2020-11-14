@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/activity_model.dart';
 import 'package:groupbuyapp/storage/activities_storage.dart';
 
-import 'components/activity_card_widget.dart';
-import 'components/custom_appbars.dart';
+import 'shared_components//activity_card_widget.dart';
+import 'shared_components/custom_appbars.dart';
 
 class ActivityScreen extends StatelessWidget {
   final ActivitiesStorage activitiesStorage;
