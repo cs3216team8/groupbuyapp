@@ -35,7 +35,7 @@ class ChatStorage {
     if (status.isUndetermined || status.isPermanentlyDenied) {
       Map<Permission, PermissionStatus> statuses = await [
         Permission.camera,
-      ].request();i
+      ].request();
 
       if (statuses[Permission.photos] == null) {
         return;
