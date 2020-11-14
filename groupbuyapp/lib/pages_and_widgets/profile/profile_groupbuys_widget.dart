@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/shared_components/grid_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
