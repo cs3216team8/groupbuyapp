@@ -59,7 +59,6 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   }
 
   void submitJoinOrEditRequest(BuildContext context) {
-    print("submit join request");
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -67,6 +66,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
       showFlushbar(context, "Error!", "You can only join a group buy with items in your request!");
       return;
     }
+    print("preparing to submit join request");
 
     List<String> urls = itemUrlControllers.map((ctrlr) => ctrlr.text).toList();
     List<int> qtys = itemQtyControllers.map((ctrlr) => int.parse(ctrlr.text)).toList();
