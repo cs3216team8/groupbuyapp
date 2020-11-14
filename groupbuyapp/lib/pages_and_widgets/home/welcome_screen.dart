@@ -106,31 +106,37 @@ class PageCard extends StatelessWidget {
       margin: EdgeInsets.symmetric(
         horizontal: 30.0,
       ),
-      child:Stack(
-        alignment: Alignment.center,
-        children: [Column(
+      child:Column(
 //        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _buildPicture(context),
-          SizedBox(height:10),
-          _buildText(context),
-        ],
-      ),
-          Positioned(
-              top: MediaQuery.of(context).size.height * 0.75,
-              child:  Container(
-                  height: 40.0 * 2,
-                  width: 40.0 * 2,
+          SizedBox(
+          height: MediaQuery.of(context).size.height * 0.75,
+          child: Column(
+          children: [
+              _buildPicture(context),
+              SizedBox(height:10),
+              _buildText(context),
+            ]
+          )
+          ),
+          InkWell(
+            onTap: () {print("a");},
+            child: Container(
+            //color: Colors.black,
+                height: 40.0 * 2,
+                width: 40.0 * 2,
                 alignment: Alignment.center,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                  index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
-            ],
-             )
-            )
-          )]
-      ));
+                      index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
+                    ]
+                  )
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildText(BuildContext context) {
