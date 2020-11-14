@@ -23,6 +23,14 @@ class Styles {
 
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle swipeStyle = TextStyle(
+    fontFamily: 'Grotesk',
+    fontSize: 15.5,
+    color: Colors.white,
+    fontWeight: FontWeight.w300,
+
+  );
+
   static const TextStyle chatMessageStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15,

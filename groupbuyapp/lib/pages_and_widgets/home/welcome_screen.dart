@@ -2,6 +2,8 @@ import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'dart:math' as math; // import this
 
@@ -48,7 +50,7 @@ class OnboardingExample extends StatelessWidget {
         body: Stack(
         children: [
           ConcentricPageView(
-            itemCount: itemCount,
+            itemCount: 4,
             colors: colors,
   //          opacityFactor: 1.0,
   //          scaleFactor: 0.0,
@@ -142,7 +144,7 @@ class PageCard extends StatelessWidget {
               // Note: Sensitivity is integer used when you don't want to mess up vertical drag
               if(details.delta.dx < 0){
                 //Left Swipe
-                print("A");
+                segueWithoutBack(context, PiggyBuy());
               }
             },
 
