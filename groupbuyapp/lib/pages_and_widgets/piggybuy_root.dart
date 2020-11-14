@@ -8,6 +8,7 @@ import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
 
 // Create
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/welcome_screen.dart';
 
 // Profile
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
@@ -26,7 +27,7 @@ class PiggyBuyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       title: _title,
-      home: PiggyBuy(),
+      home: OnboardingExample(),
       theme: ThemeData(
         primaryColor: Color(0xFFF98B83),
         accentColor: Color(0xFFF2B1AB),

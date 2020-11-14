@@ -7,6 +7,14 @@ class Styles {
       fontWeight: FontWeight.w300
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+
+  static const TextStyle onboardingStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 20,
+      color: Color(0xFF800020),
+      fontWeight: FontWeight.w300
+  );
+
   static const TextStyle otherUsernameStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15.5,

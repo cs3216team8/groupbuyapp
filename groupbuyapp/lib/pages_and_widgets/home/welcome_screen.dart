@@ -1,17 +1,18 @@
 import 'package:concentric_transition/concentric_transition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 class PageData {
   final String title;
-  final IconData icon;
+  final String pictureName;
   final Color bgColor;
   final Color textColor;
 
   PageData({
     this.title,
-    this.icon,
+    this.pictureName,
     this.bgColor = Colors.white,
     this.textColor = Colors.black,
   });
@@ -20,17 +21,17 @@ class PageData {
 class OnboardingExample extends StatelessWidget {
   final List<PageData> pages = [
     PageData(
-      icon: Icons.format_size,
-      title: "Explore group buys\nhappening around you\nin the home page",
+      pictureName: 'assets/undraw_my_current_location_om7g.svg',
+      title: "Explore group buys\nhappening around you\n0n the home page",
       bgColor: Color(0xFFFFF3E7),
     ),
     PageData(
-      icon: Icons.hdr_weak,
-      title: "Click on a group buy\nto see its details,\n join it, or\nchat with the organiser",
-      bgColor: Color(0xFFFFC2A6),
+      pictureName: 'assets/undraw_Group_chat_re_frmo.svg',
+      title: "Click on a group buy\nto see its details,\n join it, or chat\nwith the organiser",
+      bgColor: Color(0xFFFFCEA0),
     ),
     PageData(
-      icon: Icons.bubble_chart,
+      pictureName: 'assets/undraw_publish_post_vowb.svg',
       title: "You can also create\na new group buy\nif you cannot find one\nsuitable for you!",
       bgColor: Color(0xFFFED5CB),
     ),
@@ -111,7 +112,7 @@ class PageCard extends StatelessWidget {
 //        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _buildPicture(context),
-          SizedBox(height: 90),
+          SizedBox(height:10),
           _buildText(context),
         ],
       ),
@@ -124,7 +125,7 @@ class PageCard extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                  index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30): Icon(Icons.done, size: 30)
+                  index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
             ],
              )
             )
@@ -141,58 +142,67 @@ class PageCard extends StatelessWidget {
   }
 
   Widget _buildPicture(
-      BuildContext context, {
-        double size = 190,
-        double iconSize = 170,
-      }) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(60.0)),
-        color: page.bgColor
-//            .withBlue(page.bgColor.blue - 40)
-            .withGreen(page.bgColor.green + 20)
-            .withRed(page.bgColor.red - 100)
-            .withAlpha(90),
+      BuildContext context,) {
+    return Column(
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+          Container(
+      child: SvgPicture.asset(
+        this.page.pictureName,
+        height: 250,
+
       ),
-      margin: EdgeInsets.only(
-        top: 140,
-      ),
-      child: Stack(
-        fit: StackFit.expand,
-        children: <Widget>[
-          Positioned.fill(
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: Icon(
-                page.icon,
-                size: iconSize + 20,
-                color: page.bgColor
-                    .withBlue(page.bgColor.blue - 10)
-                    .withGreen(220),
-              ),
-            ),
-            right: -5,
-            bottom: -5,
-          ),
-          Positioned.fill(
-            child: RotatedBox(
-              quarterTurns: 5,
-              child: Icon(
-                page.icon,
-                size: iconSize + 20,
-                color: page.bgColor.withGreen(66).withRed(77),
-              ),
-            ),
-          ),
-          Icon(
-            page.icon,
-            size: iconSize,
-            color: page.bgColor.withRed(111).withGreen(220),
-          ),
-        ],
-      ),
+      padding: EdgeInsets.all(10),
+          )]
     );
+//     return Container(
+//       width: size,
+//       height: size,
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.all(Radius.circular(60.0)),
+//         color: page.bgColor
+// //            .withBlue(page.bgColor.blue - 40)
+//             .withGreen(page.bgColor.green + 20)
+//             .withRed(page.bgColor.red - 100)
+//             .withAlpha(90),
+//       ),
+//       margin: EdgeInsets.only(
+//         top: 140,
+//       ),
+//       child: Stack(
+//         fit: StackFit.expand,
+//         children: <Widget>[
+//           Positioned.fill(
+//             child: RotatedBox(
+//               quarterTurns: 2,
+//               child: Icon(
+//                 page.icon,
+//                 size: iconSize + 20,
+//                 color: page.bgColor
+//                     .withBlue(page.bgColor.blue - 10)
+//                     .withGreen(220),
+//               ),
+//             ),
+//             right: -5,
+//             bottom: -5,
+//           ),
+//           Positioned.fill(
+//             child: RotatedBox(
+//               quarterTurns: 5,
+//               child: Icon(
+//                 page.icon,
+//                 size: iconSize + 20,
+//                 color: page.bgColor.withGreen(66).withRed(77),
+//               ),
+//             ),
+//           ),
+//           Icon(
+//             page.icon,
+//             size: iconSize,
+//             color: page.bgColor.withRed(111).withGreen(220),
+//           ),
+//         ],
+//       ),
+//     );
   }
 }
