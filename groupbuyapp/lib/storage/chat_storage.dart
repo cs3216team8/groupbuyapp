@@ -42,16 +42,17 @@ class ChatStorage {
     if (result != null) {
       String id = Uuid().v4().toString();
 
-      final StorageReference storageRef =
+      final Reference storageRef =
           FirebaseStorage.instance.ref().child("chat_images/$id.jpg");
 
-      StorageUploadTask uploadTask = storageRef.putFile(
+      UploadTask uploadTask = storageRef.putFile(
         result,
-        StorageMetadata(
+        SettableMetadata(
           contentType: 'image/jpg',
         ),
       );
-      StorageTaskSnapshot download = await uploadTask.onComplete;
+
+      TaskSnapshot download = await uploadTask;
 
       String url = await download.ref.getDownloadURL();
 
