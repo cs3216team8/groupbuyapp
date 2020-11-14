@@ -21,20 +21,18 @@ class OnboardingExample extends StatelessWidget {
   final List<PageData> pages = [
     PageData(
       icon: Icons.format_size,
-      title: "Choose your\ninterests",
-      textColor: Colors.white,
-      bgColor: Color(0xFFFDBFDD),
+      title: "Explore group buys\nhappening around you\nin the home page",
+      bgColor: Color(0xFFFFF3E7),
     ),
     PageData(
       icon: Icons.hdr_weak,
-      title: "Drag and\ndrop to move",
-      bgColor: Color(0xFFFFFFFF),
+      title: "Click on a group buy\nto see its details,\n join it, or\nchat with the organiser",
+      bgColor: Color(0xFFFFC2A6),
     ),
     PageData(
       icon: Icons.bubble_chart,
-      title: "Local news\nstories",
-      bgColor: Color(0xFF0043D0),
-      textColor: Colors.white,
+      title: "You can also create\na new group buy\nif you cannot find one\nsuitable for you!",
+      bgColor: Color(0xFFFED5CB),
     ),
   ];
 
@@ -113,7 +111,7 @@ class PageCard extends StatelessWidget {
 //        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _buildPicture(context),
-          SizedBox(height: 30),
+          SizedBox(height: 90),
           _buildText(context),
         ],
       ),
@@ -127,7 +125,6 @@ class PageCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                   index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30): Icon(Icons.done, size: 30)
-
             ],
              )
             )
@@ -138,7 +135,7 @@ class PageCard extends StatelessWidget {
   Widget _buildText(BuildContext context) {
     return Text(
       page.title,
-      style: Theme.of(context).textTheme.title,
+      style: Styles.onboardingStyle,
       textAlign: TextAlign.center,
     );
   }
