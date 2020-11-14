@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/utils/stringformatters.dart';
 import 'package:public_suffix/public_suffix_io.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -162,7 +162,7 @@ class GroupBuyCard extends StatelessWidget {
                               )),
                           Flexible(
                               child: Text(
-                                  '${this.groupBuy.deposit * 100}% deposit',
+                                  '${printNumber(this.groupBuy.deposit * 100, dp:1)}% deposit',
                                   style: Styles.textStyle)
                           ),
                         ],

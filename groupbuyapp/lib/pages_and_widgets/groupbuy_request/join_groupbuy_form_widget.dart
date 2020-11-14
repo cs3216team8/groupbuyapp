@@ -5,6 +5,7 @@ import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.d
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/add_item_widget.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/utils/stringformatters.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
 class JoinGroupBuyForm extends StatefulWidget {
@@ -227,32 +228,6 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                                     ),
                                   )
                               ),
-                              // Row(
-                              //     mainAxisAlignment: MainAxisAlignment.center,
-                              //     crossAxisAlignment: CrossAxisAlignment.center,
-                              //     children:
-                              //     [
-                              //       Container(
-                              //           alignment: Alignment.center,
-                              //           child:  GestureDetector(
-                              //               onTap: addItemInput,
-                              //               child: Container(
-                              //                   alignment: Alignment.center,
-                              //                   padding: EdgeInsets.all(8),
-                              //                   decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
-                              //                   child: Row(
-                              //                       children: [
-                              //                         Icon(Icons.add, color: Color(0xFFF98B83)),
-                              //                         new Text("ADD ITEM",
-                              //                             textAlign: TextAlign.center,
-                              //                             style: Styles.minorStyle)
-                              //                       ]
-                              //                   )
-                              //               )
-                              //           )
-                              //       )
-                              //     ]
-                              // ),
                               SizedBox(height: 10),
                               Align(
                                   alignment: Alignment.centerLeft,
@@ -288,7 +263,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                                     Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('TOTAL', style: Styles.moneyStyle), Text('\$${getTotal().toStringAsFixed(2)}',style: Styles.moneyStyle)
+                                          Text('TOTAL', style: Styles.moneyStyle), Text('\$${printNumber(getTotal(), dp:2)}',style: Styles.moneyStyle)
                                         ]
                                     ),
                                     SizedBox(height: 7),
@@ -296,7 +271,7 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text('DEPOSIT', style: Styles.moneyStyle),
-                                          Text('\$${(getTotal() * widget.deposit).toStringAsFixed(2)}', style: Styles.moneyStyle)
+                                          Text('\$${printNumber(getTotal() * widget.deposit, dp:2)}', style: Styles.moneyStyle)
                                         ]
                                     ),
                                   ],
