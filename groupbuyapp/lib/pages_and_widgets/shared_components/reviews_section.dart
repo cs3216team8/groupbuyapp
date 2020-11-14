@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/review_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/review_card_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/review_card_widget.dart';
 
 class ReviewsSection extends StatefulWidget {
   // final Stream<List<Review>> Function() createReviewsStream; //TODO: reviews storage @agnes

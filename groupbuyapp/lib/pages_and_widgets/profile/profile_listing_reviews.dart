@@ -3,8 +3,8 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/home_listings_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/reviews_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/home_listings_section.dart';
 
 class ProfileListingReviews extends StatefulWidget {
   final Stream<List<GroupBuy>> Function() createGroupBuyStream;
@@ -88,6 +88,7 @@ class _ProfileListingReviewsState extends State<ProfileListingReviews> with Sing
                 children: [
                   ListingsSection(
                     createGroupBuyStream: widget.createGroupBuyStream,
+                    createDefaultScreen: () => Container(),
                   ),
                   ReviewsSection(),
                 ],

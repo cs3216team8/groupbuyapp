@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_part.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/reviews_section.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/reviews_section.dart';
 
 class ProfileReviewsOnly extends StatefulWidget {
   final Future<Profile> Function(String) userProfileStream;

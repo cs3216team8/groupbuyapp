@@ -3,7 +3,7 @@ import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:groupbuyapp/utils/profile/profile_builder.dart';
+import 'package:groupbuyapp/logic/profile/profile_builder.dart';
 
 class Logins {
   static Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/pages_and_widgets/components/custom_appbars.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/item_display_widget.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/join_groupbuy_form_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/item_display_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/join_groupbuy_form_widget.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
-import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_status.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 

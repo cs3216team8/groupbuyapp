@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy/components/request_details_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/request_details_widget.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
-import 'package:groupbuyapp/utils/groupbuy/groupbuy_status.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_status.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 
 class RequestCard extends StatefulWidget {
