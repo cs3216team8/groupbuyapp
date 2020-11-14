@@ -87,7 +87,7 @@ class _AddItemCardState extends State<AddItemCard> {
                   flex: 2,
                   child: MyTextField(
                       controller: widget.qtyController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
                       labelText: 'Quantity',
                       hintText: 'Quantity',
                       icon: Icons.check_box_outline_blank,
@@ -103,7 +103,7 @@ class _AddItemCardState extends State<AddItemCard> {
                   flex: 2,
                   child: MyTextField(
                       controller: widget.totalAmtController,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                       labelText: 'Price (each)',
                       hintText: 'Price /ea',
                       icon: Icons.monetization_on,

@@ -59,6 +59,13 @@ class Styles {
     fontWeight: FontWeight.w500,
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle shopDispayStyle = TextStyle(
+    fontFamily: 'Grotesk',
+    fontSize: 20,
+    color: Color(0xFF800020),
+    fontWeight: FontWeight.w500,
+  ); //fontSize: 15, fontWeight: FontWeight.normal);
+
   static const TextStyle moneyStyle = TextStyle(
     fontFamily: 'Inter',
     fontSize: 15.5,

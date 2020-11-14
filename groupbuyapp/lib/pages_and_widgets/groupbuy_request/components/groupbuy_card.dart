@@ -72,7 +72,7 @@ class GroupBuyCard extends StatelessWidget {
     // Parse a URL.
     PublicSuffix parsedUrl =
     PublicSuffix.fromString(originalStoreName);
-    return (parsedUrl.suffix); // github.io
+    return (parsedUrl.domain.length > 12? parsedUrl.icannDomain : parsedUrl.icannDomain.length > 12? parsedUrl.icannDomain.substring(0, 12): parsedUrl.icannDomain);
 
   }
 
@@ -108,7 +108,9 @@ class GroupBuyCard extends StatelessWidget {
                 child: Container(
                     child: this.groupBuy.storeLogo.startsWith('assets/')
                         ? Image.asset(this.groupBuy.storeLogo)
-                        :Text(getShortenedStoreWebsite(this.groupBuy.storeWebsite))
+                        : Center(
+                      child: Text(getShortenedStoreWebsite(this.groupBuy.storeWebsite), style: Styles.shopDispayStyle, )
+                    ),
                 )
             ),
               Expanded(
