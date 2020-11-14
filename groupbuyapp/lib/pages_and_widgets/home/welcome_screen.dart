@@ -153,45 +153,44 @@ class PageCard extends StatelessWidget {
             },
 
             child: Column(
-    //        mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-    SizedBox(
-    height: MediaQuery.of(context).size.height * 0.75 ,)
-    ,
-    Container(
-                margin:EdgeInsets.symmetric(horizontal: 50),
-                height: 40.0* 2,
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-        decoration: new BoxDecoration(
-          color: Color(0xFFF98B83),
-          borderRadius: BorderRadius.all(Radius.circular(50.0)),
-          border: Border.all(color: Color(0xFFFFFFFF), width: 0),
-        ),
-
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-            index != itemCount - 1? Container():
-            Opacity(
-                opacity: 0.8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children:[
-                Transform(
+                children: <Widget>[
+                SizedBox(height: MediaQuery.of(context).size.height * 0.75 ,),
+                Container(
+                  margin:EdgeInsets.symmetric(horizontal: 50),
+                  height: 40.0* 2,
+                  width: MediaQuery.of(context).size.width,
                   alignment: Alignment.center,
-                  transform: Matrix4.rotationY(math.pi),
-                  child: Icon(Icons.double_arrow, color: Colors.white,),
+                  decoration: new BoxDecoration(
+                    color: Color(0xFFF98B83),
+                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                    border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+                  ),
+
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                    index != itemCount - 1? Container():
+                    Opacity(
+                        opacity: 0.8,
+                    child:
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children:[
+                          Transform(
+                            alignment: Alignment.center,
+                            transform: Matrix4.rotationY(math.pi),
+                            child: Icon(Icons.double_arrow, color: Colors.white,),
+                          ),
+                          Text(" SWIPE LEFT TO START", style: Styles.swipeStyle,)
+                        ]
+                      )
+                    )
+                    ]
+                  )
                 ),
-                Text(" SWIPE LEFT TO START", style: Styles.swipeStyle,)
               ]
             )
-            )
-        ]
-    )
-    ),
-    ])
-    )
+          )
               :
               Container()
         ]);
