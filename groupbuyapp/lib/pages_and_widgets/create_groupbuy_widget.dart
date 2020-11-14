@@ -237,7 +237,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
                     hintText: "Target Amount",
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                     controller: _targetAmtController,
                     validator: (String value) {
                       if (value.isEmpty) {
@@ -250,13 +250,12 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     },
                   ),
 
-
                   RoundedInputField(
                     icon: Icons.monetization_on,
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
                     hintText: "Current Amount",
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
                     controller: _currentAmtController,
                     validator: (String value) {
                       if (value.isEmpty) {
@@ -268,11 +267,12 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       return null;
                     },
                   ),
+
                   RoundedInputField(
-                    icon: Icons.monetization_on_rounded,
+                    icon: Icons.pie_chart,
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
                     hintText: "Deposit % (max: 100%)",
                     controller: _depositController,
                     validator: (String value) {

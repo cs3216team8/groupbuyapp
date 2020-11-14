@@ -89,9 +89,14 @@ class _JoinFormState extends State<JoinGroupBuyForm> {
   }
   
   double getTotal() {
+    List<int> qtys = itemQtyControllers.map((ctrlr) => int.tryParse(ctrlr.text) ?? 0).toList();
     List<double> amts = itemTotalAmtControllers.map((ctrlr) => double.parse(ctrlr.text, (val) => 0)).toList();
-    
-    return amts.reduce((value, element) => value + element);
+
+    double total = 0;
+    for (int i = 0; i < qtys.length; i++) {
+      total += qtys[i] * amts[i];
+    }
+    return total;
   }
 
 
