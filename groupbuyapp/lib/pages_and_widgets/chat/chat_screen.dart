@@ -27,7 +27,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void onSendMessage(ChatMessage message) {
-    ChatStorage().onSendMessage(message, widget.chatRoomId);
+    message.text = message.text.trim();
+    if (message.text != "") {
+      ChatStorage().onSendMessage(message, widget.chatRoomId);
+    }
   }
 
   void uploadFile() async {

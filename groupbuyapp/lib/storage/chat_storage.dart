@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 class ChatStorage {
   // for chat screen
+
   void onSendMessage(ChatMessage message, String chatRoomId) {
     var documentReference = FirebaseFirestore.instance
         .collection('chatRooms')
