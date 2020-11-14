@@ -104,8 +104,8 @@ class _AddItemCardState extends State<AddItemCard> {
                   child: MyTextField(
                       controller: widget.totalAmtController,
                       keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
-                      labelText: 'Price (total)',
-                      hintText: 'Total Price,',
+                      labelText: 'Price (each)',
+                      hintText: 'Price /ea',
                       icon: Icons.monetization_on,
                       validator: (String value) {
                         if (!isCurrencyNumberFormat(value)) {

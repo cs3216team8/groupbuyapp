@@ -98,8 +98,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     if (chosenSite != 'Others') {
       logo = 'assets/' + getLogoAssetName(chosenSite);
     }
-    print('aaaaa');
-    print(logo);
 
 
     GroupBuy groupBuy = GroupBuy.newOpenBuy("", 
