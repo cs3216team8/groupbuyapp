@@ -9,6 +9,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatStorage {
@@ -30,6 +31,19 @@ class ChatStorage {
   }
 
   void uploadFileToStorage(ChatUser chatUser, String chatRoomId) async {
+    var status = await Permission.photos.status;
+    if (status.isUndetermined || status.isPermanentlyDenied) {
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.camera,
+      ].request();i
+
+      if (statuses[Permission.photos] == null) {
+        return;
+      }
+    } else if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
     PickedFile pickedFile = await (new ImagePicker()).getImage(
       source: ImageSource.gallery,
       imageQuality: 80,
