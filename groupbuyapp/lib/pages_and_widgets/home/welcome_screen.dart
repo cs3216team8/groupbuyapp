@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'dart:math' as math; // import this
 
 class PageData {
   final String title;
@@ -127,7 +128,6 @@ class PageCard extends StatelessWidget {
               Container(
                   alignment: Alignment.center,
                   child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
                       ]
@@ -136,6 +136,7 @@ class PageCard extends StatelessWidget {
             ],
           ),
         ),
+          index == itemCount - 1?
           GestureDetector(
             onHorizontalDragUpdate: (details) {
               // Note: Sensitivity is integer used when you don't want to mess up vertical drag
@@ -145,19 +146,48 @@ class PageCard extends StatelessWidget {
               }
             },
 
-            child: Container(
-              color: Colors.transparent,
-                height: MediaQuery.of(context).size.height,
+            child: Column(
+    //        mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+    SizedBox(
+    height: MediaQuery.of(context).size.height * 0.75 ,)
+    ,
+    Container(
+                margin:EdgeInsets.symmetric(horizontal: 50),
+                height: 40.0* 2,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.center,
-            child: Column(
+        decoration: new BoxDecoration(
+          color: Color(0xFFF98B83),
+          borderRadius: BorderRadius.all(Radius.circular(50.0)),
+          border: Border.all(color: Color(0xFFFFFFFF), width: 0),
+        ),
+
+        child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-            index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
+            index != itemCount - 1? Container():
+            Opacity(
+                opacity: 0.8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children:[
+                Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(math.pi),
+                  child: Icon(Icons.double_arrow, color: Colors.white,),
+                ),
+                Text(" SWIPE LEFT TO START", style: Styles.swipeStyle,)
+              ]
+            )
+            )
         ]
     )
     ),
+    ])
     )
+              :
+              Container()
         ]);
   }
 
