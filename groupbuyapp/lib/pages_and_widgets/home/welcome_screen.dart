@@ -128,8 +128,12 @@ class PageCard extends StatelessWidget {
               )
               ),
               Container(
+                height: 40.0* 2,
+                  width: 40.0 * 2,
                   alignment: Alignment.center,
                   child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
                       children: <Widget>[
                         index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
                       ]
