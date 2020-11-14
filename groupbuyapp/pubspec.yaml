@@ -39,7 +39,6 @@ dependencies:
   flutter_datetime_picker: ^1.4.0
   flutter_svg: ^0.19.1
   flutter_phoenix: ^0.1.0
-  phone_number: ^0.8.1
   permission_handler: ^5.0.1+1
 
   google_sign_in: ^4.5.1

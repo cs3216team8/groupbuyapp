@@ -150,10 +150,31 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       if (value == 1) {
         var status = await Permission.camera.status;
 
-        if (status.isUndetermined) {
+        if (status.isUndetermined || status.isDenied) {
+          Map<Permission, PermissionStatus> statuses = await [
+            Permission.camera,
+          ].request();
+
+          if (statuses[Permission.camera] == null) {
+            return;
+          }
+        } else if (status.isPermanentlyDenied) {
+          openAppSettings();
         }
         photo = await ImagePicker().getImage(source: ImageSource.camera);
       } else {
+        var status = await Permission.photos.status;
+        if (status.isUndetermined || status.isPermanentlyDenied) {
+          Map<Permission, PermissionStatus> statuses = await [
+            Permission.camera,
+          ].request();
+
+          if (statuses[Permission.photos] == null) {
+            return;
+          }
+        } else if (status.isPermanentlyDenied) {
+          openAppSettings();
+        }
         photo = await ImagePicker().getImage(source: ImageSource.gallery);
       }
 
