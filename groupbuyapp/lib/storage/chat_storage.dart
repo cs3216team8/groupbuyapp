@@ -29,13 +29,14 @@ class ChatStorage {
     });
   }
 
-  void uploadFileToStorage(ChatUser user, String chatRoomId) async {
+  void uploadFileToStorage(ChatUser chatUser, String chatRoomId) async {
     PickedFile pickedFile = await (new ImagePicker()).getImage(
       source: ImageSource.gallery,
       imageQuality: 80,
       maxHeight: 400,
       maxWidth: 400,
     );
+
     final File result = File(pickedFile.path);
 
     if (result != null) {
@@ -54,7 +55,7 @@ class ChatStorage {
 
       String url = await download.ref.getDownloadURL();
 
-      ChatMessage message = ChatMessage(text: "", user: user, image: url);
+      ChatMessage message = ChatMessage(text: "", user: chatUser, image: url);
 
       var documentReference = FirebaseFirestore.instance
           .collection('chatRooms')
@@ -73,7 +74,6 @@ class ChatStorage {
 
   // For chat list
   getUserChats(String myId) async {
-    print("hi");
     return await FirebaseFirestore.instance
         .collection("chatRooms")
         .where("members", arrayContains: myId)
@@ -93,7 +93,6 @@ class ChatStorage {
 
   // For broadcast
   broadcast(String msg, GroupBuy groupBuy, Profile organiserProfile) async {
-    print("hallo");
     await createChatRoomForPiggyBackers(groupBuy);
     QuerySnapshot chatRooms = await FirebaseFirestore.instance
         .collection("chatRooms")

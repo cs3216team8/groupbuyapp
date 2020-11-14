@@ -50,7 +50,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Camera access is required to take a profile photo.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Photo Library access is required to select a profile photo.</string>
+	<string>Photo Library access is required to select a profile photo and send image via chat.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
