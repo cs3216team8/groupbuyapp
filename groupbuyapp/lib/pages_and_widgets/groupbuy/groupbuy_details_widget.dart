@@ -272,6 +272,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
     ): Container();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -416,10 +417,9 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                             child: widget.groupBuy.storeLogo
                                     .startsWith('assets/')
                                 ? Image.asset(widget.groupBuy.storeLogo)
-                                : Image(
-                                    image:
-                                        NetworkImage(widget.groupBuy.storeLogo),
-                                  ))),
+                                : Image.asset('assets/placeholder-image.png')
+                        )
+                    ),
                     Container(
                         padding: const EdgeInsets.all(20.0),
                         decoration: new BoxDecoration(

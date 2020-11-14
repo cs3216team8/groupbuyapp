@@ -48,6 +48,8 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     chosenSite = supportedSites[0];
     chosenAddress = newAddressPlaceholder;
     fetchAddresses();
+    print("A");
+    print(Uri.parse('amazon.sg').isAbsolute);
   }
 
   // Future<void> _getData() async {
@@ -92,7 +94,11 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       addr = chosenAddress;
     }
 
-    String logo = 'assets/' + getLogoAssetName(chosenSite);
+    String logo = '';
+    if (chosenSite != 'Others') {
+      logo = 'assets/' + getLogoAssetName(chosenSite);
+    }
+
 
     GroupBuy groupBuy = GroupBuy.newOpenBuy("", 
         storeName, storeName, logo, 
@@ -194,7 +200,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                       if (value.isEmpty) {
                         return 'Please enter the store website';
                       }
-                      if (Uri.parse(value).isAbsolute) {
+                      if (!Uri.parse(value).isAbsolute) {
                         return 'Please enter a valid store website';
                       }
                       return null;
