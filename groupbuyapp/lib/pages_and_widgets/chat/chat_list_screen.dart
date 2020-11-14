@@ -19,8 +19,8 @@ class _ChatListState extends State<ChatList> {
   Widget build(BuildContext context) {
     if (FirebaseAuth.instance.currentUser == null) {
       segueWithLoginCheck(
-          context,
-          ChatList(),
+        context,
+        ChatList(),
       );
     }
     return Scaffold(
@@ -143,13 +143,15 @@ class _ChatListState extends State<ChatList> {
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400),
                               ),
-                              Text("Start a chat with an organizer",
+                              Text(
+                                "Start a chat with an organizer",
                                 style: TextStyle(
                                     color: Colors.blueGrey,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w400),
                               ),
-                              Text("on the GroupBuy details page",
+                              Text(
+                                "on the GroupBuy details page",
                                 style: TextStyle(
                                     color: Colors.blueGrey,
                                     fontSize: 20,
@@ -181,23 +183,20 @@ class ChatRoomsTile extends StatelessWidget {
             MaterialPageRoute(
                 builder: (context) => ChatScreen(
                       chatRoomId: chatRoomId,
-                      username : userName,
+                      username: userName,
                     )));
       },
       child: Container(
         decoration: new BoxDecoration(
           color: Color(0xFFFBECE6),
-          borderRadius:
-          BorderRadius.all(Radius.circular(20.0)),
-          border: Border.all(
-              color: Color(0xFFFFFFFF), width: 0),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          border: Border.all(color: Color(0xFFFFFFFF), width: 0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),
               spreadRadius: 2,
               blurRadius: 1,
-              offset: Offset(
-                  1, 1), // changes position of shadow
+              offset: Offset(1, 1), // changes position of shadow
             )
           ],
         ),
@@ -209,7 +208,8 @@ class ChatRoomsTile extends StatelessWidget {
               height: 30,
               width: 30,
               decoration: BoxDecoration(
-                  color: Color(0xFFF98B83), borderRadius: BorderRadius.circular(30)),
+                  color: Color(0xFFF98B83),
+                  borderRadius: BorderRadius.circular(30)),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
                 child: Text(userName.substring(0, 1).toUpperCase(),
@@ -223,9 +223,10 @@ class ChatRoomsTile extends StatelessWidget {
             SizedBox(
               width: 12,
             ),
-            Text(userName,
-                textAlign: TextAlign.start,
-                style: Styles.textStyle,
+            Text(
+              userName,
+              textAlign: TextAlign.start,
+              style: Styles.textStyle,
             )
           ],
         ),

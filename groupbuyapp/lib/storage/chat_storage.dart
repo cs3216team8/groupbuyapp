@@ -13,6 +13,7 @@ import 'package:uuid/uuid.dart';
 
 class ChatStorage {
   // for chat screen
+
   void onSendMessage(ChatMessage message, String chatRoomId) {
     var documentReference = FirebaseFirestore.instance
         .collection('chatRooms')
@@ -137,8 +138,8 @@ class ChatStorage {
     return chatRoomId;
   }
 
-  void createAndOpenChatRoom(
-    BuildContext context, GroupBuy groupBuy, String requestorId, bool isToOrganiser) async {
+  void createAndOpenChatRoom(BuildContext context, GroupBuy groupBuy,
+      String requestorId, bool isToOrganiser) async {
     String receiverId = isToOrganiser ? groupBuy.organiserId : requestorId;
     Profile receiverProfile =
         await ProfileStorage.instance.getUserProfile(receiverId);
