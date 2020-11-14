@@ -166,7 +166,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     Pattern pattern = r'^[0-9+\s]*$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
-      return 'Enter Valid Phone Number';
+      return 'Please enter a valid phone number';
     } else {
       return null;
     }
