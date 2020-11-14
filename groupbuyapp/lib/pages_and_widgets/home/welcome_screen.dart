@@ -44,45 +44,48 @@ class OnboardingExample extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: ConcentricPageView(
-          itemCount: itemCount,
-          colors: colors,
-//          opacityFactor: 1.0,
-//          scaleFactor: 0.0,
-          radius: 40,
-          curve: Curves.ease,
-          duration: Duration(seconds: 2),
-//          verticalPosition: 0.7,
-//          direction: Axis.vertical,
-//          itemCount: pages.length,
-//          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (index, value) {
-            PageData page = pages[index % pages.length];
-            // For example scale or transform some widget by [value] param
-            //            double scale = (1 - (value.abs() * 0.4)).clamp(0.0, 1.0);
-            return Container(
-              child: Theme(
-                data: ThemeData(
-                  textTheme: TextTheme(
-                    title: TextStyle(
-                      color: page.textColor,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Helvetica',
-                      letterSpacing: 0.0,
-                      fontSize: 20,
-                    ),
-                    subtitle: TextStyle(
-                      color: page.textColor,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 18,
+        body: Stack(
+        children: [
+          ConcentricPageView(
+            itemCount: itemCount,
+            colors: colors,
+  //          opacityFactor: 1.0,
+  //          scaleFactor: 0.0,
+            radius: 40,
+            curve: Curves.ease,
+            duration: Duration(seconds: 2),
+  //          verticalPosition: 0.7,
+  //          direction: Axis.vertical,
+  //          itemCount: pages.length,
+  //          physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (index, value) {
+              PageData page = pages[index % pages.length];
+              // For example scale or transform some widget by [value] param
+              //            double scale = (1 - (value.abs() * 0.4)).clamp(0.0, 1.0);
+              return Container(
+                child: Theme(
+                  data: ThemeData(
+                    textTheme: TextTheme(
+                      title: TextStyle(
+                        color: page.textColor,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Helvetica',
+                        letterSpacing: 0.0,
+                        fontSize: 20,
+                      ),
+                      subtitle: TextStyle(
+                        color: page.textColor,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
+                  child: PageCard(page: page, index: index, itemCount: itemCount),
                 ),
-                child: PageCard(page: page, index: index, itemCount: itemCount),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          ),
+        ] )
       ),
     );
   }
@@ -102,41 +105,60 @@ class PageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: 30.0,
-      ),
-      child:Column(
-//        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(
-          height: MediaQuery.of(context).size.height * 0.75,
-          child: Column(
-          children: [
-              _buildPicture(context),
-              SizedBox(height:10),
-              _buildText(context),
-            ]
-          )
+    return Stack(
+        children: [
+          Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: 30.0,
           ),
-          InkWell(
-            onTap: () {print("a");},
-            child: Container(
-            //color: Colors.black,
-                height: 40.0 * 2,
-                width: 40.0 * 2,
-                alignment: Alignment.center,
+          child:Column(
+    //        mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+              height: MediaQuery.of(context).size.height * 0.75 ,
+              child: Column(
+              children: [
+                  _buildPicture(context),
+                  SizedBox(height:10),
+                  _buildText(context),
+                ]
+              )
+              ),
+              Container(
+                  alignment: Alignment.center,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
-                    ]
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
+                      ]
                   )
-            ),
-          )
-        ],
-      ),
-    );
+              )
+            ],
+          ),
+        ),
+          GestureDetector(
+            onHorizontalDragUpdate: (details) {
+              // Note: Sensitivity is integer used when you don't want to mess up vertical drag
+              if(details.delta.dx < 0){
+                //Left Swipe
+                print("A");
+              }
+            },
+
+            child: Container(
+              color: Colors.transparent,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+            index != itemCount - 1? Icon(Icons.arrow_forward_ios_outlined, size: 30, color: Color(0xFFF98B83),): Icon(Icons.done, size: 30, color: Color(0xFFF98B83))
+        ]
+    )
+    ),
+    )
+        ]);
   }
 
   Widget _buildText(BuildContext context) {
