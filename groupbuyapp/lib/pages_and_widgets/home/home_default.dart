@@ -19,7 +19,7 @@ class HomeDefaultScreen extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         RaisedButton(
-            onPressed: () => segueToPage(context, CreateGroupBuyScreen()),
+            onPressed: () => segueWithLoginCheck(context, CreateGroupBuyScreen()),
             textColor: Colors.white,
             child: Text(
                 'Be the first',
