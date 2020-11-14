@@ -50,7 +50,7 @@ class OnboardingExample extends StatelessWidget {
         body: Stack(
         children: [
           ConcentricPageView(
-            itemCount: 4,
+            itemCount: itemCount,
             colors: colors,
   //          opacityFactor: 1.0,
   //          scaleFactor: 0.0,
@@ -144,7 +144,7 @@ class PageCard extends StatelessWidget {
               // Note: Sensitivity is integer used when you don't want to mess up vertical drag
               if(details.delta.dx < 0){
                 //Left Swipe
-                segueWithoutBack(context, PiggyBuy());
+                segueToHome(context, this, PiggyBuy());
               }
             },
 
