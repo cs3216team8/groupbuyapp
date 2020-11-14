@@ -188,14 +188,14 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                     icon: Icons.public,
                     color: Color(0xFFFBE3E1),
                     iconColor: Theme.of(context).primaryColor,
-                    hintText: "Product Website",
+                    hintText: "Store Website",
                     controller: _productWebsiteController,
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return 'Please enter product website';
+                        return 'Please enter the store website';
                       }
                       if (Uri.parse(value).isAbsolute) {
-                        return 'Please enter a valid product website';
+                        return 'Please enter a valid store website';
                       }
                       return null;
                     },
