@@ -19,6 +19,7 @@ import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/request_as_piggybacker_default.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/utils/stringformatters.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/time_calculation.dart';
 
@@ -537,7 +538,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           )),
                                       Flexible(
                                         child: Text(
-                                          '${widget.groupBuy.deposit * 100} % deposit',
+                                          '${printNumber(widget.groupBuy.deposit * 100, dp:1)} % deposit',
                                           style: Styles.textStyle)
                                       ),
                                     ],
@@ -559,7 +560,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                     Flexible(
 
                                       child: Text(
-                                      "\$${widget.groupBuy.getCurrentAmount()}/\$${widget.groupBuy.getTargetAmount()}",
+                                      "\$${printNumber(widget.groupBuy.getCurrentAmount(), dp:2)}/\$${printNumber(widget.groupBuy.getTargetAmount(), dp:2)}",
                                       style: Styles.textStyle,
                                       )
                                     ),
