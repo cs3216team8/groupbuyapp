@@ -162,6 +162,16 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     color: Colors.white,
   );
 
+  String _phoneNumberValidator(String value) {
+    Pattern pattern = r'^[0-9+\s]*$';
+    RegExp regex = new RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Enter Valid Phone Number';
+    } else {
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,9 +267,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             iconColor: Theme.of(context).primaryColor,
                             hintText: "New Phone Number",
                             controller: phoneNumberController,
-                            validator: (String value) {
-                              return null;
-                            },
+                            validator: _phoneNumberValidator,
                           ),
                         ]
                       )
