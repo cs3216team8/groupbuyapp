@@ -121,6 +121,7 @@ class _ChatListState extends State<ChatList> {
                           userName: username,
                           chatRoomId: snapshot.data.documents[index]
                               .data()["chatRoomId"],
+                          profilePicUrl: profilePic,
                         );
                       })
                   : Container(
@@ -171,8 +172,9 @@ class _ChatListState extends State<ChatList> {
 class ChatRoomsTile extends StatelessWidget {
   final String userName;
   final String chatRoomId;
+  final String profilePicUrl;
 
-  ChatRoomsTile({this.userName, @required this.chatRoomId});
+  ChatRoomsTile({this.userName, @required this.chatRoomId, this.profilePicUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -212,12 +214,16 @@ class ChatRoomsTile extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30)),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 5),
-                child: Text(userName.substring(0, 1).toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400)),
+                child: CircleAvatar(
+                  radius: 47,
+                  backgroundImage: Image.network(profilePicUrl).image,
+                  )
+                // Text(userName.substring(0, 1).toUpperCase(),
+                //     textAlign: TextAlign.center,
+                //     style: TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 16,
+                //         fontWeight: FontWeight.w400)),
               ),
             ),
             SizedBox(
