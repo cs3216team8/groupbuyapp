@@ -162,7 +162,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     color: Colors.white,
   );
 
-  String _phoneNumberValidator(String value) {
+  String phoneNumberValidator(String value) {
     Pattern pattern = r'^[0-9+\s]*$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
@@ -267,7 +267,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                             iconColor: Theme.of(context).primaryColor,
                             hintText: "New Phone Number",
                             controller: phoneNumberController,
-                            validator: _phoneNumberValidator,
+                            validator: phoneNumberValidator,
                           ),
                         ]
                       )
