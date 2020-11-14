@@ -13,7 +13,7 @@ class ProfileStorage {
 
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
-  StorageReference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
+  Reference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
 
   Future<Profile> getUserProfile(String userId) async {
 
@@ -78,8 +78,8 @@ class ProfileStorage {
 
   Future<String> uploadProfilePhoto(File photo) async {
     String userId = FirebaseAuth.instance.currentUser.uid;
-    StorageUploadTask uploadTask = profilePhotoRef.child(userId).putFile(photo);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    UploadTask uploadTask = profilePhotoRef.child(userId).putFile(photo);
+    TaskSnapshot taskSnapshot = await uploadTask;
     return await taskSnapshot.ref.getDownloadURL();
   }
 
