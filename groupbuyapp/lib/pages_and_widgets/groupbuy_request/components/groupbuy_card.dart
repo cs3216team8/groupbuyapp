@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/utils/stringformatters.dart';
 import 'package:public_suffix/public_suffix_io.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
@@ -72,7 +72,7 @@ class GroupBuyCard extends StatelessWidget {
     // Parse a URL.
     PublicSuffix parsedUrl =
     PublicSuffix.fromString(originalStoreName);
-    return (parsedUrl.suffix); // github.io
+    return (parsedUrl.domain.length > 12? parsedUrl.icannDomain : parsedUrl.icannDomain.length > 12? parsedUrl.icannDomain.substring(0, 12): parsedUrl.icannDomain);
 
   }
 
@@ -108,7 +108,9 @@ class GroupBuyCard extends StatelessWidget {
                 child: Container(
                     child: this.groupBuy.storeLogo.startsWith('assets/')
                         ? Image.asset(this.groupBuy.storeLogo)
-                        :Text(getShortenedStoreWebsite(this.groupBuy.storeWebsite))
+                        : Center(
+                      child: Text(getShortenedStoreWebsite(this.groupBuy.storeWebsite), style: Styles.shopDispayStyle, )
+                    ),
                 )
             ),
               Expanded(
@@ -162,7 +164,7 @@ class GroupBuyCard extends StatelessWidget {
                               )),
                           Flexible(
                               child: Text(
-                                  '${this.groupBuy.deposit * 100}% deposit',
+                                  '${printNumber(this.groupBuy.deposit * 100, dp:1)}% deposit',
                                   style: Styles.textStyle)
                           ),
                         ],
