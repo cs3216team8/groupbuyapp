@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:public_suffix/public_suffix_io.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/groupbuy_details_widget.dart';
@@ -63,9 +64,17 @@ class GroupBuyCard extends StatelessWidget {
         ));
   }
 
+  String getShortenedStoreWebsite(String originalStoreName) {
+    PublicSuffix parsedUrl =
+    PublicSuffix.fromString(originalStoreName);
+    return (parsedUrl.suffix); // github.io
+
+  }
+
   Widget groupBuyCardInsides(BuildContext context, Profile profile) {
     int shortenedAddressLength = min(20, this.groupBuy.address.length);
     int shortenedUsernameLength = min(8, profile.username.length);
+    print(this.groupBuy.storeLogo);
     return InkWell(
         splashColor: Theme.of(context).primaryColor.withAlpha(30),
         onTap: () {
@@ -94,10 +103,10 @@ class GroupBuyCard extends StatelessWidget {
                 child: Container(
                     child: this.groupBuy.storeLogo.startsWith('assets/')
                         ? Image.asset(this.groupBuy.storeLogo)
-                        : Image(
-                            image: NetworkImage(this.groupBuy.storeLogo),
-                          ))),
-            Expanded(
+                        :Text(getShortenedStoreWebsite(this.groupBuy.storeWebsite))
+                )
+            ),
+              Expanded(
               flex: 75,
               child: Container(
                   decoration: new BoxDecoration(
