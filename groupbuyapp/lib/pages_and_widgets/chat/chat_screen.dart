@@ -93,10 +93,10 @@ class _ChatScreenState extends State<ChatScreen> {
               ],
               timeFormat: DateFormat('HH:mm'),
               dateFormat: DateFormat('MMM dd'),
-              messageTextBuilder : (String string, [ChatMessage]) {
+              messageTextBuilder: (String string, [ChatMessage]) {
                 return Text(
-                    string,
-                    style: Styles.chatMessageStyle,
+                  string,
+                  style: Styles.chatMessageStyle,
                 );
               },
               messageTimeBuilder: (String string, [ChatMessage]) {
