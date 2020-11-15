@@ -126,9 +126,19 @@ class PageCard extends StatelessWidget {
         ),
           index == itemCount - 1?
           GestureDetector(
-            onTap:() {
-              segueToHome(context, OnboardingExample(), PiggyBuy());
-            }            // onHorizontalDragUpdate: (details) {
+              onHorizontalDragUpdate: (details) {
+                if(details.delta.dx < 0) {
+                  Navigator.push(context,
+                      ConcentricPageRoute(maintainState: false,
+                          fullscreenDialog: true,
+                          builder: (ctx) {
+                            return PiggyBuy();
+                          }
+                      )
+                  );
+                }
+              }
+            // onHorizontalDragUpdate: (details) {
             //   // Note: Sensitivity is integer used when you don't want to mess up vertical drag
             //   if(details.delta.dx < 0){
             //     //Left Swipe
@@ -138,7 +148,7 @@ class PageCard extends StatelessWidget {
 ,
             child: Column(
                 children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.9 ,),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.75 ,),
                 Container(
                   margin:EdgeInsets.symmetric(horizontal: 50),
                   height: 40.0* 2,
