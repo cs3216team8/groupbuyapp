@@ -66,25 +66,7 @@ class OnboardingExample extends StatelessWidget {
               // For example scale or transform some widget by [value] param
               //            double scale = (1 - (value.abs() * 0.4)).clamp(0.0, 1.0);
               return Container(
-                child: Theme(
-                  data: ThemeData(
-                    textTheme: TextTheme(
-                      title: TextStyle(
-                        color: page.textColor,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Helvetica',
-                        letterSpacing: 0.0,
-                        fontSize: 20,
-                      ),
-                      subtitle: TextStyle(
-                        color: page.textColor,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  child: PageCard(page: page, index: index, itemCount: itemCount),
-                ),
+                child:  PageCard(page: page, index: index, itemCount: itemCount),
               );
             },
           ),
@@ -144,17 +126,19 @@ class PageCard extends StatelessWidget {
         ),
           index == itemCount - 1?
           GestureDetector(
-            onHorizontalDragUpdate: (details) {
-              // Note: Sensitivity is integer used when you don't want to mess up vertical drag
-              if(details.delta.dx < 0){
-                //Left Swipe
-                segueToHome(context, this, PiggyBuy());
-              }
-            },
-
+            onTap:() {
+              segueToHome(context, OnboardingExample(), PiggyBuy());
+            }            // onHorizontalDragUpdate: (details) {
+            //   // Note: Sensitivity is integer used when you don't want to mess up vertical drag
+            //   if(details.delta.dx < 0){
+            //     //Left Swipe
+            //     segueToHome(context, OnboardingExample(), PiggyBuy());
+            //   }
+            // },
+,
             child: Column(
                 children: <Widget>[
-                SizedBox(height: MediaQuery.of(context).size.height * 0.75 ,),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.9 ,),
                 Container(
                   margin:EdgeInsets.symmetric(horizontal: 50),
                   height: 40.0* 2,

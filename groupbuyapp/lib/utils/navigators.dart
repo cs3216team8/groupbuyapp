@@ -16,8 +16,8 @@ void segueWithLoginCheck(BuildContext context, Widget screen) {
 }
 
 void segueToHome(BuildContext context, Widget currentScreen, Widget nextScreen) {
-  Navigator.pushReplacement(context,
-      EnterExitRoute(exitPage: currentScreen, enterPage: nextScreen));
+  Navigator.push(context,
+      EnterExitRoute(exitPage: nextScreen, enterPage: currentScreen));
 }
 
 void segueToLogin(BuildContext context) {
