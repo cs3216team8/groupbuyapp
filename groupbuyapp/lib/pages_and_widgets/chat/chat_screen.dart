@@ -3,6 +3,7 @@ import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
+import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -96,16 +97,20 @@ class _ChatScreenState extends State<ChatScreen> {
               timeFormat: DateFormat('HH:mm'),
               dateFormat: DateFormat('MMM dd'),
               messageImageBuilder: (String string, [ChatMessage chatMessage]) {
-                return Padding(
-                  padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                  child: FadeInImage.memoryNetwork(
-                    height: MediaQuery.of(context).size.height * 0.3,
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    fit: BoxFit.contain,
-                    placeholder: kTransparentImage,
-                    image: chatMessage.image,
-                  ),
-                );
+                return GestureDetector(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                      child: FadeInImage.memoryNetwork(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        fit: BoxFit.contain,
+                        placeholder: kTransparentImage,
+                        image: chatMessage.image,
+                      ),
+                    ),
+                    onTap: () {
+                      segueToPage(context, DetailScreen());
+                    });
               },
               messageTextBuilder: (String string, [ChatMessage]) {
                 return Text(
@@ -129,6 +134,27 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             );
           }
+        },
+      ),
+    );
+  }
+}
+
+class DetailScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GestureDetector(
+        child: Center(
+          child: Hero(
+            tag: 'imageHero',
+            child: Image.network(
+              'https://i.picsum.photos/id/296/200/300.jpg?hmac=3w6L7NcSbkDRHC36vvfj4JuF0yOHmTjqQS5F9biJyKA',
+            ),
+          ),
+        ),
+        onTap: () {
+          Navigator.pop(context);
         },
       ),
     );
