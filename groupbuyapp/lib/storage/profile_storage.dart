@@ -29,7 +29,6 @@ class ProfileStorage {
         document.data()['email'],
         document.data()['authType'],
         List.from(document.data()['addresses']),
-        List.from(document.data()['groupBuyIds']),
         document.data()['rating'],
         document.data()['reviewCount']
     );
@@ -67,7 +66,6 @@ class ProfileStorage {
       'email': userProfile.email,
       'authType': userProfile.authType,
       'addresses': userProfile.addresses,
-      'groupBuyIds': userProfile.groupBuyIds,
       'rating': userProfile.rating,
       'reviewCount': userProfile.reviewCount,
     }).then((value) => print("User profile created/updated successfully."))

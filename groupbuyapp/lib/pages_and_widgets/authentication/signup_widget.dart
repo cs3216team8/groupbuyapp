@@ -54,7 +54,6 @@ class _SignUpFormState extends State<SignupForm> {
           _emailController.text,
           "native",
           [],
-          [],
           null,
           0
       );
