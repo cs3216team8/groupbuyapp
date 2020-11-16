@@ -156,20 +156,23 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        child: Center(
-          child: Hero(
-            tag: 'imageHero',
-            child: CachedNetworkImage(
-              imageUrl: widget.imageUrl,
-              placeholder: (context, url) => Center(child: Container(width: 12, height: 12,child: new CircularProgressIndicator())),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+      body: Container(
+        color: Theme.of(context).backgroundColor,
+        child: GestureDetector(
+          child: Center(
+            child: Hero(
+              tag: 'imageHero',
+              child: CachedNetworkImage(
+                imageUrl: widget.imageUrl,
+                placeholder: (context, url) => Center(child: Container(width: 12, height: 12,child: new CircularProgressIndicator())),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
             ),
           ),
+          onTap: () {
+            Navigator.pop(context);
+          },
         ),
-        onTap: () {
-          Navigator.pop(context);
-        },
       ),
     );
   }
