@@ -48,8 +48,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     chosenSite = supportedSites[0];
     chosenAddress = newAddressPlaceholder;
     fetchAddresses();
-    print("A");
-    print(Uri.parse('amazon.sg').isAbsolute);
   }
 
   // Future<void> _getData() async {

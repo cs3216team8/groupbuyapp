@@ -5,6 +5,8 @@ import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 // Home
 import 'package:groupbuyapp/pages_and_widgets/home/home_widget.dart';
+import 'package:groupbuyapp/pages_and_widgets/home/onboarding_screen.dart';
+
 
 // Create
 import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
@@ -13,6 +15,12 @@ import 'package:groupbuyapp/pages_and_widgets/create_groupbuy_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_widget.dart';
 import 'package:groupbuyapp/logic/authentication/auth_check.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
+import 'dart:async';
+
+import 'package:after_layout/after_layout.dart';
+import 'package:groupbuyapp/utils/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class PiggyBuyApp extends StatelessWidget {
   static const String _title = 'PiggyBuy Application CS3216';
@@ -26,22 +34,45 @@ class PiggyBuyApp extends StatelessWidget {
     ]);
     return MaterialApp(
       title: _title,
-      home: PiggyBuy(),
-      theme: ThemeData(
-        primaryColor: Color(0xFFF98B83),
-        accentColor: Color(0xFFF2B1AB),
-        cardColor: Color(0xFFFFE1AD),
-        backgroundColor: Color(0xFFF4E9E7),
-        buttonColor: Color(0xFFBE646E),
-        textTheme: TextTheme(
-          headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-          headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-          bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
-        ),
+      home: new Splash(),
+      theme: Themes.globalThemeData
+    );
+  }
+}
+
+class Splash extends StatefulWidget {
+  @override
+  SplashState createState() => new SplashState();
+}
+
+class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+  Future checkFirstSeen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool _seen = (prefs.getBool('seen') ?? false);
+
+    if (_seen) {
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => MaterialApp(home: new PiggyBuy(), theme: Themes.globalThemeData)));
+    } else {
+      await prefs.setBool('seen', true);
+      Navigator.of(context).pushReplacement(
+          new MaterialPageRoute(builder: (context) => MaterialApp(home: new OnboardingScreen(), theme: Themes.globalThemeData)));
+    }
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      body: new Center(
+        child: new Text('Loading...'),
       ),
     );
   }
 }
+
 
 class PiggyBuy extends StatefulWidget {
   PiggyBuy({Key key}) : super(key: key);

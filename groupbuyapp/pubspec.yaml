@@ -29,20 +29,25 @@ dependencies:
   cloud_firestore: ^0.14.3
   firebase_storage: ^5.0.1
   firebase_messaging: ^5.0.2
+  public_suffix: ^1.2.1
+  concentric_transition: ^0.1.1
+
+  url_launcher: "^5.7.8"
+  sprintf: "^4.0.0"
+  image_picker: "^0.6.7+12"
+  dash_chat: "^1.1.15"
+  flushbar: "^1.10.4"
+  flutter_datetime_picker: "1.4.0"
+  flutter_svg: "^0.19.1"
 
   great_circle_distance_calculator: ^1.0.3
   flutter_google_places: ^0.2.6
   google_maps_flutter: ^1.0.6
 
-  url_launcher: ^5.7.8
-  sprintf: ^4.0.0
-  image_picker: ^0.6.7+12
-  dash_chat: ^1.1.15
-  flushbar: ^1.10.4
-  flutter_datetime_picker: ^1.4.0
-  flutter_svg: ^0.19.1
   flutter_phoenix: ^0.1.0
   permission_handler: ^5.0.1+1
+  after_layout: 1.0.7+2
+  shared_preferences: 0.5.12+4
   public_suffix: ^1.2.1
   transparent_image: ^1.0.0
   cached_network_image: ^2.3.3
