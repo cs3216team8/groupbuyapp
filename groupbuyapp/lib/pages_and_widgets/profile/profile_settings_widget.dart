@@ -74,7 +74,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         widget.profile.email,
         widget.profile.authType,
         widget.profile.addresses,
-        widget.profile.groupBuyIds,
         widget.profile.rating,
         widget.profile.reviewCount
       );

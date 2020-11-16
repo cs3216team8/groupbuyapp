@@ -7,7 +7,6 @@ class Profile {
   final String email;
   final String authType;
   final List<String> addresses;
-  final List<String> groupBuyIds;
 
   double rating; //TODO @agnes
   int reviewCount;
@@ -21,7 +20,6 @@ class Profile {
       this.email,
       this.authType,
       this.addresses,
-      this.groupBuyIds,
       this.rating,
       this.reviewCount
       );
@@ -41,9 +39,8 @@ class Profile {
         "me@dawo.me",
         "native",
         ["17 Dover Cres 130017", "18 Dover Cres 130017", "115 Dover Cres 130017", "19 Dover Cres 130017", "20 Dover Cres 130017", "21 Dover Cres 130017"],
-        ["asdfasdfasdfaf", "asdfasdfasdfaf"],
-      4.9,
-      500
+        4.9,
+        500
     );
   }
 }

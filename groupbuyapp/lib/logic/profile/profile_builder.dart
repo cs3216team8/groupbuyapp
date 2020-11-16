@@ -51,7 +51,6 @@ class ProfileBuilder {
       email,
       authType,
       [],
-      [],
       0,
       0
     );
