@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
@@ -100,16 +101,17 @@ class _ChatScreenState extends State<ChatScreen> {
                 return GestureDetector(
                     child: Padding(
                       padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: FadeInImage.memoryNetwork(
-                        height: MediaQuery.of(context).size.height * 0.3,
+                      child: CachedNetworkImage(
+                        height: MediaQuery.of(context).size.height * 0.35,
                         width: MediaQuery.of(context).size.width * 0.7,
                         fit: BoxFit.contain,
-                        placeholder: kTransparentImage,
-                        image: chatMessage.image,
+                        placeholder: (context, url) => CircularProgressIndicator(),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                        imageUrl: chatMessage.image,
                       ),
                     ),
                     onTap: () {
-                      segueToPage(context, DetailScreen());
+                      segueToPage(context, DetailScreen(chatMessage.image));
                     });
               },
               messageTextBuilder: (String string, [ChatMessage]) {
@@ -140,7 +142,17 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
+  final String imageUrl;
+
+  DetailScreen(this.imageUrl);
+
+  @override
+  _DetailScreenState createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,8 +160,10 @@ class DetailScreen extends StatelessWidget {
         child: Center(
           child: Hero(
             tag: 'imageHero',
-            child: Image.network(
-              'https://i.picsum.photos/id/296/200/300.jpg?hmac=3w6L7NcSbkDRHC36vvfj4JuF0yOHmTjqQS5F9biJyKA',
+            child: CachedNetworkImage(
+              imageUrl: widget.imageUrl,
+              placeholder: (context, url) => Center(child: Container(width: 12, height: 12,child: new CircularProgressIndicator())),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
         ),
