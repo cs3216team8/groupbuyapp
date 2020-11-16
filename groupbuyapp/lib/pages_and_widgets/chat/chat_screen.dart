@@ -105,7 +105,8 @@ class _ChatScreenState extends State<ChatScreen> {
                         height: MediaQuery.of(context).size.height * 0.35,
                         width: MediaQuery.of(context).size.width * 0.7,
                         fit: BoxFit.contain,
-                        placeholder: (context, url) => CircularProgressIndicator(),
+                        placeholder: (context, url) =>
+                            CircularProgressIndicator(),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                         imageUrl: chatMessage.image,
                       ),
@@ -152,7 +153,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,13 +160,14 @@ class _DetailScreenState extends State<DetailScreen> {
         color: Theme.of(context).backgroundColor,
         child: GestureDetector(
           child: Center(
-            child: Hero(
-              tag: 'imageHero',
-              child: CachedNetworkImage(
-                imageUrl: widget.imageUrl,
-                placeholder: (context, url) => Center(child: Container(width: 12, height: 12,child: new CircularProgressIndicator())),
-                errorWidget: (context, url, error) => Icon(Icons.error),
-              ),
+            child: CachedNetworkImage(
+              imageUrl: widget.imageUrl,
+              placeholder: (context, url) => Center(
+                  child: Container(
+                      width: 12,
+                      height: 12,
+                      child: new CircularProgressIndicator())),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
           onTap: () {
