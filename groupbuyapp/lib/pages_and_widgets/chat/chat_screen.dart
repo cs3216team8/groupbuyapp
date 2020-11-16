@@ -185,10 +185,12 @@ class _DetailScreenState extends State<DetailScreen> {
               height: MediaQuery.of(context).size.height,
               imageUrl: widget.imageUrl,
               placeholder: (context, url) => Center(
-                  child: Container(
-                      width: 12,
-                      height: 12,
-                      child: new CircularProgressIndicator())),
+                child: SizedBox(
+                  child: CircularProgressIndicator(),
+                  height: 5.0,
+                  width: 5.0,
+                ),
+              ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
