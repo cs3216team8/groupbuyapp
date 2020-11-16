@@ -5,7 +5,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
-import 'dart:math' as math; // import this
+import 'dart:math' as math;
+
+import 'package:groupbuyapp/utils/themes.dart'; // import this
 
 class PageData {
   final String title;
@@ -21,7 +23,7 @@ class PageData {
   });
 }
 
-class OnboardingExample extends StatelessWidget {
+class OnboardingScreen extends StatelessWidget {
   final List<PageData> pages = [
     PageData(
       pictureName: 'assets/undraw_my_current_location_om7g.svg',
@@ -128,14 +130,7 @@ class PageCard extends StatelessWidget {
           GestureDetector(
               onHorizontalDragUpdate: (details) {
                 if(details.delta.dx < 0) {
-                  Navigator.push(context,
-                      ConcentricPageRoute(maintainState: false,
-                          fullscreenDialog: true,
-                          builder: (ctx) {
-                            return PiggyBuy();
-                          }
-                      )
-                  );
+                  segueToHome(context, this, MaterialApp(home: new PiggyBuy(), theme: Themes.globalThemeData));
                 }
               }
             // onHorizontalDragUpdate: (details) {
@@ -238,6 +233,7 @@ class PageCard extends StatelessWidget {
 //                 color: page.bgColor
 //                     .withBlue(page.bgColor.blue - 10)
 //                     .withGreen(220),
+//               ),
 //               ),
 //             ),
 //             right: -5,
