@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       // Initialize FlutterFire:
       future: _initialization,
       builder: (context, snapshot) {
+        FirebaseFirestore.instance.settings = Settings(persistenceEnabled: false);
         //Check for errors
         if (snapshot.hasError) {
           print("firebase failed"); // TODO: pop up error about connection
