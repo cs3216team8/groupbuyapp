@@ -117,6 +117,11 @@ class Styles {
       color: Color(0xFF800020),
   );
 
+  static const TextStyle ratingStyle = TextStyle(
+    fontFamily: 'WorkSans',
+    fontSize: 15,
+  );
+
   static const TextStyle popupButtonStyle = TextStyle(
     fontFamily: 'WorkSans',
     fontSize: 15,
