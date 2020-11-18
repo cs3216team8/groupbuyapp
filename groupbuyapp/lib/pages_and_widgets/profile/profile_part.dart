@@ -66,10 +66,10 @@ class ProfilePart extends StatelessWidget {
         content: Stack(
           overflow: Overflow.visible,
           children: <Widget>[
-            Form(
+            SingleChildScrollView(
+              child: Form(
               key: reviewFormKey,
-              child: SingleChildScrollView(
-                child: Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -154,7 +154,8 @@ class ProfilePart extends StatelessWidget {
                       child: TextFormField(
                         decoration: new InputDecoration(
                             hintText: "Describe ${username}",
-                            hintStyle: Styles.hintTextStyle
+                            hintStyle: Styles.hintTextStyle,
+                            contentPadding: EdgeInsets.all(0)
                         ),
                       )
                   ),
@@ -265,15 +266,21 @@ class ProfilePart extends StatelessWidget {
           SizedBox(
             height: 7,
           ),
-          RatingBarIndicator(
-            rating: userProfile.rating,
-            itemBuilder: (context, index) => Icon(
-              Icons.star,
-              color: Colors.amber,
-            ),
-            itemCount: 5,
-            itemSize: 30.0,
-            direction: Axis.horizontal,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RatingBarIndicator(
+                rating: userProfile.rating,
+                itemBuilder: (context, index) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                itemCount: 5,
+                itemSize: 25.0,
+                direction: Axis.horizontal,
+              ),
+              Text(" (${userProfile.reviewCount})", style: Styles.reviewCountStyle)
+            ]
           ),
           SizedBox(
           height: 10,
