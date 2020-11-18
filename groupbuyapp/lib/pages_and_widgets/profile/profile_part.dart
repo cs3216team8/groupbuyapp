@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'package:intl/intl.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
@@ -35,6 +38,18 @@ class ProfilePart extends StatelessWidget {
           )
         )
     );
+  }
+
+  void _addReview(BuildContext context, double rating, String review) {
+    Navigator.of(context).pop();
+    Review reviewObject = Review (
+      userProfile.username,
+      userProfile.profilePicture,
+      rating,
+      review,
+      DateTime.now(),
+    );
+    ProfileStorage.instance.addReview(reviewObject, userProfile.userId);
   }
 
   Widget showReviewInputSection(BuildContext context, String username) {
@@ -106,7 +121,7 @@ class ProfilePart extends StatelessWidget {
                                             onPressed: () {
                                               if (reviewFormKey.currentState.validate()) {
                                                 reviewFormKey.currentState.save();
-                                                _addReview(context, reviewController.text);
+                                                _addReview(context, rating, reviewController.text);
                                               }
                                             },
                                           ),
