@@ -15,6 +15,12 @@ class Styles {
       fontWeight: FontWeight.w300
   );
 
+  static const TextStyle reviewCountStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 18,
+      fontWeight: FontWeight.w300
+  );
+
   static const TextStyle otherUsernameStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15.5,
