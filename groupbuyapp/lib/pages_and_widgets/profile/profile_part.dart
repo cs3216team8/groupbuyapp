@@ -9,6 +9,8 @@ class ProfilePart extends StatelessWidget {
   final bool isMe;
   final Profile userProfile;
 
+  TextEditingController reviewController;
+
   ProfilePart({
     Key key,
     @required this.isMe,
@@ -57,8 +59,67 @@ class ProfilePart extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
-                  print(rating);
-                },
+                      GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
+                      reviewController = TextEditingController();
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Stack(
+                                overflow: Overflow.visible,
+                                children: <Widget>[
+                                  Positioned(
+                                    right: -40.0,
+                                    top: -40.0,
+                                    child: InkResponse(
+                                      onTap: () {
+                                        reviewController = null;
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: CircleAvatar(
+                                        child: Icon(Icons.close),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                  Form(
+                                    key: reviewFormKey,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: TextFormField(
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return 'Review cannot be empty!';
+                                              }
+                                              return null;
+                                            },
+                                            controller: reviewController,
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: RaisedButton(
+                                            child: Text("Describe ${username}", style: TextStyle(color: Colors.white)),
+                                            onPressed: () {
+                                              if (reviewFormKey.currentState.validate()) {
+                                                reviewFormKey.currentState.save();
+                                                _addReview(context, reviewController.text);
+                                              }
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                      );
+                    },
               )
 
             ]
