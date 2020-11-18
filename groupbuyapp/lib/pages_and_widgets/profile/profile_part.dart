@@ -79,6 +79,7 @@ class ProfilePart extends StatelessWidget {
                       GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
                       reviewController = TextEditingController();
                       showDialog(
+                          barrierDismissible: false,
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
@@ -91,13 +92,13 @@ class ProfilePart extends StatelessWidget {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                       RatingBar.builder(
+                                          ignoreGestures: true,
                                         initialRating: currentRating,
                                         minRating: 1,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
                                         itemCount: 5,
                                         itemSize:25,
-                                        updateOnDrag: false,
                                         itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                                         itemBuilder: (context, _) => Icon(
                                           Icons.star,
