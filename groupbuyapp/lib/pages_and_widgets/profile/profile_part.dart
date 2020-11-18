@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
@@ -32,6 +33,30 @@ class ProfilePart extends StatelessWidget {
           )
         )
     );
+  }
+
+  Widget showReviewInputSection(BuildContext context) {
+    return Container(
+        child: FutureBuilder<Profile>(
+            future: ProfileStorage.instance;,
+            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+              if (snapshot.hasError) {
+                return FailedToLoadProfile();
+              }
+
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return ProfileNotLoaded();
+                case ConnectionState.waiting:
+                  return ProfileLoading();
+                default:
+                  Profile userProfile = snapshot.data;
+                  return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
+              }
+            }
+        )
+    ),
+
   }
 
   @override
@@ -110,7 +135,7 @@ class ProfilePart extends StatelessWidget {
           Row(
             children: <Widget>[
               Container(
-                child: isMe ? ownProfileSettings(context) : Container(),
+                child: isMe ? ownProfileSettings(context) : showReviewInputSection(context),
               ),
             ],
           ),
