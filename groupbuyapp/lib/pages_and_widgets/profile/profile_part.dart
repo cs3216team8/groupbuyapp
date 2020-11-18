@@ -68,8 +68,8 @@ class ProfilePart extends StatelessWidget {
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
-                itemSize:20,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemSize:25,
+                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
                   color: Colors.amber,
@@ -136,21 +136,20 @@ class ProfilePart extends StatelessWidget {
                       );
                     },
               )
-
             ]
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: 15,),
           Column(
               children: [
                 Text("Rate ${username} as piggybacker", style: Styles.ratingStyle),
                 RatingBar.builder(
                   initialRating: 0,
                   minRating: 1,
-                  itemSize:20,
+                  itemSize:25,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                   itemBuilder: (context, _) => Icon(
                     Icons.star,
                     color: Colors.amber,
