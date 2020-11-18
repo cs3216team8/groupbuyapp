@@ -123,9 +123,15 @@ class Styles {
   );
 
   static const TextStyle popupButtonStyle = TextStyle(
-    fontFamily: 'WorkSans',
+    fontFamily: 'Inter',
     fontSize: 15,
-    fontWeight: FontWeight.bold,
     color: Colors.white,
   );
+
+  static const TextStyle hintTextStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 15.5,
+    color: Colors.grey,
+  );
+
 }

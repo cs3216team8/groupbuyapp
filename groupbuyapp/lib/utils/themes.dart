@@ -18,7 +18,7 @@ class Themes {
   static ThemeData globalThemeData = ThemeData(
     primaryColor: Color(0xFFF98B83),
     accentColor: Color(0xFFF2B1AB),
-    cardColor: Color(0xFFFFE1AD),
+    cardColor: Color(0xFFFFF3E7),
     backgroundColor: Color(0xFFF4E9E7),
     buttonColor: Color(0xFFBE646E),
     textTheme: TextTheme(
