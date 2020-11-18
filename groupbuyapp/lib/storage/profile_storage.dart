@@ -14,6 +14,9 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
   Reference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
+  CollectionReference reviews = FirebaseFirestore.instance.collection('reviews');
+
+  CollectionReference requestsRoot = FirebaseFirestore.instance.collection('requests');
 
   Future<Profile> getUserProfile(String userId) async {
 
@@ -34,6 +37,8 @@ class ProfileStorage {
     );
     return userProfile;
   }
+
+
 
   Future<bool> checkIfUsernameIsTaken(String username) async {
     QuerySnapshot query = await usersRef.where('username', isEqualTo: username).get();
@@ -89,14 +94,21 @@ class ProfileStorage {
     });
   }
 
-  Future<void> addReview(Review review, String userId) async {
+  Future<void> addReviewAsOrganiser(Review review, String userId) async {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
     double currentRating = document.data()['rating'];
-    double currentReviewCount = document.data()['reviewCount'];
+    int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
+    await reviews.add({
+      'revieweeUserId': review.revieweeUserId,
+      'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
+      'rating': review.rating,
+      'review': review.review,
+      'dateTime': review.dateTime
+    });
     return usersRef.doc(userId).update({
       'rating': newRating,
       'reviewCount': currentReviewCount + 1,

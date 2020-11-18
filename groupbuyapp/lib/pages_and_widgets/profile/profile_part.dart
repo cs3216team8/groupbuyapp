@@ -39,16 +39,149 @@ class ProfilePart extends StatelessWidget {
     );
   }
 
-  void _addReviewAsOrganiser(BuildContext context, double rating, String review) {
+  void _addReview(BuildContext context, double ratingAsOrganiser, double ratingAsPiggybacker, String review) {
     Navigator.of(context).pop();
-    Review reviewObject = Review (
+    Review reviewAsOrganiser = Review (
       userProfile.userId,
-      rating,
+      ratingAsOrganiser,
       review,
       DateTime.now(),
     );
-    ProfileStorage.instance.addReviewAsOrganiser(reviewObject, userProfile.userId);
+    Review reviewAsPiggybacker = Review (
+      userProfile.userId,
+      ratingAsPiggybacker,
+      review,
+      DateTime.now(),
+    );
+    ProfileStorage.instance.addReviewAsOrganiser(reviewAsOrganiser, userProfile.userId);
+    ProfileStorage.instance.addReviewAsOrganiser(reviewAsOrganiser, userProfile.userId);
+
   }
+
+  Widget getReviewForm(BuildContext context, String username) {
+    GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
+    double ratingAsOrganiser = 0;
+    double ratingAsPiggybacker = 0;
+    return AlertDialog(
+        content: Stack(
+          overflow: Overflow.visible,
+          children: <Widget>[
+            Form(
+              key: reviewFormKey,
+              child: SingleChildScrollView(
+                child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text('As Organiser',
+                        style: Styles.titleStyle),
+                  ),
+                  SizedBox(height: 10),
+                  Text('RATING',
+                      style: Styles.subtitleStyle),
+                  SizedBox(height:5),
+                  Align(
+                    alignment: Alignment.center,
+                    child:RatingBar.builder(
+                    initialRating: 0,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize:25,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                    itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                      ratingAsOrganiser = rating;
+                  }),
+                  ),
+                  SizedBox(height:15),
+                  Padding(
+                padding: EdgeInsets.all(0.0),
+                child: Text('REVIEW',
+                      style: Styles.subtitleStyle),
+              ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal:0.0),
+                    child: TextFormField(
+                      decoration: new InputDecoration(
+                          hintText: "Describe ${username}",
+                          hintStyle: Styles.hintTextStyle
+                      ),
+                    )
+                  ),
+                  SizedBox(height:25),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text('As Piggybacker',
+                        style: Styles.titleStyle),
+                  ),
+                  SizedBox(height: 10),
+                  Text('RATING',
+                      style: Styles.subtitleStyle),
+                  SizedBox(height:5),
+                  Align(
+                    alignment: Alignment.center,
+                    child:RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize:25,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          ratingAsPiggybacker = rating;
+                        }),
+                  ),
+                  SizedBox(height:15),
+                  Padding(
+                    padding: EdgeInsets.all(0.0),
+                    child: Text('REVIEW',
+                        style: Styles.subtitleStyle),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.symmetric(horizontal:0.0),
+                      child: TextFormField(
+                        decoration: new InputDecoration(
+                            hintText: "Describe ${username}",
+                            hintStyle: Styles.hintTextStyle
+                        ),
+                      )
+                  ),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: RaisedButton(
+                          color: Color(0xFFF98B83),
+                          child: Text("Submit", style: Styles.popupButtonStyle),
+                          onPressed: () {
+                            if (reviewFormKey.currentState.validate()) {
+                              reviewFormKey.currentState.save();
+                              _addReview(context, ratingAsOrganiser, ratingAsPiggybacker, reviewController.text);
+                            }
+                          },
+                        ),
+                      )
+                  )
+                ],
+              ),
+            ),
+            )
+          ],
+        ),
+      );
+    }
 
   Widget showReviewInputSection(BuildContext context, String username) {
     double currentRating = 0;
@@ -58,232 +191,25 @@ class ProfilePart extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Divider(
-              indent: MediaQuery.of(context).size.width * 0.43,
-              endIndent: MediaQuery.of(context).size.width * 0.43,
-              thickness: 1,
-              color: Theme.of(context).primaryColor,
-              height: 5.5,
-            ),
-            SizedBox(height: 8,),
-            Column(
-            children: [
-              Text("Rate ${username} as organiser", style: Styles.ratingStyle),
-              RatingBar.builder(
-                initialRating: 0,
-                minRating: 1,
-                direction: Axis.horizontal,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemSize:25,
-                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (rating) {
-                      currentRating = rating;
-                      GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
-                      reviewController = TextEditingController();
-                      showDialog(
-                          barrierDismissible: false,
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Stack(
-                                overflow: Overflow.visible,
-                                children: <Widget>[
-                                  Form(
-                                    key: reviewFormKey,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text('As Organiser',
-                                              style: Styles.titleStyle),
-                                        ),
-                                        SizedBox(height: 10),
-                                        Text('RATING',
-                                            style: Styles.subtitleStyle),
-                                        SizedBox(height:5),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child:RatingBar.builder(
-                                          ignoreGestures: true,
-                                        initialRating: currentRating,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: true,
-                                        itemCount: 5,
-                                        itemSize:25,
-                                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                      onRatingUpdate: (rating) {
-                                      }),
-                                        ),
-                                        SizedBox(height:15),
-
-                                        Padding(
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Text('REVIEW',
-                                            style: Styles.subtitleStyle),
-                                    ),
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(horizontal:0.0),
-                                          child: TextFormField(
-                                            decoration: new InputDecoration(
-                                                hintText: "Describe ${username}",
-                                                hintStyle: Styles.hintTextStyle
-                                            ),
-                                          )
-                                        ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: RaisedButton(
-                                            color: Color(0xFFF98B83),
-                                            child: Text("Submit", style: Styles.popupButtonStyle),
-                                            onPressed: () {
-                                              if (reviewFormKey.currentState.validate()) {
-                                                reviewFormKey.currentState.save();
-                                                _addReviewAsOrganiser(context, currentRating, reviewController.text);
-                                              }
-                                            },
-                                          ),
-                                        )
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
-                      );
-                    },
-              )
-            ]
-          ),
-          SizedBox(height: 8,),
-            Divider(
-              indent: MediaQuery.of(context).size.width * 0.43,
-              endIndent: MediaQuery.of(context).size.width * 0.43,
-              thickness: 1,
-              color: Theme.of(context).primaryColor,
-              height: 5.5,
-            ),
-            SizedBox(height: 8,),
-            Column(
-              children: [
-                Text("Rate ${username} as piggybacker", style: Styles.ratingStyle),
-                RatingBar.builder(
-                  initialRating: 0,
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemSize:25,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                  itemBuilder: (context, _) => Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                  ),
-                  onRatingUpdate: (rating) {
-                    currentRating = rating;
-                    GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
-                    reviewController = TextEditingController();
-                    showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Stack(
-                              overflow: Overflow.visible,
-                              children: <Widget>[
-                                Form(
-                                  key: reviewFormKey,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Text('As Piggybacker',
-                                            style: Styles.titleStyle),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Text('RATING',
-                                          style: Styles.subtitleStyle),
-                                      SizedBox(height:5),
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child:RatingBar.builder(
-                                            ignoreGestures: true,
-                                            initialRating: currentRating,
-                                            minRating: 1,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: true,
-                                            itemCount: 5,
-                                            itemSize:25,
-                                            itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                            itemBuilder: (context, _) => Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                            ),
-                                            onRatingUpdate: (rating) {
-                                            }),
-                                      ),
-                                      SizedBox(height:15),
-
-                                      Padding(
-                                        padding: EdgeInsets.all(0.0),
-                                        child: Text('REVIEW',
-                                            style: Styles.subtitleStyle),
-                                      ),
-                                      Padding(
-                                          padding: EdgeInsets.symmetric(horizontal:0.0),
-                                          child: TextFormField(
-                                            decoration: new InputDecoration(
-                                                hintText: "Describe ${username}",
-                                                hintStyle: Styles.hintTextStyle
-                                            ),
-                                          )
-                                      ),
-                                      Align(
-                                          alignment: Alignment.center,
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(0.0),
-                                            child: RaisedButton(
-                                              color: Color(0xFFF98B83),
-                                              child: Text("Submit", style: Styles.popupButtonStyle),
-                                              onPressed: () {
-                                                if (reviewFormKey.currentState.validate()) {
-                                                  reviewFormKey.currentState.save();
-                                                  _addReviewAsOrganiser(context, currentRating, reviewController.text);
-                                                }
-                                              },
-                                            ),
-                                          )
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
+            GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return getReviewForm(context, username);
+                      }
                     );
-                  },
+                },
+                child: Container(
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(border: Border.all(color: Color(0xFFF98B83)), borderRadius: BorderRadius.circular(10)),
+                    child: new Text("REVIEW USER",
+                        textAlign: TextAlign.center,
+                        style: Styles.minorStyle
+                    )
                 )
-              ]
-          )
-        ]
+            )
+         ]
       )
     );
   }
@@ -337,29 +263,20 @@ class ProfilePart extends StatelessWidget {
             )
           ]),
           SizedBox(
-            height: 5,
+            height: 7,
           ),
-          // Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //
-          //     children: [
-          //   userProfile.rating == null
-          //       ? Container()
-          //       : Container(
-          //       child: RatingBarIndicator(
-          //         rating: userProfile.rating,
-          //         itemBuilder: (context, index) => Icon(
-          //           Icons.star,
-          //           color: Colors.amber,
-          //         ),
-          //         itemCount: 5,
-          //         itemSize: 30.0,
-          //         direction: Axis.horizontal,
-          //       )
-          //   )
-          //   ]),
+          RatingBarIndicator(
+            rating: userProfile.rating,
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            itemCount: 5,
+            itemSize: 30.0,
+            direction: Axis.horizontal,
+          ),
           SizedBox(
-            height: 8,
+          height: 10,
           ),
           Row(
             children: <Widget>[

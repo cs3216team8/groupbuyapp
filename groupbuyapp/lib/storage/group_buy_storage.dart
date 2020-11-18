@@ -300,6 +300,38 @@ class GroupBuyStorage {
     });
   }
 
+  Future<String> getReviewInputContent(String otherUserId) async {
+    // if the user has ever requested on this another user
+    // if the user has ever been requested by this another user
+    // if never, cannot
+    String currentUserId = FirebaseAuth.instance.currentUser.uid;
+    // group buys that has been requested by the current user
+
+
+    groupBuys
+        .where('organiserId', isEqualTo: otherUserId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((document) {
+        return GroupBuy(
+          document.id,
+          document.data()['storeName'],
+          document.data()['storeWebsite'],
+          document.data()['storeLogo'],
+          document.data()['currentAmount'].toDouble(),
+          document.data()['targetAmount'].toDouble(),
+          document.data()['endTimestamp'],
+          document.data()['organiserId'],
+          document.data()['deposit'],
+          document.data()['description'],
+          document.data()['address'],
+          GroupBuy.groupBuyStatusFromString(document.data()['status']),
+        );
+      }).toList();
+    });
+  }
+
+
   List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
     return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
   }
