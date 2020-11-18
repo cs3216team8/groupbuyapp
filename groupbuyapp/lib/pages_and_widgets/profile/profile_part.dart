@@ -89,9 +89,15 @@ class ProfilePart extends StatelessWidget {
                                   Form(
                                     key: reviewFormKey,
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
-                                      RatingBar.builder(
+                                        Text('RATING',
+                                            style: Styles.subtitleStyle),
+                                        SizedBox(height:5),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child:RatingBar.builder(
                                           ignoreGestures: true,
                                         initialRating: currentRating,
                                         minRating: 1,
@@ -106,8 +112,16 @@ class ProfilePart extends StatelessWidget {
                                         ),
                                       onRatingUpdate: (rating) {
                                       }),
+                                        ),
+                                        SizedBox(height:15),
+
                                         Padding(
-                                          padding: EdgeInsets.all(8.0),
+                                      padding: EdgeInsets.all(0.0),
+                                      child: Text('REVIEW',
+                                            style: Styles.subtitleStyle),
+                                    ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal:0.0),
                                           child: TextFormField(
                                             decoration: new InputDecoration(
                                                 hintText: "Describe ${username}",
@@ -115,8 +129,10 @@ class ProfilePart extends StatelessWidget {
                                             ),
                                           )
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                        Align(
+                                          alignment: Alignment.center,
+                                          child: Padding(
+                                          padding: const EdgeInsets.all(0.0),
                                           child: RaisedButton(
                                             color: Color(0xFFF98B83),
                                             child: Text("Submit", style: Styles.popupButtonStyle),
@@ -127,6 +143,7 @@ class ProfilePart extends StatelessWidget {
                                               }
                                             },
                                           ),
+                                        )
                                         )
                                       ],
                                     ),
