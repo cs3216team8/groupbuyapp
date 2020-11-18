@@ -93,8 +93,9 @@ class ProfilePart extends StatelessWidget {
                                         Navigator.of(context).pop();
                                       },
                                       child: CircleAvatar(
-                                        child: Icon(Icons.close),
-                                        backgroundColor: Colors.red,
+                                        radius: 17,
+                                        child: Icon(Icons.close, color: Colors.white,),
+                                        backgroundColor: Color(0xFFF98B83),
                                       ),
                                     ),
                                   ),
@@ -105,12 +106,18 @@ class ProfilePart extends StatelessWidget {
                                       children: <Widget>[
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: TextFormField(),
+                                          child: TextFormField(
+                                            decoration: new InputDecoration(
+                                                hintText: "Describe ${username}",
+                                                hintStyle: Styles.hintTextStyle
+                                            ),
+                                          )
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: RaisedButton(
-                                            child: Text("Describe ${username}", style: TextStyle(color: Colors.white)),
+                                            color: Color(0xFFF98B83),
+                                            child: Text("Submit", style: Styles.popupButtonStyle),
                                             onPressed: () {
                                               if (reviewFormKey.currentState.validate()) {
                                                 reviewFormKey.currentState.save();
