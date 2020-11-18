@@ -67,7 +67,8 @@ class ProfilePart extends StatelessWidget {
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
-                itemCount: 5, itemSize:20,
+                itemCount: 5,
+                itemSize:20,
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => Icon(
                   Icons.star,
@@ -104,15 +105,7 @@ class ProfilePart extends StatelessWidget {
                                       children: <Widget>[
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
-                                          child: TextFormField(
-                                            validator: (value) {
-                                              if (value.isEmpty) {
-                                                return 'Review cannot be empty!';
-                                              }
-                                              return null;
-                                            },
-                                            controller: reviewController,
-                                          ),
+                                          child: TextFormField(),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
