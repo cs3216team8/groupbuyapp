@@ -40,19 +40,19 @@ class ProfilePart extends StatelessWidget {
     );
   }
 
-  void _addReview(BuildContext context, double rating, String review) {
+  void _addReviewAsOrganiser(BuildContext context, double rating, String review) {
     Navigator.of(context).pop();
     Review reviewObject = Review (
-      userProfile.username,
-      userProfile.profilePicture,
+      userProfile.userId,
       rating,
       review,
       DateTime.now(),
     );
-    ProfileStorage.instance.addReview(reviewObject, userProfile.userId);
+    ProfileStorage.instance.addReviewAsOrganiser(reviewObject, userProfile.userId);
   }
 
   Widget showReviewInputSection(BuildContext context, String username) {
+    double currentRating = 0;
     return Container(
       width: MediaQuery.of(context).size.width,
       child: Column(
@@ -75,6 +75,7 @@ class ProfilePart extends StatelessWidget {
                   color: Colors.amber,
                 ),
                 onRatingUpdate: (rating) {
+                      currentRating = rating;
                       GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
                       reviewController = TextEditingController();
                       showDialog(
@@ -84,26 +85,26 @@ class ProfilePart extends StatelessWidget {
                               content: Stack(
                                 overflow: Overflow.visible,
                                 children: <Widget>[
-                                  Positioned(
-                                    right: -40.0,
-                                    top: -40.0,
-                                    child: InkResponse(
-                                      onTap: () {
-                                        reviewController = null;
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: CircleAvatar(
-                                        radius: 17,
-                                        child: Icon(Icons.close, color: Colors.white,),
-                                        backgroundColor: Color(0xFFF98B83),
-                                      ),
-                                    ),
-                                  ),
                                   Form(
                                     key: reviewFormKey,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
+                                      RatingBar.builder(
+                                        initialRating: currentRating,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemSize:25,
+                                        updateOnDrag: false,
+                                        itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
+                                        ),
+                                      onRatingUpdate: (rating) {
+                                      }),
                                         Padding(
                                           padding: EdgeInsets.all(8.0),
                                           child: TextFormField(
@@ -121,7 +122,7 @@ class ProfilePart extends StatelessWidget {
                                             onPressed: () {
                                               if (reviewFormKey.currentState.validate()) {
                                                 reviewFormKey.currentState.save();
-                                                _addReview(context, rating, reviewController.text);
+                                                _addReviewAsOrganiser(context, currentRating, reviewController.text);
                                               }
                                             },
                                           ),
@@ -145,10 +146,10 @@ class ProfilePart extends StatelessWidget {
                 RatingBar.builder(
                   initialRating: 0,
                   minRating: 1,
-                  itemSize:25,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
+                  itemSize:25,
                   itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
                   itemBuilder: (context, _) => Icon(
                     Icons.star,
