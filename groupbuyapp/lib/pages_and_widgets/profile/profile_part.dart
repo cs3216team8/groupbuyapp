@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
-import 'package:groupbuyapp/storage/profile_storage.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
@@ -35,28 +35,60 @@ class ProfilePart extends StatelessWidget {
     );
   }
 
-  Widget showReviewInputSection(BuildContext context) {
+  Widget showReviewInputSection(BuildContext context, String username) {
     return Container(
-        child: FutureBuilder<Profile>(
-            future: ProfileStorage.instance;,
-            builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
-              if (snapshot.hasError) {
-                return FailedToLoadProfile();
-              }
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+          Column(
+            children: [
+              Text("Rate ${username} as organiser", style: Styles.ratingStyle),
+              RatingBar.builder(
+                initialRating: 0,
+                minRating: 1,
+                direction: Axis.horizontal,
+                allowHalfRating: true,
+                itemCount: 5, itemSize:20,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: Colors.amber,
+                ),
+                onRatingUpdate: (rating) {
+                  print(rating);
+                },
+              )
 
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                  return ProfileNotLoaded();
-                case ConnectionState.waiting:
-                  return ProfileLoading();
-                default:
-                  Profile userProfile = snapshot.data;
-                  return ProfilePart(isMe: widget.isMe, userProfile: userProfile);
-              }
-            }
-        )
-    ),
+            ]
+          ),
+          SizedBox(height: 10,),
+          Column(
+              children: [
+                Text("Rate ${username} as piggybacker", style: Styles.ratingStyle),
+                RatingBar.builder(
+                  initialRating: 0,
+                  minRating: 1,
+                  itemSize:20,
+                  direction: Axis.horizontal,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (rating) {
+                    print(rating);
+                  },
+                )
 
+              ]
+          )
+        ]
+      )
+    );
   }
 
   @override
@@ -135,7 +167,7 @@ class ProfilePart extends StatelessWidget {
           Row(
             children: <Widget>[
               Container(
-                child: isMe ? ownProfileSettings(context) : showReviewInputSection(context),
+                child: isMe ? ownProfileSettings(context) : showReviewInputSection(context, userProfile.username),
               ),
             ],
           ),
