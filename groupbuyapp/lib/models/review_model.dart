@@ -1,13 +1,11 @@
 class Review {
-  final String username;
-  final String profilePicture;
+  final String revieweeUserId;
   final double rating;
   final String review;
   final DateTime dateTime;
 
   Review (
-      this.username,
-      this.profilePicture,
+      this.revieweeUserId,
       this.rating,
       this.review,
       this.dateTime,
@@ -16,8 +14,7 @@ class Review {
 
   static Review getDummyData() {
     return new Review (
-        "dawo",
-        "https://haircutinspiration.com/wp-content/uploads/Voluminous-Comb-Over-1-1.jpg",
+        "abcd1234",
         4.7,
         "The seller is very friendly and is on time",
         DateTime.now(),
