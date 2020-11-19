@@ -26,6 +26,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="664ca50c-6142-4c18-bced-4c06131327d1" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/locator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/locator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/logic/notification/push_notification.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/logic/notification/push_notification_service.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/groupbuyapp/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/groupbuyapp/lib/main.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

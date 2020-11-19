@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-class PushNotification {
+class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future initialise() async {
