@@ -25,11 +25,8 @@ class PushNotificationService {
       onResume: (Map<String, dynamic> message) async {
         print('onResume: $message');
       },
-
     );
-
-
-
   }
 
+  void _serialiseAndNavigate(Map<String, dynamic> message) {}
 }
