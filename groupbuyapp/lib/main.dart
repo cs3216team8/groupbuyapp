@@ -6,9 +6,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/pages_and_widgets/splashscreen_widget.dart';
+import 'locator.dart';
 
 void main() {
-
+  setupLocator();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Phoenix(
     child: MyApp(),
