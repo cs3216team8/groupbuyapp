@@ -40,7 +40,8 @@ class PushNotificationService {
     );
   }
 
-  void _serialiseAndNavigate(Map<String, dynamic> message, BuildContext context) {
+  void _serialiseAndNavigate(Map<String, dynamic> message,
+      BuildContext context) {
     var notificationData = message['data'];
     var view = notificationData['view'];
 
@@ -48,7 +49,11 @@ class PushNotificationService {
       if (view == 'home') {
         segueToPage(context, PiggyBuyApp());
       } else if (view == 'chat') {
-        segueToPage(context, ChatScreen(chatRoomId: "ezDEidkJFbbLZN2TFI2fgJx8H9r1_7RqTgkmFo9g1KbKdqdahCR6S2Th1", username: 'debug',))
+        segueToPage(context, ChatScreen(
+          chatRoomId: notificationData['chatRoomId'],
+          username: notificationData['username'],));
+      } else if (view == 'groupbuy') {
+        // add group buy segue here
       }
     }
   }
