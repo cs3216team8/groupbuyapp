@@ -8,6 +8,7 @@ import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:groupbuyapp/pages_and_widgets/splashscreen_widget.dart';
 
 void main() {
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(Phoenix(
     child: MyApp(),
