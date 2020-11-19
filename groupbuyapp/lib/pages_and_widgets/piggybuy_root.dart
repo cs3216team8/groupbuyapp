@@ -1,6 +1,7 @@
 // Essentials
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:groupbuyapp/logic/notification/push_notification_service.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
 
 // Home
@@ -20,6 +21,8 @@ import 'dart:async';
 import 'package:after_layout/after_layout.dart';
 import 'package:groupbuyapp/utils/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../locator.dart';
 
 
 class PiggyBuyApp extends StatelessWidget {
@@ -46,7 +49,9 @@ class Splash extends StatefulWidget {
 }
 
 class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
+  final PushNotificationService _pushNotificationService = locator<PushNotificationService>();
   Future checkFirstSeen() async {
+    await _pushNotificationService.initialise();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
 
