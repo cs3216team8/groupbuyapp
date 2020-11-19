@@ -51,7 +51,7 @@ class Splash extends StatefulWidget {
 class SplashState extends State<Splash> with AfterLayoutMixin<Splash> {
   final PushNotificationService _pushNotificationService = locator<PushNotificationService>();
   Future checkFirstSeen() async {
-    await _pushNotificationService.initialise();
+    await _pushNotificationService.initialise(context);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
 
