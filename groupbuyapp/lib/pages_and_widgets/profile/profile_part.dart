@@ -3,6 +3,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_settings_widget.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/review_input.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
@@ -41,25 +42,26 @@ class ProfilePart extends StatelessWidget {
 
   void _addReview(BuildContext context, double ratingAsOrganiser, double ratingAsPiggybacker, String review) {
     Navigator.of(context).pop();
-    Review reviewAsOrganiser = Review (
+    Review reviewForOrganiser = Review (
       userProfile.userId,
       ratingAsOrganiser,
       review,
       DateTime.now(),
     );
-    Review reviewAsPiggybacker = Review (
+    Review reviewForPiggybacker = Review (
       userProfile.userId,
       ratingAsPiggybacker,
       review,
       DateTime.now(),
     );
-    ProfileStorage.instance.addReviewAsOrganiser(reviewAsOrganiser, userProfile.userId);
-    ProfileStorage.instance.addReviewAsOrganiser(reviewAsOrganiser, userProfile.userId);
+    ProfileStorage.instance.addReviewForOrganiser(reviewForOrganiser, userProfile.userId);
+    ProfileStorage.instance.addReviewForPiggybacker(reviewForPiggybacker, userProfile.userId);
 
   }
 
   Widget getReviewForm(BuildContext context, String username) {
-    GlobalKey<FormState> reviewFormKey = GlobalKey<FormState>();
+    GlobalKey<FormState> reviewFormKeyForOrganiser = GlobalKey<FormState>();
+    GlobalKey<FormState> reviewFormKeyForPiggybacker = GlobalKey<FormState>();
     double ratingAsOrganiser = 0;
     double ratingAsPiggybacker = 0;
     return AlertDialog(
@@ -67,15 +69,19 @@ class ProfilePart extends StatelessWidget {
           overflow: Overflow.visible,
           children: <Widget>[
             SingleChildScrollView(
-              child: Form(
-              key: reviewFormKey,
+              child:
+        Column(
+            children:
+            [
+              Form(
+              key: reviewFormKeyForOrganiser,
               child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Align(
                     alignment: Alignment.center,
-                    child: Text('As Organiser',
+                    child: Text('For Organiser',
                         style: Styles.titleStyle),
                   ),
                   SizedBox(height: 10),
@@ -115,10 +121,33 @@ class ProfilePart extends StatelessWidget {
                       ),
                     )
                   ),
-                  SizedBox(height:25),
+                  Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: RaisedButton(
+                          color: Color(0xFFF98B83),
+                          child: Text("Submit", style: Styles.popupButtonStyle),
+                          onPressed: () {
+                            if (reviewFormKeyForOrganiser.currentState.validate()) {
+                              reviewFormKeyForOrganiser.currentState.save();
+                              _addReview(context, ratingAsOrganiser, ratingAsPiggybacker, reviewController.text);
+                            }
+                          },
+                        ),
+                      )
+                  ),
+                ])
+              ),
+              Form(
+              key: reviewFormKeyForPiggybacker,
+              child:  Column(
+
+              children: [
+                SizedBox(height:25),
                   Align(
                     alignment: Alignment.center,
-                    child: Text('As Piggybacker',
+                    child: Text('For Piggybacker',
                         style: Styles.titleStyle),
                   ),
                   SizedBox(height: 10),
@@ -167,18 +196,18 @@ class ProfilePart extends StatelessWidget {
                           color: Color(0xFFF98B83),
                           child: Text("Submit", style: Styles.popupButtonStyle),
                           onPressed: () {
-                            if (reviewFormKey.currentState.validate()) {
-                              reviewFormKey.currentState.save();
+                            if (reviewFormKeyForPiggybacker.currentState.validate()) {
+                              reviewFormKeyForPiggybacker.currentState.save();
                               _addReview(context, ratingAsOrganiser, ratingAsPiggybacker, reviewController.text);
                             }
                           },
                         ),
                       )
                   )
-                ],
+                ]
+              ))],
               ),
             ),
-            )
           ],
         ),
       );
@@ -197,7 +226,7 @@ class ProfilePart extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return getReviewForm(context, username);
+                        return ReviewInputScreen();
                       }
                     );
                 },

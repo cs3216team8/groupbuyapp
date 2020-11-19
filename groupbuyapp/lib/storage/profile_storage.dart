@@ -14,7 +14,8 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
   Reference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
-  CollectionReference reviews = FirebaseFirestore.instance.collection('reviews');
+  CollectionReference reviewsForOrganisers = FirebaseFirestore.instance.collection('reviewsForOrganisers');
+  CollectionReference reviewsForPiggybackers = FirebaseFirestore.instance.collection('reviewsForPiggybackers');
 
   CollectionReference requestsRoot = FirebaseFirestore.instance.collection('requests');
 
@@ -94,7 +95,7 @@ class ProfileStorage {
     });
   }
 
-  Future<void> addReviewAsOrganiser(Review review, String userId) async {
+  Future<void> addReviewForOrganiser(Review review, String userId) async {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
@@ -102,7 +103,28 @@ class ProfileStorage {
     int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
-    await reviews.add({
+    await reviewsForOrganisers.add({
+      'revieweeUserId': review.revieweeUserId,
+      'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
+      'rating': review.rating,
+      'review': review.review,
+      'dateTime': review.dateTime
+    });
+    return usersRef.doc(userId).update({
+      'rating': newRating,
+      'reviewCount': currentReviewCount + 1,
+    });
+  }
+
+  Future<void> addReviewForPiggybacker(Review review, String userId) async {
+    DocumentSnapshot document = await usersRef
+        .doc(userId)
+        .get();
+    double currentRating = document.data()['rating'];
+    int currentReviewCount = document.data()['reviewCount'];
+    double newRating = ((currentRating * currentReviewCount) +
+        review.getRating()) / (currentReviewCount + 1);
+    await reviewsForPiggybackers.add({
       'revieweeUserId': review.revieweeUserId,
       'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
       'rating': review.rating,
