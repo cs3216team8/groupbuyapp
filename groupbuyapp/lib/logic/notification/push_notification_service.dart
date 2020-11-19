@@ -11,6 +11,9 @@ class PushNotificationService {
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
 
+    // used for debug mode, not needed for production
+    _fcm.subscribeToTopic('debug');
+
     _fcm.configure(
       // called when app is in the foreground and push notification received
       onMessage: (Map<String, dynamic> message) async {
