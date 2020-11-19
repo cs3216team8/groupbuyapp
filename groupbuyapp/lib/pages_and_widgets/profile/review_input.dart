@@ -67,6 +67,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             child: TextFormField(
               controller: reviewForOrganiserController,
               decoration: new InputDecoration(
+                  fillColor: Colors.black,
                   hintText: "Describe ${widget.userProfile.username}",
                   hintStyle: Styles.hintTextStyle
               ),
@@ -78,7 +79,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               padding: const EdgeInsets.all(0.0),
               child: RaisedButton(
                 color: Color(0xFFF98B83),
-                child: Text("Submit", style: Styles.popupButtonStyle),
+                child: Text("Review For Organiser", style: Styles.popupButtonStyle),
                 onPressed: () {
                   if (reviewFormKeyForOrganiser.currentState.validate()) {
                     reviewFormKeyForOrganiser.currentState.save();
@@ -95,7 +96,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   Widget reviewPartForPiggybacker(GlobalKey<FormState> reviewFormKeyForPiggybacker, TextEditingController reviewForPiggybackerController, double ratingAsPiggybacker) {
     return Column(
       children: [
-        SizedBox(height:15),
+        SizedBox(height:10),
         Padding(
           padding: EdgeInsets.all(0.0),
           child: Text('REVIEW',
@@ -118,7 +119,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               padding: const EdgeInsets.all(0.0),
               child: RaisedButton(
                 color: Color(0xFFF98B83),
-                child: Text("Submit", style: Styles.popupButtonStyle),
+                child: Text("Review For Piggybacker", style: Styles.popupButtonStyle),
                 onPressed: () {
                   if (reviewFormKeyForPiggybacker.currentState.validate()) {
                     reviewFormKeyForPiggybacker.currentState.save();
@@ -150,18 +151,16 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                 Form(
                     key: reviewFormKeyForOrganiser,
                     child:  Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Align(
                             alignment: Alignment.center,
                             child: Text('For Organiser',
                                 style: Styles.titleStyle),
                           ),
-                          // SizedBox(height: 10),
-                          // Text('RATING',
-                          //     style: Styles.subtitleStyle),
-                          // SizedBox(height:5),
+                          SizedBox(height: 5),
+                          Text('RATING',
+                              style: Styles.subtitleStyle),
+                          SizedBox(height:5),
                           Align(
                             alignment: Alignment.center,
                             child:RatingBar.builder(
@@ -197,10 +196,10 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                             child: Text('For Piggybacker',
                                 style: Styles.titleStyle),
                           ),
-                          // SizedBox(height: 10),
-                          // Text('RATING',
-                          //     style: Styles.subtitleStyle),
-                          // SizedBox(height:5),
+                          SizedBox(height: 5),
+                          Text('RATING',
+                              style: Styles.subtitleStyle),
+                          SizedBox(height:5),
                           Align(
                             alignment: Alignment.center,
                             child:RatingBar.builder(
