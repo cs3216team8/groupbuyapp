@@ -18,10 +18,14 @@ class ReviewInputScreen extends StatefulWidget {
 }
 
 class _ReviewInputState extends State<ReviewInputScreen> {
+  double ratingForOrganiser;
+  double ratingForPiggybacker;
   bool hasRatedForOrganiser;
   bool hasRatedForPiggybacker;
   @override
   void initState() {
+    ratingForOrganiser = 0;
+    ratingForPiggybacker = 0;
     hasRatedForOrganiser = false;
     hasRatedForPiggybacker = false;
   }
@@ -134,8 +138,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
     GlobalKey<FormState> reviewFormKeyForPiggybacker = GlobalKey<FormState>();
     TextEditingController reviewForOrganiserController = TextEditingController();
     TextEditingController reviewForPiggybackerController = TextEditingController();
-    double ratingAsOrganiser = 0;
-    double ratingAsPiggybacker = 0;
     return AlertDialog(
       content: Stack(
         overflow: Overflow.visible,
@@ -156,14 +158,14 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                             child: Text('For Organiser',
                                 style: Styles.titleStyle),
                           ),
-                          SizedBox(height: 10),
-                          Text('RATING',
-                              style: Styles.subtitleStyle),
-                          SizedBox(height:5),
+                          // SizedBox(height: 10),
+                          // Text('RATING',
+                          //     style: Styles.subtitleStyle),
+                          // SizedBox(height:5),
                           Align(
                             alignment: Alignment.center,
                             child:RatingBar.builder(
-                                initialRating: 0,
+                                initialRating: ratingForOrganiser,
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -175,13 +177,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                   color: Colors.amber,
                                 ),
                                 onRatingUpdate: (rating) {
-                                  ratingAsOrganiser = rating;
                                   setState(() {
                                     hasRatedForOrganiser = true;
+                                    ratingForOrganiser = rating;
                                   });
                                 }),
                           ),
-                          this.hasRatedForOrganiser? reviewPartForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingAsOrganiser): Container()
+                          this.hasRatedForOrganiser? reviewPartForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser): Container()
                         ])
                 ),
                 Form(
@@ -195,14 +197,14 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                             child: Text('For Piggybacker',
                                 style: Styles.titleStyle),
                           ),
-                          SizedBox(height: 10),
-                          Text('RATING',
-                              style: Styles.subtitleStyle),
-                          SizedBox(height:5),
+                          // SizedBox(height: 10),
+                          // Text('RATING',
+                          //     style: Styles.subtitleStyle),
+                          // SizedBox(height:5),
                           Align(
                             alignment: Alignment.center,
                             child:RatingBar.builder(
-                                initialRating: 0,
+                                initialRating: ratingForPiggybacker,
                                 minRating: 1,
                                 direction: Axis.horizontal,
                                 allowHalfRating: true,
@@ -214,13 +216,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                   color: Colors.amber,
                                 ),
                                 onRatingUpdate: (rating) {
-                                  ratingAsPiggybacker = rating;
                                   setState(() {
                                     hasRatedForPiggybacker = true;
+                                    ratingForPiggybacker = rating;
                                   });
                                 }),
                           ),
-                          this.hasRatedForPiggybacker? reviewPartForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController, ratingAsPiggybacker): Container()
+                          this.hasRatedForPiggybacker? reviewPartForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController, ratingForPiggybacker): Container()
                           ]
                     ))],
             ),

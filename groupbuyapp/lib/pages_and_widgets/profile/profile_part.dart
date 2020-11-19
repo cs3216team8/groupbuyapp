@@ -226,7 +226,7 @@ class ProfilePart extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return ReviewInputScreen();
+                        return ReviewInputScreen(userProfile: userProfile,);
                       }
                     );
                 },
