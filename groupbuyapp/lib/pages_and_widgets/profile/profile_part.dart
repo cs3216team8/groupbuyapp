@@ -7,6 +7,8 @@ import 'package:groupbuyapp/pages_and_widgets/profile/review_input.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
+import 'package:groupbuyapp/logic/authentication/auth_check.dart';git s
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
@@ -223,12 +225,17 @@ class ProfilePart extends StatelessWidget {
           children: [
             GestureDetector(
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return ReviewInputScreen(userProfile: userProfile,);
-                      }
+                  if (isUserLoggedIn()) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return ReviewInputScreen(userProfile: userProfile,);
+                        }
                     );
+                  } else {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  }
                 },
                 child: Container(
                     padding: EdgeInsets.all(8),
