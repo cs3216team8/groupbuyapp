@@ -305,19 +305,4 @@ class GroupBuyStorage {
     });
   }
 
-  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
-    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
-  }
-
-  List<GroupBuyCard> getSortedCardList(List<GroupBuy> groupBuys) {
-    List<GroupBuy> pastGroupBuys =
-        groupBuys.where((gb) => !gb.isPresent()).toList();
-    List<GroupBuy> closedPresentGroupBuys =
-        groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
-    List<GroupBuy> openPresentGroupBuys =
-        groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
-    return getGroupBuyCardList(openPresentGroupBuys) +
-        getGroupBuyCardList(closedPresentGroupBuys) +
-        getGroupBuyCardList(pastGroupBuys);
-  }
 }
