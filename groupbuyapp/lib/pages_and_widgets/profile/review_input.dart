@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/review_builder_errors.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
@@ -31,7 +32,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   }
 
   void _addReviewForOrganiser(BuildContext context, double ratingAsOrganiser, String review) {
-    Navigator.of(context).pop();
     Review reviewForOrganiser = Review (
       widget.userProfile.userId,
       ratingAsOrganiser,
@@ -42,7 +42,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   }
 
   void _addReviewForPiggybacker(BuildContext context, double ratingForPiggybacker, String review) {
-    Navigator.of(context).pop();
     Review reviewForPiggybacker = Review (
       widget.userProfile.userId,
       ratingForPiggybacker,
@@ -133,6 +132,121 @@ class _ReviewInputState extends State<ReviewInputScreen> {
     );
   }
 
+  Widget reviewForOrganiser(GlobalKey<FormState> reviewFormKeyForOrganiser, TextEditingController reviewForOrganiserController) {
+    return Form(
+        key: reviewFormKeyForOrganiser,
+        child:  Column(
+            children: <Widget>[
+              Align(
+                alignment: Alignment.center,
+                child: Text('For Organiser',
+                    style: Styles.titleStyle),
+              ),
+              SizedBox(height: 5),
+              Text('RATING',
+                  style: Styles.subtitleStyle),
+              SizedBox(height:5),
+              Align(
+                alignment: Alignment.center,
+                child:RatingBar.builder(
+                    initialRating: ratingForOrganiser,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemSize:25,
+                    itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      setState(() {
+                        hasRatedForOrganiser = true;
+                        ratingForOrganiser = rating;
+                      });
+                    }),
+              ),
+              this.hasRatedForOrganiser? reviewPartForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser): Container()
+            ]
+        )
+    );
+  }
+
+  Widget reviewForPiggybacker(GlobalKey<FormState> reviewFormKeyForPiggybacker, TextEditingController reviewForPiggybackerController) {
+    print("C");
+    return StreamBuilder<Review>(
+        stream: ProfileStorage.instance.reviewForPiggybacker(widget.userProfile.userId),
+        builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
+          Review review;
+
+          if (snapshot.data != null) {
+            print("A");
+            return Text(snapshot.data.revieweeUserId);
+          }
+
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return FailedToLoadReviewInputSection();
+          }
+
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return ReviewInputSectionNotLoaded();
+            case ConnectionState.waiting:
+              return ReviewInputSectionLoading();
+            default:
+              print("B");
+              return Form(
+                  key: reviewFormKeyForPiggybacker,
+                  child: Column(
+
+                      children: [
+                        SizedBox(height: 25),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text('For Piggybacker',
+                              style: Styles.titleStyle),
+                        ),
+                        SizedBox(height: 5),
+                        Text('RATING',
+                            style: Styles.subtitleStyle),
+                        SizedBox(height: 5),
+                        Align(
+                          alignment: Alignment.center,
+                          child: RatingBar.builder(
+                              initialRating: ratingForPiggybacker,
+                              minRating: 1,
+                              direction: Axis.horizontal,
+                              allowHalfRating: true,
+                              itemCount: 5,
+                              itemSize: 25,
+                              itemPadding: EdgeInsets.symmetric(
+                                  horizontal: 1.0),
+                              itemBuilder: (context, _) =>
+                                  Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                              onRatingUpdate: (rating) {
+                                setState(() {
+                                  hasRatedForPiggybacker = true;
+                                  ratingForPiggybacker = rating;
+                                });
+                              }),
+                        ),
+                        this.hasRatedForPiggybacker ? reviewPartForPiggybacker(
+                            reviewFormKeyForPiggybacker,
+                            reviewForPiggybackerController,
+                            ratingForPiggybacker) : Container()
+                      ]
+                  )
+              );
+          }
+        }
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> reviewFormKeyForOrganiser = GlobalKey<FormState>();
@@ -148,82 +262,9 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             Column(
               children:
               [
-                Form(
-                    key: reviewFormKeyForOrganiser,
-                    child:  Column(
-                        children: <Widget>[
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text('For Organiser',
-                                style: Styles.titleStyle),
-                          ),
-                          SizedBox(height: 5),
-                          Text('RATING',
-                              style: Styles.subtitleStyle),
-                          SizedBox(height:5),
-                          Align(
-                            alignment: Alignment.center,
-                            child:RatingBar.builder(
-                                initialRating: ratingForOrganiser,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize:25,
-                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  setState(() {
-                                    hasRatedForOrganiser = true;
-                                    ratingForOrganiser = rating;
-                                  });
-                                }),
-                          ),
-                          this.hasRatedForOrganiser? reviewPartForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser): Container()
-                        ])
-                ),
-                Form(
-                    key: reviewFormKeyForPiggybacker,
-                    child:  Column(
-
-                        children: [
-                          SizedBox(height:25),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text('For Piggybacker',
-                                style: Styles.titleStyle),
-                          ),
-                          SizedBox(height: 5),
-                          Text('RATING',
-                              style: Styles.subtitleStyle),
-                          SizedBox(height:5),
-                          Align(
-                            alignment: Alignment.center,
-                            child:RatingBar.builder(
-                                initialRating: ratingForPiggybacker,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemSize:25,
-                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  setState(() {
-                                    hasRatedForPiggybacker = true;
-                                    ratingForPiggybacker = rating;
-                                  });
-                                }),
-                          ),
-                          this.hasRatedForPiggybacker? reviewPartForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController, ratingForPiggybacker): Container()
-                          ]
-                    ))],
+                reviewForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController),
+                reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController),
+              ],
             ),
           ),
         ],
