@@ -136,4 +136,44 @@ class ProfileStorage {
       'reviewCount': currentReviewCount + 1,
     });
   }
+
+  Future<Review> hasReviewedForOrganiser(String userId) async{
+    QuerySnapshot query = await reviewsForOrganisers
+        .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('revieweeUserId', isEqualTo:userId)
+        .get();
+    if (query.size != 0) {
+      return null;
+    } else {
+      return query.docs.map((doc) {
+        return new Review(
+          doc.data()['revieweeUserId'],
+          doc.data()['rating'],
+          doc.data()['review'],
+          doc.data()['dateTime'],
+
+        );
+      }).toList()[0];
+    }
+  }
+
+  Future<Review> hasReviewedForPiggybacker(String userId) async{
+    QuerySnapshot query = await reviewsForPiggybackers
+        .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('revieweeUserId', isEqualTo:userId)
+        .get();
+    if (query.size != 0) {
+      return null;
+    } else {
+      return query.docs.map((doc) {
+        return new Review(
+          doc.data()['revieweeUserId'],
+          doc.data()['rating'],
+          doc.data()['review'],
+          doc.data()['dateTime'],
+
+        );
+      }).toList()[0];
+    }
+  }
 }
