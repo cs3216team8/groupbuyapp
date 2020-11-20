@@ -349,6 +349,9 @@ class GroupBuyStorage {
   }
 
   Future<bool> eligibleToReviewForOrganiser(String revieweeId) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Future<bool>.value(false);
+    }
     List<String> groupBuysOrganisedByReviewee = await groupBuys
         .where('organiserId', isEqualTo: revieweeId)
         .get()
@@ -370,6 +373,9 @@ class GroupBuyStorage {
   }
 
   Future<bool> eligibleToReviewForPiggybacker(String revieweeId) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return Future<bool>.value(false);
+    }
     List<String> groupBuysOrganisedByCurrentUser = await groupBuys
         .where('organiserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .get()
