@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_webservice/places.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location_search.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/validators.dart';
@@ -49,12 +52,6 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     chosenAddress = newAddressPlaceholder;
     fetchAddresses();
   }
-
-  // Future<void> _getData() async {
-  //   setState(() {
-  //     fetchAddresses();
-  //   });
-  // }
 
   void fetchAddresses() async {
     Future<Profile> fprof = ProfileStorage.instance.getUserProfile(FirebaseAuth.instance.currentUser.uid);
@@ -318,20 +315,29 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                           ),
                           chosenAddress == 'New address'
                               ? RoundedInputField(
-                            icon: Icons.location_city,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            hintText: "Address for meetup",
-                            controller: _addressController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter your address';
-                              }
-                              return null;
-                            },
-                          )
-                              :
-                          Container(),
+                                onTap: () async {
+                                  Prediction pred = await searchLocation(context);
+                                  GroupBuyLocation loc = await getLatLong(pred);
+                                  print(loc.address);
+                                  print(loc.lat);
+                                  print(loc.long);
+
+                                  _addressController.text = loc.address;
+                                },
+                                readOnly: true,
+                                icon: Icons.location_city,
+                                color: Color(0xFFFBE3E1),
+                                iconColor: Theme.of(context).primaryColor,
+                                hintText: "Address for meetup",
+                                controller: _addressController,
+                                validator: (String value) {
+                                  if (value.isEmpty) {
+                                    return 'Please enter your address';
+                                  }
+                                  return null;
+                                },
+                              )
+                              : Container(),
 
                           Container(
                             margin: EdgeInsets.symmetric(vertical: 6),

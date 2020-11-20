@@ -14,6 +14,8 @@ class RoundedInputField extends StatelessWidget {
 
   final Color iconColor, color;
   final TextInputType keyboardType;
+  final Function onTap;
+  final bool readOnly;
 
   const RoundedInputField({
     Key key,
@@ -25,6 +27,8 @@ class RoundedInputField extends StatelessWidget {
     this.iconColor = Colors.white,
     this.color = Colors.white,
     this.keyboardType,
+    this.onTap,
+    this.readOnly=false,
   }) : super(key: key);
 
   @override
@@ -32,6 +36,8 @@ class RoundedInputField extends StatelessWidget {
     return TextFieldContainer(
       //color: color,
       child: TextFormField(
+        onTap: onTap,
+        readOnly: readOnly,
         enabled: enabled,
         enableInteractiveSelection: enabled, // will disable paste operation
         focusNode: !enabled? new AlwaysDisabledFocusNode(): null,
