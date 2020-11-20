@@ -137,43 +137,49 @@ class ProfileStorage {
     });
   }
 
-  Future<Review> hasReviewedForOrganiser(String userId) async{
-    QuerySnapshot query = await reviewsForOrganisers
+  Stream<Review> reviewForOrganiser(String userId) {
+    Stream<QuerySnapshot> querySnapshots = reviewsForOrganisers
         .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .where('revieweeUserId', isEqualTo:userId)
-        .get();
-    if (query.size != 0) {
-      return null;
-    } else {
-      return query.docs.map((doc) {
-        return new Review(
-          doc.data()['revieweeUserId'],
-          doc.data()['rating'],
-          doc.data()['review'],
-          doc.data()['dateTime'],
+        .snapshots();
+    return querySnapshots.map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+      else {
+        return snapshot.docs.map((doc) {
+          return new Review(
+            doc.data()['revieweeUserId'],
+            doc.data()['rating'],
+            doc.data()['review'],
+            doc.data()['dateTime'],
 
-        );
-      }).toList()[0];
-    }
+          );
+        }).toList()[0];
+      }
+    });
   }
 
-  Future<Review> hasReviewedForPiggybacker(String userId) async{
-    QuerySnapshot query = await reviewsForPiggybackers
+  Stream<Review> reviewForPiggybacker(String userId) {
+    Stream<QuerySnapshot> querySnapshots = reviewsForPiggybackers
         .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .where('revieweeUserId', isEqualTo:userId)
-        .get();
-    if (query.size != 0) {
-      return null;
-    } else {
-      return query.docs.map((doc) {
-        return new Review(
-          doc.data()['revieweeUserId'],
-          doc.data()['rating'],
-          doc.data()['review'],
-          doc.data()['dateTime'],
+        .snapshots();
+    return querySnapshots.map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+      else {
+        return snapshot.docs.map((doc) {
+          return new Review(
+            doc.data()['revieweeUserId'],
+            doc.data()['rating'],
+            doc.data()['review'],
+            doc.data()['dateTime'],
 
-        );
-      }).toList()[0];
-    }
+          );
+        }).toList()[0];
+      }
+    });
   }
 }
