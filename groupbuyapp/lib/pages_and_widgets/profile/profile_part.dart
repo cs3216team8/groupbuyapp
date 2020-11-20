@@ -8,7 +8,7 @@ import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/pages_and_widgets/authentication/login_widget.dart';
-import 'package:groupbuyapp/logic/authentication/auth_check.dart';git s
+import 'package:groupbuyapp/logic/authentication/auth_check.dart';
 
 class ProfilePart extends StatelessWidget {
   final bool isMe;
@@ -306,7 +306,7 @@ class ProfilePart extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RatingBarIndicator(
-                rating: userProfile.rating,
+                rating: userProfile.rating == null? 0 : userProfile.rating,
                 itemBuilder: (context, index) => Icon(
                   Icons.star,
                   color: Colors.amber,
