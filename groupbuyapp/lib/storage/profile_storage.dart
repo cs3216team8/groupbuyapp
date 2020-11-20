@@ -33,7 +33,7 @@ class ProfileStorage {
         document.data()['email'],
         document.data()['authType'],
         List.from(document.data()['addresses']),
-        document.data()['rating'],
+        document.data()['rating']!=null? document.data()['rating'].toDouble(): null,
         document.data()['reviewCount']
     );
     return userProfile;
