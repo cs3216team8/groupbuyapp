@@ -9,4 +9,5 @@ class GroupBuyLocation {
     @required this.long,
     @required this.address
   });
+
 }

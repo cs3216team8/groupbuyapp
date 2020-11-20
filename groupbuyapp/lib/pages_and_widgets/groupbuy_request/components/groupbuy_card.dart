@@ -77,7 +77,7 @@ class GroupBuyCard extends StatelessWidget {
   }
 
   Widget groupBuyCardInsides(BuildContext context, Profile profile) {
-    int shortenedAddressLength = min(20, this.groupBuy.address.length);
+    int shortenedAddressLength = min(20, this.groupBuy.address.address.length);
     int shortenedUsernameLength = min(8, profile.username.length);
     print(this.groupBuy.storeLogo);
     return InkWell(
@@ -130,7 +130,7 @@ class GroupBuyCard extends StatelessWidget {
                         Flexible(
                             flex: 1,
                             child:  new Text(
-                              shortenedAddressLength < this.groupBuy.address.length? "${this.groupBuy.address.substring(0, shortenedAddressLength)}.." : this.groupBuy.address,
+                              shortenedAddressLength < this.groupBuy.address.address.length? "${this.groupBuy.address.address.substring(0, shortenedAddressLength)}.." : this.groupBuy.address.address,
                               style: titleStyle,
                             ))
                       ]),

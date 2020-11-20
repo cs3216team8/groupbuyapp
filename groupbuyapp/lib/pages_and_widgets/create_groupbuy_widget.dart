@@ -42,14 +42,14 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
   String chosenSite;
 
   final String newAddressPlaceholder = 'New address';
-  List<String> userAddresses = [];
+  List<GroupBuyLocation> userAddresses = [];
 
-  String chosenAddress;
+  GroupBuyLocation chosenAddress, customAddress;
 
   @override
   void initState() {
     chosenSite = supportedSites[0];
-    chosenAddress = newAddressPlaceholder;
+    chosenAddress = GroupBuyLocation(lat: null, long: null, address: newAddressPlaceholder);
     fetchAddresses();
   }
 
@@ -58,7 +58,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     fprof.then((prof) => {
       setState(() {
         userAddresses = prof.addresses;
-        userAddresses.add(newAddressPlaceholder);
+        userAddresses.add(chosenAddress);
       })
     });
   }
@@ -69,10 +69,10 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       return;
     }
 
-    if (chosenAddress == null) {
-      showFlushbar(context, "Invalid input", "Address cannot be empty!");
-      return;
-    }
+    // if (chosenAddress == null) {
+    //   showFlushbar(context, "Invalid input", "Address cannot be empty!");
+    //   return;
+    // }
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -82,9 +82,9 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
     }
 
-    String addr;
-    if (chosenAddress == newAddressPlaceholder) {
-      addr = _addressController.text;
+    GroupBuyLocation addr;
+    if (chosenAddress.address == newAddressPlaceholder) {
+      addr = customAddress;
     } else {
       addr = chosenAddress;
     }
@@ -95,7 +95,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
     }
 
 
-    GroupBuy groupBuy = GroupBuy.newOpenBuy("", 
+    GroupBuy groupBuy = GroupBuy.newOpenBuy("",
         storeName, storeName, logo, 
         double.parse(_currentAmtController.text), 
         double.parse(_targetAmtController.text), 
@@ -297,32 +297,31 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                             margin: EdgeInsets.symmetric(vertical: 6),
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                             width: size.width * 0.8,
-                            child: DropdownButtonFormField<String>(
+                            child: DropdownButtonFormField<GroupBuyLocation>(
                               decoration: getInputDecoration(Icons.location_on),
                               value: chosenAddress,
-                              items: userAddresses.map((String value) {
-                                return DropdownMenuItem<String>(
+                              items: userAddresses.map((GroupBuyLocation value) {
+                                return DropdownMenuItem<GroupBuyLocation>(
                                   value: value,
-                                  child: Text(value),
+                                  child: Text(value.address),
                                 );
                               }).toList(),
-                              onChanged: (String value) {
+                              onChanged: (GroupBuyLocation value) {
                                 setState(() {
                                   chosenAddress = value;
                                 });
                               },
                             ),
                           ),
-                          chosenAddress == 'New address'
+                          chosenAddress.address == newAddressPlaceholder
                               ? RoundedInputField(
                                 onTap: () async {
                                   Prediction pred = await searchLocation(context);
                                   GroupBuyLocation loc = await getLatLong(pred);
-                                  print(loc.address);
-                                  print(loc.lat);
-                                  print(loc.long);
 
                                   _addressController.text = loc.address;
+
+                                  customAddress = loc;
                                 },
                                 readOnly: true,
                                 icon: Icons.location_city,

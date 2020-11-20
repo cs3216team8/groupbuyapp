@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/request.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 
@@ -30,7 +31,9 @@ class GroupBuyStorage {
       'organiserId': groupBuy.organiserId,
       'deposit': groupBuy.deposit,
       'description': groupBuy.description,
-      'address': groupBuy.address,
+      'address': groupBuy.address.address,
+      'lat': groupBuy.address.lat,
+      'long': groupBuy.address.long,
       'status': GroupBuy.stringFromGroupBuyStatus(groupBuy.status),
     });
 
@@ -52,6 +55,8 @@ class GroupBuyStorage {
           'deposit': groupBuy.deposit,
           'description': groupBuy.description,
           'address': groupBuy.address,
+          'lat': groupBuy.address.lat,
+          'long': groupBuy.address.long,
           'status': GroupBuy.stringFromGroupBuyStatus(groupBuy.status),
         })
         .then((value) => print("Group buy edited"))
@@ -81,7 +86,7 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          document.data()['address'],
+          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -263,7 +268,7 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          document.data()['address'],
+          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -293,7 +298,7 @@ class GroupBuyStorage {
           gbData['organiserId'],
           gbData['deposit'],
           gbData['description'],
-          gbData['address'],
+          GroupBuyLocation(address: gbData['address'], lat: gbData['lat'].toDouble(), long: gbData['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(gbData['status']),
         );
       }).toList();
