@@ -347,4 +347,47 @@ class GroupBuyStorage {
         getGroupBuyCardList(closedPresentGroupBuys) +
         getGroupBuyCardList(pastGroupBuys);
   }
+
+  Future<bool> eligibleToReviewForOrganiser(String revieweeId) async {
+    List<String> groupBuysOrganisedByReviewee = await groupBuys
+        .where('organiserId', isEqualTo: revieweeId)
+        .get()
+        .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
+          String groupBuyId = document.data()['groupBuyId'];
+          return groupBuyId;
+        }).toList()
+    );
+
+    QuerySnapshot groupBuysJoinedByCurrentUser = await requestsRoot
+        .where('groupBuyId', arrayContainsAny: groupBuysOrganisedByReviewee)
+        .where('requestorId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get();
+    if (groupBuysJoinedByCurrentUser.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> eligibleToReviewForPiggybacker(String revieweeId) async {
+    List<String> groupBuysOrganisedByCurrentUser = await groupBuys
+        .where('organiserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
+      String groupBuyId = document.data()['groupBuyId'];
+      return groupBuyId;
+    }).toList()
+    );
+
+    QuerySnapshot groupBuysJoinedByReviewee = await requestsRoot
+        .where('groupBuyId', arrayContainsAny: groupBuysOrganisedByCurrentUser)
+        .where('requestorId', isEqualTo: revieweeId)
+        .get();
+    if (groupBuysJoinedByReviewee.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }
