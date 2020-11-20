@@ -152,7 +152,7 @@ class ProfileStorage {
             doc.data()['revieweeUserId'],
             doc.data()['rating'],
             doc.data()['review'],
-            doc.data()['dateTime'],
+            doc.data()['dateTime'].toDate(),
 
           );
         }).toList()[0];
@@ -175,7 +175,7 @@ class ProfileStorage {
             doc.data()['revieweeUserId'],
             doc.data()['rating'],
             doc.data()['review'],
-            doc.data()['dateTime'],
+            doc.data()['dateTime'].toDate(),
 
           );
         }).toList()[0];
