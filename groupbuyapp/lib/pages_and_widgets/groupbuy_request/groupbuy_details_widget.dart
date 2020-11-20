@@ -583,7 +583,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
                                           )),
                                       Flexible(
                                           child: new Text(
-                                              '${widget.groupBuy.address}',
+                                              '${widget.groupBuy.address.address}',
                                               style: Styles.textStyle))
                                     ],
                                   ),
