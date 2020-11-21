@@ -78,7 +78,6 @@ class _ChatListState extends State<ChatList> {
     ChatStorage().getUserChats(currentUserId).then((snapshots) {
       setState(() {
         chatRooms = snapshots;
-        print("we got the data + ${chatRooms.toString()}");
       });
     });
   }
