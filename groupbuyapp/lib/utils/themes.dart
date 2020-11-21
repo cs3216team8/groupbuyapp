@@ -27,5 +27,25 @@ class Themes {
       bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
     ),
   );
+
+  static BoxDecoration pinkBox =  BoxDecoration(
+    color: Color(0xFFFBECE6),
+    borderRadius:
+    BorderRadius.all(Radius.circular(20.0)),
+    border: Border.all(
+        color: Color(0xFFFFFFFF), width: 0),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.grey.withOpacity(0.2),
+        spreadRadius: 2,
+        blurRadius: 2,
+        offset: Offset(
+            1, 1), // changes position of shadow
+      )
+    ],
+  );
+
 }
+
+
 
