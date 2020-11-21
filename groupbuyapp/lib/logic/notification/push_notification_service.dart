@@ -1,17 +1,21 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:flutter/services.dart';
-
 
 class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future initialise(BuildContext context) async {
+
     if (Platform.isIOS) {
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
@@ -23,25 +27,46 @@ class PushNotificationService {
       // called when app is in the foreground and push notification received
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
-        _serialiseAndNavigate(message, context);
+        await _serialiseAndNavigate(message, context);
       },
 
       // called when app is closed completely and it's opened from push notification
       onLaunch: (Map<String, dynamic> message) async {
         print('onLaunch: $message');
-        _serialiseAndNavigate(message, context);
+        await _serialiseAndNavigate(message, context);
       },
 
       // called when app is in the background and it's opened from push notification
       onResume: (Map<String, dynamic> message) async {
         print('onResume: $message');
-        _serialiseAndNavigate(message, context);
+        await _serialiseAndNavigate(message, context);
       },
     );
   }
 
-  void _serialiseAndNavigate(Map<String, dynamic> message,
-      BuildContext context) {
+  _saveDeviceToken() async {
+    String uid = FirebaseAuth.instance.currentUser.uid;
+
+    // get the token for this device
+    String fcmToken = await _fcm.getToken();
+
+    // add it to the list of tokens for current user
+    if (fcmToken != null) {
+      var tokenRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .collection('tokens')
+          .doc(fcmToken);
+      await tokenRef.set({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(),
+        'platform': Platform.operatingSystem
+      });
+    }
+  }
+
+  void _serialiseAndNavigate(
+      Map<String, dynamic> message, BuildContext context) async {
     var notificationData = message['data'];
     var view = notificationData['view'];
 
@@ -49,11 +74,19 @@ class PushNotificationService {
       if (view == 'home') {
         segueToPage(context, PiggyBuyApp());
       } else if (view == 'chat') {
-        segueToPage(context, ChatScreen(
-          chatRoomId: notificationData['chatRoomId'],
-          username: notificationData['username'],));
+        segueToPage(
+            context,
+            ChatScreen(
+              chatRoomId: notificationData['chatRoomId'],
+              username: notificationData['username'],
+            ));
       } else if (view == 'groupbuy') {
         // add group buy segue here
+        Profile organiserProfile = await ProfileStorage.instance
+            .getUserProfile(notificationData['organiserId']);
+        // GroupBuy groupBuy =
+        segueToPage(
+            context, GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
       }
     }
   }
