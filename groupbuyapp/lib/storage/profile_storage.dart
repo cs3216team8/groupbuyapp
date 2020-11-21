@@ -99,7 +99,7 @@ class ProfileStorage {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    double currentRating = document.data()['rating'];
+    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
     int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
@@ -120,7 +120,7 @@ class ProfileStorage {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    double currentRating = document.data()['rating'];
+    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
     int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
