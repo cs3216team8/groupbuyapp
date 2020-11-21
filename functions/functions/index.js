@@ -22,20 +22,45 @@ exports.sendNotification = functions.firestore
             .replace("_", "");
         const querySnapshot = await db
             .collection('users')
-            .doc('7RqTgkmFo9g1KbKdqdahCR6S2Th1') // change to receiverUid
+            .doc(receiverUid)
             .collection('tokens')
             .get();
         const tokens = querySnapshot.docs.map(snap => snap.id);
         const payload = {
             notification: {
-                title: 'Chat Message from ', // add senderName
+                title: 'Chat Message from ' + senderName,
                 body: message.text,
             },
             data: {
                 'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 view: 'chat',
                 chatRoomId: cid,
-                username: senderName, // replace with senderName
+                username: senderName,
+            }
+        };
+
+        return fcm.sendToDevice(tokens, payload);
+    });
+
+exports.sendRequestNotification = functions.firestore
+    .document("groupBuys/{requestId}")
+    .onUpdate(async snapshot => {
+        const request = snapshot.data();
+        const requestorId = request.requestorId;
+        const querySnapshot = await db
+                    .collection('users')
+                    .doc(requestorId) // change to receiverUid
+                    .collection('tokens')
+                    .get();
+
+        const payload = {
+            notification: {
+                title: 'Updates to your request", // add senderName
+                body: 'Your request has been ' + request.status,
+            },
+            data: {
+                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                view: 'request',
             }
         };
 
@@ -48,42 +73,3 @@ exports.sendNotification = functions.firestore
 //    .onUpdate(async (snapshot, context) => {
 //
 //    });
-
-//
-//exports.sendRequestNotification = functions.firestore
-//    .document("groupBuys/{requestId}")
-//    .onUpdate(async snapshot => {
-//        const request = snapshot.data();
-//        const requestorId = request.requestorId;
-//        const querySnapshot = await db
-//                    .collection('users')
-//                    .doc(requestorId) // change to receiverUid
-//                    .collection('tokens')
-//                    .get();
-//
-//        const payload = {
-//            notification: {
-//                title: 'Updates to your request", // add senderName
-//                body: 'Your request has been ' + request.status,
-//            },
-//            data: {
-//                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-//                view: 'request',
-//            }
-//        };
-//
-//        return fcm.sendToDevice(tokens, payload);
-//    });
-
-
-
-
-
-
- // Create and Deploy Your First Cloud Functions
- // https://firebase.google.com/docs/functions/write-firebase-functions
-
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
