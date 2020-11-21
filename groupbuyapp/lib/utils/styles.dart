@@ -116,6 +116,13 @@ class Styles {
       color: Colors.black
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle italicTextStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 15.5,
+      fontWeight: FontWeight.w300,
+      color: Colors.grey
+  );
+
   static const TextStyle usernameStyle = TextStyle(
       fontFamily: 'WorkSans',
       fontSize: 18,
