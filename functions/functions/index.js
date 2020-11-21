@@ -9,11 +9,17 @@ const fcm = admin.messaging();
 exports.sendNotification = functions.firestore
     .document("chatRooms/{chatRoomId}/messages/{messageId}")
     .onCreate(async (snapshot, context) => {
-//        const message = snapshot.data();
-//        const senderUid = message.user.uid;
-//        const senderName = await db.collection("users").doc(senderUid).get().data().name;
-//        const cid = context.params.chatRoomId;
-//        const receiverUid = cid.replaceAll(senderUid, "").replaceAll("_", "");
+        const message = snapshot.data();
+        const senderUid = message.user.uid;
+        const senderSnapshot = await db
+            .collection("users")
+            .doc(senderUid)
+            .get();
+        const senderName = senderSnapshot.data()['name'];
+        const cid = context.params.chatRoomId;
+        const receiverUid = cid.toString()
+            .replace(senderUid, "")
+            .replace("_", "");
         const querySnapshot = await db
             .collection('users')
             .doc('7RqTgkmFo9g1KbKdqdahCR6S2Th1') // change to receiverUid
@@ -28,8 +34,8 @@ exports.sendNotification = functions.firestore
             data: {
                 'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 view: 'chat',
-                chatRoomId: 'ezDEidkJFbbLZN2TFI2fgJx8H9r1_7RqTgkmFo9g1KbKdqdahCR6S2Th1',
-                username: 'senderName', // replace with senderName
+                chatRoomId: cid,
+                username: senderName, // replace with senderName
             }
         };
 
@@ -46,7 +52,7 @@ exports.sendNotification = functions.firestore
 //
 //exports.sendRequestNotification = functions.firestore
 //    .document("groupBuys/{requestId}")
-//    .onUpdate(async (snapshot, context) => {
+//    .onUpdate(async snapshot => {
 //        const request = snapshot.data();
 //        const requestorId = request.requestorId;
 //        const querySnapshot = await db
@@ -58,7 +64,7 @@ exports.sendNotification = functions.firestore
 //        const payload = {
 //            notification: {
 //                title: 'Updates to your request", // add senderName
-//                body: 'Your request has been' + request.status,
+//                body: 'Your request has been ' + request.status,
 //            },
 //            data: {
 //                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
