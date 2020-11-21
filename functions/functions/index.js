@@ -20,7 +20,10 @@ exports.sendNotification = functions.firestore
             notification: {
                 title: 'New Message',
                 body: 'you got a message',
-                clickAction 'FLUTTER_NOTIFICATION_CLICK'
+                view: 'chat',
+                chatRoomId: 'ezDEidkJFbbLZN2TFI2fgJx8H9r1_7RqTgkmFo9g1KbKdqdahCR6S2Th1',
+                username: 'username',
+                clickAction: 'FLUTTER_NOTIFICATION_CLICK',
             }
         };
 
