@@ -15,10 +15,14 @@ class PushNotificationService {
   final FirebaseMessaging _fcm = FirebaseMessaging();
 
   Future initialise(BuildContext context) async {
-
     if (Platform.isIOS) {
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
+      _fcm.requestNotificationPermissions(
+          IosNotificationSettings(sound: true, badge: true, alert: true));
+      _fcm.onIosSettingsRegistered.listen((IosNotificationSettings settings) {
+        print("Settings registered: $settings");
+      });
     }
+    _saveDeviceToken();
 
     // used for debug mode, not needed for production
     _fcm.subscribeToTopic('debug');
@@ -85,8 +89,8 @@ class PushNotificationService {
         Profile organiserProfile = await ProfileStorage.instance
             .getUserProfile(notificationData['organiserId']);
         // GroupBuy groupBuy =
-        segueToPage(
-            context, GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
+        segueToPage(context,
+            GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
       }
     }
   }

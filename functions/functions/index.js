@@ -1,5 +1,13 @@
 const functions = require('firebase-functions');
 
+import * as admin from 'firebase-admin';
+admin.initializeApp();
+
+const db = admin.firestore();
+const fcm = admin.messaging();
+
+export const sendToTopic
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
