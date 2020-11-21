@@ -10,4 +10,8 @@ class GroupBuyLocation {
     @required this.address
   });
 
+  @override
+  String toString() {
+    return address + " :: " + lat.toString() + " , " + long.toString();
+  }
 }
