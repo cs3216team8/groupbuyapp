@@ -84,9 +84,13 @@ class PushNotificationService {
       if (view == 'home') {
         segueToPage(context, PiggyBuyApp());
       } else if (view == 'chat') {
+        // segueToPage(context, ChatList());
         segueToPage(
             context,
-            ChatList());
+            ChatScreen(
+              username: notificationData['username'],
+              chatRoomId: notificationData['chatRoomId'],
+            ));
       } else if (view == 'groupbuy') {
         // add group buy segue here
         // Profile organiserProfile = await ProfileStorage.instance
