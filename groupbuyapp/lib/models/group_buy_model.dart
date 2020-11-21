@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:groupbuyapp/models/location_models.dart';
 
 import 'buy_model.dart';
 
@@ -13,7 +14,7 @@ class GroupBuy {
   final String organiserId;
   final double deposit;
   final String description;
-  final String address;
+  final GroupBuyLocation address;
   List<Buy> buys;
 
   GroupBuyStatus status;
@@ -74,7 +75,7 @@ class GroupBuy {
         "dawo",
         0.8,
         "Trusted and fast purchase",
-        "17 Dover Cres 130017"
+        null//"17 Dover Cres 130017" //TODO update lat long addr
     );
   }
   static List<GroupBuy> getDummyDataAllGroupBuys() {

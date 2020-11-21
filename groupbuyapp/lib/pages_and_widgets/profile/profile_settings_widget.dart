@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:google_maps_webservice/places.dart';
+import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/location_search.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -29,21 +32,21 @@ class ProfileSettingsScreen extends StatefulWidget {
 class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   TextEditingController nameController, usernameController, phoneNumberController;
 
-  List<String> addresses;
+  List<GroupBuyLocation> addresses;
   final _formKey = GlobalKey<FormState>();
   TextEditingController addAddressController;
-  List<String> deleted = []; // TODO: undoable history
+  List<GroupBuyLocation> deleted = []; // TODO: undoable history
   String profilePicUrl = "";
 
   void _deleteAddress(int index) {
     setState(() {
-      String addr = addresses.removeAt(index);
+      GroupBuyLocation addr = addresses.removeAt(index);
       deleted.add(addr);
     });
   }
 
-  void _addAddress(BuildContext context, String addr) {
-    Navigator.of(context).pop();
+  void _addAddress(BuildContext context, GroupBuyLocation addr) {
+    // Navigator.of(context).pop();
     setState(() {
       addresses.add(addr);
     });
@@ -349,69 +352,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           height: 30,
                           child: FloatingActionButton(
                             child: new Icon(Icons.add, color: Colors.white,),
-                            onPressed: () {
-                              setState(() {
-                                GlobalKey<FormState> addrFormKey = GlobalKey<FormState>();
-                                addAddressController = TextEditingController();
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: Stack(
-                                          overflow: Overflow.visible,
-                                          children: <Widget>[
-                                            Positioned(
-                                              right: -40.0,
-                                              top: -40.0,
-                                              child: InkResponse(
-                                                onTap: () {
-                                                  addAddressController = null;
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: CircleAvatar(
-                                                  child: Icon(Icons.close),
-                                                  backgroundColor: Colors.red,
-                                                ),
-                                              ),
-                                            ),
-                                            Form(
-                                              key: addrFormKey,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  Padding(
-                                                    padding: EdgeInsets.all(8.0),
-                                                    child: TextFormField(
-                                                      validator: (value) {
-                                                        if (value.isEmpty) {
-                                                          return 'Address cannot be empty!';
-                                                        }
-                                                        return null;
-                                                      },
-                                                      controller: addAddressController,
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding: const EdgeInsets.all(8.0),
-                                                    child: RaisedButton(
-                                                      child: Text("Add Address", style: TextStyle(color: Colors.white)),
-                                                      onPressed: () {
-                                                        if (addrFormKey.currentState.validate()) {
-                                                          addrFormKey.currentState.save();
-                                                          _addAddress(context, addAddressController.text);
-                                                        }
-                                                      },
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }
-                                );
-                              });
+                            onPressed: () async {
+                              Prediction pred = await searchLocation(context);
+                              GroupBuyLocation loc = await getLatLong(pred);
+
+                              _addAddress(context, loc);
                             },
                             backgroundColor: Color(0xFFF98B83),
                           ),
@@ -449,7 +394,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
-                        key: Key(address),
+                        key: Key(address.address),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
                         child:  SizedBox(
@@ -459,7 +404,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               Icon(Icons.location_city, color: Color(0xFFF98B83)),
                               SizedBox(width: 10,),
                               Flexible(
-                                  child: Text(address),
+                                  child: Text(address.address),
                               )
                             ]
                           )

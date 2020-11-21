@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 
@@ -20,6 +21,10 @@ class ProfileStorage {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
+    QuerySnapshot addressDocs = await usersRef.doc(userId).collection('addresses').get();
+    List<GroupBuyLocation> addresses = addressDocs.docs.map((doc) {
+      return GroupBuyLocation(lat: doc.data()['lat'], long: doc.data()['long'], address: doc.data()['address']);
+    }).toList();
     Profile userProfile = new Profile(
         userId,
         document.data()['name'],
@@ -28,7 +33,7 @@ class ProfileStorage {
         document.data()['phoneNumber'],
         document.data()['email'],
         document.data()['authType'],
-        List.from(document.data()['addresses']),
+        addresses,
         document.data()['rating'],
         document.data()['reviewCount']
     );
@@ -52,26 +57,39 @@ class ProfileStorage {
   }
 
   Future<void> createOrUpdateUserProfile(Profile userProfile) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
     String userId = userProfile.userId;
 
     if (userId != FirebaseAuth.instance.currentUser.uid) {
       throw Exception("Trying to update a user that is not you!");
     }
 
-    return usersRef.doc(userId).set({
+    DocumentReference profileDoc = usersRef.doc(userId);
+    batch.set(profileDoc, {
       'name': userProfile.name,
       'username': userProfile.username,
       'profilePicture': userProfile.profilePicture,
       'phoneNumber': userProfile.phoneNumber,
       'email': userProfile.email,
       'authType': userProfile.authType,
-      'addresses': userProfile.addresses,
+      // 'addresses': userProfile.addresses,
       'rating': userProfile.rating,
       'reviewCount': userProfile.reviewCount,
-    }).then((value) => print("User profile created/updated successfully."))
-        .catchError((error) {
-          throw Exception(error.toString());
     });
+    // .then((value) => print("User profile created/updated successfully."))
+    //     .catchError((error) {
+    //       throw Exception(error.toString());
+    // });
+    userProfile.addresses.forEach((loc) {
+      String addId = profileDoc.collection('addresses').doc().id;
+      batch.set(profileDoc.collection('addresses').doc(addId), {
+        'lat': loc.lat,
+        'long': loc.long,
+        'address': loc.address,
+      });
+    });
+
+    batch.commit();
   }
 
   Future<String> uploadProfilePhoto(File photo) async {
