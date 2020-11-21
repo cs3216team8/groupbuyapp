@@ -26,6 +26,7 @@ exports.sendNotification = functions.firestore
                 view: 'chat',
                 chatRoomId: 'ezDEidkJFbbLZN2TFI2fgJx8H9r1_7RqTgkmFo9g1KbKdqdahCR6S2Th1',
                 username: 'username',
+                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
             }
         };
 
