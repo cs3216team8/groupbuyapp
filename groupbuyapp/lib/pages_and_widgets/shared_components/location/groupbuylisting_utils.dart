@@ -9,7 +9,7 @@ Future<GroupBuyLocation> getCurrentLocation() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return GroupBuyLocation(
-        lat: position.latitude, long: position.longitude, address: null);
+        lat: position.latitude, long: position.longitude, address: "");
   } catch (err) {
     return null;
   }
@@ -28,6 +28,7 @@ Future<List<GroupBuyCard>> getSortedCardList(List<GroupBuy> groupBuys) async {
   GroupBuyLocation currentLocation = await getCurrentLocation();
   // sort by location first
   if (currentLocation != null) {
+    print(currentLocation);
     groupBuys.sort((gb1, gb2) =>
         distanceBetween(gb1.address, currentLocation).compareTo(
             distanceBetween(gb2.address, currentLocation)));

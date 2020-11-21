@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
-import 'package:groupbuyapp/pages_and_widgets/shared_components/groupbuylisting_utils.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/groupbuylisting_utils.dart';
 
 class ListingsSection extends StatefulWidget {
   Stream<List<GroupBuy>> Function() createGroupBuyStream;

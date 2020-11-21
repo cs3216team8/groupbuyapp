@@ -9,7 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
-import 'package:groupbuyapp/pages_and_widgets/shared_components/location_search.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/location_search.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';

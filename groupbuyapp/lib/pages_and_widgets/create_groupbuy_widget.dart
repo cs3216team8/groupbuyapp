@@ -7,7 +7,7 @@ import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/error_flushbar.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/input_widgets.dart';
-import 'package:groupbuyapp/pages_and_widgets/shared_components/location_search.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/location_search.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/validators.dart';
