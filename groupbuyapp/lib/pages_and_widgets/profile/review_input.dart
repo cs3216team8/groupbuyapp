@@ -25,6 +25,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   double ratingForPiggybacker;
   bool hasRatedForOrganiser;
   bool hasRatedForPiggybacker;
+
   @override
   void initState() {
     ratingForOrganiser = 0;
@@ -40,7 +41,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
       review,
       DateTime.now(),
     );
-    print("BBB");
     ProfileStorage.instance.addReviewForOrganiser(reviewForOrganiser, widget.userProfile.userId);
   }
 
@@ -79,7 +79,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                 child: Text("SUBMIT", style: Styles.popupButtonStyle),
                 onPressed: !hasRatedForOrganiser? null : (){
                   if (reviewFormKeyForOrganiser.currentState.validate()) {
-                    print("AAA");
                     reviewFormKeyForOrganiser.currentState.save();
                     _addReviewForOrganiser(context, ratingAsOrganiser, reviewForOrganiserController.text);
                   }
@@ -127,7 +126,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
 
   Widget reviewForOrganiser(GlobalKey<FormState> reviewFormKeyForOrganiser, TextEditingController reviewForOrganiserController) {
     return StreamBuilder<Review>(
-        stream: ProfileStorage.instance.reviewForPiggybacker(widget.userProfile.userId),
+        stream: ProfileStorage.instance.reviewForOrganiser(widget.userProfile.userId),
         builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
 
           if (snapshot.data != null) {
@@ -144,9 +143,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                       style: Styles.subtitleStyle,
                     ),
                   ),
-                  Column(
-                    children: [
-
+                  Container(
+                    padding: EdgeInsets.all(20,),
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    decoration: Themes.pinkBox,
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                       Align(
                         alignment: Alignment.center,
                         child: RatingBarIndicator(
@@ -156,16 +159,17 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                             color: Colors.amber,
                           ),
                           itemCount: 5,
-                          itemSize: 25.0,
+                          itemSize: MediaQuery.of(context).size.width/7.3,
                           direction: Axis.horizontal,
                         ),
                       ),
                       SizedBox(height: 15),
-                      snapshot.data.review!= null ? Text(snapshot.data.review) : Container()
+                      snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
                     ]
                   )
-                ]
-              )
+                  )
+                  ]
+                )
             );
           }
 
@@ -180,6 +184,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             case ConnectionState.waiting:
               return ReviewInputSectionLoading();
             default:
+              print(snapshot.data);
               return Form(
                   key: reviewFormKeyForOrganiser,
                   child: Container(
@@ -241,7 +246,9 @@ class _ReviewInputState extends State<ReviewInputScreen> {
         builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
 
           if (snapshot.data != null) {
-            return Column(
+            return Container(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
                 children: [
                   Column(
                     children: [
@@ -254,6 +261,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                         style: Styles.subtitleStyle,
                       ),
                   ),
+                      Container(
+                      padding: EdgeInsets.all(20,),
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    decoration: Themes.pinkBox,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                   Align(
                     alignment: Alignment.center,
                     child: RatingBarIndicator(
@@ -263,15 +277,17 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                         color: Colors.amber,
                       ),
                       itemCount: 5,
-                      itemSize: 25.0,
+                      itemSize: MediaQuery.of(context).size.width/7.3,
                       direction: Axis.horizontal,
                     ),
                   ),
                   SizedBox(height: 15,),
-                  snapshot.data.review!= null ? Text(snapshot.data.review) : Container()
+                      snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
                 ]
             )
-          ]);
+          )])
+          ])
+            );
           }
 
           if (snapshot.hasError) {
