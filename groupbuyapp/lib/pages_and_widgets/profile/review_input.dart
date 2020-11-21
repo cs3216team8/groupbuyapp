@@ -6,6 +6,7 @@ import 'package:groupbuyapp/pages_and_widgets/profile/review_builder_errors.dart
 import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'package:groupbuyapp/utils/themes.dart';
 
 class ReviewInputScreen extends StatefulWidget {
   final Profile userProfile;
@@ -39,6 +40,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
       review,
       DateTime.now(),
     );
+    print("BBB");
     ProfileStorage.instance.addReviewForOrganiser(reviewForOrganiser, widget.userProfile.userId);
   }
 
@@ -56,19 +58,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   Widget reviewInputForOrganiser(GlobalKey<FormState> reviewFormKeyForOrganiser, TextEditingController reviewForOrganiserController, double ratingAsOrganiser, bool hasRatedForOrganiser) {
     return Column(
       children: [
-        SizedBox(height:15),
-        Padding(
-          padding: EdgeInsets.all(0.0),
-          child: Text('REVIEW',
-              style: Styles.subtitleStyle),
-        ),
         Padding(
             padding: EdgeInsets.symmetric(horizontal:0.0),
             child: TextFormField(
               controller: reviewForOrganiserController,
               decoration: new InputDecoration(
                   fillColor: Colors.black,
-                  hintText: "Describe ${widget.userProfile.username}",
+                  hintText: "Describe (optional)",
                   hintStyle: Styles.hintTextStyle
               ),
             )
@@ -80,9 +76,10 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               child: RaisedButton(
                 disabledColor: Colors.grey,
                 color: Color(0xFFF98B83),
-                child: Text("Review For Organiser", style: Styles.popupButtonStyle),
+                child: Text("SUBMIT", style: Styles.popupButtonStyle),
                 onPressed: !hasRatedForOrganiser? null : (){
                   if (reviewFormKeyForOrganiser.currentState.validate()) {
+                    print("AAA");
                     reviewFormKeyForOrganiser.currentState.save();
                     _addReviewForOrganiser(context, ratingAsOrganiser, reviewForOrganiserController.text);
                   }
@@ -97,18 +94,12 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   Widget reviewInputForPiggybacker(GlobalKey<FormState> reviewFormKeyForPiggybacker, TextEditingController reviewForPiggybackerController, double ratingAsPiggybacker, bool hasRatedForPiggybacker) {
     return Column(
       children: [
-        SizedBox(height:10),
-        Padding(
-          padding: EdgeInsets.all(0.0),
-          child: Text('REVIEW',
-              style: Styles.subtitleStyle),
-        ),
         Padding(
             padding: EdgeInsets.symmetric(horizontal:0.0),
             child: TextFormField(
               controller: reviewForPiggybackerController,
               decoration: new InputDecoration(
-                  hintText: "Describe ${widget.userProfile.username}",
+                  hintText: "Describe (optional)",
                   hintStyle: Styles.hintTextStyle,
                   contentPadding: EdgeInsets.all(0)
               ),
@@ -120,7 +111,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               padding: const EdgeInsets.all(0.0),
               child: RaisedButton(
                 color: Color(0xFFF98B83),
-                child: Text("Review For Piggybacker", style: Styles.popupButtonStyle),
+                child: Text("SUBMIT", style: Styles.popupButtonStyle),
                 onPressed: !hasRatedForPiggybacker? null : () {
                   if (reviewFormKeyForPiggybacker.currentState.validate()) {
                     reviewFormKeyForPiggybacker.currentState.save();
@@ -140,33 +131,41 @@ class _ReviewInputState extends State<ReviewInputScreen> {
         builder: (BuildContext context, AsyncSnapshot<Review> snapshot) {
 
           if (snapshot.data != null) {
-            return Column(
-                children: [
-                  SizedBox(height: 25),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text('Rated Organiser',
-                        style: Styles.titleStyle),
-                  ),
-                  SizedBox(height: 5),
-                  Text('RATING',
-                      style: Styles.subtitleStyle),
-                  SizedBox(height: 5),
-                  Align(
-                    alignment: Alignment.center,
-                    child: RatingBarIndicator(
-                      rating: snapshot.data.rating,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      itemCount: 5,
-                      itemSize: 25.0,
-                      direction: Axis.horizontal,
+            return Container(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                  children: [
+                    Container(
+                    padding: EdgeInsets.only(
+                    left: 20, right: 20, bottom: 5),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'REVIEWED ORGANISER',
+                      style: Styles.subtitleStyle,
                     ),
                   ),
-                  snapshot.data.review!= null ? Text(snapshot.data.review) : Container()
+                  Column(
+                    children: [
+
+                      Align(
+                        alignment: Alignment.center,
+                        child: RatingBarIndicator(
+                          rating: snapshot.data.rating,
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 25.0,
+                          direction: Axis.horizontal,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      snapshot.data.review!= null ? Text(snapshot.data.review) : Container()
+                    ]
+                  )
                 ]
+              )
             );
           }
 
@@ -183,41 +182,52 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             default:
               return Form(
                   key: reviewFormKeyForOrganiser,
-                  child:  Column(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text('Rate Organiser',
-                              style: Styles.titleStyle),
-                        ),
-                        SizedBox(height: 5),
-                        Text('RATING',
-                            style: Styles.subtitleStyle),
-                        SizedBox(height:5),
-                        Align(
-                          alignment: Alignment.center,
-                          child:RatingBar.builder(
-                              initialRating: ratingForOrganiser,
-                              minRating: 1,
-                              direction: Axis.horizontal,
-                              allowHalfRating: true,
-                              itemCount: 5,
-                              itemSize:25,
-                              itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
-                              itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              onRatingUpdate: (rating) {
-                                setState(() {
-                                  hasRatedForOrganiser = true;
-                                  ratingForOrganiser = rating;
-                                });
-                              }),
-                        ),
-                        reviewInputForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser, hasRatedForOrganiser)
-                      ]
-                  )
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                        children: [
+                          Container(
+                          padding: EdgeInsets.only(
+                          left: 20, right: 20, bottom: 5),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                              'REVIEW ORGANISER',
+                              style: Styles.subtitleStyle,
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(20,),
+                            margin: EdgeInsets.only(left: 10, right: 10),
+                            decoration: Themes.pinkBox,
+                            child: Column(
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.center,
+                                  child:RatingBar.builder(
+                                      initialRating: ratingForOrganiser,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemSize:MediaQuery.of(context).size.width/7.3,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 1.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        setState(() {
+                                          hasRatedForOrganiser = true;
+                                          ratingForOrganiser = rating;
+                                        });
+                                      }),
+                                ),
+                                reviewInputForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser, hasRatedForOrganiser)
+                        ]
+                    )
+                )
+                    ])
+              )
               );
           }
         }
@@ -233,16 +243,17 @@ class _ReviewInputState extends State<ReviewInputScreen> {
           if (snapshot.data != null) {
             return Column(
                 children: [
-                  SizedBox(height: 25),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text('Rated Piggybacker',
-                        style: Styles.titleStyle),
+                  Column(
+                    children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, bottom: 5),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'REVIEWED PIGGYBACKER',
+                        style: Styles.subtitleStyle,
+                      ),
                   ),
-                  SizedBox(height: 5),
-                  Text('RATING',
-                      style: Styles.subtitleStyle),
-                  SizedBox(height: 5),
                   Align(
                     alignment: Alignment.center,
                     child: RatingBarIndicator(
@@ -256,9 +267,11 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                       direction: Axis.horizontal,
                     ),
                   ),
+                  SizedBox(height: 15,),
                   snapshot.data.review!= null ? Text(snapshot.data.review) : Container()
                 ]
-            );
+            )
+          ]);
           }
 
           if (snapshot.hasError) {
@@ -274,20 +287,26 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             default:
               return Form(
                   key: reviewFormKeyForPiggybacker,
-                  child: Column(
-
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
                       children: [
-                        SizedBox(height: 25),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text('Rate Piggybacker',
-                              style: Styles.titleStyle),
-                        ),
-                        SizedBox(height: 5),
-                        Text('RATING',
-                            style: Styles.subtitleStyle),
-                        SizedBox(height: 5),
-                        Align(
+                      Container(
+                        padding: EdgeInsets.only(
+                        left: 20, right: 20, bottom: 5),
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'REVIEW PIGGYBACKER',
+                          style: Styles.subtitleStyle,
+                      ),
+                    ),
+                    Container(
+                    padding: EdgeInsets.all(20,),
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    decoration: Themes.pinkBox,
+                    child: Column(
+                    children: <Widget>[
+                      Align(
                           alignment: Alignment.center,
                           child: RatingBar.builder(
                               initialRating: ratingForPiggybacker,
@@ -295,7 +314,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                               direction: Axis.horizontal,
                               allowHalfRating: true,
                               itemCount: 5,
-                              itemSize: 25,
+                              itemSize: MediaQuery.of(context).size.width/7.3,
                               itemPadding: EdgeInsets.symmetric(
                                   horizontal: 1.0),
                               itemBuilder: (context, _) =>
@@ -317,7 +336,9 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                             hasRatedForPiggybacker)
                       ]
                   )
-              );
+              )
+              ])
+          ));
           }
         }
         );
