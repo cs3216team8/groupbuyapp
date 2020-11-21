@@ -225,17 +225,7 @@ class ProfilePart extends StatelessWidget {
           children: [
             GestureDetector(
                 onTap: () {
-                  if (isUserLoggedIn()) {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return ReviewInputScreen(userProfile: userProfile,);
-                        }
-                    );
-                  } else {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()));
-                  }
+                  segueWithLoginCheck(context, ReviewInputScreen(userProfile: userProfile,));
                 },
                 child: Container(
                     padding: EdgeInsets.all(8),

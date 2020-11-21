@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/review_builder_errors.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 
@@ -52,7 +53,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   }
 
 
-  Widget reviewInputForOrganiser(GlobalKey<FormState> reviewFormKeyForOrganiser, TextEditingController reviewForOrganiserController, double ratingAsOrganiser) {
+  Widget reviewInputForOrganiser(GlobalKey<FormState> reviewFormKeyForOrganiser, TextEditingController reviewForOrganiserController, double ratingAsOrganiser, bool hasRatedForOrganiser) {
     return Column(
       children: [
         SizedBox(height:15),
@@ -77,9 +78,10 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             child: Padding(
               padding: const EdgeInsets.all(0.0),
               child: RaisedButton(
+                disabledColor: Colors.grey,
                 color: Color(0xFFF98B83),
                 child: Text("Review For Organiser", style: Styles.popupButtonStyle),
-                onPressed: () {
+                onPressed: !hasRatedForOrganiser? null : (){
                   if (reviewFormKeyForOrganiser.currentState.validate()) {
                     reviewFormKeyForOrganiser.currentState.save();
                     _addReviewForOrganiser(context, ratingAsOrganiser, reviewForOrganiserController.text);
@@ -92,7 +94,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
     );
   }
 
-  Widget reviewInputForPiggybacker(GlobalKey<FormState> reviewFormKeyForPiggybacker, TextEditingController reviewForPiggybackerController, double ratingAsPiggybacker) {
+  Widget reviewInputForPiggybacker(GlobalKey<FormState> reviewFormKeyForPiggybacker, TextEditingController reviewForPiggybackerController, double ratingAsPiggybacker, bool hasRatedForPiggybacker) {
     return Column(
       children: [
         SizedBox(height:10),
@@ -119,7 +121,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               child: RaisedButton(
                 color: Color(0xFFF98B83),
                 child: Text("Review For Piggybacker", style: Styles.popupButtonStyle),
-                onPressed: () {
+                onPressed: !hasRatedForPiggybacker? null : () {
                   if (reviewFormKeyForPiggybacker.currentState.validate()) {
                     reviewFormKeyForPiggybacker.currentState.save();
                     _addReviewForPiggybacker(context, ratingAsPiggybacker, reviewForPiggybackerController.text);
@@ -213,7 +215,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                 });
                               }),
                         ),
-                        this.hasRatedForOrganiser? reviewInputForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser): Container()
+                        reviewInputForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser, hasRatedForOrganiser)
                       ]
                   )
               );
@@ -308,10 +310,11 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                 });
                               }),
                         ),
-                        this.hasRatedForPiggybacker ? reviewInputForPiggybacker(
+                        reviewInputForPiggybacker(
                             reviewFormKeyForPiggybacker,
                             reviewForPiggybackerController,
-                            ratingForPiggybacker) : Container()
+                            ratingForPiggybacker,
+                            hasRatedForPiggybacker)
                       ]
                   )
               );
@@ -326,12 +329,13 @@ class _ReviewInputState extends State<ReviewInputScreen> {
     GlobalKey<FormState> reviewFormKeyForPiggybacker = GlobalKey<FormState>();
     TextEditingController reviewForOrganiserController = TextEditingController();
     TextEditingController reviewForPiggybackerController = TextEditingController();
-    return AlertDialog(
-      content: Stack(
-        overflow: Overflow.visible,
-        children: <Widget>[
-          SingleChildScrollView(
-            child:
+    return Scaffold(
+      appBar: backAppBar(
+        context: context,
+        title: "Review User",
+      ),
+
+      body:
             Column(
               children:
               [
@@ -339,9 +343,6 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                 reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 
