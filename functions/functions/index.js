@@ -10,28 +10,36 @@ exports.sendNotification = functions.firestore
     .document("chatRooms/{chatRoomId}/messages/{messageId}")
     .onCreate(async snapshot => {
         const message = snapshot.data();
+        const senderUid = message.user.uid;
+        const senderName = await db.collection("users").doc(senderUid).get().name;
+        const cid = context.params.chatRoomId;
+        const receiverUid = cid.replaceAll(senderUid, "").replaceAll("_", "");
         const querySnapshot = await db
             .collection('users')
-            .doc('7RqTgkmFo9g1KbKdqdahCR6S2Th1')
+            .doc(receiverUid)
             .collection('tokens')
             .get();
         const tokens = querySnapshot.docs.map(snap => snap.id);
         const payload = {
             notification: {
-                title: 'New Message',
-                body: 'you got a message',
-                clickAction: 'FLUTTER_NOTIFICATION_CLICK',
+                title: 'Chat Message from ' + senderName,
+                body: message.text,
             },
             data: {
+                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 view: 'chat',
                 chatRoomId: 'ezDEidkJFbbLZN2TFI2fgJx8H9r1_7RqTgkmFo9g1KbKdqdahCR6S2Th1',
-                username: 'username',
-                'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+                username: senderName,
             }
         };
 
         return fcm.sendToDevice(tokens, payload);
     });
+
+
+//exports.sendGroupBuyNotification = functions.firestore
+//    .document("groupBuys/{groupBuyId}")
+//    .onUpdate
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
