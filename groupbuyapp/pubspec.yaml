@@ -29,6 +29,7 @@ dependencies:
   cloud_firestore: ^0.14.3
   firebase_storage: ^5.0.1
   firebase_messaging: ^5.0.2
+  get_it: ^3.0.0+1
   public_suffix: ^1.2.1
   concentric_transition: ^0.1.1
 
