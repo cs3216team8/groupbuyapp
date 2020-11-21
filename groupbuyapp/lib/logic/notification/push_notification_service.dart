@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
@@ -31,7 +32,7 @@ class PushNotificationService {
       // called when app is in the foreground and push notification received
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
-        await _serialiseAndNavigate(message, context);
+        // await _serialiseAndNavigate(message, context);
       },
 
       // called when app is closed completely and it's opened from push notification
@@ -45,6 +46,11 @@ class PushNotificationService {
         print('onResume: $message');
         await _serialiseAndNavigate(message, context);
       },
+
+      // onBackgroundMessage: (Map<String, dynamic> message) async {
+      //   print('onResume: $message');
+      //   await _serialiseAndNavigate(message, context);
+      // },
     );
   }
 
@@ -80,17 +86,16 @@ class PushNotificationService {
       } else if (view == 'chat') {
         segueToPage(
             context,
-            ChatScreen(
-              chatRoomId: notificationData['chatRoomId'],
-              username: notificationData['username'],
-            ));
+            ChatList());
       } else if (view == 'groupbuy') {
         // add group buy segue here
-        Profile organiserProfile = await ProfileStorage.instance
-            .getUserProfile(notificationData['organiserId']);
-        // GroupBuy groupBuy =
-        segueToPage(context,
-            GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
+        // Profile organiserProfile = await ProfileStorage.instance
+        //     .getUserProfile(notificationData['organiserId']);
+        // segueToPage(context,
+        //     GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
+        segueToPage(context, PiggyBuyApp());
+      } else if (view == 'request') {
+        segueToPage(context, PiggyBuyApp());
       }
     }
   }
