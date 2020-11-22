@@ -2,7 +2,9 @@ bool isNonNegativeNumeric(String s) {
   if(s == null || s.isEmpty) {
     return false;
   }
-  return double.parse(s, (e) => null) != null;
+
+  double v = double.parse(s, (e) => null);
+  return v != null && v >= 0;
 }
 
 bool isNonNegativeInteger(String s) {
