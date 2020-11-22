@@ -394,7 +394,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                       alignment: Alignment.center,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Dismissible(
-                        key: Key(address.address),
+                        key: UniqueKey(),
                         direction: DismissDirection.startToEnd,
                         background: Container(color: Colors.black26,),
                         child:  SizedBox(

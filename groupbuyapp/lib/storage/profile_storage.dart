@@ -80,16 +80,23 @@ class ProfileStorage {
     //     .catchError((error) {
     //       throw Exception(error.toString());
     // });
-    userProfile.addresses.forEach((loc) {
-      String addId = profileDoc.collection('addresses').doc().id;
-      batch.set(profileDoc.collection('addresses').doc(addId), {
-        'lat': loc.lat,
-        'long': loc.long,
-        'address': loc.address,
-      });
-    });
 
-    batch.commit();
+    profileDoc.collection('addresses').get().then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        batch.delete(ds.reference);
+      }
+
+      userProfile.addresses.forEach((loc) {
+        String addId = profileDoc.collection('addresses').doc().id;
+        batch.set(profileDoc.collection('addresses').doc(addId), {
+          'lat': loc.lat,
+          'long': loc.long,
+          'address': loc.address,
+        });
+      });
+
+      batch.commit();
+    });
   }
 
   Future<String> uploadProfilePhoto(File photo) async {
