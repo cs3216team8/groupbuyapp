@@ -222,13 +222,7 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
           hasRequested = true;
         });
       }
-      // freq.then((value) {
-      //   setState(() {
-      //     hasRequested = value != null;
-      //   });
-      // });
     }
-    // assert(isOrganiser || freqs.length <= 1)
   }
 
   @override
