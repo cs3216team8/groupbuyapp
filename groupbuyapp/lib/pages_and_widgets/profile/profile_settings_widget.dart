@@ -14,6 +14,7 @@ import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dar
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:groupbuyapp/utils/styles.dart';
+import 'package:groupbuyapp/utils/validators.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -189,16 +190,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     icon: Icon(Icons.insert_photo),
     color: Colors.white,
   );
-
-  String phoneNumberValidator(String value) {
-    Pattern pattern = r'^[0-9+\s]*$';
-    RegExp regex = new RegExp(pattern);
-    if (!regex.hasMatch(value)) {
-      return 'Please enter a valid phone number';
-    } else {
-      return null;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
