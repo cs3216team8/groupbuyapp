@@ -112,16 +112,20 @@ class ReviewCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
-                    Divider(
-                      color: Color(0xFFD9D9D9),
-                      height: 1.5,
-                    ),
-                    SizedBox(height: 10,),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: review.review!=null? Text(review.review, style: Styles.textStyle,): Container()
-                    )
+          (review.review!=null && !review.review.isEmpty)?
+                    Column(
+                        children: [
+                          SizedBox(height: 10,),
+                          Divider(
+                            color: Theme.of(context).dividerColor,
+                            height: 1.5,
+                          ),
+                          SizedBox(height: 10,),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child:  Text(review.review, style: Styles.textStyle,)
+                          )
+          ]): Container()
                   ],
                 ),
           );

@@ -47,7 +47,17 @@ class ReviewsListing extends StatelessWidget {
             children:
             snapshot.data
             .map((review) =>
-                ReviewCard(review)).toList()
+                Column(
+                    children: [
+                      ReviewCard(review),
+                      Divider(
+                        color: Colors.black,
+                        thickness: 0.3,
+                        height: 1,
+                      ),
+
+                    ]
+            )).toList()
         );
       },
     );
