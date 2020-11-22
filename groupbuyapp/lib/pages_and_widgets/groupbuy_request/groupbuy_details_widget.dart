@@ -237,31 +237,31 @@ class _GroupBuyInfoState extends State<GroupBuyInfo> {
   Widget storeUrlDisplay() {
     return widget.groupBuy.storeWebsite!= null?
     Column(
-
       children: [
         SizedBox(height: 7),
         Row(
-        // Location
-        children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(
-          top: 6,
-          left: 3,
-          right: 10,
-          bottom: 6),
-          child: Icon(
-          Icons.public,
-          color: Color(0xFFe87d74),
-          size: 24.0,
-          semanticLabel: 'Deposit',
-          )
-        ),
-        Flexible(
-          child: Text(
-          '${widget.groupBuy.storeWebsite}',
-          style: Styles.textStyle)
-        ),
-        ],
+          // Location
+          children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(
+              top: 6,
+              left: 3,
+              right: 10,
+              bottom: 6
+            ),
+            child: Icon(
+              Icons.public,
+              color: Color(0xFFe87d74),
+              size: 24.0,
+              semanticLabel: 'Deposit',
+            )
+          ),
+          Flexible(
+            child: Text(
+              '${widget.groupBuy.storeWebsite}',
+              style: Styles.textStyle)
+            ),
+          ],
         ),
       ]
     ): Container();

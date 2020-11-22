@@ -39,57 +39,57 @@ class ItemDisplay extends StatelessWidget {
                   )
                 ],
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Location
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // Location
-                    children: <Widget>[
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 6, left: 3, right: 3, bottom: 6),
-                              child: InkWell(
-                                child: Column(
-                                  children: [
-                                    Icon(
-                                      Icons.open_in_new,
-                                      color: Color(0xFFe87d74),
-                                      size: 24.0,
-                                      semanticLabel: 'Items',
-                                    )
-                                  ],
-                                ),
-                                onTap: () => launch(this.item.itemLink),
-                              ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      // mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(top: 6, left: 3, right: 3, bottom: 6),
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.open_in_new,
+                                  color: Color(0xFFe87d74),
+                                  size: 24.0,
+                                  semanticLabel: 'Items',
+                                )
+                              ],
                             ),
-                            Container(height: 40, child: VerticalDivider(color: Color(0xFFe87d74))),
-                            Container(
-                              padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(sprintf('%spcs', [this.item.qty]), style: Styles.textStyle, textAlign: TextAlign.left,),
-                                      SizedBox(height: 7),
-                                      Text(this.item.remarks, style: Styles.textStyle),
-                                    ]
-                                  ),
-                                ]
-                              )
-                            )
-                          ]
+                            onTap: () => launch(this.item.itemLink),
+                          ),
+                        ),
+                        Container(height: 40, child: VerticalDivider(color: Color(0xFFe87d74))),
+                        Container(
+                          padding: EdgeInsets.only(top: 6, left: 3, right: 10, bottom: 6),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(sprintf('%spcs', [this.item.qty]), style: Styles.textStyle, textAlign: TextAlign.left,),
+                              SizedBox(height: 7),
+                              ConstrainedBox(
+                                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.45),
+                                      child: Flexible(
+                                        child: Text(
+                                          this.item.remarks,
+                                          style: Styles.textStyle,
+                                        ),
+                                      )
+                              ),
+                            ]
+                          ),
                         )
-                      ),
-                      Container(child: Text("\$${(this.item.totalAmount * this.item.qty).toString()}", style: Styles.textStyle, textAlign: TextAlign.right),),
-                    ],
+                      ]
+                    )
                   ),
-                ]
-              )
+                  Container(child: Text("\$${(this.item.totalAmount * this.item.qty).toString()}", style: Styles.textStyle, textAlign: TextAlign.right),),
+                ],
+              ),
             )
           )
         )
