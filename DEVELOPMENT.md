@@ -6,4 +6,4 @@ To set up PiggyBuy locally:
 1. Obtain `google.services.json` and `api_keys.dart` from one of our developers
 1. Add `google.services.json` to `groupbuyapp/android/app` directory
 1. Add `api_keys.dart` to `groupbuyapp/lib/CONFIDENTIAL` directory
-1. You're ready to go! Run the application
+1. You're ready to go! Run the application from your code editor
