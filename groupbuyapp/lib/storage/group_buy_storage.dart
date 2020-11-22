@@ -281,7 +281,6 @@ class GroupBuyStorage {
         DocumentSnapshot groupBuySnapshot =
             await groupBuys.doc(groupBuyId).get();
         Map<String, dynamic> gbData = groupBuySnapshot.data();
-
         return GroupBuy(
           groupBuyId,
           gbData['storeName'],
@@ -350,19 +349,19 @@ class GroupBuyStorage {
 
   Future<bool> eligibleToReviewForOrganiser(String revieweeId) async {
     if (FirebaseAuth.instance.currentUser == null) {
-      return Future<bool>.value(false);
+      return false;
     }
     List<String> groupBuysOrganisedByReviewee = await groupBuys
         .where('organiserId', isEqualTo: revieweeId)
         .get()
         .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
-          String groupBuyId = document.data()['groupBuyId'];
+          String groupBuyId = document.data()['id'];
           return groupBuyId;
         }).toList()
     );
-
+    print(groupBuysOrganisedByReviewee);
     QuerySnapshot groupBuysJoinedByCurrentUser = await requestsRoot
-        .where('groupBuyId', arrayContainsAny: groupBuysOrganisedByReviewee)
+        .where('id', arrayContainsAny: groupBuysOrganisedByReviewee)
         .where('requestorId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .get();
     if (groupBuysJoinedByCurrentUser.size != 0) {
@@ -374,19 +373,19 @@ class GroupBuyStorage {
 
   Future<bool> eligibleToReviewForPiggybacker(String revieweeId) async {
     if (FirebaseAuth.instance.currentUser == null) {
-      return Future<bool>.value(false);
+      return false;
     }
     List<String> groupBuysOrganisedByCurrentUser = await groupBuys
         .where('organiserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .get()
         .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
-      String groupBuyId = document.data()['groupBuyId'];
+      String groupBuyId = document.data()['id'];
       return groupBuyId;
     }).toList()
     );
 
     QuerySnapshot groupBuysJoinedByReviewee = await requestsRoot
-        .where('groupBuyId', arrayContainsAny: groupBuysOrganisedByCurrentUser)
+        .where('id', arrayContainsAny: groupBuysOrganisedByCurrentUser)
         .where('requestorId', isEqualTo: revieweeId)
         .get();
     if (groupBuysJoinedByReviewee.size != 0) {
