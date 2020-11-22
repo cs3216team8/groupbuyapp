@@ -189,8 +189,9 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             );
           }
       )
-      : Container(),
-      ReviewsListing(userId: widget.userId)
+      : ReviewsListing(userId: this._userId),
+      widget.isMe
+          ? ReviewsListing(userId: this._userId) : Container()
     ];
   }
 

@@ -37,10 +37,7 @@ class ReviewCard extends StatelessWidget {
       elevation: elevation,
       shadowColor: shadowColor,
       margin: EdgeInsets.all(0.5),
-      child: InkWell(
-        //TODO think if want splash or not aka want to appear tappable or not
-        //onTap: _openDetailedReview,
-        child: Container(
+      child:Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,7 +52,7 @@ class ReviewCard extends StatelessWidget {
                         backgroundColor: Theme.of(context).primaryColor,
                         child: CircleAvatar(
                           radius: 18,
-                          backgroundImage: Image.network(review.profilePicture).image,
+                          //backgroundImage: Image.network(review.profilePicture).image,
                         ),
                       ),
                     ],
@@ -69,24 +66,18 @@ class ReviewCard extends StatelessWidget {
                           Container(
                             padding: EdgeInsets.only(right: 10),
                             child: Text(
-                              review.username,
+                              review.revieweeUserId,
                               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                          ),
-                          Container(
-                            child: Text(
-                              review.title,
-                              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 5,),
-                      Container(
+                      review.review!=null? Container(
                         child: Text(
-                          review.description,
+                          review.review,
                         ),
-                      ),
+                      ): Container(),
                       SizedBox(height: 5,),
                       Container(
                         child: Text(
@@ -102,7 +93,6 @@ class ReviewCard extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }

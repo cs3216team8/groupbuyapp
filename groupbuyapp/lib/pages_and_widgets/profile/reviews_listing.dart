@@ -13,6 +13,8 @@ class ReviewsListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(this.userId);
+    print("WHATT");
     return StreamBuilder<List<Review>>(
       stream: ProfileStorage.instance.getReviews(userId),
       builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
@@ -55,8 +57,14 @@ class ReviewsListing extends StatelessWidget {
 class EmptyReviews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+    child: Container(
+        alignment: Alignment.center,
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        SizedBox(height: 20.0,),
         Container(
           child: SvgPicture.asset(
             'assets/undraw_empty_xct9.svg',
@@ -72,6 +80,8 @@ class EmptyReviews extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ],
+    )
+    )
     );
   }
 }
