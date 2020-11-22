@@ -15,8 +15,7 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
   Reference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
-  CollectionReference reviewsForOrganisers = FirebaseFirestore.instance.collection('reviewsForOrganisers');
-  CollectionReference reviewsForPiggybackers = FirebaseFirestore.instance.collection('reviewsForPiggybackers');
+  CollectionReference reviews = FirebaseFirestore.instance.collection('reviews');
 
   CollectionReference requestsRoot = FirebaseFirestore.instance.collection('requests');
 
@@ -104,12 +103,13 @@ class ProfileStorage {
     int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
-    await reviewsForOrganisers.add({
+    await reviews.add({
       'revieweeUserId': review.revieweeUserId,
       'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
       'rating': review.rating,
       'review': review.review,
-      'dateTime': review.dateTime
+      'dateTime': review.dateTime,
+      'role': 'organiser'
     });
     return usersRef.doc(userId).update({
       'rating': newRating,
@@ -125,12 +125,13 @@ class ProfileStorage {
     int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
-    await reviewsForPiggybackers.add({
+    await reviews.add({
       'revieweeUserId': review.revieweeUserId,
       'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
       'rating': review.rating,
       'review': review.review,
-      'dateTime': review.dateTime
+      'dateTime': review.dateTime,
+      'role': 'piggybacker'
     });
     return usersRef.doc(userId).update({
       'rating': newRating,
@@ -139,7 +140,8 @@ class ProfileStorage {
   }
 
   Stream<Review> reviewForOrganiser(String userId) {
-    Stream<QuerySnapshot> querySnapshots = reviewsForOrganisers
+    Stream<QuerySnapshot> querySnapshots = reviews
+        .where('role', isEqualTo: 'organiser')
         .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .where('revieweeUserId', isEqualTo:userId)
         .snapshots();
@@ -151,6 +153,7 @@ class ProfileStorage {
         return snapshot.docs.map((doc) {
           return new Review(
             doc.data()['revieweeUserId'],
+            doc.data()['reviewerUserId'],
             doc.data()['rating'],
             doc.data()['review'],
             doc.data()['dateTime'].toDate(),
@@ -162,7 +165,8 @@ class ProfileStorage {
   }
 
   Stream<Review> reviewForPiggybacker(String userId) {
-    Stream<QuerySnapshot> querySnapshots = reviewsForPiggybackers
+    Stream<QuerySnapshot> querySnapshots = reviews
+        .where('role', isEqualTo: 'piggybacker')
         .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .where('revieweeUserId', isEqualTo:userId)
         .snapshots();
@@ -174,6 +178,7 @@ class ProfileStorage {
         return snapshot.docs.map((doc) {
           return new Review(
             doc.data()['revieweeUserId'],
+            doc.data()['reviewerUserId'],
             doc.data()['rating'],
             doc.data()['review'],
             doc.data()['dateTime'].toDate(),
@@ -185,10 +190,14 @@ class ProfileStorage {
   }
 
   Stream<List<Review>> getReviewsForPiggybackers(String userId) {
-    return reviewsForPiggybackers.snapshots().map((snapshot) {
+    return reviews
+        .where('role', isEqualTo: 'piggybacker')
+        .where('revieweeUserId', isEqualTo:userId)
+        .snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Review(
           doc.data()['revieweeUserId'],
+          doc.data()['reviewerUserId'],
           doc.data()['rating'],
           doc.data()['review'],
           doc.data()['dateTime'].toDate(),
@@ -198,20 +207,20 @@ class ProfileStorage {
   }
 
   Stream<List<Review>> getReviewsForOrganisers(String userId) {
-    return reviewsForOrganisers.snapshots().map((snapshot) {
+    return reviews
+        .where('role', isEqualTo: 'organiser')
+        .where('revieweeUserId', isEqualTo:userId)
+        .snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Review(
           doc.data()['revieweeUserId'],
+          doc.data()['reviewerUserId'],
           doc.data()['rating'],
           doc.data()['review'],
           doc.data()['dateTime'].toDate(),
         );
       }).toList() ;
     });
-  }
-
-  Stream<List<Review>> getReviews(String userId){
-    return StreamGroup.merge([getReviewsForOrganisers(userId), getReviewsForPiggybackers(userId)]);
   }
 
 
