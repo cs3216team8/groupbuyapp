@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dash_chat/dash_chat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:groupbuyapp/storage/chat_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/utils/styles.dart';
-import 'package:transparent_image/transparent_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import 'chat_details.dart';
 
 class ChatScreen extends StatefulWidget {
   final String chatRoomId;
@@ -112,7 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     onTap: () {
-                      segueToPage(context, DetailScreen(chatMessage.image, widget.username));
+                      segueToPage(context, ChatDetailScreen(chatMessage.image, widget.username));
                     });
               },
               messageTextBuilder: (String string, [ChatMessage]) {
@@ -138,66 +138,6 @@ class _ChatScreenState extends State<ChatScreen> {
             );
           }
         },
-      ),
-    );
-  }
-}
-
-class DetailScreen extends StatefulWidget {
-  final String imageUrl;
-  final String username;
-
-  DetailScreen(this.imageUrl, this.username);
-
-  @override
-  _DetailScreenState createState() => _DetailScreenState();
-}
-
-class _DetailScreenState extends State<DetailScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          iconSize: 30.0,
-          color: Colors.white,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          "Chat with ${widget.username}",
-          style: TextStyle(
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.w500,
-            fontSize: 24,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: Container(
-        color: Theme.of(context).backgroundColor,
-        child: GestureDetector(
-          child: Center(
-            child: CachedNetworkImage(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              imageUrl: widget.imageUrl,
-              placeholder: (context, url) => Center(
-                child: SizedBox(
-                  child: CircularProgressIndicator(),
-                  height: 5.0,
-                  width: 5.0,
-                ),
-              ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            ),
-          ),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
       ),
     );
   }
