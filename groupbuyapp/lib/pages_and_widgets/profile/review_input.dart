@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/review_builder_errors.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/custom_appbars.dart';
+import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
 import 'package:groupbuyapp/utils/styles.dart';
 import 'package:groupbuyapp/utils/themes.dart';
@@ -497,7 +498,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
             decoration: Themes.pinkBox,
             child: Column(
               children: <Widget>[
-                Text("Note that your review will be seen publicly by everyone who visit the user's profile. Your username and profile picture will be  displayed",
+                Text("Note that your review will be seen publicly by everyone who visit the user's profile. Your username and profile picture will be displayed.",
                   style: Styles.textStyle
                 )
               ]
@@ -506,6 +507,10 @@ class _ReviewInputState extends State<ReviewInputScreen> {
         ]
       )
     );
+  }
+
+  Widget notEligibleToReview(String role) {
+    return Text("Sorry you are not eligible to review ${role}");
   }
 
   @override
@@ -525,8 +530,25 @@ class _ReviewInputState extends State<ReviewInputScreen> {
               child: Column(
                 children:
                 [
-                  reviewForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController),
-                  reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController),
+                  FutureBuilder<bool>(
+                    future: GroupBuyStorage.instance.eligibleToReviewForOrganiser(widget.userProfile.userId),
+                    builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                      if (snapshot.data != true) {
+                        return notEligibleToReview('organiser');
+                      }
+                      return reviewForOrganiser(reviewFormKeyForOrganiser,
+                          reviewForOrganiserController);
+                    }
+                  ),
+                  FutureBuilder<bool>(
+                      future: GroupBuyStorage.instance.eligibleToReviewForOrganiser(widget.userProfile.userId),
+                      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        if (snapshot.data != true) {
+                          return notEligibleToReview('piggybacker');
+                        }
+                        return reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController);
+                      }
+                  ),
                   noticePublicReview()
                 ],
               ),
