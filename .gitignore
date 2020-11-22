@@ -23,7 +23,7 @@ doc/api/
 # Manually added
 google-services.json
 GoogleService-Info.plist
-*.api_keys.dart
+groupbuyapp/lib/CONFIDENTIAL/*
 
 Podfile.lock
 
