@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/review_builder_errors.dart';
@@ -510,7 +511,41 @@ class _ReviewInputState extends State<ReviewInputScreen> {
   }
 
   Widget notEligibleToReview(String role) {
-    return Text("Sorry you are not eligible to review ${role}");
+    return Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+            children: <Widget>[
+              Column(
+              children: [
+              Container(
+                padding: EdgeInsets.only(
+                left: 20, right: 20, bottom: 5),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'REVIEW ${role.toUpperCase()}',
+                  style: Styles.subtitleStyle,
+                ),
+              ),
+              Container(
+                child: SvgPicture.asset(
+                  'assets/undraw_access_denied_6w73.svg',
+                  height: 150,
+
+                ),
+                padding: EdgeInsets.all(10),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                  'Sorry you are not eligible to review ${role}',
+                  style: Styles.emptyStyle,
+                  textAlign: TextAlign.center,
+                )
+            ),
+        ]),
+      ],
+    )
+    );
   }
 
   @override
