@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:async/async.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -182,4 +183,36 @@ class ProfileStorage {
       }
     });
   }
+
+  Stream<List<Review>> getReviewsForPiggybackers(String userId) {
+    return reviewsForPiggybackers.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Review(
+          doc.data()['revieweeUserId'],
+          doc.data()['rating'],
+          doc.data()['review'],
+          doc.data()['dateTime'].toDate(),
+        );
+      }).toList() ;
+    });
+  }
+
+  Stream<List<Review>> getReviewsForOrganisers(String userId) {
+    return reviewsForOrganisers.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Review(
+          doc.data()['revieweeUserId'],
+          doc.data()['rating'],
+          doc.data()['review'],
+          doc.data()['dateTime'].toDate(),
+        );
+      }).toList() ;
+    });
+  }
+
+  Stream<List<Review>> getReviews(String userId){
+    return StreamGroup.merge([getReviewsForOrganisers(userId), getReviewsForPiggybackers(userId)]);
+  }
+
+
 }
