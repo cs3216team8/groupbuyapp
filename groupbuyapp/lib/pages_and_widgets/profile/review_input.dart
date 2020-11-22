@@ -576,7 +576,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                     }
                   ),
                   FutureBuilder<bool>(
-                      future: GroupBuyStorage.instance.eligibleToReviewForOrganiser(widget.userProfile.userId),
+                      future: GroupBuyStorage.instance.eligibleToReviewForPiggybacker(widget.userProfile.userId),
                       builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                         if (snapshot.data != true) {
                           return notEligibleToReview('piggybacker');

@@ -305,7 +305,7 @@ class ProfilePart extends StatelessWidget {
                 itemSize: 25.0,
                 direction: Axis.horizontal,
               ),
-              Text(" (${userProfile.reviewCount})", style: Styles.reviewCountStyle)
+              Text(" (${userProfile.reviewCount == null? 0: userProfile.reviewCount})", style: Styles.reviewCountStyle)
             ]
           ),
           SizedBox(

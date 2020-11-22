@@ -13,8 +13,6 @@ class ReviewsListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(this.userId);
-    print("WHATT");
     return StreamBuilder<List<Review>>(
       stream: ProfileStorage.instance.getReviews(userId),
       builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
