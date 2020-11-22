@@ -53,7 +53,7 @@ class GroupBuyStorage {
           'organiserId': groupBuy.organiserId,
           'deposit': groupBuy.deposit,
           'description': groupBuy.description,
-          'address': groupBuy.address,
+          'address': groupBuy.address.address,
           'lat': groupBuy.address.lat,
           'long': groupBuy.address.long,
           'status': GroupBuy.stringFromGroupBuyStatus(groupBuy.status),
@@ -250,7 +250,7 @@ class GroupBuyStorage {
     return groupBuyRequest
         .update({'status': 'confirmed'})
         .then((value) => print("Request edited"))
-        .catchError((error) => print("Failed to edit group buy: $error"));
+        .catchError((error) => print("Failed to edit group buy request: $error"));
   }
 
   Stream<List<GroupBuy>> getGroupBuysOrganisedBy(String userId) {
