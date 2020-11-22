@@ -153,10 +153,10 @@ class ProfileStorage {
         return snapshot.docs.map((doc) {
           return new Review(
             doc.data()['revieweeUserId'],
-            doc.data()['reviewerUserId'],
             doc.data()['rating'],
             doc.data()['review'],
             doc.data()['dateTime'].toDate(),
+            reviewerUserId:doc.data()['reviewerUserId'],
 
           );
         }).toList()[0];
@@ -178,10 +178,10 @@ class ProfileStorage {
         return snapshot.docs.map((doc) {
           return new Review(
             doc.data()['revieweeUserId'],
-            doc.data()['reviewerUserId'],
             doc.data()['rating'],
             doc.data()['review'],
             doc.data()['dateTime'].toDate(),
+            reviewerUserId:doc.data()['reviewerUserId'],
 
           );
         }).toList()[0];
@@ -189,35 +189,19 @@ class ProfileStorage {
     });
   }
 
-  Stream<List<Review>> getReviewsForPiggybackers(String userId) {
+  Stream<List<Review>> getReviews(String userId) {
+    print(userId);
+    print("sdasdasd");
     return reviews
-        .where('role', isEqualTo: 'piggybacker')
         .where('revieweeUserId', isEqualTo:userId)
         .snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Review(
           doc.data()['revieweeUserId'],
-          doc.data()['reviewerUserId'],
           doc.data()['rating'],
           doc.data()['review'],
           doc.data()['dateTime'].toDate(),
-        );
-      }).toList() ;
-    });
-  }
-
-  Stream<List<Review>> getReviewsForOrganisers(String userId) {
-    return reviews
-        .where('role', isEqualTo: 'organiser')
-        .where('revieweeUserId', isEqualTo:userId)
-        .snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Review(
-          doc.data()['revieweeUserId'],
-          doc.data()['reviewerUserId'],
-          doc.data()['rating'],
-          doc.data()['review'],
-          doc.data()['dateTime'].toDate(),
+          reviewerUserId:doc.data()['reviewerUserId'],
         );
       }).toList() ;
     });
