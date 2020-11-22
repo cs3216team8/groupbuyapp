@@ -4,8 +4,6 @@ import 'package:groupbuyapp/pages_and_widgets/home/home_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/home/components/home_listings_section.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 
 class HomeScreen extends StatefulWidget {
 
