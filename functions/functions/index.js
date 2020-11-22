@@ -53,6 +53,8 @@ exports.sendRequestNotification = functions.firestore
                     .collection('tokens')
                     .get();
 
+        const tokens = querySnapshot.docs.map(snap => snap.id);
+
         const payload = {
             notification: {
                 title: 'Updates to your groupbuy request',

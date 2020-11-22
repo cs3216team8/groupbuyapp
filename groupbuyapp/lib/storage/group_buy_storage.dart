@@ -86,7 +86,10 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
+          GroupBuyLocation(
+              address: document.data()['address'],
+              lat: document.data()['lat'].toDouble(),
+              long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -268,7 +271,10 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
+          GroupBuyLocation(
+              address: document.data()['address'],
+              lat: document.data()['lat'].toDouble(),
+              long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -298,11 +304,13 @@ class GroupBuyStorage {
           gbData['organiserId'],
           gbData['deposit'],
           gbData['description'],
-          GroupBuyLocation(address: gbData['address'], lat: gbData['lat'].toDouble(), long: gbData['long'].toDouble()),
+          GroupBuyLocation(
+              address: gbData['address'],
+              lat: gbData['lat'].toDouble(),
+              long: gbData['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(gbData['status']),
         );
       }).toList();
     });
   }
-
 }
