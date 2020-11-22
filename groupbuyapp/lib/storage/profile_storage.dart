@@ -124,8 +124,8 @@ class ProfileStorage {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
-    int currentReviewCount = document.data()['reviewCount'];
+    double currentRating = document.data()['rating'] != null? document.data()['rating'] : 0.0;
+    int currentReviewCount = document.data()['reviewCount']!= null? document.data()['reviewCount'] : 0;
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
     await reviews.add({
@@ -146,8 +146,8 @@ class ProfileStorage {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
-    int currentReviewCount = document.data()['reviewCount'];
+    double currentRating = document.data()['rating'] != null? document.data()['rating'] : 0.0;
+    int currentReviewCount = document.data()['reviewCount']!= null? document.data()['reviewCount'] : 0;
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
     await reviews.add({
@@ -215,8 +215,6 @@ class ProfileStorage {
   }
 
   Stream<List<Review>> getReviews(String userId) {
-    print(userId);
-    print("sdasdasd");
     return reviews
         .where('revieweeUserId', isEqualTo:userId)
         .snapshots().map((snapshot) {
