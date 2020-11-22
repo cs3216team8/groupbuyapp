@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
-import 'package:groupbuyapp/pages_and_widgets/chat/chat_list_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/chat/chat_screen.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/groupbuy_details_widget.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
@@ -95,9 +94,10 @@ class PushNotificationService {
         // Profile organiserProfile = await ProfileStorage.instance
         //     .getUserProfile(notificationData['organiserId']);
         // segueToPage(context,
-        //     GroupBuyInfo(groupBuy: null, organiserProfile: organiserProfile));
+        //     GroupBuyInfo(groupBuyId: null, organiserProfile: organiserProfile));
         segueToPage(context, PiggyBuyApp());
       } else if (view == 'request') {
+        // String groupBuyId = notificationData['groupBuyId'];
         segueToPage(context, PiggyBuyApp());
       }
     }
