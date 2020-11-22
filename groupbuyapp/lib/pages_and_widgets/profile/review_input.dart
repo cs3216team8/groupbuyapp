@@ -150,21 +150,79 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                      Align(
-                        alignment: Alignment.center,
-                        child: RatingBarIndicator(
-                          rating: snapshot.data.rating,
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.stars,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Rating',
+                                  )),
+                              Align(
+                                alignment: Alignment.center,
+                                child: RatingBarIndicator(
+                                  rating: snapshot.data.rating,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 24,
+                                  direction: Axis.horizontal,
+                                ),
+                              ),
+                            ],
                           ),
-                          itemCount: 5,
-                          itemSize: MediaQuery.of(context).size.width/7.3,
-                          direction: Axis.horizontal,
-                        ),
-                      ),
-                      SizedBox(height: 15),
-                      snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
+
+                          SizedBox(height: 7),
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.description,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Description',
+                                  )),
+                              Flexible(
+                                child: snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 7),
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.date_range_sharp,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Date reviewed',
+                                  )),
+                              Flexible(
+                                  child: Text(snapshot.data.dateTime.toString(), style: Styles.textStyle,)
+                              )
+                            ],
+                          ),
                     ]
                   )
                   )
@@ -227,6 +285,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                         });
                                       }),
                                 ),
+
                                 reviewInputForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController, ratingForOrganiser, hasRatedForOrganiser)
                         ]
                     )
@@ -268,21 +327,79 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                  Align(
-                    alignment: Alignment.center,
-                    child: RatingBarIndicator(
-                      rating: snapshot.data.rating,
-                      itemBuilder: (context, index) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      itemCount: 5,
-                      itemSize: MediaQuery.of(context).size.width/7.3,
-                      direction: Axis.horizontal,
-                    ),
-                  ),
-                  SizedBox(height: 15,),
-                      snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.stars,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Rating',
+                                  )),
+                              Align(
+                                child: RatingBarIndicator(
+                                  rating: snapshot.data.rating,
+                                  itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 24,
+                                  direction: Axis.horizontal,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 7),
+
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.description,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Description',
+                                  )),
+                              Flexible(
+                                child: snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 7),
+
+                          Row(
+                            // Location
+                            children: <Widget>[
+                              Padding(
+                                  padding: EdgeInsets.only(
+                                      top: 6,
+                                      left: 3,
+                                      right: 10,
+                                      bottom: 6),
+                                  child: Icon(
+                                    Icons.date_range_sharp,
+                                    color: Color(0xFFe87d74),
+                                    size: 24.0,
+                                    semanticLabel: 'Date reviewed',
+                                  )),
+                              Flexible(
+                                  child: Text(snapshot.data.dateTime.toString(), style: Styles.textStyle,)
+                              )
+                            ],
+                          ),
                 ]
             )
           )])
@@ -360,6 +477,37 @@ class _ReviewInputState extends State<ReviewInputScreen> {
         );
   }
 
+  Widget noticePublicReview(){
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+          children: [
+            Container(
+            padding: EdgeInsets.only(
+            left: 20, right: 20, bottom: 5),
+            alignment: Alignment.topLeft,
+            child: Text(
+              'NOTICE',
+              style: Styles.subtitleStyle,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(20,),
+            margin: EdgeInsets.only(left: 10, right: 10),
+            decoration: Themes.pinkBox,
+            child: Column(
+              children: <Widget>[
+                Text("Note that your review will be seen publicly by everyone who visit the user's profile. Your username and profile picture will be  displayed",
+                  style: Styles.textStyle
+                )
+              ]
+            )
+          )
+        ]
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> reviewFormKeyForOrganiser = GlobalKey<FormState>();
@@ -373,13 +521,16 @@ class _ReviewInputState extends State<ReviewInputScreen> {
       ),
 
       body:
-            Column(
-              children:
-              [
-                reviewForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController),
-                reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController),
-              ],
-            ),
+            SingleChildScrollView(
+              child: Column(
+                children:
+                [
+                  reviewForOrganiser(reviewFormKeyForOrganiser, reviewForOrganiserController),
+                  reviewForPiggybacker(reviewFormKeyForPiggybacker, reviewForPiggybackerController),
+                  noticePublicReview()
+                ],
+              ),
+            )
     );
   }
 
