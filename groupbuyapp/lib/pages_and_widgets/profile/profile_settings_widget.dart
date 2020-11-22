@@ -47,7 +47,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   }
 
   void _addAddress(BuildContext context, GroupBuyLocation addr) {
-    // Navigator.of(context).pop();
     setState(() {
       addresses.add(addr);
     });
