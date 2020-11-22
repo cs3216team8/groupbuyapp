@@ -7,20 +7,21 @@ class Review {
 
   Review (
       this.revieweeUserId,
-      this.reviewerUserId,
       this.rating,
       this.review,
       this.dateTime,
+      {this.reviewerUserId}
+
       );
 
 
   static Review getDummyData() {
     return new Review (
         "abcd1234",
-      "abcd5678",
       4.7,
         "The seller is very friendly and is on time",
         DateTime.now(),
+      reviewerUserId: "abcd5678",
     );
   }
 
