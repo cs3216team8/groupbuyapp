@@ -147,4 +147,10 @@ class Styles {
     color: Colors.grey,
   );
 
+  static const TextStyle reviewDateStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 11,
+    color: Colors.grey,
+  );
+
 }

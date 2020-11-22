@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
 import 'package:groupbuyapp/storage/profile_storage.dart';
+import 'package:groupbuyapp/utils/styles.dart';
 
 class ReviewCard extends StatelessWidget {
   final Review review;
@@ -56,9 +58,9 @@ class ReviewCard extends StatelessWidget {
           }
 
           return Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
                       children: [
@@ -66,10 +68,10 @@ class ReviewCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             CircleAvatar(
-                              radius: 20,
+                              radius: 25,
                               backgroundColor: Theme.of(context).primaryColor,
                               child: CircleAvatar(
-                                radius: 18,
+                                radius: 22,
                                 backgroundImage: Image.network(snapshot.data.profilePicture).image,
                               ),
                             ),
@@ -90,24 +92,36 @@ class ReviewCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5,),
-                            review.review!=null? Container(
-                              child: Text(
-                                review.review,
+                            RatingBarIndicator(
+                              rating: review.rating,
+                              itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
                               ),
-                            ): Container(),
-                            SizedBox(height: 5,),
+                              itemCount: 5,
+                              itemSize: 18,
+                              direction: Axis.horizontal,
+                              ),
                             Container(
                               child: Text(
-                                "${getTimeDifString(review.dateTime.difference(DateTime.now()))} ago",
-                                style: TextStyle(color: Colors.black45,),
+                                review.dateTime.toString(),
+                                style: Styles.reviewDateStyle,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    Text('${review.rating}', style: TextStyle(color: Colors.black45, fontSize: 18),),
+                    SizedBox(height: 10,),
+                    Divider(
+                      color: Color(0xFFD9D9D9),
+                      height: 1.5,
+                    ),
+                    SizedBox(height: 10,),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: review.review!=null? Text(review.review, style: Styles.textStyle,): Container()
+                    )
                   ],
                 ),
           );
