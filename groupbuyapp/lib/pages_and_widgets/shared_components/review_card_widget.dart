@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/models/review_model.dart';
+import 'package:groupbuyapp/storage/profile_storage.dart';
 
 class ReviewCard extends StatelessWidget {
   final Review review;
@@ -15,7 +17,7 @@ class ReviewCard extends StatelessWidget {
       this.shadowColor = Colors.black12,
       this.splashColor = Colors.black12,
       this.splashAlpha = 30,
-      this.elevation = 10,
+      this.elevation = 0,
   }) : super(key: key);
 
 
@@ -37,62 +39,80 @@ class ReviewCard extends StatelessWidget {
       elevation: elevation,
       shadowColor: shadowColor,
       margin: EdgeInsets.all(0.5),
-      child:Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Row(
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Theme.of(context).primaryColor,
-                        child: CircleAvatar(
-                          radius: 18,
-                          //backgroundImage: Image.network(review.profilePicture).image,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(width: 20,),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(right: 10),
-                            child: Text(
-                              review.revieweeUserId,
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+      child: FutureBuilder(
+        future: ProfileStorage.instance.getUserProfile(review.reviewerUserId),
+        builder: (BuildContext context, AsyncSnapshot<Profile> snapshot) {
+          if (snapshot.hasError) {
+            return Text("Failed to load request.");
+          }
+
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+              return Text("Git blame developers.");
+            case ConnectionState.waiting:
+              return Center(child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator(),),); //TODO for refactoring
+            default:
+              break;
+          }
+
+          return Container(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: CircleAvatar(
+                                radius: 18,
+                                backgroundImage: Image.network(snapshot.data.profilePicture).image,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 5,),
-                      review.review!=null? Container(
-                        child: Text(
-                          review.review,
+                          ],
                         ),
-                      ): Container(),
-                      SizedBox(height: 5,),
-                      Container(
-                        child: Text(
-                          "${getTimeDifString(review.dateTime.difference(DateTime.now()))} ago",
-                          style: TextStyle(color: Colors.black45,),
+                        SizedBox(width: 20,),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    snapshot.data.username,
+                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 5,),
+                            review.review!=null? Container(
+                              child: Text(
+                                review.review,
+                              ),
+                            ): Container(),
+                            SizedBox(height: 5,),
+                            Container(
+                              child: Text(
+                                "${getTimeDifString(review.dateTime.difference(DateTime.now()))} ago",
+                                style: TextStyle(color: Colors.black45,),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Text('${review.rating}', style: TextStyle(color: Colors.black45, fontSize: 18),),
-            ],
-          ),
-        ),
+                      ],
+                    ),
+                    Text('${review.rating}', style: TextStyle(color: Colors.black45, fontSize: 18),),
+                  ],
+                ),
+          );
+        }
+      )
     );
   }
 }
