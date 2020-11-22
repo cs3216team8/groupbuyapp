@@ -189,7 +189,6 @@ class _SignUpFormState extends State<SignupForm> {
                   textColor: Theme.of(context).primaryColor,
                   isLogin: false,
                   onPress: () {
-                    print("should seg to login now");
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => LoginScreen()));
                   },
