@@ -373,9 +373,8 @@ class GroupBuyStorage {
           return groupBuyId;
         }).toList()
     );
-    print(groupBuysOrganisedByReviewee);
-    QuerySnapshot groupBuysJoinedByCurrentUser = await requestsRoot
-        .where('id', arrayContainsAny: groupBuysOrganisedByReviewee)
+    QuerySnapshot  groupBuysJoinedByCurrentUser = await requestsRoot
+        .where('groupBuyId', whereIn: groupBuysOrganisedByReviewee)
         .where('requestorId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
         .get();
     if (groupBuysJoinedByCurrentUser.size != 0) {
@@ -399,7 +398,7 @@ class GroupBuyStorage {
     );
 
     QuerySnapshot groupBuysJoinedByReviewee = await requestsRoot
-        .where('id', arrayContainsAny: groupBuysOrganisedByCurrentUser)
+        .where('groupBuyId', whereIn: groupBuysOrganisedByCurrentUser)
         .where('requestorId', isEqualTo: revieweeId)
         .get();
     if (groupBuysJoinedByReviewee.size != 0) {
