@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:async/async.dart';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,6 +16,9 @@ class ProfileStorage {
   CollectionReference usersRef = FirebaseFirestore.instance.collection(
       'users');
   Reference profilePhotoRef = FirebaseStorage.instance.ref().child('profile-pics');
+  CollectionReference reviews = FirebaseFirestore.instance.collection('reviews');
+
+  CollectionReference requestsRoot = FirebaseFirestore.instance.collection('requests');
 
   Future<Profile> getUserProfile(String userId) async {
 
@@ -34,11 +38,13 @@ class ProfileStorage {
         document.data()['email'],
         document.data()['authType'],
         addresses,
-        document.data()['rating'],
+        document.data()['rating']!=null? document.data()['rating'].toDouble(): null,
         document.data()['reviewCount']
     );
     return userProfile;
   }
+
+
 
   Future<bool> checkIfUsernameIsTaken(String username) async {
     QuerySnapshot query = await usersRef.where('username', isEqualTo: username).get();
@@ -114,17 +120,117 @@ class ProfileStorage {
     });
   }
 
-  Future<void> addReview(Review review, String userId) async {
+  Future<void> addReviewForOrganiser(Review review, String userId) async {
     DocumentSnapshot document = await usersRef
         .doc(userId)
         .get();
-    double currentRating = document.data()['rating'];
-    double currentReviewCount = document.data()['reviewCount'];
+    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
+    int currentReviewCount = document.data()['reviewCount'];
     double newRating = ((currentRating * currentReviewCount) +
         review.getRating()) / (currentReviewCount + 1);
+    await reviews.add({
+      'revieweeUserId': review.revieweeUserId,
+      'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
+      'rating': review.rating,
+      'review': review.review,
+      'dateTime': review.dateTime,
+      'role': 'organiser'
+    });
     return usersRef.doc(userId).update({
       'rating': newRating,
       'reviewCount': currentReviewCount + 1,
     });
   }
+
+  Future<void> addReviewForPiggybacker(Review review, String userId) async {
+    DocumentSnapshot document = await usersRef
+        .doc(userId)
+        .get();
+    double currentRating = document.data()['rating']!= null? document.data()['rating'] : 0;
+    int currentReviewCount = document.data()['reviewCount'];
+    double newRating = ((currentRating * currentReviewCount) +
+        review.getRating()) / (currentReviewCount + 1);
+    await reviews.add({
+      'revieweeUserId': review.revieweeUserId,
+      'reviewerUserId': FirebaseAuth.instance.currentUser.uid,
+      'rating': review.rating,
+      'review': review.review,
+      'dateTime': review.dateTime,
+      'role': 'piggybacker'
+    });
+    return usersRef.doc(userId).update({
+      'rating': newRating,
+      'reviewCount': currentReviewCount + 1,
+    });
+  }
+
+  Stream<Review> reviewForOrganiser(String userId) {
+    Stream<QuerySnapshot> querySnapshots = reviews
+        .where('role', isEqualTo: 'organiser')
+        .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('revieweeUserId', isEqualTo:userId)
+        .snapshots();
+    return querySnapshots.map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+      else {
+        return snapshot.docs.map((doc) {
+          return new Review(
+            doc.data()['revieweeUserId'],
+            doc.data()['rating'],
+            doc.data()['review'],
+            doc.data()['dateTime'].toDate(),
+            reviewerUserId:doc.data()['reviewerUserId'],
+
+          );
+        }).toList()[0];
+      }
+    });
+  }
+
+  Stream<Review> reviewForPiggybacker(String userId) {
+    Stream<QuerySnapshot> querySnapshots = reviews
+        .where('role', isEqualTo: 'piggybacker')
+        .where('reviewerUserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .where('revieweeUserId', isEqualTo:userId)
+        .snapshots();
+    return querySnapshots.map((snapshot) {
+      if (snapshot.docs.isEmpty) {
+        return null;
+      }
+      else {
+        return snapshot.docs.map((doc) {
+          return new Review(
+            doc.data()['revieweeUserId'],
+            doc.data()['rating'],
+            doc.data()['review'],
+            doc.data()['dateTime'].toDate(),
+            reviewerUserId:doc.data()['reviewerUserId'],
+
+          );
+        }).toList()[0];
+      }
+    });
+  }
+
+  Stream<List<Review>> getReviews(String userId) {
+    print(userId);
+    print("sdasdasd");
+    return reviews
+        .where('revieweeUserId', isEqualTo:userId)
+        .snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Review(
+          doc.data()['revieweeUserId'],
+          doc.data()['rating'],
+          doc.data()['review'],
+          doc.data()['dateTime'].toDate(),
+          reviewerUserId:doc.data()['reviewerUserId'],
+        );
+      }).toList() ;
+    });
+  }
+
+
 }

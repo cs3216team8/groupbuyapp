@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/request.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 
 class GroupBuyStorage {
   GroupBuyStorage._privateConstructor();
@@ -291,7 +292,6 @@ class GroupBuyStorage {
         DocumentSnapshot groupBuySnapshot =
             await groupBuys.doc(groupBuyId).get();
         Map<String, dynamic> gbData = groupBuySnapshot.data();
-
         return GroupBuy(
           groupBuyId,
           gbData['storeName'],
@@ -311,5 +311,101 @@ class GroupBuyStorage {
         );
       }).toList();
     });
+  }
+
+  Future<String> getReviewInputContent(String otherUserId) async {
+    // if the user has ever requested on this another user
+    // if the user has ever been requested by this another user
+    // if never, cannot
+    String currentUserId = FirebaseAuth.instance.currentUser.uid;
+    // group buys that has been requested by the current user
+
+
+    groupBuys
+        .where('organiserId', isEqualTo: otherUserId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((document) {
+        return GroupBuy(
+          document.id,
+          document.data()['storeName'],
+          document.data()['storeWebsite'],
+          document.data()['storeLogo'],
+          document.data()['currentAmount'].toDouble(),
+          document.data()['targetAmount'].toDouble(),
+          document.data()['endTimestamp'],
+          document.data()['organiserId'],
+          document.data()['deposit'],
+          document.data()['description'],
+          document.data()['address'],
+          GroupBuy.groupBuyStatusFromString(document.data()['status']),
+        );
+      }).toList();
+    });
+  }
+
+
+  List<GroupBuyCard> getGroupBuyCardList(List<GroupBuy> groupBuyList) {
+    return groupBuyList.map((groupBuy) => GroupBuyCard(groupBuy)).toList();
+  }
+
+  List<GroupBuyCard> getSortedCardList(List<GroupBuy> groupBuys) {
+    List<GroupBuy> pastGroupBuys =
+        groupBuys.where((gb) => !gb.isPresent()).toList();
+    List<GroupBuy> closedPresentGroupBuys =
+        groupBuys.where((gb) => gb.isPresent() && !gb.isOpen()).toList();
+    List<GroupBuy> openPresentGroupBuys =
+        groupBuys.where((gb) => gb.isPresent() && gb.isOpen()).toList();
+    return getGroupBuyCardList(openPresentGroupBuys) +
+        getGroupBuyCardList(closedPresentGroupBuys) +
+        getGroupBuyCardList(pastGroupBuys);
+  }
+
+  Future<bool> eligibleToReviewForOrganiser(String revieweeId) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return false;
+    }
+    List<String> groupBuysOrganisedByReviewee = await groupBuys
+        .where('organiserId', isEqualTo: revieweeId)
+        .get()
+        .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
+          String groupBuyId = document.data()['id'];
+          return groupBuyId;
+        }).toList()
+    );
+    print(groupBuysOrganisedByReviewee);
+    QuerySnapshot groupBuysJoinedByCurrentUser = await requestsRoot
+        .where('id', arrayContainsAny: groupBuysOrganisedByReviewee)
+        .where('requestorId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get();
+    if (groupBuysJoinedByCurrentUser.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<bool> eligibleToReviewForPiggybacker(String revieweeId) async {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return false;
+    }
+    List<String> groupBuysOrganisedByCurrentUser = await groupBuys
+        .where('organiserId', isEqualTo: FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((QuerySnapshot snapshot) => snapshot.docs.map((DocumentSnapshot document) {
+      String groupBuyId = document.data()['id'];
+      return groupBuyId;
+    }).toList()
+    );
+
+    QuerySnapshot groupBuysJoinedByReviewee = await requestsRoot
+        .where('id', arrayContainsAny: groupBuysOrganisedByCurrentUser)
+        .where('requestorId', isEqualTo: revieweeId)
+        .get();
+    if (groupBuysJoinedByReviewee.size != 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

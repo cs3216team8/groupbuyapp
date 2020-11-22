@@ -21,7 +21,7 @@ class RequestAsPiggyBackerDefaultScreen extends StatelessWidget {
             ),
 
             Text(
-              'You have yet to join this group buy. Chat or Join now!',
+              ' to join this group buy. Chat or Join now!',
               style: Styles.emptyStyle,
               textAlign: TextAlign.center,
             ),

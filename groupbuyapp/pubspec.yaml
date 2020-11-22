@@ -32,6 +32,7 @@ dependencies:
   get_it: ^3.0.0+1
   public_suffix: ^1.2.1
   concentric_transition: ^0.1.1
+  async: ^2.4.2
 
   url_launcher: "^5.7.8"
   sprintf: "^4.0.0"
@@ -53,6 +54,7 @@ dependencies:
   shared_preferences: 0.5.12+4
   transparent_image: ^1.0.0
   cached_network_image: ^2.3.3
+  flutter_rating_bar: 3.2.0
 
   google_sign_in: ^4.5.1
   flutter_facebook_login: ^3.0.0

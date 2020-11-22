@@ -15,6 +15,12 @@ class Styles {
       fontWeight: FontWeight.w300
   );
 
+  static const TextStyle reviewCountStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 18,
+      fontWeight: FontWeight.w300
+  );
+
   static const TextStyle otherUsernameStyle = TextStyle(
       fontFamily: 'Inter',
       fontSize: 15.5,
@@ -110,6 +116,13 @@ class Styles {
       color: Colors.black
   ); //fontSize: 15, fontWeight: FontWeight.normal);
 
+  static const TextStyle italicTextStyle = TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 15.5,
+      fontWeight: FontWeight.w300,
+      color: Colors.grey
+  );
+
   static const TextStyle usernameStyle = TextStyle(
       fontFamily: 'WorkSans',
       fontSize: 18,
@@ -117,10 +130,27 @@ class Styles {
       color: Color(0xFF800020),
   );
 
-  static const TextStyle popupButtonStyle = TextStyle(
+  static const TextStyle ratingStyle = TextStyle(
     fontFamily: 'WorkSans',
     fontSize: 15,
-    fontWeight: FontWeight.bold,
+  );
+
+  static const TextStyle popupButtonStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 15,
     color: Colors.white,
   );
+
+  static const TextStyle hintTextStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 15.5,
+    color: Colors.grey,
+  );
+
+  static const TextStyle reviewDateStyle = TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 11,
+    color: Colors.grey,
+  );
+
 }
