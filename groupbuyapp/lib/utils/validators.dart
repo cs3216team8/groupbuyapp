@@ -34,3 +34,23 @@ String phoneNumberValidator(String value) {
     return null;
   }
 }
+
+String usernameValidator(String value) {
+  if (value.isEmpty) {
+    return 'Please enter your username';
+  }
+  if (value.length > 12) {
+    return 'Username can not be longer than 12 characters';
+  }
+  return null;
+}
+
+String emailValidator(String value) {
+  if (value.isEmpty) {
+    return 'Please enter your email';
+  }
+  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+    return 'Please enter a valid email address';
+  }
+  return null;
+}

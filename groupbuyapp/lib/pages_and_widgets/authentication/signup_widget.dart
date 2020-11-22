@@ -23,7 +23,8 @@ class _SignUpFormState extends State<SignupForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmController = TextEditingController();
+  final TextEditingController _passwordConfirmController =
+      TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   String fullNameErrorMessage = '';
   String usernameErrorMessage = '';
@@ -33,18 +34,20 @@ class _SignUpFormState extends State<SignupForm> {
   String phoneNumberErrorMessage = '';
 
   Future<UserCredential> _register() async {
-    bool usernameIsTaken = await ProfileStorage.instance.checkIfUsernameIsTaken(_usernameController.text);
+    bool usernameIsTaken = await ProfileStorage.instance
+        .checkIfUsernameIsTaken(_usernameController.text);
 
     if (usernameIsTaken) {
-      showErrorFlushbar("This username has been taken. Please pick another one.");
+      showErrorFlushbar(
+          "This username has been taken. Please pick another one.");
       return null;
     }
 
     try {
-      UserCredential userCredential = (await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text
-      ));
+      UserCredential userCredential = (await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text,
+              password: _passwordController.text));
       String userId = userCredential.user.uid;
       Profile userProfile = new Profile(
           userId,
@@ -56,15 +59,13 @@ class _SignUpFormState extends State<SignupForm> {
           "native",
           [],
           null,
-          0
-      );
+          0);
       try {
         await ProfileStorage.instance.createOrUpdateUserProfile(userProfile);
         return userCredential;
       } catch (e) {
         print(e);
       }
-
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         showErrorFlushbar('The password provided is too weak.');
@@ -74,21 +75,21 @@ class _SignUpFormState extends State<SignupForm> {
     } catch (e) {
       showErrorFlushbar(e.message);
     }
-
   }
 
   void showErrorFlushbar(String message) {
     Flushbar(
-        flushbarPosition: FlushbarPosition.TOP,
-        flushbarStyle: FlushbarStyle.FLOATING,
-        margin: EdgeInsets.only(top: 60, left: 8, right: 8),
-        duration: Duration(seconds: 3),
-        animationDuration: Duration(seconds: 1),
-        borderRadius: 8,
-        backgroundColor: Color(0xFFF2B1AB),
-        dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-        title: "Sign Up failed",
-        message: message).show(context);
+            flushbarPosition: FlushbarPosition.TOP,
+            flushbarStyle: FlushbarStyle.FLOATING,
+            margin: EdgeInsets.only(top: 60, left: 8, right: 8),
+            duration: Duration(seconds: 3),
+            animationDuration: Duration(seconds: 1),
+            borderRadius: 8,
+            backgroundColor: Color(0xFFF2B1AB),
+            dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+            title: "Sign Up failed",
+            message: message)
+        .show(context);
   }
 
   @override
@@ -97,7 +98,6 @@ class _SignUpFormState extends State<SignupForm> {
     _passwordController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -112,122 +112,103 @@ class _SignUpFormState extends State<SignupForm> {
           child: Form(
             key: _formKey,
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                "SIGN UP",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-          ),
-              SizedBox(height: 10,),
-              RoundedInputField(
-                color: Color(0xFFFBE3E1),
-                iconColor: Theme.of(context).primaryColor,
-                controller: _fullNameController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter your full name';
-                  }
-                  return null;
-                },
-                hintText: "Full Name",
-              ),
-              RoundedInputField(
-                color: Color(0xFFFBE3E1),
-                iconColor: Theme.of(context).primaryColor,
-                controller: _usernameController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  if (value.length > 12) {
-                    return 'Username can not be longer than 12 characters';
-                  }
-                  return null;
-                },
-                hintText: "Username",
-              ),
-              RoundedInputField(
-                color: Color(0xFFFBE3E1),
-                iconColor: Theme.of(context).primaryColor,
-                controller: _emailController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
-                    return 'Please enter a valid email address';
-                  }
-                  return null;
-                },
-                  hintText: "Email"
-              ),
-              RoundedPasswordField(
-                color: Color(0xFFFBE3E1),
-                iconColor: Theme.of(context).primaryColor,
-                controller: _passwordController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return '\n\nPlease enter password';
-                  }
-                  return null;
-                },
-              ),
-              RoundedPasswordField(
-                color: Color(0xFFFBE3E1),
-                iconColor: Theme.of(context).primaryColor,
-                controller: _passwordConfirmController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return '\n\nPlease enter password confirmation';
-                  }
-                  if(value != _passwordController.text) {
-                    return 'Password do not match';
-                  }
-                  return null;
-                },
-                hintText: "Confirm password",
-              ),
-              RoundedInputField(
-                color: Color(0xFFFBE3E1),
-                icon: Icons.phone,
-                iconColor: Theme.of(context).primaryColor,
-                controller: _phoneNumberController,
-                validator: phoneNumberValidator,
-                hintText: "Phone Number",
-              ),
-              RoundedButton(
-                color: Theme.of(context).primaryColor,
-                text: "SIGN UP",
-                textStyle: TextStyle(color:Colors.white),
-                onPress: () async {
-                  if (_formKey.currentState.validate()) {
-                    UserCredential userCredential = await _register();
-                    if (userCredential != null) {
-                      segueWithoutBack(context, PiggyBuyApp());
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "SIGN UP",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RoundedInputField(
+                  color: Color(0xFFFBE3E1),
+                  iconColor: Theme.of(context).primaryColor,
+                  controller: _fullNameController,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return 'Please enter your full name';
                     }
-                  }
-                },
-              ),
-              SizedBox(height: 10),
-              LoginOrSignupOption(
-                textColor: Theme.of(context).primaryColor,
-                isLogin: false,
-                onPress: () {
-                  print("should seg to login now");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginScreen()
-                      )
-                  );
-                },
-              ),
-            ],
+                    return null;
+                  },
+                  hintText: "Full Name",
+                ),
+                RoundedInputField(
+                  color: Color(0xFFFBE3E1),
+                  iconColor: Theme.of(context).primaryColor,
+                  controller: _usernameController,
+                  validator: usernameValidator,
+                  hintText: "Username",
+                ),
+                RoundedInputField(
+                    color: Color(0xFFFBE3E1),
+                    iconColor: Theme.of(context).primaryColor,
+                    controller: _emailController,
+                    validator: emailValidator,
+                    hintText: "Email"),
+                RoundedPasswordField(
+                  color: Color(0xFFFBE3E1),
+                  iconColor: Theme.of(context).primaryColor,
+                  controller: _passwordController,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return '\n\nPlease enter password';
+                    }
+                    return null;
+                  },
+                ),
+                RoundedPasswordField(
+                  color: Color(0xFFFBE3E1),
+                  iconColor: Theme.of(context).primaryColor,
+                  controller: _passwordConfirmController,
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return '\n\nPlease enter password confirmation';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Password do not match';
+                    }
+                    return null;
+                  },
+                  hintText: "Confirm password",
+                ),
+                RoundedInputField(
+                  color: Color(0xFFFBE3E1),
+                  icon: Icons.phone,
+                  iconColor: Theme.of(context).primaryColor,
+                  controller: _phoneNumberController,
+                  validator: phoneNumberValidator,
+                  hintText: "Phone Number",
+                ),
+                RoundedButton(
+                  color: Theme.of(context).primaryColor,
+                  text: "SIGN UP",
+                  textStyle: TextStyle(color: Colors.white),
+                  onPress: () async {
+                    if (_formKey.currentState.validate()) {
+                      UserCredential userCredential = await _register();
+                      if (userCredential != null) {
+                        segueWithoutBack(context, PiggyBuyApp());
+                      }
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
+                LoginOrSignupOption(
+                  textColor: Theme.of(context).primaryColor,
+                  isLogin: false,
+                  onPress: () {
+                    print("should seg to login now");
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()));
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
     );
   }
 }
