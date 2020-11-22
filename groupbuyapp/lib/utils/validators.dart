@@ -54,3 +54,17 @@ String emailValidator(String value) {
   }
   return null;
 }
+
+String fullnameValidator(String value) {
+  if (value.isEmpty) {
+    return 'Please enter your full name';
+  }
+  return null;
+}
+
+String passwordValidator(String value) {
+    if (value.isEmpty) {
+      return '\n\nPlease enter password';
+    }
+    return null;
+}

@@ -126,12 +126,7 @@ class _SignUpFormState extends State<SignupForm> {
                   color: Color(0xFFFBE3E1),
                   iconColor: Theme.of(context).primaryColor,
                   controller: _fullNameController,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'Please enter your full name';
-                    }
-                    return null;
-                  },
+                  validator: fullnameValidator,
                   hintText: "Full Name",
                 ),
                 RoundedInputField(
@@ -151,12 +146,7 @@ class _SignUpFormState extends State<SignupForm> {
                   color: Color(0xFFFBE3E1),
                   iconColor: Theme.of(context).primaryColor,
                   controller: _passwordController,
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return '\n\nPlease enter password';
-                    }
-                    return null;
-                  },
+                  validator: passwordValidator,
                 ),
                 RoundedPasswordField(
                   color: Color(0xFFFBE3E1),
