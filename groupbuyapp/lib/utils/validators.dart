@@ -22,3 +22,15 @@ bool isCurrencyNumberFormat(String s) {
   }
   return val.truncateToDouble() == val;
 }
+
+String phoneNumberValidator(String value) {
+  Pattern pattern = r'^[0-9+\s]*$';
+  RegExp regex = new RegExp(pattern);
+  if (value == "") {
+    return 'Please enter a phone number';
+  } else if (!regex.hasMatch(value)) {
+    return 'Please enter a valid phone number';
+  } else {
+    return null;
+  }
+}

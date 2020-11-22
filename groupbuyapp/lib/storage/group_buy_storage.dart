@@ -4,7 +4,6 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:groupbuyapp/models/location_models.dart';
 import 'package:groupbuyapp/models/request.dart';
-import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 
 class GroupBuyStorage {
   GroupBuyStorage._privateConstructor();
@@ -86,7 +85,10 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
+          GroupBuyLocation(
+              address: document.data()['address'],
+              lat: document.data()['lat'].toDouble(),
+              long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -268,7 +270,10 @@ class GroupBuyStorage {
           document.data()['organiserId'],
           document.data()['deposit'],
           document.data()['description'],
-          GroupBuyLocation(address: document.data()['address'], lat: document.data()['lat'].toDouble(), long: document.data()['long'].toDouble()),
+          GroupBuyLocation(
+              address: document.data()['address'],
+              lat: document.data()['lat'].toDouble(),
+              long: document.data()['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(document.data()['status']),
         );
       }).toList();
@@ -298,11 +303,13 @@ class GroupBuyStorage {
           gbData['organiserId'],
           gbData['deposit'],
           gbData['description'],
-          GroupBuyLocation(address: gbData['address'], lat: gbData['lat'].toDouble(), long: gbData['long'].toDouble()),
+          GroupBuyLocation(
+              address: gbData['address'],
+              lat: gbData['lat'].toDouble(),
+              long: gbData['long'].toDouble()),
           GroupBuy.groupBuyStatusFromString(gbData['status']),
         );
       }).toList();
     });
   }
-
 }

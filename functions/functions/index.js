@@ -7,12 +7,12 @@ const db = admin.firestore();
 const fcm = admin.messaging();
 
 exports.sendNotification = functions.firestore
-    .document("chatRooms/{chatRoomId}/messages/{messageId}")
+    .document('chatRooms/{chatRoomId}/messages/{messageId}')
     .onCreate(async (snapshot, context) => {
         const message = snapshot.data();
         const senderUid = message.user.uid;
         const senderSnapshot = await db
-            .collection("users")
+            .collection('users')
             .doc(senderUid)
             .get();
         const senderName = senderSnapshot.data()['name'];
@@ -28,7 +28,7 @@ exports.sendNotification = functions.firestore
         const tokens = querySnapshot.docs.map(snap => snap.id);
         const payload = {
             notification: {
-                title: 'Chat Message from ' + senderName,
+                title: 'Chat message from ' + senderName,
                 body: message.text,
             },
             data: {
@@ -43,24 +43,27 @@ exports.sendNotification = functions.firestore
     });
 
 exports.sendRequestNotification = functions.firestore
-    .document("groupBuys/{requestId}")
+    .document('groupBuys/{requestId}')
     .onUpdate(async snapshot => {
         const request = snapshot.data();
         const requestorId = request.requestorId;
         const querySnapshot = await db
                     .collection('users')
-                    .doc(requestorId) // change to receiverUid
+                    .doc(requestorId)
                     .collection('tokens')
                     .get();
 
+        const tokens = querySnapshot.docs.map(snap => snap.id);
+
         const payload = {
             notification: {
-                title: 'Updates to your request", // add senderName
+                title: 'Updates to your groupbuy request',
                 body: 'Your request has been ' + request.status,
             },
             data: {
                 'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 view: 'request',
+                groupBuyId: request.groupBuyId,
             }
         };
 
