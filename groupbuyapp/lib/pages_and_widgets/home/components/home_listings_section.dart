@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
+import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 import 'package:groupbuyapp/storage/group_buy_storage.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/groupbuylisting_utils.dart';
 
 class ListingsSection extends StatefulWidget {
   Stream<List<GroupBuy>> Function() createGroupBuyStream;
@@ -54,12 +56,29 @@ class _ListingsSectionState extends State<ListingsSection>
               return widget.createDefaultScreen();
             }
 
-            return GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                childAspectRatio: 5.5/7.0,
-                children: GroupBuyStorage.instance.getSortedCardList(groupBuys)
+            return FutureBuilder(
+              future: getSortedCardList(groupBuys),
+              builder: (BuildContext context, AsyncSnapshot<List<GroupBuyCard>> snapshot) {
+                if (snapshot.hasError) {
+                  return Text("error with sorted cards snapshot!");
+                }
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                    return Text("Git blame developers.");
+                  case ConnectionState.waiting:
+                    return Center(child: SizedBox(height: 50, width: 50, child: CircularProgressIndicator(),),); //TODO for refactoring
+                  default:
+                    break;
+                }
+
+                return GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    childAspectRatio: 5.5/7.0,
+                    children: snapshot.data,
+                );
+              },
             );
           },
         )

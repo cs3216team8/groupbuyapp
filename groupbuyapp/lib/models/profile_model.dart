@@ -1,3 +1,5 @@
+import 'package:groupbuyapp/models/location_models.dart';
+
 class Profile {
   final String userId;
   final String name;
@@ -6,7 +8,7 @@ class Profile {
   final String phoneNumber;
   final String email;
   final String authType;
-  final List<String> addresses;
+  List<GroupBuyLocation> addresses;
 
   double rating; //TODO @agnes
   int reviewCount;
@@ -38,7 +40,7 @@ class Profile {
         "+65 1234 5678",
         "me@dawo.me",
         "native",
-        ["17 Dover Cres 130017", "18 Dover Cres 130017", "115 Dover Cres 130017", "19 Dover Cres 130017", "20 Dover Cres 130017", "21 Dover Cres 130017"],
+        [],
         4.9,
         500
     );

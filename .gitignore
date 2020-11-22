@@ -23,6 +23,7 @@ doc/api/
 # Manually added
 google-services.json
 GoogleService-Info.plist
+groupbuyapp/lib/CONFIDENTIAL/*
 
 Podfile.lock
 

@@ -4,6 +4,7 @@ import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/reviews_listing.dart';
+import 'package:groupbuyapp/pages_and_widgets/shared_components/location/groupbuylisting_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
@@ -100,7 +101,6 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
       StreamBuilder<List<GroupBuy>>(
         stream: GroupBuyStorage.instance.getGroupBuysOrganisedBy(uid),
         builder: (BuildContext context, AsyncSnapshot<List<GroupBuy>> snapshot) {
-          List<Widget> children;
 
           List<GroupBuy> groupBuys;
 
@@ -119,20 +119,38 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
             case ConnectionState.waiting:
               return GroupbuysLoading();
             default:
-              children = GroupBuyStorage.instance.getSortedCardList(groupBuys);
               break;
           }
 
-          if (children.isEmpty) {
-            return OrganisedGroupBuyDefaultScreen();
-          }
+          return FutureBuilder(
+            future: getSortedCardList(groupBuys),
+            builder: (BuildContext context, AsyncSnapshot<List<GroupBuyCard>> snapshot) {
+              if (snapshot.hasError) {
+                return Text("error with sorted cards snapshot in profile!");
+              }
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  return Text("Git blame developers.");
+                case ConnectionState.waiting:
+                  return Center(child: SizedBox(height: 50,
+                    width: 50,
+                    child: CircularProgressIndicator(),),); //TODO for refactoring
+                default:
+                  break;
+              }
 
-          return GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-              childAspectRatio: 5.5/7.0,
-              children: children
+              if (snapshot.data.isEmpty) {
+                return OrganisedGroupBuyDefaultScreen();
+              }
+
+              return GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  childAspectRatio: 5.5/7.0,
+                  children: snapshot.data
+              );
+            },
           );
         },
       ),
