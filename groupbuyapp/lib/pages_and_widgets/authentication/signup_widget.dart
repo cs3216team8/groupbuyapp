@@ -36,7 +36,7 @@ class _SignUpFormState extends State<SignupForm> {
     bool usernameIsTaken = await ProfileStorage.instance.checkIfUsernameIsTaken(_usernameController.text);
 
     if (usernameIsTaken) {
-      showErrorFlushbar("This username has been taken. Plesae pick another one.");
+      showErrorFlushbar("This username has been taken. Please pick another one.");
       return null;
     }
 
