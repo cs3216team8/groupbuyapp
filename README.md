@@ -19,4 +19,4 @@ To set up PiggyBuy for development, please read [DEVELOPMENT.md](https://github.
 ## Poster
 <img src="https://user-images.githubusercontent.com/46853051/99901098-11a89980-2cef-11eb-972e-a539e3a6bafc.png" width="600"/>
 
-Follow us on [Instagram](https://www.instagram.com/piggybuy.app/) and [Facebook](https://www.facebook.com/piggybuyapp) for the latest and greatest updates on PiggyBuy.
+Follow us on [Instagram](https://www.instagram.com/piggybuy.app/) and [Facebook](https://www.facebook.com/piggybuyapp) for the latest and greatest updates on PiggyBuy!
