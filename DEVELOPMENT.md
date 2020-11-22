@@ -1,7 +1,7 @@
 # Developer Guide
 
 ## Requirements
-1. Install Flutter SDK. The instructions can be found here: https://flutter.dev/docs/get-started/install
+1. Install Flutter SDK. The instructions can be found on the [Flutter website](https://flutter.dev/docs/get-started/install)
 1. Ensure that you have a code editor (e.g. Android Studio or Xcode) installed. The instructions for installing the code editors can be found on their respective websites
 1. Obtain `google.services.json` and `api_keys.dart` from one of our developers
 
