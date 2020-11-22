@@ -65,7 +65,7 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
 
   void createGroupBuy(BuildContext context) async {
     if (endDateTime.isBefore(earliestPossibleDateTime)) {
-      showFlushbar(context, "Invalid input!", "The end time should not be in the past.");
+      showFlushbar(context, "Invalid input!", "The end time should be at least 10 hours later.");
       return;
     }
 
