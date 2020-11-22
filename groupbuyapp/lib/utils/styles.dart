@@ -120,7 +120,8 @@ class Styles {
       fontFamily: 'Inter',
       fontSize: 15.5,
       fontWeight: FontWeight.w300,
-      color: Colors.grey
+      color: Colors.grey,
+      fontStyle: FontStyle.italic
   );
 
   static const TextStyle usernameStyle = TextStyle(

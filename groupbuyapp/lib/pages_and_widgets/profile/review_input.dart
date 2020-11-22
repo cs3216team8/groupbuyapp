@@ -81,7 +81,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                 child: Text("SUBMIT", style: Styles.popupButtonStyle),
                 onPressed: !hasRatedForOrganiser? null : (){
                   if (reviewFormKeyForOrganiser.currentState.validate()) {
-                    reviewFormKeyForOrganiser.currentState.save();
+                    print("A");
                     _addReviewForOrganiser(context, ratingAsOrganiser, reviewForOrganiserController.text);
                   }
                 },
@@ -200,7 +200,7 @@ class _ReviewInputState extends State<ReviewInputScreen> {
                                     semanticLabel: 'Description',
                                   )),
                               Flexible(
-                                child: snapshot.data.review!= null ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.textStyle)
+                                child: (snapshot.data.review!= null && snapshot.data.review.isNotEmpty) ? Text(snapshot.data.review, style: Styles.textStyle) : Text('No description provided', style: Styles.italicTextStyle)
                               )
                             ],
                           ),
