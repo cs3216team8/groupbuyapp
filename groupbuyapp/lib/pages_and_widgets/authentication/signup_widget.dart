@@ -8,6 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:groupbuyapp/utils/navigators.dart';
 import 'package:groupbuyapp/pages_and_widgets/piggybuy_root.dart';
 import 'package:flushbar/flushbar.dart';
+import 'package:groupbuyapp/utils/validators.dart';
 import 'components/login_background.dart';
 import 'components/login_signup_option_widget.dart';
 
@@ -192,12 +193,7 @@ class _SignUpFormState extends State<SignupForm> {
                 icon: Icons.phone,
                 iconColor: Theme.of(context).primaryColor,
                 controller: _phoneNumberController,
-                validator: (String value) {
-                  if (value.isEmpty) {
-                    return 'Please enter phone number';
-                  }
-                  return null;
-                },
+                validator: phoneNumberValidator,
                 hintText: "Phone Number",
               ),
               RoundedButton(
