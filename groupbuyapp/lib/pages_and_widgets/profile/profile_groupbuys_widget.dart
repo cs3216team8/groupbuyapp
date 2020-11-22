@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:groupbuyapp/models/group_buy_model.dart';
 import 'package:groupbuyapp/models/profile_model.dart';
 import 'package:groupbuyapp/pages_and_widgets/groupbuy_request/components/groupbuy_card.dart';
+import 'package:groupbuyapp/pages_and_widgets/profile/reviews_listing.dart';
 import 'package:groupbuyapp/pages_and_widgets/shared_components/sliver_utils.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/piggybacked_groupbuys_default.dart';
 import 'package:groupbuyapp/pages_and_widgets/profile/profile_builder_errors.dart';
@@ -58,17 +59,20 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
     segments = widget.isMe
       ? <int, Widget>{
         0: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            child: Text("As Organiser")
+            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            child: Text("Listings")
         ),
-        1: Text("As Piggybuyer")
+        1: Text("Joined"),
+        2: Text("Reviews")
       }
       : <int, Widget>{
         0: Container(
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-            child: Text("As Organiser")
+            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+            child: Text("Listings")
         ),
-      };
+        1: Text("Reviews")
+
+    };
     // print("num segments ois ${segments.length}");
     _tabController = TabController(length: segments.length, vsync: this);
   }
@@ -76,11 +80,13 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
   List<Widget> getTabs() {
     return widget.isMe
     ? [
-      Tab(text: "As Organiser",),
-      Tab(text: "As PiggyBacker",),
+      Tab(text: "Listings",),
+      Tab(text: "Requests",),
+      Tab(text: "Reviews",),
     ]
     : [
-      Tab(text: "As Organiser",),
+      Tab(text: "Listings",),
+      Tab(text: "Reviews",),
     ];
   }
 
@@ -184,6 +190,7 @@ class _ProfileGroupBuysState extends State<ProfileGroupBuys>
           }
       )
       : Container(),
+      ReviewsListing(userId: widget.userId)
     ];
   }
 
