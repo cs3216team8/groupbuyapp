@@ -8,7 +8,7 @@ class Profile {
   final String phoneNumber;
   final String email;
   final String authType;
-  final List<GroupBuyLocation> addresses;
+  List<GroupBuyLocation> addresses;
 
   double rating; //TODO @agnes
   int reviewCount;

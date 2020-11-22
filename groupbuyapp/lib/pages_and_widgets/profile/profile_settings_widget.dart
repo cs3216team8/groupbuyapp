@@ -57,7 +57,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   void initState() {
     super.initState();
 
-    addresses = widget.profile.addresses;
+    addresses = [];
+    for (GroupBuyLocation loc in widget.profile.addresses) {
+      addresses.add(loc);
+    }
     profilePicUrl = widget.profile.profilePicture;
 
     nameController = TextEditingController(text: widget.profile.name);
@@ -69,6 +72,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    widget.profile.addresses = addresses;
     Profile newProfile = Profile(
         widget.profile.userId,
         nameController.text,
