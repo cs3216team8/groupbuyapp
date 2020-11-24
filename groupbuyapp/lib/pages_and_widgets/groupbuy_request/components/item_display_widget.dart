@@ -72,14 +72,12 @@ class ItemDisplay extends StatelessWidget {
                             children: [
                               Text(sprintf('%spcs', [this.item.qty]), style: Styles.textStyle, textAlign: TextAlign.left,),
                               SizedBox(height: 7),
-                              ConstrainedBox(
-                                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.45),
-                                      child: Flexible(
-                                        child: Text(
-                                          this.item.remarks,
-                                          style: Styles.textStyle,
-                                        ),
-                                      )
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.49,
+                                child: Text(
+                                  this.item.remarks,
+                                  style: Styles.textStyle,
+                                ),
                               ),
                             ]
                           ),
