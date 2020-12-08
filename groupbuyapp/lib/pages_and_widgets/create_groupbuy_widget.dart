@@ -69,17 +69,13 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
       return;
     }
 
-    // if (chosenAddress == null) {
-    //   showFlushbar(context, "Invalid input", "Address cannot be empty!");
-    //   return;
-    // }
     if (!_formKey.currentState.validate()) {
       return;
     }
 
     String storeName = chosenSite;
     if (chosenSite == 'Others') {
-      storeName = _productWebsiteController.text; //TODO check if is correct interpretation of fields
+      storeName = _productWebsiteController.text;
     }
 
     GroupBuyLocation addr;
@@ -179,207 +175,207 @@ class _CreateGroupBuyState extends State<CreateGroupBuyScreen> {
                 child: Form(
                     key: _formKey,
                     child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center ,//Center Column contents vertically,
-                        crossAxisAlignment: CrossAxisAlignment.center, //Center Column contents horizontally,
+                      mainAxisAlignment: MainAxisAlignment.center ,//Center Column contents vertically,
+                      crossAxisAlignment: CrossAxisAlignment.center, //Center Column contents horizontally,
 
-                        children: [
-                          chosenSite == 'Others'
-                              ? RoundedInputField(
-                            icon: Icons.public,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            hintText: "Store Website",
-                            controller: _productWebsiteController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter the store website';
-                              }
-                              if (!Uri.parse(value).isAbsolute) {
-                                return 'Please enter a valid store website';
-                              }
-                              return null;
-                            },
-                          )
-                              : Image.asset(
+                      children: [
+                        chosenSite == 'Others'
+                          ? RoundedInputField(
+                        icon: Icons.public,
+                        color: Color(0xFFFBE3E1),
+                        iconColor: Theme.of(context).primaryColor,
+                        hintText: "Store Website",
+                        controller: _productWebsiteController,
+                        validator: (String value) {
+                          if (value.isEmpty) {
+                            return 'Please enter the store website';
+                          }
+                          if (!Uri.parse(value).isAbsolute) {
+                            return 'Please enter a valid store website';
+                          }
+                          return null;
+                        },
+                      )
+                          : Image.asset(
                             'assets/${getLogoAssetName(chosenSite)}',
                             height: 100.0,
                           ),
 
-                          Container(
-                              margin: EdgeInsets.symmetric(vertical: 6),
-                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                              width: size.width * 0.8,
-                              child: DropdownButtonFormField<String>(
-                                decoration: getInputDecoration(Icons.local_grocery_store),
-                                value: chosenSite,
-                                items: supportedSites.map((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value),
-                                  );
-                                }).toList(),
-                                onChanged: (String value) {
-                                  setState(() {
-                                    chosenSite = value;
-                                  });
-                                },
-                              )
-                          ),
-
-                          RoundedInputField(
-                            icon: Icons.pending_rounded,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            hintText: "Target Amount",
-                            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
-                            controller: _targetAmtController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter target amount';
-                              }
-                              if (!isCurrencyNumberFormat(value)) {
-                                return 'Please enter a valid target amount';
-                              }
-                              return null;
-                            },
-                          ),
-
-                          RoundedInputField(
-                            icon: Icons.monetization_on,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            hintText: "Current Amount",
-                            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
-                            controller: _currentAmtController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter current amount';
-                              }
-                              if (!isCurrencyNumberFormat(value)) {
-                                return 'Please enter a valid current amount';
-                              }
-                              return null;
-                            },
-                          ),
-
-                          RoundedInputField(
-                            icon: Icons.pie_chart,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
-                            hintText: "Deposit % (max: 100%)",
-                            controller: _depositController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter the deposit percentage';
-                              }
-                              if (!isNonNegativeNumeric(value) || double.parse(value) > 100) {
-                                return 'Please enter a valid deposit percentage';
-                              }
-                              return null;
-                            },
-                          ),
-
-                          RoundedInputField(
-                            icon: Icons.description,
-                            color: Color(0xFFFBE3E1),
-                            iconColor: Theme.of(context).primaryColor,
-                            hintText: "Description",
-                            controller: _descrController,
-                            validator: (String value) {
-                              if (value.isEmpty) {
-                                return 'Please enter a description or nil';
-                              }
-                              return null;
-                            },
-                          ),
-                          Container(
+                        Container(
                             margin: EdgeInsets.symmetric(vertical: 6),
                             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                             width: size.width * 0.8,
-                            child: DropdownButtonFormField<GroupBuyLocation>(
-                              decoration: getInputDecoration(Icons.location_on),
-                              value: chosenAddress,
-                              items: userAddresses.map((GroupBuyLocation value) {
-                                return DropdownMenuItem<GroupBuyLocation>(
+                            child: DropdownButtonFormField<String>(
+                              decoration: getInputDecoration(Icons.local_grocery_store),
+                              value: chosenSite,
+                              items: supportedSites.map((String value) {
+                                return DropdownMenuItem<String>(
                                   value: value,
-                                  child: Text(value.address),
+                                  child: Text(value),
                                 );
                               }).toList(),
-                              onChanged: (GroupBuyLocation value) {
+                              onChanged: (String value) {
                                 setState(() {
-                                  chosenAddress = value;
+                                  chosenSite = value;
                                 });
                               },
-                            ),
+                            )
+                        ),
+
+                        RoundedInputField(
+                          icon: Icons.pending_rounded,
+                          color: Color(0xFFFBE3E1),
+                          iconColor: Theme.of(context).primaryColor,
+                          hintText: "Target Amount",
+                          keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                          controller: _targetAmtController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Please enter target amount';
+                            }
+                            if (!isCurrencyNumberFormat(value)) {
+                              return 'Please enter a valid target amount';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        RoundedInputField(
+                          icon: Icons.monetization_on,
+                          color: Color(0xFFFBE3E1),
+                          iconColor: Theme.of(context).primaryColor,
+                          hintText: "Current Amount",
+                          keyboardType: TextInputType.numberWithOptions(signed: false, decimal: true),
+                          controller: _currentAmtController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Please enter current amount';
+                            }
+                            if (!isCurrencyNumberFormat(value)) {
+                              return 'Please enter a valid current amount';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        RoundedInputField(
+                          icon: Icons.pie_chart,
+                          color: Color(0xFFFBE3E1),
+                          iconColor: Theme.of(context).primaryColor,
+                          keyboardType: TextInputType.numberWithOptions(signed: false, decimal: false),
+                          hintText: "Deposit % (max: 100%)",
+                          controller: _depositController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Please enter the deposit percentage';
+                            }
+                            if (!isNonNegativeNumeric(value) || double.parse(value) > 100) {
+                              return 'Please enter a valid deposit percentage';
+                            }
+                            return null;
+                          },
+                        ),
+
+                        RoundedInputField(
+                          icon: Icons.description,
+                          color: Color(0xFFFBE3E1),
+                          iconColor: Theme.of(context).primaryColor,
+                          hintText: "Description",
+                          controller: _descrController,
+                          validator: (String value) {
+                            if (value.isEmpty) {
+                              return 'Please enter a description or nil';
+                            }
+                            return null;
+                          },
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 6),
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                          width: size.width * 0.8,
+                          child: DropdownButtonFormField<GroupBuyLocation>(
+                            decoration: getInputDecoration(Icons.location_on),
+                            value: chosenAddress,
+                            items: userAddresses.map((GroupBuyLocation value) {
+                              return DropdownMenuItem<GroupBuyLocation>(
+                                value: value,
+                                child: Text(value.address),
+                              );
+                            }).toList(),
+                            onChanged: (GroupBuyLocation value) {
+                              setState(() {
+                                chosenAddress = value;
+                              });
+                            },
                           ),
-                          chosenAddress.address == newAddressPlaceholder
-                              ? RoundedInputField(
-                                onTap: () async {
-                                  Prediction pred = await searchLocation(context);
-                                  GroupBuyLocation loc = await getLatLong(pred);
+                        ),
+                        chosenAddress.address == newAddressPlaceholder
+                          ? RoundedInputField(
+                            onTap: () async {
+                              Prediction pred = await searchLocation(context);
+                              GroupBuyLocation loc = await getLatLong(pred);
 
-                                  _addressController.text = loc.address;
+                              _addressController.text = loc.address;
 
-                                  customAddress = loc;
-                                },
-                                readOnly: true,
-                                icon: Icons.location_city,
-                                color: Color(0xFFFBE3E1),
-                                iconColor: Theme.of(context).primaryColor,
-                                hintText: "Address for meetup",
-                                controller: _addressController,
-                                validator: (String value) {
-                                  if (value.isEmpty) {
-                                    return 'Please enter your address';
-                                  }
-                                  return null;
-                                },
+                              customAddress = loc;
+                            },
+                            readOnly: true,
+                            icon: Icons.location_city,
+                            color: Color(0xFFFBE3E1),
+                            iconColor: Theme.of(context).primaryColor,
+                            hintText: "Address for meetup",
+                            controller: _addressController,
+                            validator: (String value) {
+                              if (value.isEmpty) {
+                                return 'Please enter your address';
+                              }
+                              return null;
+                            },
+                          )
+                          : Container(),
+
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 6),
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+
+                          width: size.width * 0.8,
+                          child: FlatButton(
+                              padding: EdgeInsets.symmetric(vertical: 23),
+                              color: Theme.of(context).accentColor.withAlpha(60),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                              ),
+                              onPressed: () {
+                                DatePicker.showDateTimePicker(
+                                    context,
+                                    showTitleActions: true,
+                                    onChanged: (date) {
+                                      print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                                    },
+                                    onConfirm: (date) {
+                                      print('confirm $date');
+                                      setState(() {
+                                        endDateTime = date;
+                                      });
+                                    },
+                                    currentTime: endDateTime);
+                              },
+                              child: Text(
+                                endDateTime == null
+                                    ? 'Pick a deadline!'
+                                    : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')} ${endDateTime.hour.toString().padLeft(2,'0')}:${endDateTime.minute.toString().padLeft(2,'0')}",
+                                style: Theme.of(context).inputDecorationTheme.labelStyle,
+
                               )
-                              : Container(),
-
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 6),
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-
-                            width: size.width * 0.8,
-                            child: FlatButton(
-                                padding: EdgeInsets.symmetric(vertical: 23),
-                                color: Theme.of(context).accentColor.withAlpha(60),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                ),
-                                onPressed: () {
-                                  DatePicker.showDateTimePicker(
-                                      context,
-                                      showTitleActions: true,
-                                      onChanged: (date) {
-                                        print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                                      },
-                                      onConfirm: (date) {
-                                        print('confirm $date');
-                                        setState(() {
-                                          endDateTime = date;
-                                        });
-                                      },
-                                      currentTime: endDateTime);
-                                },
-                                child: Text(
-                                  endDateTime == null
-                                      ? 'Pick a deadline!'
-                                      : "${endDateTime.year}-${endDateTime.month.toString().padLeft(2,'0')}-${endDateTime.day.toString().padLeft(2,'0')} ${endDateTime.hour.toString().padLeft(2,'0')}:${endDateTime.minute.toString().padLeft(2,'0')}",
-                                  style: Theme.of(context).inputDecorationTheme.labelStyle,
-
-                                )
-                            ),
                           ),
-                          RoundedButton(
-                              color: Theme.of(context).primaryColor,
-                              text: "CREATE GROUP BUY",
-                              textStyle: TextStyle(color: Colors.white),
-                              onPress:() => createGroupBuy(context)
-                          ),
-                        ]
+                        ),
+                        RoundedButton(
+                            color: Theme.of(context).primaryColor,
+                            text: "CREATE GROUP BUY",
+                            textStyle: TextStyle(color: Colors.white),
+                            onPress:() => createGroupBuy(context)
+                        ),
+                      ]
                     )
                 ),
               )
